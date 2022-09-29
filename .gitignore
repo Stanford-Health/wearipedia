@@ -1,6 +1,7 @@
 # custom stuff
 **/*.ipynb_checkpoints
 **/*.svg
+**/*.ipynb
 
 
 # Created by https://www.gitignore.io/api/osx,python,pycharm,windows,visualstudio,visualstudiocode
