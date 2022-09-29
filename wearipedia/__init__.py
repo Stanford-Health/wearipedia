@@ -12,9 +12,9 @@ def get_device(device_name):
 
     module = importlib.import_module("devices/" + device_name + ".py")
 
-    device_map = getattr(module, "device_map")
+    class_name = getattr(module, "model_name")
 
-    return getattr(module, device_map[model])
+    return getattr(module, class_name)
 
 
 def get_version() -> str:
