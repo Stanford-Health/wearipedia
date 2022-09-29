@@ -1,6 +1,6 @@
 from ..device import BaseDevice
 
-model_name = "DexcomProCGM"
+class_name = "DexcomProCGM"
 
 
 class DexcomProCGM(BaseDevice):
