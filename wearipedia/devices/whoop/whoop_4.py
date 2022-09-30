@@ -1,5 +1,6 @@
 from ...devices.device import BaseDevice
-from .whoop_utils import *
+from .whoop_gen import *
+from .whoop_user import *
 
 class_name = "Whoop4"
 
@@ -30,15 +31,13 @@ class Whoop4(BaseDevice):
         if not hasattr(self, "user"):
             self.user = WhoopUser("", "")
 
-        self.user.cycles_df = self.user.create_fake_cycles_df()
+        self.user.cycles_df = create_fake_cycles_df()
 
-        self.user.metrics_df = self.user.create_fake_metrics_df()
+        self.user.metrics_df = create_fake_metrics_df()
 
-        self.user.sleeps_df = self.user.create_fake_sleeps_df()
+        self.user.sleeps_df = create_fake_sleeps_df()
 
-        self.user.sleeps_df = self.user.create_fake_sleeps_df()
-
-        self.user.hr_df = self.user.create_fake_hr_df()
+        self.user.hr_df = create_fake_hr_df(self.user.sleeps_df)
 
     def authorize(self, auth_creds):
         # authorize this device against API
