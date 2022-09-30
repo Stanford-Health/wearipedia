@@ -2,6 +2,7 @@
 """wearables in development"""
 
 import importlib
+import importlib.util
 import sys
 from importlib import import_module
 from importlib import metadata as importlib_metadata
@@ -15,10 +16,8 @@ def get_device(device_name):
 
     module_path = f"{PACKAGE_PATH}/devices/{device_name}.py"
 
-    import importlib.util
-
     spec = importlib.util.spec_from_file_location(
-        name=f"wearipedia.devices.{company}.{model}",  # note that ".test" is not a valid module name
+        name=f"wearipedia.devices.{company}.{model}",
         location=module_path,
     )
 
