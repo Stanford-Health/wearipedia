@@ -8,8 +8,12 @@ class_name = "Whoop4"
 class Whoop4(BaseDevice):
     def __init__(self):
         self._authorized = False
+        self.data_types_methods_map = {
+            "cycles": "get_cycles_df",
+            "health_metrics": "get_health_metrics_df",
+        }
 
-    def get_data(self, data_type, params=None):
+    def get_data(self, data_type=None, params=None):
         if params is None:
             startStr = "2000-01-01"  # @param {type:"string"}
             endStr = "2100-02-03"  # @param {type:"string"}
@@ -19,12 +23,12 @@ class Whoop4(BaseDevice):
                 "end": endStr + "T00:00:00.000Z",
             }
 
-        # show information for sleep cycles of interest
-        if data_type == "cycles":
-            return self.user.get_cycles_df(params=params)
-        elif data_type == "health_metrics":
-            # gives summary statistics for various metrics
-            return self.user.get_health_metrics_df(params=params)
+        if data_type is None:
+            raise ValueError(
+                f"data_type must be in {list(self.data_types_methods_map.keys())}"
+            )
+
+        return getattr(self.user, self.data_types_methods_map[data_type])(params=params)
 
     def gen_synthetic_data(self, seed=0):
         # generate random data according to seed
