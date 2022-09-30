@@ -9,7 +9,9 @@ import pandas as pd
 import pytz
 import requests
 from dateutil import tz
-from tqdm import tqdm
+from tqdm import tqdm, tqdm_pandas
+
+tqdm_pandas(tqdm())
 
 __all__ = ["WhoopUser"]
 

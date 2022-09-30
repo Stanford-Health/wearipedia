@@ -26,15 +26,18 @@ class Whoop4(BaseDevice):
 
     def gen_synthetic_data(self, seed=0):
         # generate random data according to seed
-        self.cycles_df = self.create_fake_cycles_df()
+        if not hasattr(self, "user"):
+            self.user = WhoopUser("", "")
 
-        self.metrics_df = self.create_fake_metrics_df()
+        self.user.cycles_df = self.user.create_fake_cycles_df()
 
-        self.sleeps_df = self.create_fake_sleeps_df()
+        self.user.metrics_df = self.user.create_fake_metrics_df()
 
-        self.sleeps_df = self.create_fake_sleeps_df()
+        self.user.sleeps_df = self.user.create_fake_sleeps_df()
 
-        self.hr_df = self.create_fake_hr_df()
+        self.user.sleeps_df = self.user.create_fake_sleeps_df()
+
+        self.user.hr_df = self.user.create_fake_hr_df()
 
     def authorize(self, auth_creds):
         # authorize this device against API
