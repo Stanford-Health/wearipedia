@@ -93,9 +93,9 @@ class WhoopUser:
 
         df_list = []
 
-        data = [self.get_health_metrics_json(cycle_id=id) for id in ids]
+        data = [self.get_health_metrics_json(cycle_id=id) for id in tqdm(ids)]
 
-        for id, day, row in zip(ids, days, data):
+        for id, day, row in tqdm(zip(ids, days, data)):
 
             metric_dict = dict()
 
