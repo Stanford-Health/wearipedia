@@ -15,12 +15,12 @@ class Whoop4(BaseDevice):
 
     def get_data(self, data_type=None, params=None):
         if params is None:
-            startStr = "2000-01-01"  # @param {type:"string"}
-            endStr = "2100-02-03"  # @param {type:"string"}
+            start_str = "2000-01-01"
+            end_str = "2100-02-03"
             # get cycle data from start to end
             params = {
-                "start": startStr + "T00:00:00.000Z",
-                "end": endStr + "T00:00:00.000Z",
+                "start": start_str + "T00:00:00.000Z",
+                "end": end_str + "T00:00:00.000Z",
             }
 
         if data_type is None:
@@ -53,5 +53,4 @@ class Whoop4(BaseDevice):
         self._authorized = True
 
     def authorized(self):
-        # authorized
         return self._authorized
