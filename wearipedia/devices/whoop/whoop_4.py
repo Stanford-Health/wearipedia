@@ -5,6 +5,15 @@ from .whoop_user import *
 class_name = "Whoop4"
 
 
+def seed_everything(seed):
+    import random
+
+    import numpy as np
+
+    np.random.seed(seed)
+    random.seed(seed)
+
+
 class Whoop4(BaseDevice):
     def __init__(self):
         self._authorized = False
@@ -34,6 +43,8 @@ class Whoop4(BaseDevice):
         # generate random data according to seed
         if not hasattr(self, "user"):
             self.user = WhoopUser("", "")
+
+        seed_everything(seed)
 
         self.user.cycles_df = create_fake_cycles_df()
 
