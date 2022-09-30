@@ -15,6 +15,16 @@ tqdm_pandas(tqdm())
 
 __all__ = ["WhoopUser"]
 
+default_params = {
+    "start": "2000-01-01T00:00:00.000Z",
+    "end": "2030-01-01T00:00:00.000Z",
+}
+
+default_params_hr = {
+    "start": "2022-04-24T00:00:00.000Z",
+    "end": "2022-04-28T00:00:00.000Z",
+}
+
 
 class WhoopUser:
     def __init__(self, email, password):
@@ -57,11 +67,6 @@ class WhoopUser:
         login_data = login.json()
         self.token = login_data["access_token"]
         self.user_id = login_data["user"]["id"]
-
-    default_params = {
-        "start": "2000-01-01T00:00:00.000Z",
-        "end": "2030-01-01T00:00:00.000Z",
-    }
 
     def get_health_metrics_json(self, cycle_id):
         """
@@ -334,11 +339,6 @@ class WhoopUser:
                     row_dict["time_hr_zone_" + str(i)] = zones[i]
                 result_df = result_df.append(row_dict, ignore_index=True)
         return result_df
-
-    default_params_hr = {
-        "start": "2022-04-24T00:00:00.000Z",
-        "end": "2022-04-28T00:00:00.000Z",
-    }
 
     def get_heart_rate_json(self, params=default_params_hr):
         """
