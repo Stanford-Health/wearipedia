@@ -8,7 +8,7 @@ class Whoop4(BaseDevice):
     def __init__(self):
         self._authorized = False
 
-    def get_data(self, params=None):
+    def get_data(self, data_type, params=None):
         if params is None:
             startStr = "2000-01-01"  # @param {type:"string"}
             endStr = "2100-02-03"  # @param {type:"string"}
@@ -19,10 +19,11 @@ class Whoop4(BaseDevice):
             }
 
         # show information for sleep cycles of interest
-        cycles_df = user.get_cycles_df(params=params)
-
-        # gives summary statistics for various metrics
-        metrics_df = user.get_health_metrics_df(params=params)
+        if data_type == "cycles":
+            return self.user.get_cycles_df(params=params)
+        elif data_type == "health_metrics":
+            # gives summary statistics for various metrics
+            return self.user.get_health_metrics_df(params=params)
 
     def gen_synthetic_data(self, seed=0):
         # generate random data according to seed
