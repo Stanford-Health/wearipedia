@@ -27,7 +27,7 @@ def get_device(device_name):
 
     class_name = getattr(module, "class_name")
 
-    return getattr(module, class_name)
+    return getattr(module, class_name)()
 
 
 def get_version() -> str:
