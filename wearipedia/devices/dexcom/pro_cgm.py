@@ -1,4 +1,4 @@
-from ..device import BaseDevice
+from ...devices.device import BaseDevice
 
 class_name = "DexcomProCGM"
 
