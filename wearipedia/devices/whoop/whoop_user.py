@@ -9,9 +9,15 @@ import pandas as pd
 import pytz
 import requests
 from dateutil import tz
-from tqdm import tqdm, tqdm_pandas
 
-tqdm_pandas(tqdm())
+from ...utils import is_notebook
+
+if is_notebook():
+    from tqdm.notebook import tqdm
+else:
+    from tqdm import tqdm
+
+tqdm.pandas()
 
 __all__ = ["WhoopUser"]
 
