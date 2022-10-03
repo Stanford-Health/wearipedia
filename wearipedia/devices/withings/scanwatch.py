@@ -1,3 +1,5 @@
+import time
+
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .withings_extract import *
@@ -63,6 +65,7 @@ class ScanWatch(BaseDevice):
         # @title 7. Copy and paste the URL you were redirected to below
         # redirect_url = "https://wbsapi.withings.net/v2/oauth2?code=e46275ce54994fa6e6eadc50cd4dd45467c01e0e&state=string"
         print("redirect url below:")
+        time.sleep(0.1)
         redirect_url = input(">")
 
         try:
