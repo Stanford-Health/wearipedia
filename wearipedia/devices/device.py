@@ -9,7 +9,7 @@ __all__ = ["BaseDevice"]
 
 class BaseDevice:
     def __init__(self):
-        raise NotImplementedError
+        self._authorized = False
 
     def get_data(self):
         raise NotImplementedError
@@ -22,5 +22,6 @@ class BaseDevice:
 
         raise NotImplementedError
 
+    @property
     def authorized(self):
-        raise NotImplementedError
+        return self._authorized

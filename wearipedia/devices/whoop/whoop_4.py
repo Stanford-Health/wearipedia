@@ -54,6 +54,3 @@ class Whoop4(BaseDevice):
         self.user = WhoopUser(auth_creds["email"], auth_creds["password"])
 
         self._authorized = True
-
-    def authorized(self):
-        return self._authorized

@@ -30,6 +30,3 @@ class Fenix7S(BaseDevice):
         self.auth_creds = auth_creds
 
         self._authorized = True
-
-    def authorized(self):
-        return self._authorized
