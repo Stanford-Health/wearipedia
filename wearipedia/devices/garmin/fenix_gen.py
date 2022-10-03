@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
@@ -12,6 +12,17 @@ def get_act_level(steps):
         return "sedentary"
     else:
         return "active"
+
+
+start_date = "2022-03-01"  # @param {type:"string"}
+end_date = "2022-06-17"  # @param {type:"string"}
+num_days = (
+    datetime.strptime(end_date, "%Y-%m-%d") - datetime.strptime(start_date, "%Y-%m-%d")
+).days
+
+# for each day, determine length of chunk that is taken out, then randomly place it
+def get_start_end(start_remove, remove_duration, mult):
+    return int(start_remove * mult), int((start_remove + remove_duration) * mult)
 
 
 def get_steps():

@@ -23,7 +23,7 @@ class BaseDevice:
 
         return self._get_data(data_type, params=params)
 
-    def gen_synthetic_data(self):
+    def gen_synthetic(self):
         raise NotImplementedError
 
     def authorize(self, auth_creds):

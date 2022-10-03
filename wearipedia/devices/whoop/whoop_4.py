@@ -26,7 +26,7 @@ class Whoop4(BaseDevice):
 
         return getattr(self.user, self.data_types_methods_map[data_type])(params=params)
 
-    def gen_synthetic_data(self, seed=0):
+    def gen_synthetic(self, seed=0):
         # generate random data according to seed
         if not hasattr(self, "user"):
             self.user = WhoopUser("", "")
