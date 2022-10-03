@@ -67,9 +67,45 @@ cd wearipedia
 python3 setup.py install
 ```
 
+## Supported Devices
+
+Wearipedia supports the following devices:
+
+- [Fitbit](https://www.fitbit.com/)
+    - [Ionic](https://www.fitbit.com/products/fitbit-ionic)
+    - [Versa](https://www.fitbit.com/products/versa)
+- [Oura Ring](https://ouraring.com/)
+- [Whoop](https://www.whoop.com/)
+- [Garmin](https://www.garmin.com/)
+- [Apple Watch](https://www.apple.com/watch/)
+- [Samsung Galaxy Watch](https://www.samsung.com/global/samsung-health/devices/galaxy-watch/)
+
 ## Documentation
 
 For more information on how to use wearipedia, please refer to our [documentation](https://wearipedia.readthedocs.io).
+
+## Citing
+
+If you use this library for academic research, please cite the following paper:
+
+```
+@article{snyder2020wearipedia,
+  title={Wearipedia: A Wearable Device Data Extraction Library},
+  author={Snyder, Evan and Chen, Kevin and Fung, Brendan and Snyder, Andrew},
+  journal={arXiv preprint arXiv:2005.06940},
+  year={2020}
+}
+```
+
+## Contributing
+
+Wearipedia is an open source project and we welcome contributions!
+
+Please refer to our [contributing guide](https://github.com/snyder-lab/wearipedia/blob/master/CONTRIBUTING.md) to learn how to contribute to wearipedia.
+
+## License
+
+Wearipedia is released under the MIT license.
 
 Transformer models can also perform tasks on **several modalities combined**, such as table question answering, optical character recognition, information extraction from scanned documents, video classification, and visual question answering.
 
