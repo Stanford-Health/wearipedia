@@ -33,21 +33,33 @@ Wearipedia is developed and maintained by the [Snyder Lab](https://med.stanford.
 
 ## Accessing data from wearable devices
 
-The data from these devices is accessed using an easy-to-use API. In order to use this API, you will need to import the `wearipedia` module:
+Using Wearipedia is a breeze. The data from these devices is accessed using an easy-to-use API. In order to use this API, you will need to import the `wearipedia` module:
 
 ```python
 import wearipedia
 ```
 
-Once you have imported the `wearipedia` module, you can then easily access data from any wearable device, such as:
+Once you have imported the `wearipedia` module, you can then accessing data from any wearable device is as easy as:
 
 ```python
 device = wearipedia.get_device("whoop/whoop_4")
-device.authenticate(secret_credentials)
+device.authenticate({"email": "joesmith@gmail.com", "password": "foobar"})
 
 # data is a DataFrame
 data = device.get_data("metrics")
 ```
+
+If you don't currently have access to your device, or need to demo data from a device without either revealing your own sensitive data or getting a device yourself, you can instead generate synthetic data yourself, as shown below:
+
+```python
+device = wearipedia.get_device("whoop/whoop_4")
+device.gen_synthetic()  # create some data!
+
+# data is a DataFrame
+data = device.get_data("metrics")
+```
+
+and you're done!
 
 ## Installing
 
