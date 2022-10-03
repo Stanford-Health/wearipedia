@@ -8,7 +8,7 @@ If you are new to Wearipedia, start with the :ref:`introductory tutorial <intro-
 
 .. module:: sympy
 
-This is the central page for all of SymPy's documentation.
+This is the central page for all of Wearipedia's documentation.
 
 ==================================================================
 
@@ -20,7 +20,7 @@ Instructions on how to install Wearipedia.
 :ref:`Tutorials <tutorials>`
 ----------------------------
 
-Tutorials are the best place to start for anyone new to SymPy or one of
+Tutorials are the best place to start for anyone new to Wearipedia or one of
 Wearipedia's features.
 
 :ref:`How-to Guides <guides>`
