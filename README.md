@@ -18,7 +18,7 @@ wearables in development
 </div>
 
 
-This library's structure is loosely inspired by that of Hugging Face's fantastic libraries (e.g. `transformers`, `diffusers`).
+This library's structure is loosely inspired by that of Hugging Face's fantastic libraries (e.g. `transformers`, `diffusers`), and its documentation was adapted from SymPy's.
 
 ### Set up bots
 
