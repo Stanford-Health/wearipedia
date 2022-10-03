@@ -39,7 +39,7 @@ The data from these devices is accessed using an easy-to-use API. In order to us
 import wearipedia
 ```
 
-Once you have imported the `wearipedia` module, you can then accessing data from any wearable device is as easy as:
+Once you have imported the `wearipedia` module, accessing data from any wearable device is as easy as:
 
 ```python
 device = wearipedia.get_device("whoop/whoop_4")
