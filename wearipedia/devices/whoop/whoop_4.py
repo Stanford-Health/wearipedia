@@ -1,17 +1,9 @@
 from ...devices.device import BaseDevice
+from ...utils import seed_everything
 from .whoop_gen import *
 from .whoop_user import *
 
 class_name = "Whoop4"
-
-
-def seed_everything(seed):
-    import random
-
-    import numpy as np
-
-    np.random.seed(seed)
-    random.seed(seed)
 
 
 class Whoop4(BaseDevice):

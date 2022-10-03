@@ -1,3 +1,10 @@
+import random
+
+import numpy as np
+
+__all__ = ["is_notebook", "seed_everything"]
+
+
 def is_notebook() -> bool:
     try:
         shell = get_ipython().__class__.__name__
@@ -9,3 +16,8 @@ def is_notebook() -> bool:
             return False  # Other type (?)
     except NameError:
         return False  # Probably standard Python interpreter
+
+
+def seed_everything(seed):
+    np.random.seed(seed)
+    random.seed(seed)
