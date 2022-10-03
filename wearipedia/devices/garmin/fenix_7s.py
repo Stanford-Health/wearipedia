@@ -1,3 +1,10 @@
+from garminconnect import (
+    Garmin,
+    GarminConnectAuthenticationError,
+    GarminConnectConnectionError,
+    GarminConnectTooManyRequestsError,
+)
+
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .fenix_gen import *
@@ -28,5 +35,8 @@ class Fenix7S(BaseDevice):
         # authorize this device against API
 
         self.auth_creds = auth_creds
+
+        # Initialize Garmin api with your credentials
+        api = Garmin(auth_creds["email"], auth_creds["password"])
 
         self._authorized = True
