@@ -8,16 +8,21 @@ class_name = "ScanWatch"
 class ScanWatch(BaseDevice):
     def __init__(self):
         self._authorized = False
-        self.valid_data_types = ["dates", "steps", "hrs", "brpms"]
+        self.valid_data_types = ["heart_rates", "sleeps"]
 
     def _get_data(self, data_type, params=None):
         if params is None:
-            params = {"start_date": "2022-03-01", "end_date": "2022-06-17"}
+            params = {"start": "2022-03-01", "end": "2022-06-17"}
 
         if hasattr(self, data_type):
             return getattr(self, data_type)
 
-        return fetch_real_data(params["start_date"], params["end_date"], data_type)
+        if data_type == "heart_rates":
+            return fetch_all_heart_rate(
+                self.access_token, params["start"], params["end"]
+            )
+        elif data_type == "sleeps":
+            return fetch_all_sleeps(self.access_token, params["start"], params["end"])
 
     def gen_synthetic(self, seed=0):
         # generate random data according to seed
@@ -42,7 +47,7 @@ class ScanWatch(BaseDevice):
             "response_type": "code",  # imposed string by the api
             "client_id": CLIENT_ID,
             "state": STATE,
-            "scope": "user.info,user.metrics",  # see docs for enhanced scope
+            "scope": "user.info,user.metrics,user.activity",  # see docs for enhanced scope
             "redirect_uri": CALLBACK_URI,  # URL of this app
             #'mode': 'demo'  # Use demo mode, DELETE THIS FOR REAL APP
         }
@@ -87,4 +92,5 @@ class ScanWatch(BaseDevice):
         except KeyError as e:
             print("Took too long to paste in redirect URL. Please repeat step 7.")
 
+        self.access_token = access_token
         self._authorized = True

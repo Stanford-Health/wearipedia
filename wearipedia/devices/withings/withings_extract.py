@@ -127,7 +127,7 @@ def fetch_all_wrapper(endpoint_url, data, headers, arr_key, parse_data=lambda x:
     return out
 
 
-def fetch_all_heart_rate(start="2020-03-10", end="2022-05-28"):
+def fetch_all_heart_rate(access_token, start="2020-03-10", end="2022-05-28"):
     # get all dates heart rate was collected for
     out = fetch_all_wrapper(
         "https://wbsapi.withings.net/v2/measure",
@@ -170,7 +170,7 @@ def fetch_all_heart_rate(start="2020-03-10", end="2022-05-28"):
     return df
 
 
-def fetch_all_sleeps(start="2020-03-10", end="2022-05-28"):
+def fetch_all_sleeps(access_token, start="2020-03-10", end="2022-05-28"):
     out = fetch_all_wrapper(
         "https://wbsapi.withings.net/v2/sleep",
         {
