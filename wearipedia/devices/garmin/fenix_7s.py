@@ -7,6 +7,7 @@ from garminconnect import (
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
+from .fenix_fetch import *
 from .fenix_gen import *
 
 class_name = "Fenix7S"
@@ -15,45 +16,16 @@ class_name = "Fenix7S"
 class Fenix7S(BaseDevice):
     def __init__(self):
         self._authorized = False
-        self.data_types_methods_map = {
-            "dates": "get_dates",
-            "steps": "get_steps",
-            "hrs": "get_hrs",
-            "brpms": "get_brpms",
-        }
-
-    def get_dates(self, params=None):
-        if hasattr(self, "dates"):
-            return self.dates
-
-        start_date = "2022-03-01"  # @param {type:"string"}
-        end_date = "2022-06-17"  # @param {type:"string"}
-
-        return self.dates
-
-    def get_steps(self, params=None):
-        if hasattr(self, "steps"):
-            return self.steps
-
-        return self.steps
-
-    def get_hrs(self, params=None):
-        if hasattr(self, "hrs"):
-            return self.hrs
-
-        return self.hrs
-
-    def get_brpms(self, params=None):
-        if hasattr(self, "brpms"):
-            return self.brpms
-
-        return self.brpms
+        self.valid_data_types = ["dates", "steps", "hrs", "brpms"]
 
     def _get_data(self, data_type, params=None):
         if params is None:
-            params = dict()
+            params = {"start_date": "2022-03-01", "end_date": "2022-06-17"}
 
-        return getattr(self, self.data_types_methods_map[data_type])(params=params)
+        if hasattr(self, data_type):
+            return getattr(self, data_type)
+
+        return fetch_real_data(params["start_date"], params["end_date"], data_type)
 
     def gen_synthetic(self, seed=0):
         # generate random data according to seed

@@ -13,6 +13,7 @@ class Whoop4(BaseDevice):
             "cycles": "get_cycles_df",
             "health_metrics": "get_health_metrics_df",
         }
+        self.valid_data_types = list(self.data_types_methods_map.keys())
 
     def _get_data(self, data_type, params=None):
         if params is None:

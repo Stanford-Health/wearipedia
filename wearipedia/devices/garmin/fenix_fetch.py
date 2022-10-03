@@ -5,6 +5,8 @@ from threading import Lock, Thread
 import requests
 from tqdm import tqdm
 
+__all__ = ["fetch_real_data"]
+
 
 def fetch_day_data(date, dates, hrs, steps, brpms):
 
