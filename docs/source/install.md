@@ -2,132 +2,111 @@
 
 # Installation
 
-Wearipedia can be installed on virtually any computer with Python.
-
-<!--The SymPy CAS can be installed on virtually any computer with Python.
-SymPy does require [mpmath] Python library to be installed first.  The
-recommended method of installation is through Anaconda, which includes
-mpmath, as well as several other useful libraries.  Alternatively, some Linux
-distributions have SymPy packages available.-->
-
-Wearipedia officially supports Python 3.8, 3.9, 3.10, and PyPy.
+Wearipedia can be installed on virtually any computer with Python. Wearipedia officially supports Python 3.8, 3.9, 3.10, and PyPy.
 
 ## Anaconda
 
-[Anaconda](https://www.anaconda.com/download/) is a free Python distribution from
-Continuum Analytics that includes SymPy, Matplotlib, IPython, NumPy, and many
-more useful packages for scientific computing. This is recommended because
-many nice features of SymPy are only enabled when certain libraries are
-installed.  For example, without Matplotlib, only simple text-based plotting
-is enabled.  With the IPython notebook or qtconsole, you can get nicer
-$\mathrm{\LaTeX}$ printing by running `init_printing()`.
+[Anaconda](https://www.anaconda.com/download/) is a free Python distribution from Continuum Analytics that includes many useful libraries for scientific computing and data analysis. We recommend using Anaconda if you're new to Python or if you're using Wearipedia for data analysis.
 
-If you already have Anaconda and want to update Wearipedia to the latest version,
-use:
 
-```
-conda update wearipedia
-```
+### Install Anaconda (Mac and Linux)
 
-(installation-git)=
-## Git
+Download the [Anaconda installer](https://www.anaconda.com/download/#macos) for Mac or [Linux](https://www.anaconda.com/download/#linux). Run the installer and follow the prompts.
 
-If you wish to contribute to Wearipedia or like to get the latest updates as they
-come, install Wearipedia from git. To download the repository, execute the
-following from the command line:
+### Install Anaconda (Windows)
 
-```
-git clone https://github.com/sympy/wearipedia.git
-```
+Download the [Anaconda installer](https://www.anaconda.com/download/#windows) for Windows. Run the installer and follow the prompts.
 
-To update to the latest version, go into your repository and execute:
+## Miniconda
 
-```
-git pull origin master
-```
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html) is a minimal version of Anaconda that includes only the conda package manager and Python. In general, Miniconda is much smaller than Anaconda, but Conda should still provide you with all of the libraries you'll need to use Wearipedia. Miniconda is a good choice if you're limited on disk space.
 
-If you want to install Wearipedia, but still want to use the git version, you can run
-from your repository:
+### Install Miniconda (Mac and Linux)
+
+Download the [Miniconda installer](https://docs.conda.io/en/latest/miniconda.html) for Mac or [Linux](https://docs.conda.io/en/latest/miniconda.html). Run the installer and follow the prompts.
+
+### Install Miniconda (Windows)
+
+Download the [Miniconda installer](https://docs.conda.io/en/latest/miniconda.html) for Windows. Run the installer and follow the prompts.
+
+## Conda environment
+
+A Conda environment is a separate Python installation from your system Python. The advantage of using a separate Conda environment is that you can ensure that the Python libraries you're using are exactly the ones you need, and that you can safely upgrade or downgrade these libraries without breaking other software on your computer.
+
+### Create a Conda environment
+
+Use the following command to create a Conda environment with Python 3.8.
 
 ```
-python setupegg.py develop
+conda create -n wearipedia python=3.8
 ```
 
-This will cause the installed version to always point to the version in the git
-directory.
+Replace `wearipedia` with the name of your project and `python=3.8` with the version of Python you wish to use.
 
-## Other Methods
-
-You may also install Wearipedia using pip or from source. In addition, most Linux
-and Python distributions have some Wearipedia version available to install using
-their package manager. Here is a list of several such Python distributions:
-
-- [Anaconda](https://www.anaconda.com/download/)
-- [Enthought Canopy](https://www.enthought.com/product/canopy/)
-- [ActivePython](https://www.activestate.com/activepython)
-- [Spack](https://spack.io/)
-
-## Run Wearipedia
-
-After installation, it is best to verify that your freshly-installed Wearipedia
-works. To do this, start up Python and import the Wearipedia libraries:
+To activate your Conda environment, use the following command:
 
 ```
-$ python
->>> from wearipedia import *
+conda activate wearipedia
 ```
 
-From here, execute some simple Wearipedia statements like the ones below:
+To deactivate your Conda environment, use the following command:
 
 ```
->>> device = wearipedia.get_device("whoop/whoop_4")
->>> limit(sin(x)/x, x, 0)
-1
->>> integrate(1/x, x)
-log(x)
+conda deactivate
 ```
 
-For a starter guide on using Wearipedia effectively, refer to the {ref}`intro-tutorial`.
+## Install Wearipedia
 
-(mpmath-install)=
-## mpmath
+Once you have installed Anaconda or Miniconda and have entered your Conda environment, you can install Wearipedia by using the pip command.
 
-Versions of SymPy prior to 1.0 included [mpmath], but it now depends on it as
-an external dependency.  If you installed SymPy with Anaconda, it will already
-include mpmath. Use:
+To install the latest official release, use the following command:
 
 ```
-conda install mpmath
+pip install wearipedia
 ```
 
-to ensure that it is installed.
-
-If you do not wish to use Anaconda, you can use `pip install mpmath`.
-
-If you use mpmath via `sympy.mpmath` in your code, you will need to change
-this to use just `mpmath`. If you depend on code that does this that you
-cannot easily change, you can work around it by doing:
+To install the latest development version, use the following command:
 
 ```
-import sys
-import mpmath
-sys.modules['sympy.mpmath'] = mpmath
+pip install https://github.com/wearipedia/wearipedia/archive/master.zip
 ```
 
-before the code that imports `sympy.mpmath`. It is recommended to change
-code that uses `sympy.mpmath` to use `mpmath` directly wherever possible.
+## Verify Installation
+
+To verify that Wearipedia is installed correctly, navigate to the directory where you wish to create your project and type the following command into a terminal:
+
+```
+wearipedia --help
+```
+
+If you see a list of Wearipedia commands, as shown, below, your installation was successful.
+
+![wearipedia help](https://raw.githubusercontent.com/wearipedia/wearipedia/master/docs/img/wearipedia-help.png)
+
+To verify that Wearipedia is using the correct version of Python, type the following command:
+
+```
+wearipedia --version
+```
+
+You should see the version of Python that you are using.
+
+![wearipedia version](https://raw.githubusercontent.com/wearipedia/wearipedia/master/docs/img/wearipedia-version.png)
+
+## Upgrade to the Latest Version
+
+To upgrade to the latest official version of Wearipedia, use the following command:
+
+```
+pip install wearipedia --upgrade
+```
+
+To upgrade to the latest development version of Wearipedia, use the following command:
+
+```
+pip install https://github.com/wearipedia/wearipedia/archive/master.zip --upgrade
+```
 
 ## Questions
 
-If you have a question about installation or SymPy in general, feel free to
-visit our chat on [Gitter]. In addition, our [mailing list] is an excellent
-source of community support.
-
-If you think there's a bug or you would like to request a feature, please open
-an [issue ticket].
-
-[downloads site]: https://github.com/sympy/sympy/releases
-[gitter]: https://gitter.im/sympy/sympy
-[issue ticket]: https://github.com/sympy/sympy/issues
-[mailing list]: https://groups.google.com/forum/#!forum/sympy
-[mpmath]: http://mpmath.org/
+If you have a question about installation, please [open an issue](https://github.com/wearipedia/wearipedia/issues/new/choose) on the Wearipedia GitHub repository.
