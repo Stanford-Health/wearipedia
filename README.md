@@ -33,7 +33,7 @@ Wearipedia is developed and maintained by the [Snyder Lab](https://med.stanford.
 
 ## Accessing data from wearable devices
 
-Using Wearipedia is a breeze. The data from these devices is accessed using an easy-to-use API. In order to use this API, you will need to import the `wearipedia` module:
+The data from these devices is accessed using an easy-to-use API. In order to use this API, you will need to import the `wearipedia` module:
 
 ```python
 import wearipedia
