@@ -2,13 +2,15 @@
 
 # Installation
 
-The SymPy CAS can be installed on virtually any computer with Python.
+Wearipedia can be installed on virtually any computer with Python.
+
+<!--The SymPy CAS can be installed on virtually any computer with Python.
 SymPy does require [mpmath] Python library to be installed first.  The
 recommended method of installation is through Anaconda, which includes
 mpmath, as well as several other useful libraries.  Alternatively, some Linux
-distributions have SymPy packages available.
+distributions have SymPy packages available.-->
 
-SymPy officially supports Python 3.8, 3.9, 3.10, and PyPy.
+Wearipedia officially supports Python 3.8, 3.9, 3.10, and PyPy.
 
 ## Anaconda
 
@@ -20,22 +22,22 @@ installed.  For example, without Matplotlib, only simple text-based plotting
 is enabled.  With the IPython notebook or qtconsole, you can get nicer
 $\mathrm{\LaTeX}$ printing by running `init_printing()`.
 
-If you already have Anaconda and want to update SymPy to the latest version,
+If you already have Anaconda and want to update Wearipedia to the latest version,
 use:
 
 ```
-conda update sympy
+conda update wearipedia
 ```
 
 (installation-git)=
 ## Git
 
-If you wish to contribute to SymPy or like to get the latest updates as they
-come, install SymPy from git. To download the repository, execute the
+If you wish to contribute to Wearipedia or like to get the latest updates as they
+come, install Wearipedia from git. To download the repository, execute the
 following from the command line:
 
 ```
-git clone https://github.com/sympy/sympy.git
+git clone https://github.com/sympy/wearipedia.git
 ```
 
 To update to the latest version, go into your repository and execute:
@@ -44,7 +46,7 @@ To update to the latest version, go into your repository and execute:
 git pull origin master
 ```
 
-If you want to install SymPy, but still want to use the git version, you can run
+If you want to install Wearipedia, but still want to use the git version, you can run
 from your repository:
 
 ```
@@ -56,8 +58,8 @@ directory.
 
 ## Other Methods
 
-You may also install SymPy using pip or from source. In addition, most Linux
-and Python distributions have some SymPy version available to install using
+You may also install Wearipedia using pip or from source. In addition, most Linux
+and Python distributions have some Wearipedia version available to install using
 their package manager. Here is a list of several such Python distributions:
 
 - [Anaconda](https://www.anaconda.com/download/)
@@ -65,27 +67,27 @@ their package manager. Here is a list of several such Python distributions:
 - [ActivePython](https://www.activestate.com/activepython)
 - [Spack](https://spack.io/)
 
-## Run SymPy
+## Run Wearipedia
 
-After installation, it is best to verify that your freshly-installed SymPy
-works. To do this, start up Python and import the SymPy libraries:
+After installation, it is best to verify that your freshly-installed Wearipedia
+works. To do this, start up Python and import the Wearipedia libraries:
 
 ```
 $ python
->>> from sympy import *
+>>> from wearipedia import *
 ```
 
-From here, execute some simple SymPy statements like the ones below:
+From here, execute some simple Wearipedia statements like the ones below:
 
 ```
->>> x = Symbol('x')
+>>> device = wearipedia.get_device("whoop/whoop_4")
 >>> limit(sin(x)/x, x, 0)
 1
 >>> integrate(1/x, x)
 log(x)
 ```
 
-For a starter guide on using SymPy effectively, refer to the {ref}`intro-tutorial`.
+For a starter guide on using Wearipedia effectively, refer to the {ref}`intro-tutorial`.
 
 (mpmath-install)=
 ## mpmath

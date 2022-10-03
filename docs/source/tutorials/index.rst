@@ -5,13 +5,13 @@ Tutorials
 =========
 
 
-Tutorials are the best place to start for anyone new to SymPy or one of
-SymPy's features.
+Tutorials are the best place to start for anyone new to Wearipedia or one of
+Wearipedia's features.
 
 :ref:`Introductory Tutorial <intro-tutorial>`
 =============================================
 
-If you are new to SymPy, start here.
+If you are new to Wearipedia, start here.
 
 .. toctree::
    :hidden:

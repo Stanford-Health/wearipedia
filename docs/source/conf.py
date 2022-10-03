@@ -6,11 +6,14 @@
 
 # -- Path setup --------------------------------------------------------------
 
+import inspect
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import subprocess
 import sys
 
 # sys.path.insert(0, os.path.abspath('../..'))
@@ -72,6 +75,35 @@ html_theme = "alabaster"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
+commit_hash_filepath = "../commit_hash.txt"
+
+commit_hash = None
+if os.path.isfile(commit_hash_filepath):
+    with open(commit_hash_filepath) as f:
+        commit_hash = f.readline()
+
+# Get commit hash from the external file.
+if not commit_hash:
+    try:
+        commit_hash = subprocess.check_output(["git", "rev-parse", "HEAD"])
+        commit_hash = commit_hash.decode("ascii")
+        commit_hash = commit_hash.rstrip()
+    except:
+        import warnings
+
+        warnings.warn(
+            "Failed to get the git commit hash as the command "
+            "'git rev-parse HEAD' is not working. The commit hash will be "
+            "assumed as the SymPy master, but the lines may be misleading "
+            "or nonexistent as it is not the correct branch the doc is "
+            "built with. Check your installation of 'git' if you want to "
+            "resolve this warning."
+        )
+        commit_hash = "master"
+
+fork = "sympy"
+blobpath = f"https://github.com/{fork}/sympy/blob/{commit_hash}/sympy/"
+
 
 def linkcode_resolve(domain, info):
     """Determine the URL corresponding to Python object."""
@@ -86,6 +118,7 @@ def linkcode_resolve(domain, info):
         return
 
     obj = submod
+    print("IN HERE!!!!!!!!!!!!!!")
     for part in fullname.split("."):
         try:
             obj = getattr(obj, part)
@@ -118,5 +151,6 @@ def linkcode_resolve(domain, info):
     else:
         linespec = ""
 
-    fn = os.path.relpath(fn, start=os.path.dirname(sympy.__file__))
+    # fn = os.path.relpath(fn, start=os.path.dirname(sympy.__file__))
+    fn = os.path.relpath(fn)
     return blobpath + fn + linespec
