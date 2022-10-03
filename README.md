@@ -13,12 +13,7 @@
 [![License](https://img.shields.io/github/license/rodrigo-castellon/wearipedia)](https://github.com/rodrigo-castellon/wearipedia/blob/master/LICENSE)
 ![Coverage Report](assets/images/coverage.svg)
 
-wearables in development
-
 </div>
-
-
-This library's structure is loosely inspired by that of Hugging Face's fantastic libraries (e.g. `transformers`, `diffusers`), and its documentation was adapted from SymPy's.
 
 <h3 align="center">
     <p>A one-stop shop for wearable device data extraction</p>
@@ -28,11 +23,13 @@ Wearipedia provides a one-stop shop for accessing and extracting data from dozen
 
 Data from these devices may be used for:
 
-* clinical trials
-* personal use
-* research
+* Clinical research
+* Personal health monitoring
+* Health coaching
+* Health product development
+* Wearable device development
 
-Wearipedia is developed and maintained by the Snyder Lab at the Stanford University.
+Wearipedia is developed and maintained by the [Snyder Lab](https://med.stanford.edu/snyderlab.html) at the Stanford University.
 
 ## Accessing data from wearable devices
 
