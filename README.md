@@ -20,70 +20,56 @@ wearables in development
 
 This library's structure is loosely inspired by that of Hugging Face's fantastic libraries (e.g. `transformers`, `diffusers`), and its documentation was adapted from SymPy's.
 
-<!---
-Copyright 2020 The HuggingFace Team. All rights reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
-
-<p align="center">
-    <br>
-    <img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformers_logo_name.png" width="400"/>
-    <br>
-<p>
-<p align="center">
-    <a href="https://circleci.com/gh/huggingface/transformers">
-        <img alt="Build" src="https://img.shields.io/circleci/build/github/huggingface/transformers/main">
-    </a>
-    <a href="https://github.com/huggingface/transformers/blob/main/LICENSE">
-        <img alt="GitHub" src="https://img.shields.io/github/license/huggingface/transformers.svg?color=blue">
-    </a>
-    <a href="https://huggingface.co/docs/transformers/index">
-        <img alt="Documentation" src="https://img.shields.io/website/http/huggingface.co/docs/transformers/index.svg?down_color=red&down_message=offline&up_message=online">
-    </a>
-    <a href="https://github.com/huggingface/transformers/releases">
-        <img alt="GitHub release" src="https://img.shields.io/github/release/huggingface/transformers.svg">
-    </a>
-    <a href="https://github.com/huggingface/transformers/blob/main/CODE_OF_CONDUCT.md">
-        <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg">
-    </a>
-    <a href="https://zenodo.org/badge/latestdoi/155220641"><img src="https://zenodo.org/badge/155220641.svg" alt="DOI"></a>
-</p>
-
-<h4 align="center">
-    <p>
-        <b>English</b> |
-        <a href="https://github.com/huggingface/transformers/blob/main/README_zh-hans.md">简体中文</a> |
-        <a href="https://github.com/huggingface/transformers/blob/main/README_zh-hant.md">繁體中文</a> |
-        <a href="https://github.com/huggingface/transformers/blob/main/README_ko.md">한국어</a>
-    <p>
-</h4>
-
 <h3 align="center">
-    <p>State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow</p>
+    <p>A one-stop shop for wearable device data extraction</p>
 </h3>
 
-<h3 align="center">
-    <a href="https://hf.co/course"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/course_banner.png"></a>
-</h3>
+Wearipedia provides a one-stop shop for accessing and extracting data from dozens of wearable devices, including devices from FitBit and Oura.
 
-🤗 Transformers provides thousands of pretrained models to perform tasks on different modalities such as text, vision, and audio. 
+Data from these devices may be used for:
 
-These models can be applied on:
+* clinical trials
+* personal use
+* research
 
-* 📝 Text, for tasks like text classification, information extraction, question answering, summarization, translation, text generation, in over 100 languages. 
-* 🖼️ Images, for tasks like image classification, object detection, and segmentation. 
-* 🗣️ Audio, for tasks like speech recognition and audio classification. 
+Wearipedia is developed and maintained by the Snyder Lab at the Stanford University.
+
+## Accessing data from wearable devices
+
+The data from these devices is accessed using an easy-to-use API. In order to use this API, you will need to import the `wearipedia` module:
+
+```python
+import wearipedia
+```
+
+Once you have imported the `wearipedia` module, you can then easily access data from any wearable device, such as:
+
+```python
+device = wearipedia.get_device("whoop/whoop_4")
+device.authenticate(secret_credentials)
+
+# data is a DataFrame
+
+data = device.get_data("metrics")
+```
+
+## Installing
+
+The easiest way to install wearipedia is to use pip:
+
+`pip install wearipedia`
+
+You can also install wearipedia from source:
+
+```bash
+git clone https://github.com/snyder-lab/wearipedia.git
+cd wearipedia
+python3 setup.py install
+```
+
+## Documentation
+
+For more information on how to use wearipedia, please refer to our [documentation](https://wearipedia.readthedocs.io).
 
 Transformer models can also perform tasks on **several modalities combined**, such as table question answering, optical character recognition, information extraction from scanned documents, video classification, and visual question answering.
 
