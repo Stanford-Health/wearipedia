@@ -49,7 +49,7 @@ device.authenticate({"email": "joesmith@gmail.com", "password": "foobar"})
 data = device.get_data("metrics")
 ```
 
-If you don't currently have access to your device, or need to demo data from a device without either revealing your own sensitive data or getting a device yourself, you can instead generate synthetic data yourself, as shown below:
+If you don't have access to your device, or need to demo data from a device without revealing your sensitive data or getting a device yourself, you can generate synthetic data, as shown below:
 
 ```python
 device = wearipedia.get_device("whoop/whoop_4")
