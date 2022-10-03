@@ -67,16 +67,16 @@ python3 setup.py install
 
 Wearipedia supports the following devices:
 
-| Company | Model Name | Description | Example Notebook | Kinds of Data Available |
-|---|---|---|---|---|
-| [Oura](https://ouraring.com/) | Oura | The Oura ring is a wearable device that tracks sleep and activity data. | [Oura Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/ouraring/Example%20Notebook.ipynb) | metrics, sleep, and HRV. |
-| [Whoop](https://www.whoop.com/) | Whoop | The Whoop wearable device tracks sleep and activity data. | [Whoop Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/whoop/Example%20Notebook.ipynb) | metrics and sleep. |
-| [Fitbit](https://www.fitbit.com/en-us) | Fitbit | The Fitbit wearable device tracks sleep and activity data. | [Fitbit Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/fitbit/Example%20Notebook.ipynb) | metrics and sleep. |
-| [Garmin](https://www.garmin.com/en-US) | Fenix 7S | The Garmin wearable device tracks sleep and activity data. | [Garmin Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/garmin/Example%20Notebook.ipynb) |  metrics, sleep, and HRV. |
-| [Dexcom](https://www.dexcom.com/) | Pro CGM | The Dexcom Pro CGM wearable device tracks blood sugar levels. | [Pro CGM Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/dexcom/Example%20Notebook.ipynb) |  metrics. |
-| [Withings](https://www.withings.com) | Body+ | The Withings Body+ is a smart scale that tracks weight and other metrics. | [Body+ Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/withings/Example%20Notebook.ipynb) | weight and body fat. |
-| [Withings](https://www.withings.com) | ScanWatch | The Withings ScanWatch wearable device tracks sleep and activity data. | [ScanWatch Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/withings/Example%20Notebook.ipynb) | metrics and sleep. |
-| [Dreem](https://dreem.com/) | Dreem 2 | The Dreem 2 wearable device is an EEG headset that tracks EEG signals during sleep. | [Dreem 2 Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/dreem/Example%20Notebook.ipynb) | EEG signals. |
+| Company | Model Name | Description | Example Notebook | Kinds of Data Available | Unique name |
+|---|---|---|---|---|---|
+| [Oura](https://ouraring.com/) | Oura | The Oura ring is a wearable device that tracks sleep and activity data. | [Oura Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/ouraring/Example%20Notebook.ipynb) | metrics, sleep, and HRV. | `whoop/whoop_4` |
+| [Whoop](https://www.whoop.com/) | Whoop | The Whoop wearable device tracks sleep and activity data. | [Whoop Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/whoop/Example%20Notebook.ipynb) | metrics and sleep. | `whoop/whoop_4` |
+| [Fitbit](https://www.fitbit.com/en-us) | Fitbit | The Fitbit wearable device tracks sleep and activity data. | [Fitbit Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/fitbit/Example%20Notebook.ipynb) | metrics and sleep. | `whoop/whoop_4` |
+| [Garmin](https://www.garmin.com/en-US) | Fenix 7S | The Garmin wearable device tracks sleep and activity data. | [Garmin Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/garmin/Example%20Notebook.ipynb) |  metrics, sleep, and HRV. | `whoop/whoop_4` |
+| [Dexcom](https://www.dexcom.com/) | Pro CGM | The Dexcom Pro CGM wearable device tracks blood sugar levels. | [Pro CGM Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/dexcom/Example%20Notebook.ipynb) |  metrics. | `whoop/whoop_4` |
+| [Withings](https://www.withings.com) | Body+ | The Withings Body+ is a smart scale that tracks weight and other metrics. | [Body+ Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/withings/Example%20Notebook.ipynb) | weight and body fat. | `whoop/whoop_4` |
+| [Withings](https://www.withings.com) | ScanWatch | The Withings ScanWatch wearable device tracks sleep and activity data. | [ScanWatch Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/withings/Example%20Notebook.ipynb) | metrics and sleep. | `whoop/whoop_4` |
+| [Dreem](https://dreem.com/) | Dreem 2 | The Dreem 2 wearable device is an EEG headset that tracks EEG signals during sleep. | [Dreem 2 Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/dreem/Example%20Notebook.ipynb) | EEG signals. | `whoop/whoop_4` |
 
 ## Documentation
 
