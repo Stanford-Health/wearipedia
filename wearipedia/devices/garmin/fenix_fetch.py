@@ -28,7 +28,7 @@ def fetch_day_data(date, dates, hrs, steps, brpms):
         brpms.append(brpm_data)
 
 
-def fetch_day_data(date, array, api_func):
+def fetch_day_data(date, array, api_func, lock):
     date_str = datetime.strftime(date, "%Y-%m-%d")
 
     elem = api_func(date_str)
@@ -72,7 +72,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
     for i in tqdm(range(num_days)):
         new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
 
-        new_thread = Thread(target=fetch_day_data, args=(new_date, arr, api_func))
+        new_thread = Thread(target=fetch_day_data, args=(new_date, arr, api_func, lock))
 
         threads.append(new_thread)
 

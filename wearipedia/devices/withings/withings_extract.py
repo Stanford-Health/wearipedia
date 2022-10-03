@@ -12,13 +12,9 @@ import json
 import urllib
 from datetime import datetime, timedelta
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import requests
-import seaborn as sns
-from scipy import stats
-from scipy.ndimage import gaussian_filter
 from tqdm import tqdm
 
 # import july
