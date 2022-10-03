@@ -14,7 +14,7 @@ class Whoop4(BaseDevice):
             "health_metrics": "get_health_metrics_df",
         }
 
-    def get_data(self, data_type=None, params=None):
+    def _get_data(self, data_type, params=None):
         if params is None:
             start_str = "2000-01-01"
             end_str = "2100-02-03"
@@ -23,11 +23,6 @@ class Whoop4(BaseDevice):
                 "start": start_str + "T00:00:00.000Z",
                 "end": end_str + "T00:00:00.000Z",
             }
-
-        if data_type is None:
-            raise ValueError(
-                f"data_type must be in {list(self.data_types_methods_map.keys())}"
-            )
 
         return getattr(self.user, self.data_types_methods_map[data_type])(params=params)
 
