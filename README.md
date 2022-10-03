@@ -71,14 +71,11 @@ python3 setup.py install
 
 Wearipedia supports the following devices:
 
-- [Fitbit](https://www.fitbit.com/)
-    - [Ionic](https://www.fitbit.com/products/fitbit-ionic)
-    - [Versa](https://www.fitbit.com/products/versa)
-- [Oura Ring](https://ouraring.com/)
-- [Whoop](https://www.whoop.com/)
-- [Garmin](https://www.garmin.com/)
-- [Apple Watch](https://www.apple.com/watch/)
-- [Samsung Galaxy Watch](https://www.samsung.com/global/samsung-health/devices/galaxy-watch/)
+| Company | Model Name | Description | Example Notebook | Kinds of Data Available |
+|---|---|---|---|---|
+| [Oura](https://ouraring.com/) | Oura | The Oura ring is a wearable device that tracks sleep and activity data. | [Oura Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/ouraring/Example%20Notebook.ipynb) | metrics, sleep, and HRV. |
+| [Whoop](https://www.whoop.com/) | Whoop | The Whoop wearable device tracks sleep and activity data. | [Whoop Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/whoop/Example%20Notebook.ipynb) | metrics and sleep. |
+| [Fitbit](https://www.fitbit.com/en-us) | Fitbit | The Fitbit wearable device tracks sleep and activity data. | [Fitbit Example Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/fitbit/Example%20Notebook.ipynb) | metrics and sleep. |
 
 ## Documentation
 
