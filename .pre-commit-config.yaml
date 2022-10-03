@@ -34,10 +34,3 @@ repos:
         entry: poetry run black --config pyproject.toml
         types: [python]
         language: system
-  - repo: local
-    hooks:
-      - id: delete_ipynb
-        name: delete_ipynb
-        entry: rm -r **/*ipynb_checkpoints*
-        types: [python]
-        language: system
