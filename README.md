@@ -107,6 +107,15 @@ If you use this library for academic research, please cite the following paper:
 }
 ```
 
+## TODO's
+
+This project is still in its infancy, but there are many ideas to expand this project. Feel free to open an issue with any suggestions or to contribute to the project!
+
+* Get Dexcom CGM, Dreem 2, FitBit, Garmin, Oura Ring, Withings ScanWatch, Withings Body+ working end-to-end
+* Fix documentation
+* Get integration tests in and working
+* Unify backend for all Withings devices
+
 ## Contributing
 
 Wearipedia is an open source project and we welcome contributions!
