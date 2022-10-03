@@ -25,7 +25,9 @@ class Fenix7S(BaseDevice):
         if hasattr(self, data_type):
             return getattr(self, data_type)
 
-        return fetch_real_data(params["start_date"], params["end_date"], data_type)
+        return fetch_real_data(
+            params["start_date"], params["end_date"], data_type, self.api
+        )
 
     def gen_synthetic(self, seed=0):
         # generate random data according to seed
@@ -39,8 +41,8 @@ class Fenix7S(BaseDevice):
         self.auth_creds = auth_creds
 
         # Initialize Garmin api with your credentials
-        api = Garmin(auth_creds["email"], auth_creds["password"])
+        self.api = Garmin(auth_creds["email"], auth_creds["password"])
 
-        api.login()
+        self.api.login()
 
         self._authorized = True

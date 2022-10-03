@@ -42,7 +42,7 @@ def fetch_day_data(date, array, api_func):
         array.append(elem)
 
 
-def fetch_real_data(start_date, end_date, data_type):
+def fetch_real_data(start_date, end_date, data_type, api):
     num_days = (
         datetime.strptime(end_date, "%Y-%m-%d")
         - datetime.strptime(start_date, "%Y-%m-%d")
