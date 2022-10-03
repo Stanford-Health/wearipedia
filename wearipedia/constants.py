@@ -1,3 +1,9 @@
+"""
+constants.py
+====================================
+The core module of my example project
+"""
+
 import os
 
 __all__ = ["PACKAGE_PATH"]
