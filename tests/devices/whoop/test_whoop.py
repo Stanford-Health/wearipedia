@@ -2,15 +2,24 @@
 import wearipedia
 
 
-def test_whoop():
+def test_whoop_api():
     device = wearipedia.get_device("whoop/whoop_4")
 
-    device.gen_synthetic_data()
+    email = input("email: ")
+    password = input("password: ")
+
+    device.authorize({"email": email, "password": password})
 
     cycles_df = device.get_data("cycles")
 
-    metrics_df = device.get_data("metrics")
+    metrics_df = device.get_data("health_metrics")
 
 
-def test_answer():
-    assert func(3) == 5
+def test_whoop_synthetic():
+    device = wearipedia.get_device("whoop/whoop_4")
+
+    device.gen_synthetic()
+
+    cycles_df = device.get_data("cycles")
+
+    metrics_df = device.get_data("health_metrics")
