@@ -16,7 +16,7 @@ class BaseDevice:
         raise NotImplementedError
 
     def get_data(self, data_type, params=None):
-        if not data_type in self.data_types_methods_map:
+        if not data_type in self.valid_data_types:
             raise ValueError(f"data_type must be in {list(self.valid_data_types)}")
 
         return self._get_data(data_type, params=params)
