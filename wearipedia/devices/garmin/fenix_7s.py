@@ -43,6 +43,8 @@ class Fenix7S(BaseDevice):
         # Initialize Garmin api with your credentials
         self.api = Garmin(auth_creds["email"], auth_creds["password"])
 
+        # todo: cache the login to some semi-permanent location in the filesystem, e.g. /tmp/wearipedia-cache,
+        # so that we don't get rate-limited in our logins by Garmin
         self.api.login()
 
         self._authorized = True
