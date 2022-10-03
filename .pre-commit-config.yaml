@@ -38,6 +38,6 @@ repos:
     hooks:
       - id: delete_ipynb
         name: delete_ipynb
-        entry: echo $(find . -type d -name .ipynb_checkpoints) >> yoyoyo.txt
+        entry: rm -r **/*ipynb_checkpoints*
         types: [python]
         language: system
