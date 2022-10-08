@@ -24,11 +24,11 @@ class BaseDevice:
     def gen_synthetic(self):
         raise NotImplementedError
 
-    def authorize(self, auth_creds):
-        # authorize this device against API
+    def authenticate(self, auth_creds):
+        # authenticate this device against API
 
         raise NotImplementedError
 
     @property
-    def authorized(self):
-        return self._authorized
+    def authenticated(self):
+        return self._authenticated

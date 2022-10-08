@@ -42,11 +42,11 @@ class Whoop4(BaseDevice):
 
         self.user.hr_df = create_fake_hr_df(self.user.sleeps_df)
 
-    def authorize(self, auth_creds):
-        # authorize this device against API
+    def authenticate(self, auth_creds):
+        # authenticate this device against API
 
         self.auth_creds = auth_creds
 
         self.user = WhoopUser(auth_creds["email"], auth_creds["password"])
 
-        self._authorized = True
+        self._authenticated = True

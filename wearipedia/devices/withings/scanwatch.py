@@ -30,8 +30,8 @@ class ScanWatch(BaseDevice):
         # generate random data according to seed
         seed_everything(seed)
 
-    def authorize(self, auth_creds):
-        # authorize this device against API
+    def authenticate(self, auth_creds):
+        # authenticate this device against API
 
         self.auth_creds = auth_creds
 
@@ -96,4 +96,4 @@ class ScanWatch(BaseDevice):
             print("Took too long to paste in redirect URL. Please repeat step 7.")
 
         self.access_token = access_token
-        self._authorized = True
+        self._authenticated = True
