@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
 
-import wget
-
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .dreem_fetch import *
