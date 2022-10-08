@@ -1,9 +1,17 @@
-import time
+import os
+from pathlib import Path
+
+import wget
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .withings_authenticate import *
 from .withings_extract import *
+
+CSV_URL = "https://gist.githubusercontent.com/stanford-health-wearables/3e5bdd4dfc06a4290038fabf34732ca3/raw/c99a50c1d943903c867364dc6c9a11d83fb4e42a/random_data.csv"
+CSV_LOCAL_PATH = "/tmp/wearipedia-cache/withings/bodyplus/random_data.csv"
+
+os.makedirs(Path(CSV_LOCAL_PATH).parent, exist_ok=True)
 
 class_name = "BodyPlus"
 
@@ -11,25 +19,30 @@ class_name = "BodyPlus"
 class BodyPlus(BaseDevice):
     def __init__(self):
         self._authenticated = False
-        self.valid_data_types = ["heart_rates", "sleeps"]
+        self.valid_data_types = ["measurements"]
 
     def _get_data(self, data_type, params=None):
-        if params is None:
-            params = {"start": "2022-03-01", "end": "2022-06-17"}
-
         if hasattr(self, data_type):
             return getattr(self, data_type)
 
-        if data_type == "heart_rates":
-            return fetch_all_heart_rate(
-                self.access_token, params["start"], params["end"]
-            )
-        elif data_type == "sleeps":
-            return fetch_all_sleeps(self.access_token, params["start"], params["end"])
+        return fetch_measurements(self.access_token)
 
     def gen_synthetic(self, seed=0):
         # generate random data according to seed
         seed_everything(seed)
+
+        # load in the CSV that we've pre-generated
+        wget.download(CSV_URL, out=CSV_LOCAL_PATH)
+
+        self.measurements = pd.read_csv(CSV_LOCAL_PATH)
+        # fix dates, convert to datetime obj from string
+        self.measurements["date"] = self.measurements.date.apply(
+            lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f")
+        )
+
+        self.measurements = self.measurements[
+            [col for col in self.measurements.columns if "Unnamed: 0" not in col]
+        ]
 
     def authenticate(self, auth_creds):
         # authenticate this device against API

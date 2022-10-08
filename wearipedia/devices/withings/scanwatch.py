@@ -11,7 +11,7 @@ class_name = "ScanWatch"
 class ScanWatch(BaseDevice):
     def __init__(self):
         self._authenticated = False
-        self.valid_data_types = ["heart_rates", "sleeps"]
+        self.valid_data_types = ["measurements"]
 
     def _get_data(self, data_type, params=None):
         if params is None:
@@ -30,6 +30,15 @@ class ScanWatch(BaseDevice):
     def gen_synthetic(self, seed=0):
         # generate random data according to seed
         seed_everything(seed)
+
+        # load in the CSV that we've pre-generated
+        # df = pd.read_csv("random_data.csv")
+        # fix dates, convert to datetime obj from string
+        # df.date = df.date.apply(lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f"))
+
+        # df = df[[col for col in df.columns if "Unnamed: 0" not in col]]
+
+        # return df
 
     def authenticate(self, auth_creds):
         # authenticate this device against API

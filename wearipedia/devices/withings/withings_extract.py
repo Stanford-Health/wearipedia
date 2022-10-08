@@ -217,20 +217,10 @@ num_to_description = {
 }
 
 
-def fetch_measurements(measure_types="1,6", random_data=False):
+def fetch_measurements(access_token, measure_types="1,6"):
     # make public API requests, while specifying the measure_types we desire
     # we make potentially multiple because the public API can return only up
     # to 200 measurements
-
-    if random_data:
-        # load in the CSV that we've pre-generated
-        df = pd.read_csv("random_data.csv")
-        # fix dates, convert to datetime obj from string
-        df.date = df.date.apply(lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f"))
-
-        df = df[[col for col in df.columns if "Unnamed: 0" not in col]]
-
-        return df
 
     cur_offset = 0
     data_complete = []
@@ -264,7 +254,7 @@ def fetch_measurements(measure_types="1,6", random_data=False):
         data_complete += data
 
         if "more" in out["body"].keys() and out["body"]["more"] == 1:
-            cur_offset = cur["body"]["offset"]
+            cur_offset = out["body"]["offset"]
         else:
             break
 
