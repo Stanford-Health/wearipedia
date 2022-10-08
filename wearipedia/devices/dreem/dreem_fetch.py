@@ -1,10 +1,14 @@
-# @title Get available users
 import json
-import pprint
+import os
+from pathlib import Path
 
 import pandas as pd
 import requests
 from tqdm import tqdm
+
+EEG_LOCAL_DIR = "/tmp/wearipedia-cache/dreem/headband_2"
+
+os.makedirs(EEG_LOCAL_DIR, exist_ok=True)
 
 
 def get_aux_records(auth_dict):
@@ -119,7 +123,7 @@ def records_to_df(table_records, aux_records):
     return records_df
 
 
-def fetch_records(auth_dict, username):
+def fetch_records(auth_dict, username=None):
 
     aux_records = get_aux_records(auth_dict)
 
@@ -127,12 +131,14 @@ def fetch_records(auth_dict, username):
 
     map_ = fetch_users(auth_dict)
 
-    uid = [uid for uname, uid in map_.items() if uname == uname_filter][0]
-
-    # filter to only include this username
-    filtered_aux_records = [
-        record for record in aux_records["results"] if record["user"] == uid
-    ]
+    # optionally filter by username
+    if username is None:
+        filtered_aux_records = [record for record in aux_records["results"]]
+    else:
+        uid = [uid for uname, uid in map_.items() if uname == uname_filter][0]
+        filtered_aux_records = [
+            record for record in aux_records["results"] if record["user"] == uid
+        ]
 
     record_ids = [record["id"] for record in filtered_aux_records]
 
@@ -150,9 +156,17 @@ def fetch_records(auth_dict, username):
 ##################################
 
 
-def get_download_info(auth_dict, record_ref, records_df):
-    # get the record id
+def ref2id(auth_dict, record_ref):
+    records_df = fetch_records(auth_dict)
     id = records_df[records_df["Ref"] == record_ref]["Record ID"].iloc[0]
+
+    return id
+
+
+def get_download_info(auth_dict, record_ref):
+    # get the record id
+
+    id = ref2id(auth_dict, record_ref)
 
     url = (
         f"https://api.rythm.co/v1/dreem/algorythm/record/{id}/h5/?filename={record_ref}"
@@ -165,7 +179,8 @@ def get_download_info(auth_dict, record_ref, records_df):
     return out_dict
 
 
-def fetch_hypnogram(auth_dict, records, record_id):
+def fetch_hypnogram(auth_dict, record_ref):
+    record_id = ref2id(auth_dict, record_ref)
     url = f"https://api.rythm.co/v1/dreem/record/record/{record_id}/latest_hypnogram_as_txt/"
 
     headers = {"Authorization": "Bearer " + auth_dict["token"]}
@@ -183,18 +198,17 @@ def fetch_hypnogram(auth_dict, records, record_id):
         StringIO("\n".join(hypnogram_text.split("\n")[idx_start:])), sep="\t"
     )
 
-    hypnogram_df = get_hypnogram(record_id)
-
-    return hypnogram_df
+    return hypnogram
 
 
-def fetch_eeg_file(auth_dict, records, record_ref):
-    download_info = get_download_info(auth_dict, record_id, record_ref)
+def fetch_eeg_file(auth_dict, record_ref):
+    record_id = ref2id(auth_dict, record_ref)
+    download_info = get_download_info(auth_dict, record_ref)
 
     assert download_info["status_display"] == "Available"
 
     download_url = download_info["data_url"]
-    download_path = str(record_ref) + ".h5"
+    download_path = Path(EEG_LOCAL_DIR) / (str(record_ref) + ".h5")
 
     # Streaming, so we can iterate over the response.
     response = requests.get(download_url, stream=True)
@@ -210,3 +224,5 @@ def fetch_eeg_file(auth_dict, records, record_ref):
 
     if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
         print("ERROR, something went wrong")
+
+    return download_path
