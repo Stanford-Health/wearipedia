@@ -5,10 +5,10 @@ from ...utils import seed_everything
 from .withings_authenticate import *
 from .withings_extract import *
 
-class_name = "ScanWatch"
+class_name = "BodyPlus"
 
 
-class ScanWatch(BaseDevice):
+class BodyPlus(BaseDevice):
     def __init__(self):
         self._authenticated = False
         self.valid_data_types = ["heart_rates", "sleeps"]
@@ -38,5 +38,3 @@ class ScanWatch(BaseDevice):
 
         self.access_token = withings_authenticate(auth_creds)
         self._authenticated = True
-
-        self.auth_creds = auth_creds
