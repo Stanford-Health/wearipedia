@@ -87,3 +87,5 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
     # report the number of items in the list
     print("\ndone")
+
+    return arr
