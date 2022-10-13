@@ -9,7 +9,7 @@ __all__ = ["BaseDevice"]
 
 class BaseDevice:
     def __init__(self):
-        self._authorized = False
+        self._authenticated = False
         self.valid_data_types = []
 
     def _get_data(self, data_type, params=None):
