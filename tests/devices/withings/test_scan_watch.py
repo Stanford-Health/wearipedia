@@ -17,4 +17,4 @@ def test_whoop_synthetic():
 
     device.gen_synthetic()
 
-    hrs = device.get_data("heart_rates")
+    hrs = device.get_data("health_metrics")
