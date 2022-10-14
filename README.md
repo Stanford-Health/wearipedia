@@ -70,7 +70,7 @@ The easiest way to install wearipedia is to use pip:
 You can also install wearipedia from source:
 
 ```bash
-git clone https://github.com/snyder-lab/wearipedia.git
+git clone https://github.com/Stanford-Health/wearipedia.git
 cd wearipedia
 python3 setup.py install
 ```
@@ -101,9 +101,9 @@ If you use this library for academic research, please cite the following paper:
 ```
 @article{snyder2020wearipedia,
   title={Wearipedia: A Wearable Device Data Extraction Library},
-  author={Snyder, Evan and Chen, Kevin and Fung, Brendan and Snyder, Andrew},
-  journal={arXiv preprint arXiv:2005.06940},
-  year={2020}
+  author={Names go here},
+  journal={},
+  year={2022}
 }
 ```
 
@@ -111,7 +111,7 @@ If you use this library for academic research, please cite the following paper:
 
 This project is still in its infancy, but there are many ideas to expand this project. Feel free to open an issue with any suggestions or to contribute to the project!
 
-* Get Dexcom CGM, Dreem 2, FitBit, Garmin, Oura Ring, Withings ScanWatch, Withings Body+ working end-to-end
+* Get Dreem 2, FitBit, Oura Ring working end-to-end
 * Fix documentation
 * Get unit and integration tests in and working
 * Unify backend for all Withings devices
@@ -120,7 +120,7 @@ This project is still in its infancy, but there are many ideas to expand this pr
 
 Wearipedia is an open source project and we welcome contributions!
 
-Please refer to our [contributing guide](https://github.com/snyder-lab/wearipedia/blob/master/CONTRIBUTING.md) to learn how to contribute to wearipedia.
+Please refer to our [contributing guide](https://github.com/Stanford-Health/wearipedia/blob/master/CONTRIBUTING.md) to learn how to contribute to wearipedia.
 
 ## License
 
