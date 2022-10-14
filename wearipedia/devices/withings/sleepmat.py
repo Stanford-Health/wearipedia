@@ -30,17 +30,17 @@ class SleepMat(BaseDevice):
         seed_everything(seed)
 
         # load in the CSV that we've pre-generated
-        wget.download(CSV_URL, out=CSV_LOCAL_PATH)
+        # wget.download(CSV_URL, out=CSV_LOCAL_PATH)
 
-        self.measurements = pd.read_csv(CSV_LOCAL_PATH)
+        # self.measurements = pd.read_csv(CSV_LOCAL_PATH)
         # fix dates, convert to datetime obj from string
-        self.measurements["date"] = self.measurements.date.apply(
-            lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f")
-        )
+        # self.measurements["date"] = self.measurements.date.apply(
+        #    lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f")
+        # )
 
-        self.measurements = self.measurements[
-            [col for col in self.measurements.columns if "Unnamed: 0" not in col]
-        ]
+        # self.measurements = self.measurements[
+        #    [col for col in self.measurements.columns if "Unnamed: 0" not in col]
+        # ]
 
     def authenticate(self, auth_creds):
         # authenticate this device against API
