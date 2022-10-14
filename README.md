@@ -70,7 +70,7 @@ The easiest way to install wearipedia is to use pip:
 You can also install wearipedia from source:
 
 ```bash
-git clone https://github.com/snyder-lab/wearipedia.git
+git clone https://github.com/Stanford-Health/wearipedia.git
 cd wearipedia
 python3 setup.py install
 ```
