@@ -37,6 +37,11 @@ codestyle:
 .PHONY: formatting
 formatting: codestyle
 
+#* Doc tests
+.PHONY: doctest
+doctest:
+	cd docs && make doctest
+
 #* Linting
 .PHONY: test
 test:
