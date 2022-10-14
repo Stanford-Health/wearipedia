@@ -37,6 +37,11 @@ codestyle:
 .PHONY: formatting
 formatting: codestyle
 
+#* Doc building
+.PHONY: dochost
+dochost:
+	cd docs && make html && cd build/html && python -m http.server
+
 #* Doc tests
 .PHONY: doctest
 doctest:
