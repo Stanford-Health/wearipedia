@@ -2,9 +2,10 @@ name: build
 
 on:
   pull_request:
-    branches: [ main ]
-    types:
-      - opened
+  push:
+    branches:
+      - master
+      - main
 
 jobs:
   build:
