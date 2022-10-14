@@ -373,6 +373,7 @@ class WhoopUser:
         """
 
         if hasattr(self, "hr_df"):
+            start_time, end_time = params["start"], params["end"]
             bool_mask = self.hr_df.timestamp.progress_apply(
                 lambda x: start_time < x and x < end_time
             )
