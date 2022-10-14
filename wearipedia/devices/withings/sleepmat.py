@@ -29,6 +29,8 @@ class SleepMat(BaseDevice):
         # generate random data according to seed
         seed_everything(seed)
 
+        self.measurements = [0, 1, 2, 3, 4, 5]
+
         # load in the CSV that we've pre-generated
         # wget.download(CSV_URL, out=CSV_LOCAL_PATH)
 
