@@ -1,5 +1,7 @@
 # Welcome to the Wearipedia contributing guide
 
+DISCLAIMER: this contributing guide may be inaccurate; it is just a template for now.
+
 Thank you for investing your time in contributing to our project! Any contribution to this project is greatly appreciated.
 
 This guide is meant to help you get started contributing to the Wearipedia. Feel free to submit new sections, revise existing sections, and make comments on sections that need improvement! We're looking forward to hearing from you as we improve our project.
