@@ -10,9 +10,6 @@ from .pro_cgm_gen import *
 
 class_name = "DexcomProCGM"
 
-# todo: change this to better path
-CRED_CACHE_PATH = "/tmp/wearipedia_fenix_data.pkl"
-
 
 class DexcomProCGM(BaseDevice):
     def __init__(self):
