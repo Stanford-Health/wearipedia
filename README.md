@@ -67,14 +67,6 @@ The easiest way to install wearipedia is to use pip:
 
 `pip install wearipedia`
 
-You can also install wearipedia from source:
-
-```bash
-git clone https://github.com/Stanford-Health/wearipedia.git
-cd wearipedia
-python3 setup.py install
-```
-
 ## Supported Devices
 
 Wearipedia supports the following devices:
