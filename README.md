@@ -99,14 +99,9 @@ If you use this library for academic research, please cite the following paper:
 }
 ```
 
-## TODO's
+## Disclaimer
 
-This project is still in its infancy, but there are many ideas to expand this project. Feel free to open an issue with any suggestions or to contribute to the project!
-
-* Get Dreem 2, FitBit, Oura Ring working end-to-end
-* Fix documentation
-* Get unit and integration tests in and working
-* Unify backend for all Withings devices
+This project is currently in a *pre-alpha* stage. This means that formal tests are not yet integrated, and the codebase is still really a prototype. Expect many things to simply not work at all.
 
 ## Contributing
 
