@@ -2,7 +2,6 @@ import os
 from datetime import datetime, timedelta
 from threading import Lock, Thread
 
-import requests
 from tqdm import tqdm
 
 __all__ = ["fetch_real_data"]
@@ -12,9 +11,6 @@ def fetch_day_data(date, array, api_func, lock):
     date_str = datetime.strftime(date, "%Y-%m-%d")
 
     elem = api_func(date_str)
-    # steps_data = api.get_steps_data(date_str)
-    # hr_data = api.get_heart_rates(date_str)
-    # brpm_data = api.get_respiration_data(date_str)
 
     # critical section, ensuring each index in each array
     # matches up
