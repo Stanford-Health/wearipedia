@@ -69,7 +69,9 @@ class BaseDevice:
                 return getattr(self, data_type)
 
     def _gen_synthetic(self):
-        """Generates synthetic data for the device.
+        """Generates synthetic data for the device. If you are implementing a new device,
+        this method must save data from each datatype separately as member attributes such that
+        `get_data()` will be able to find it with the `get_attr()` call.
 
         :raises NotImplementedError: for now, raises NotImplementedError, but should be implemented
             by child classes.
@@ -77,7 +79,9 @@ class BaseDevice:
         raise NotImplementedError
 
     def authenticate(self, auth_creds):
-        """Authenticates the device against the API.
+        """Authenticates the device against the API. For now, should be user-interactive, if
+        the authentication protocol requires a step in which you get a code by visiting their
+        website.
 
         :param auth_creds: a dictionary containing the authentication credentials.
         :type auth_creds: Dict
