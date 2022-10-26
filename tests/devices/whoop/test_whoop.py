@@ -5,10 +5,6 @@ import wearipedia
 def test_whoop_synthetic():
     device = wearipedia.get_device("whoop/whoop_4")
 
-    device.gen_synthetic()
-
-    print(dir(device))
-
     cycles_df = device.get_data("cycles")
 
     health_metrics_df = device.get_data("health_metrics")

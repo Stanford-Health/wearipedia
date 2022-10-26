@@ -18,25 +18,21 @@ class DreemHeadband2(BaseDevice):
         self._authenticated = False
         self.valid_data_types = ["users", "records", "hypnogram", "eeg_file"]
 
-    def _get_data(self, data_type, params=None):
-        if self.authenticated:
-            if data_type == "users":
-                return fetch_users(self.auth_dict)
-            elif data_type == "records":
-                return fetch_records(self.auth_dict, params["user"])
-            elif data_type == "hypnogram":
-                return fetch_hypnogram(self.auth_dict, params["record_ref"])
-            elif data_type == "eeg_file":
-                return fetch_eeg_file(self.auth_dict, params["record_ref"])
-        else:
-            if hasattr(self, data_type):
-                return getattr(self, data_type)
-            else:
-                raise Exception(
-                    "Expected synthetic data to be created, but it hasn't yet."
-                )
+    def _default_params(self):
+        # this is wrong, but it's just a placeholder
+        return dict()
 
-    def gen_synthetic(self, seed=0):
+    def _get_data(self, data_type, params=None):
+        if data_type == "users":
+            return fetch_users(self.auth_dict)
+        elif data_type == "records":
+            return fetch_records(self.auth_dict, params["user"])
+        elif data_type == "hypnogram":
+            return fetch_hypnogram(self.auth_dict, params["record_ref"])
+        elif data_type == "eeg_file":
+            return fetch_eeg_file(self.auth_dict, params["record_ref"])
+
+    def _gen_synthetic(self, seed=0):
         # generate random data according to seed
         seed_everything(seed)
 

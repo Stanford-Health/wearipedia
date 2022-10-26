@@ -16,25 +16,17 @@ class DexcomProCGM(BaseDevice):
         self._authenticated = False
         self.valid_data_types = ["dataframe"]
 
+    def _default_params(self):
+        return {"start_date": "2022-02-16", "end_date": "2022-05-15"}
+
     def _get_data(self, data_type, params=None):
-        if params is None:
-            params = {"start_date": "2022-02-16", "end_date": "2022-05-15"}
+        return fetch_data(
+            self.access_token,
+            start_date=params["start_date"],
+            end_date=params["end_date"],
+        )
 
-        if self.authenticated:
-            return fetch_data(
-                self.access_token,
-                start_date=params["start_date"],
-                end_date=params["end_date"],
-            )
-        else:
-            if hasattr(self, data_type):
-                return getattr(self, data_type)
-            else:
-                raise Exception(
-                    "Expected synthetic data to be created, but it hasn't yet."
-                )
-
-    def gen_synthetic(self, seed=0):
+    def _gen_synthetic(self, seed=0):
         # generate random data according to seed
         seed_everything(seed)
 

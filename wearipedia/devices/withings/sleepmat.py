@@ -19,18 +19,13 @@ class SleepMat(BaseDevice):
         self._authenticated = False
         self.valid_data_types = ["measurements"]
 
-    def _get_data(self, data_type, params=None):
-        if self.authenticated:
-            return fetch_measurements(self.access_token)
-        else:
-            if hasattr(self, data_type):
-                return getattr(self, data_type)
-            else:
-                raise Exception(
-                    "Expected synthetic data to be created, but it hasn't yet."
-                )
+    def _default_params(self):
+        return dict()
 
-    def gen_synthetic(self, seed=0):
+    def _get_data(self, data_type, params=None):
+        return fetch_measurements(self.access_token)
+
+    def _gen_synthetic(self, seed=0):
         # generate random data according to seed
         seed_everything(seed)
 

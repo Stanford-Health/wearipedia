@@ -13,28 +13,18 @@ class ScanWatch(BaseDevice):
         self._authenticated = False
         self.valid_data_types = ["measurements"]
 
+    def _default_params(self):
+        return {"start": "2022-03-01", "end": "2022-06-17"}
+
     def _get_data(self, data_type, params=None):
-        if params is None:
-            params = {"start": "2022-03-01", "end": "2022-06-17"}
+        if data_type == "heart_rates":
+            return fetch_all_heart_rate(
+                self.access_token, params["start"], params["end"]
+            )
+        elif data_type == "sleeps":
+            return fetch_all_sleeps(self.access_token, params["start"], params["end"])
 
-        if self.authenticated:
-            if data_type == "heart_rates":
-                return fetch_all_heart_rate(
-                    self.access_token, params["start"], params["end"]
-                )
-            elif data_type == "sleeps":
-                return fetch_all_sleeps(
-                    self.access_token, params["start"], params["end"]
-                )
-        else:
-            if hasattr(self, data_type):
-                return getattr(self, data_type)
-            else:
-                raise Exception(
-                    "Expected synthetic data to be created, but it hasn't yet."
-                )
-
-    def gen_synthetic(self, seed=0):
+    def _gen_synthetic(self, seed=0):
         # generate random data according to seed
         seed_everything(seed)
 

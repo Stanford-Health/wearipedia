@@ -17,28 +17,22 @@ class Whoop4(BaseDevice):
         }
         self.valid_data_types = list(self.data_types_methods_map.keys())
 
+    def _default_params(self):
+        start_str = "2000-01-01"
+        end_str = "2100-02-03"
+        # get cycle data from start to end
+        params = {
+            "start": start_str + "T00:00:00.000Z",
+            "end": end_str + "T00:00:00.000Z",
+        }
+
+        return params
+
     def _get_data(self, data_type, params=None):
-        if params is None:
-            start_str = "2000-01-01"
-            end_str = "2100-02-03"
-            # get cycle data from start to end
-            params = {
-                "start": start_str + "T00:00:00.000Z",
-                "end": end_str + "T00:00:00.000Z",
-            }
+        api_func = getattr(self.user, self.data_types_methods_map[data_type])
+        return api_func(params=params)
 
-        if self.authenticated:
-            api_func = getattr(self.user, self.data_types_methods_map[data_type])
-            return api_func(params=params)
-        else:
-            if hasattr(self, data_type):
-                return getattr(self, data_type)
-            else:
-                raise Exception(
-                    "Expected synthetic data to be created, but it hasn't yet."
-                )
-
-    def gen_synthetic(self, seed=0):
+    def _gen_synthetic(self, seed=0):
         # generate random data according to seed
         if not hasattr(self, "user"):
             self.user = WhoopUser("", "")

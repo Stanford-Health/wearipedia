@@ -19,23 +19,15 @@ class Fenix7S(BaseDevice):
         self._authenticated = False
         self.valid_data_types = ["dates", "steps", "hrs", "brpms"]
 
+    def _default_params(self):
+        return {"start_date": "2022-03-01", "end_date": "2022-06-17"}
+
     def _get_data(self, data_type, params=None):
-        if params is None:
-            params = {"start_date": "2022-03-01", "end_date": "2022-06-17"}
+        return fetch_real_data(
+            params["start_date"], params["end_date"], data_type, self.api
+        )
 
-        if self.authenticated:
-            return fetch_real_data(
-                params["start_date"], params["end_date"], data_type, self.api
-            )
-        else:
-            if hasattr(self, data_type):
-                return getattr(self, data_type)
-            else:
-                raise Exception(
-                    "Expected synthetic data to be created, but it hasn't yet."
-                )
-
-    def gen_synthetic(self, seed=0):
+    def _gen_synthetic(self, seed=0):
         # generate random data according to seed
         seed_everything(seed)
 
