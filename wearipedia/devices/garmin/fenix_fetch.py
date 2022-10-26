@@ -10,15 +10,36 @@ __all__ = ["fetch_real_data"]
 def fetch_day_data(date, array, api_func, lock):
     date_str = datetime.strftime(date, "%Y-%m-%d")
 
+    # this does not need to be in a critical section, since
+    # requests don't really share state
     elem = api_func(date_str)
 
     # critical section, ensuring each index in each array
-    # matches up
+    # matches up. with the "lock" context manager,
+    # we ensure that only one thread can access the
+    # critical section (e.g. adding an element to the array)
+    # at a time
     with lock:
         array.append(elem)
 
 
 def fetch_real_data(start_date, end_date, data_type, api):
+    """Main function for fetching real data from the Garmin Connect API.
+    We parallelize this since making requests to the API is day-by-day,
+    and API requests are I/O bound.
+
+    :param start_date: the start date represented as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :param end_date: the end date represented as a string in the format "YYYY-MM-DD"
+    :type end_date: str
+    :param data_type: the type of data to fetch, one of "dates", "steps", "hrs", "brpms"
+    :type data_type: str
+    :param api: the Garmin Connect API object
+    :type api: Garmin
+    :return: the data fetched from the API according to the inputs
+    :rtype: List
+    """
+
     num_days = (
         datetime.strptime(end_date, "%Y-%m-%d")
         - datetime.strptime(start_date, "%Y-%m-%d")
@@ -41,7 +62,8 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
     arr = []
 
-    # configure threads to add to the list
+    # create a thread per each day, and assign it
+    # to fetch the data for that day
     print("configuring threads...")
     threads = []
 
