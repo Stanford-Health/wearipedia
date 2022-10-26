@@ -31,9 +31,9 @@ def get_start_end(start_remove, remove_duration, mult):
     This function computes the index of the first and last elements to remove.
 
     :param start_remove: point in time to start removing data
-    :type start_remove: _type_
+    :type start_remove: float
     :param remove_duration: point in time to stop removing data
-    :type remove_duration: _type_
+    :type remove_duration: float
     :param mult: multiplier, meaning the number of chunks per hour
     :type mult: int
     :return: tuple of start and end indices
@@ -51,7 +51,12 @@ num_days = (
 
 
 def get_steps():
-    """Generate synthetic steps data for a given number of days."""
+    """Generate steps data for a given number of days.
+
+    :return: steps data, a list of lists, where each list represents a single day, and each
+        list contains a many steps values throughout the day marked by timestamp.
+    :rtype: List[List]
+    """
     steps_synth = []
 
     # num_step_elems represents the number of 15-minute chunks in a day
@@ -69,7 +74,7 @@ def get_steps():
         # 1. "sedentary"
         # 2. "medium"
         # 3. "high"
-        # the values were heuristically determined
+        # the transition probabilities were heuristically determined
 
         mask = []
         cur_state = 0
@@ -247,8 +252,10 @@ def get_brpms(synth_hrs):
 
     :param synth_hrs: list of dicts, each dict is a day of heart rate data
     :type synth_hrs: List[Dict]
-    :return: _description_
-    :rtype: _type_
+    :return: breath rate per minute data, a list of dictionaries, where each dictionary
+        represents a single day, and each dictionary contains a list of breath rate per
+        minute values throughout the day marked by timestamp.
+    :rtype: List[Dict]
     """
     synth_brpms = []
 
@@ -323,7 +330,7 @@ def delete_stuff(dates, steps, hrs, brpms):
 
     for day_idx in tqdm(range(num_days)):
         # the duration to remove (in hours) is sampled from an exponential distribution,
-        # except we trim the undesirable long tails of the distribution
+        # except we truncate the undesirable long tails of the distribution
         remove_duration = np.clip(np.random.exponential(3), 0, 16)
 
         # we remove everything after a certain time, so compute the
