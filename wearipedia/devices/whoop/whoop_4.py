@@ -8,10 +8,12 @@ class_name = "Whoop4"
 
 class Whoop4(BaseDevice):
     def __init__(self):
-        self._authorized = False
+        self._authenticated = False
         self.data_types_methods_map = {
             "cycles": "get_cycles_df",
             "health_metrics": "get_health_metrics_df",
+            "sleeps": "get_sleeps_df",
+            "hr": "get_heart_rate_df",
         }
         self.valid_data_types = list(self.data_types_methods_map.keys())
 
@@ -25,7 +27,16 @@ class Whoop4(BaseDevice):
                 "end": end_str + "T00:00:00.000Z",
             }
 
-        return getattr(self.user, self.data_types_methods_map[data_type])(params=params)
+        if self.authenticated:
+            api_func = getattr(self.user, self.data_types_methods_map[data_type])
+            return api_func(params=params)
+        else:
+            if hasattr(self, data_type):
+                return getattr(self, data_type)
+            else:
+                raise Exception(
+                    "Expected synthetic data to be created, but it hasn't yet."
+                )
 
     def gen_synthetic(self, seed=0):
         # generate random data according to seed
@@ -34,13 +45,13 @@ class Whoop4(BaseDevice):
 
         seed_everything(seed)
 
-        self.user.cycles_df = create_fake_cycles_df()
+        self.cycles = create_fake_cycles_df()
 
-        self.user.metrics_df = create_fake_metrics_df()
+        self.health_metrics = create_fake_metrics_df()
 
-        self.user.sleeps_df = create_fake_sleeps_df()
+        self.sleeps = create_fake_sleeps_df()
 
-        self.user.hr_df = create_fake_hr_df(self.user.sleeps_df)
+        self.hr = create_fake_hr_df(self.sleeps)
 
     def authenticate(self, auth_creds):
         # authenticate this device against API

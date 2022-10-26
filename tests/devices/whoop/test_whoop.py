@@ -7,6 +7,12 @@ def test_whoop_synthetic():
 
     device.gen_synthetic()
 
+    print(dir(device))
+
     cycles_df = device.get_data("cycles")
 
-    metrics_df = device.get_data("health_metrics")
+    health_metrics_df = device.get_data("health_metrics")
+
+    sleeps_df = device.get_data("sleeps")
+
+    hr_df = device.get_data("hr")

@@ -16,19 +16,24 @@ CRED_CACHE_PATH = "/tmp/wearipedia_fenix_data.pkl"
 
 class Fenix7S(BaseDevice):
     def __init__(self):
-        self._authorized = False
+        self._authenticated = False
         self.valid_data_types = ["dates", "steps", "hrs", "brpms"]
 
     def _get_data(self, data_type, params=None):
         if params is None:
             params = {"start_date": "2022-03-01", "end_date": "2022-06-17"}
 
-        if hasattr(self, data_type):
-            return getattr(self, data_type)
-
-        return fetch_real_data(
-            params["start_date"], params["end_date"], data_type, self.api
-        )
+        if self.authenticated:
+            return fetch_real_data(
+                params["start_date"], params["end_date"], data_type, self.api
+            )
+        else:
+            if hasattr(self, data_type):
+                return getattr(self, data_type)
+            else:
+                raise Exception(
+                    "Expected synthetic data to be created, but it hasn't yet."
+                )
 
     def gen_synthetic(self, seed=0):
         # generate random data according to seed
@@ -51,4 +56,4 @@ class Fenix7S(BaseDevice):
 
             pickle.dump(self.api, open(CRED_CACHE_PATH, "wb"))
 
-        self._authorized = True
+        self._authenticated = True
