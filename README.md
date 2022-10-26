@@ -53,9 +53,8 @@ If you don't have access to your device, or need to demo data from a device with
 
 ```python
 device = wearipedia.get_device("whoop/whoop_4")
-device.gen_synthetic()  # create some data!
 
-# data is a DataFrame
+# data is an automatically generated DataFrame
 data = device.get_data("metrics")
 ```
 
