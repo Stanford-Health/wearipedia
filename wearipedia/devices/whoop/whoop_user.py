@@ -88,9 +88,6 @@ class WhoopUser:
         return data
 
     def get_health_metrics_df(self, params=default_params):
-        if hasattr(self, "metrics_df"):
-            # todo: make sure to query it properly given params
-            return self.metrics_df
 
         json_data = self.get_cycles_json(params=params)
 
@@ -133,10 +130,6 @@ class WhoopUser:
         :param params: params for cycle query
         :return: dataframe with all the cycle info
         """
-
-        if hasattr(self, "cycles_df"):
-            # todo: make sure to query it properly given params
-            return self.cycles_df
 
         df_columns = [
             "id",
@@ -207,10 +200,6 @@ class WhoopUser:
         :param params: start/end data
         :return: dataframe with sleep data, linked to cycles IDs
         """
-
-        if hasattr(self, "sleeps_df"):
-            # todo: make sure to query it properly given params
-            return self.sleeps_df
 
         df_cols = [
             "cycle_id",
@@ -371,16 +360,6 @@ class WhoopUser:
         :param params: start end range
         :return:dataframe with heart rate data over time
         """
-
-        if hasattr(self, "hr_df"):
-            start_time, end_time = params["start"], params["end"]
-            bool_mask = self.hr_df.timestamp.progress_apply(
-                lambda x: start_time < x and x < end_time
-            )
-
-            hr_df = self.hr_df[bool_mask]
-
-            return hr_df
 
         def tick_time_to_local_timezone(tick_time):
             current = WhoopUser.convert_unix_time_to_current(tick["time"])

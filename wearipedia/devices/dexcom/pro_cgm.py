@@ -13,23 +13,20 @@ class_name = "DexcomProCGM"
 
 class DexcomProCGM(BaseDevice):
     def __init__(self):
-        self._authorized = False
+        self._authenticated = False
         self.valid_data_types = ["dataframe"]
 
+    def _default_params(self):
+        return {"start_date": "2022-02-16", "end_date": "2022-05-15"}
+
     def _get_data(self, data_type, params=None):
-        if params is None:
-            params = {"start_date": "2022-02-16", "end_date": "2022-05-15"}
-
-        if hasattr(self, data_type):
-            return getattr(self, data_type)
-
         return fetch_data(
             self.access_token,
             start_date=params["start_date"],
             end_date=params["end_date"],
         )
 
-    def gen_synthetic(self, seed=0):
+    def _gen_synthetic(self, seed=0):
         # generate random data according to seed
         seed_everything(seed)
 

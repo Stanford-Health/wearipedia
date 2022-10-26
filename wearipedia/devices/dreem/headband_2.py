@@ -1,5 +1,9 @@
+import base64
+import json
 import os
 from pathlib import Path
+
+import requests
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
@@ -14,10 +18,11 @@ class DreemHeadband2(BaseDevice):
         self._authenticated = False
         self.valid_data_types = ["users", "records", "hypnogram", "eeg_file"]
 
-    def _get_data(self, data_type, params=None):
-        if hasattr(self, data_type):
-            return getattr(self, data_type)
+    def _default_params(self):
+        # this is wrong, but it's just a placeholder
+        return dict()
 
+    def _get_data(self, data_type, params=None):
         if data_type == "users":
             return fetch_users(self.auth_dict)
         elif data_type == "records":
@@ -27,7 +32,7 @@ class DreemHeadband2(BaseDevice):
         elif data_type == "eeg_file":
             return fetch_eeg_file(self.auth_dict, params["record_ref"])
 
-    def gen_synthetic(self, seed=0):
+    def _gen_synthetic(self, seed=0):
         # generate random data according to seed
         seed_everything(seed)
 
@@ -35,13 +40,6 @@ class DreemHeadband2(BaseDevice):
         # authenticate this device against API
 
         self.auth_creds = auth_creds
-
-        # @title Enter login credentials
-
-        import base64
-        import json
-
-        import requests
 
         authorization_str = (
             "Basic "
