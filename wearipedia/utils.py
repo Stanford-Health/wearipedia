@@ -6,6 +6,11 @@ __all__ = ["is_notebook", "seed_everything"]
 
 
 def is_notebook() -> bool:
+    """Check if we are running in a notebook.
+
+    :return: `True` if we are running in a notebook, `False` otherwise.
+    :rtype: bool
+    """
     try:
         shell = get_ipython().__class__.__name__
         if shell == "ZMQInteractiveShell":
@@ -19,5 +24,10 @@ def is_notebook() -> bool:
 
 
 def seed_everything(seed):
+    """Set random seed for reproducibility.
+
+    :param seed: the seed to use
+    :type seed: int
+    """
     np.random.seed(seed)
     random.seed(seed)

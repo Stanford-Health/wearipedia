@@ -1,12 +1,7 @@
 import os
 import pickle
 
-from garminconnect import (
-    Garmin,
-    GarminConnectAuthenticationError,
-    GarminConnectConnectionError,
-    GarminConnectTooManyRequestsError,
-)
+from garminconnect import Garmin
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
