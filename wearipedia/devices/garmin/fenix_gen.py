@@ -318,7 +318,8 @@ def delete_stuff(dates, steps, hrs, brpms):
 
     :param dates: List of dates (each date is a separate day represented as a string)
     :type dates: List[str]
-    :param steps: List of step data (each element is a list of dictionaries, each dictionary represents the step data for a 15-minute chunk of time in the day)
+    :param steps: List of step data (each element is a list of dictionaries, each dictionary
+        represents the step data for a 15-minute chunk of time in the day)
     :type steps: List[List[Dict]]
     :param hrs: List of heart rate data (each element is a dictionary)
     :type hrs: List[Dict]
@@ -372,7 +373,8 @@ def create_syn_data():
     format is as follows. Each element in the tuple is a list of length num_days.
     For each tuple:
     - dates: List of dates (each date is a separate day represented as a string)
-    - steps: List of step data (each element is a list of dictionaries, each dictionary represents the step data for a 15-minute chunk of time in the day)
+    - steps: List of step data (each element is a list of dictionaries, each dictionary
+        represents the step data for a 15-minute chunk of time in the day)
     - heart rates: List of heart rate data (each element is a dictionary)
     - breath rates: List of breathing rate data (each element is a dictionary)
 
@@ -387,8 +389,9 @@ def create_syn_data():
         for i in range(num_days)
     ]
 
-    # process is to first get the steps, then the heart rate (since you can just compute the heart rate from the steps), then the
-    # breathing rate (since you can just compute the breathing rate from the heart rate)
+    # process is to first get the steps, then the heart rate (since you can just compute
+    # the heart rate from the steps), then the breathing rate (since you can just compute
+    # the breathing rate from the heart rate)
     synth_steps = get_steps()
     synth_hrs = get_hrs(synth_steps)
     synth_brpms = get_brpms(synth_hrs)
