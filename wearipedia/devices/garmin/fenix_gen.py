@@ -160,7 +160,9 @@ def get_hrs(steps_synth):
 
     :param steps_synth: step data outputted from get_steps()
     :type steps_synth: List[List[Dict]]
-    :return: heart rate data, a list of dictionaries, where each dictionary represents a single day, and each dictionary contains a list of heart rate values throughout the day marked by timestamp
+    :return: heart rate data, a list of dictionaries, where each dictionary represents a
+        single day, and each dictionary contains a list of heart rate values throughout the day
+        marked by timestamp.
     :rtype: List[Dict]
     """
 
