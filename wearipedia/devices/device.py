@@ -14,13 +14,13 @@ class BaseDevice:
         self._authenticated = False
         self.valid_data_types = []
 
-    def _get_data(self, data_type, params=None):
+    def _get_data(self, data_type, params):
         """Gets data from the API according to the data_type and params.
 
         :param data_type: a string describing the type of data to get.
         :type data_type: str
-        :param params: dictionary containing parameters for API extraction, defaults to None
-        :type params: Dict, optional
+        :param params: dictionary containing parameters for API extraction
+        :type params: Dict
         :raises NotImplementedError: for now, raises NotImplementedError, but should be implemented
             by child classes.
         """

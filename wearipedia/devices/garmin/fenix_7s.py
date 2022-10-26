@@ -22,7 +22,7 @@ class Fenix7S(BaseDevice):
     def _default_params(self):
         return {"start_date": "2022-03-01", "end_date": "2022-06-17"}
 
-    def _get_data(self, data_type, params=None):
+    def _get_data(self, data_type, params):
         return fetch_real_data(
             params["start_date"], params["end_date"], data_type, self.api
         )

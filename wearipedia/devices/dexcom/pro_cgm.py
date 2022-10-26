@@ -19,7 +19,7 @@ class DexcomProCGM(BaseDevice):
     def _default_params(self):
         return {"start_date": "2022-02-16", "end_date": "2022-05-15"}
 
-    def _get_data(self, data_type, params=None):
+    def _get_data(self, data_type, params):
         return fetch_data(
             self.access_token,
             start_date=params["start_date"],

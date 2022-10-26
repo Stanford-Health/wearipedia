@@ -22,7 +22,7 @@ class DreemHeadband2(BaseDevice):
         # this is wrong, but it's just a placeholder
         return dict()
 
-    def _get_data(self, data_type, params=None):
+    def _get_data(self, data_type, params):
         if data_type == "users":
             return fetch_users(self.auth_dict)
         elif data_type == "records":

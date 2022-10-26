@@ -22,7 +22,7 @@ class SleepMat(BaseDevice):
     def _default_params(self):
         return dict()
 
-    def _get_data(self, data_type, params=None):
+    def _get_data(self, data_type, params):
         return fetch_measurements(self.access_token)
 
     def _gen_synthetic(self, seed=0):

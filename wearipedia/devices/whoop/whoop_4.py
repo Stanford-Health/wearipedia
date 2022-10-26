@@ -28,7 +28,7 @@ class Whoop4(BaseDevice):
 
         return params
 
-    def _get_data(self, data_type, params=None):
+    def _get_data(self, data_type, params):
         api_func = getattr(self.user, self.data_types_methods_map[data_type])
         return api_func(params=params)
 

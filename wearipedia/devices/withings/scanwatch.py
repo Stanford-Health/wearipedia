@@ -16,7 +16,7 @@ class ScanWatch(BaseDevice):
     def _default_params(self):
         return {"start": "2022-03-01", "end": "2022-06-17"}
 
-    def _get_data(self, data_type, params=None):
+    def _get_data(self, data_type, params):
         if data_type == "heart_rates":
             return fetch_all_heart_rate(
                 self.access_token, params["start"], params["end"]
