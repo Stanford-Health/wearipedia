@@ -42,6 +42,24 @@ def get_device(device_name, params=None):
     return getattr(module, class_name)(params)
 
 
+def get_all_device_names():
+    """Get a list of all device names.
+
+    :return: a list of device names
+    :rtype: List
+    """
+
+    return [
+        "whoop/whoop_4",
+        "withings/scanwatch",
+        "withings/bodyplus",
+        "withings/sleepmat",
+        "dreem/headband_2",
+        "dexcom/pro_cgm",
+        "garmin/fenix_7s",
+    ]
+
+
 def get_version() -> str:
     """Get the version of the library.
 
