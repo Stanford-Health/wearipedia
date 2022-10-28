@@ -11,7 +11,19 @@ from .constants import *
 from .devices import *
 
 
-def get_device(device_name):
+def get_device(device_name, params=None):
+    """Get a device object by name. This is the main entry point for the library.
+
+    :param device_name: the name of the device to get, e.g. "garmin/fenix_7s"
+    :type device_name: str
+    :param params: parameters to pass to the device, defaults to None. These are
+        specific to each device, and should usually consist of parameters for
+        synthetic data generation (for example, the start and end dates, persona,
+        or random seed).
+    :type params: Dict, optional
+    :return: a device object
+    :rtype: BaseDevice
+    """
     company, model = device_name.split("/")
 
     module_path = f"{PACKAGE_PATH}/devices/{device_name}.py"
@@ -27,10 +39,15 @@ def get_device(device_name):
 
     class_name = getattr(module, "class_name")
 
-    return getattr(module, class_name)()
+    return getattr(module, class_name)(params)
 
 
 def get_version() -> str:
+    """Get the version of the library.
+
+    :return: the version of the library
+    :rtype: str
+    """
     try:
         return importlib_metadata.version(__name__)
     except importlib_metadata.PackageNotFoundError:  # pragma: no cover
