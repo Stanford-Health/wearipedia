@@ -17,19 +17,26 @@ class_name = "BodyPlus"
 
 
 class BodyPlus(BaseDevice):
-    def __init__(self):
-        self._authenticated = False
-        self.valid_data_types = ["measurements"]
+    def __init__(self, params):
+
+        self._initialize_device_params(
+            ["measurements"],
+            params,
+            {"seed": 0},
+        )
 
     def _default_params(self):
         return dict()
 
-    def _get_data(self, data_type, params):
+    def _get_real(self, data_type, params):
         return fetch_measurements(self.access_token)
 
-    def _gen_synthetic(self, seed=0):
+    def _get_synthetic(self, data_type, params):
+        return self.measurements
+
+    def _gen_synthetic(self):
         # generate random data according to seed
-        seed_everything(seed)
+        seed_everything(self.init_params["seed"])
 
         # load in the CSV that we've pre-generated
         wget.download(CSV_URL, out=CSV_LOCAL_PATH)

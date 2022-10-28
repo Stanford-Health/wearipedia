@@ -12,23 +12,28 @@ class_name = "DexcomProCGM"
 
 
 class DexcomProCGM(BaseDevice):
-    def __init__(self):
-        self._authenticated = False
-        self.valid_data_types = ["dataframe"]
+    def __init__(self, params):
+        self._initialize_device_params(["dataframe"], params, {"seed": 0})
 
     def _default_params(self):
         return {"start_date": "2022-02-16", "end_date": "2022-05-15"}
 
-    def _get_data(self, data_type, params):
+    def _get_real(self, data_type, params):
+        # there is really only one data type for this device,
+        # so we don't need to check the data_type
+
         return fetch_data(
             self.access_token,
             start_date=params["start_date"],
             end_date=params["end_date"],
         )
 
-    def _gen_synthetic(self, seed=0):
+    def _get_synthetic(self, data_type, params):
+        return self.dataframe
+
+    def _gen_synthetic(self):
         # generate random data according to seed
-        seed_everything(seed)
+        seed_everything(self.init_params["seed"])
 
         self.dataframe = create_synth_df()
 
