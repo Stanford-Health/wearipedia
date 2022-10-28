@@ -5,4 +5,6 @@ import wearipedia
 def test_scan_watch_synthetic():
     device = wearipedia.get_device("withings/scanwatch")
 
-    measurements = device.get_data("measurements")
+    heart_rates = device.get_data("heart_rates")
+
+    sleeps = device.get_data("sleeps")
