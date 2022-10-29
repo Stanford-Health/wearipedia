@@ -119,8 +119,16 @@ class BaseDevice:
 
         Follows the procedure of first checking if the data_type is valid, then setting
         default parameters if none are provided, then checking if the device is authenticated,
-        and finally calling the _get_data method if the device is authenticated (otherwise
+        and finally calling the _get_real method if the device is authenticated (otherwise
         fetching synthetic data).
+
+        Note that we explicitly enforce that the child class must set a separate piece of data
+        as a member attribute for each data type. This is because we want to ensure that
+        (unauthenticated) child objects are not generating data on the fly on each call to
+        get_data(), but instead are generating data once and storing it in a member attribute.
+
+        Generating data all at once for the entire time period is not very slow, and is
+        necessary for the synthetic data to be consistent across calls to get_data().
 
         IF YOU ARE IMPLEMENTING A NEW DEVICE, YOU SHOULD NOT NEED TO OVERRIDE THIS METHOD.
 
