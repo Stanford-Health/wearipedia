@@ -7,7 +7,10 @@ import wearipedia
 
 
 def test_all_devices():
-    for device_name in tqdm(wearipedia.get_all_device_names()):
+    pbar = tqdm(wearipedia.get_all_device_names())
+
+    for device_name in pbar:
+        pbar.set_description(f"Testing {device_name}...")
         device = wearipedia.get_device(device_name)
 
         # check member attributes first
