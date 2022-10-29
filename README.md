@@ -104,9 +104,7 @@ This project is currently in a *pre-alpha* stage. This means that formal tests a
 
 ## Contributing
 
-Wearipedia is an open source project and we welcome contributions!
-
-Please refer to our [contributing guide](https://github.com/Stanford-Health/wearipedia/blob/master/CONTRIBUTING.md) to learn how to contribute to wearipedia.
+As Wearipedia is still at an early stage, we are not yet accepting contributions from the broader community. Once Wearipedia reaches its first stable release, we will begin accepting contributions.
 
 ## License
 
