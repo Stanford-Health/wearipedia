@@ -46,52 +46,15 @@ def create_fake_cycles_df(start_date, end_date):
         ]
     )
 
-    num_sleeps = 42
+    start_day = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+    end_day = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+
+    num_sleeps = (end_day - start_day).days
+
     cycles_df_syn.id = np.random.choice(range(1000), size=(num_sleeps,), replace=False)
-    cycles_df_syn.day = [
-        "2022-04-26",
-        "2022-04-27",
-        "2022-04-28",
-        "2022-04-29",
-        "2022-04-30",
-        "2022-05-01",
-        "2022-05-02",
-        "2022-05-03",
-        "2022-05-04",
-        "2022-05-05",
-        "2022-05-06",
-        "2022-05-07",
-        "2022-05-08",
-        "2022-05-09",
-        "2022-05-10",
-        "2022-05-11",
-        "2022-05-12",
-        "2022-05-13",
-        "2022-05-14",
-        "2022-05-15",
-        "2022-05-16",
-        "2022-05-17",
-        "2022-05-18",
-        "2022-05-19",
-        "2022-05-20",
-        "2022-05-21",
-        "2022-05-22",
-        "2022-05-23",
-        "2022-05-24",
-        "2022-05-25",
-        "2022-05-26",
-        "2022-05-27",
-        "2022-05-28",
-        "2022-05-29",
-        "2022-05-30",
-        "2022-05-31",
-        "2022-06-01",
-        "2022-06-02",
-        "2022-06-03",
-        "2022-06-04",
-        "2022-06-05",
-        "2022-06-06",
-    ]
+
+    cycles_df_syn.day = pd.date_range(start_day, end_day, freq="D", inclusive="left")
+
     cycles_df_syn.recovery_score = np.clip(
         50 + 10 * np.random.randn(num_sleeps), 0, 100
     ).astype("int")
@@ -148,7 +111,10 @@ def create_fake_metrics_df(start_date, end_date):
     :rtype: pd.DataFrame
     """
 
-    n_rows = 58
+    start_day = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+    end_day = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+
+    n_rows = (end_day - start_day).days
 
     metrics_df_syn = pd.DataFrame(
         columns=[
@@ -171,66 +137,7 @@ def create_fake_metrics_df(start_date, end_date):
 
     metrics_df_syn.id = np.random.choice(range(1000), size=(n_rows,), replace=False)
 
-    metrics_df_syn.day = [
-        "2022-04-25",
-        "2022-04-26",
-        "2022-04-27",
-        "2022-04-28",
-        "2022-04-29",
-        "2022-04-30",
-        "2022-05-01",
-        "2022-05-02",
-        "2022-05-03",
-        "2022-05-04",
-        "2022-05-05",
-        "2022-05-06",
-        "2022-05-07",
-        "2022-05-08",
-        "2022-05-09",
-        "2022-05-10",
-        "2022-05-11",
-        "2022-05-12",
-        "2022-05-13",
-        "2022-05-14",
-        "2022-05-15",
-        "2022-05-16",
-        "2022-05-17",
-        "2022-05-18",
-        "2022-05-19",
-        "2022-05-20",
-        "2022-05-21",
-        "2022-05-22",
-        "2022-05-23",
-        "2022-05-24",
-        "2022-05-25",
-        "2022-05-26",
-        "2022-05-27",
-        "2022-05-28",
-        "2022-05-29",
-        "2022-05-30",
-        "2022-05-31",
-        "2022-06-01",
-        "2022-06-02",
-        "2022-06-03",
-        "2022-06-04",
-        "2022-06-05",
-        "2022-06-06",
-        "2022-06-22",
-        "2022-06-23",
-        "2022-06-25",
-        "2022-06-26",
-        "2022-06-28",
-        "2022-06-29",
-        "2022-06-30",
-        "2022-07-01",
-        "2022-07-03",
-        "2022-07-05",
-        "2022-07-07",
-        "2022-07-09",
-        "2022-07-10",
-        "2022-07-12",
-        "2022-07-14",
-    ]
+    metrics_df_syn.day = pd.date_range(start_day, end_day, freq="D", inclusive="left")
 
     metrics_df_syn["RESPIRATORY_RATE.current_value"] = np.clip(
         np.random.normal(loc=15, scale=1, size=(n_rows,)), 0, None
@@ -360,7 +267,11 @@ def create_fake_sleeps_df(start_date, end_date):
         "quality_duration",
     ]
     sleeps_syn = pd.DataFrame(columns=columns)
-    num_sleeps = 43
+    start_day = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+    end_day = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+
+    num_sleeps = (end_day - start_day).days
+
     sleeps_syn.cycle_id = np.random.choice(
         range(1000), size=(num_sleeps,), replace=False
     )
@@ -391,7 +302,7 @@ def create_fake_sleeps_df(start_date, end_date):
     sleeps_syn.sleep_consistency = np.random.uniform(0, 1, size=(num_sleeps,))
 
     # create start/end times
-    cur_timestamp = 1650960000.0
+    cur_timestamp = start_day.timestamp()
 
     sleep_starts = []
     sleep_ends = []
