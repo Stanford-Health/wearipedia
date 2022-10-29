@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-__all__ = ["create_synthetic_sleeps_df", "create_syn_hr"]
+__all__ = ["create_synthetic_sleeps_df", "create_syn_hr", "create_syn_bodyplus"]
 
 #############
 # ScanWatch #
@@ -179,3 +179,87 @@ def create_syn_hr(start_date, end_date, syn_sleeps):
 #########
 # Body+ #
 #########
+
+
+def create_syn_bodyplus(start_date):
+    """Create a synthetic dataframe of body+ data. This is for
+    the Body+ scale. The reason why we don't have an end date is
+    because we wish to generate 2.5 years' worth of data to portray
+    a fictional scenario where the user has been using the scale
+    for a year and we see the impact of a fictional medication.
+
+    :param start_date: the start date as a string formatted as YYYY-MM-DD
+    :type start_date: str
+    :return: the synthetic dataframe containing body+ data
+    :rtype: pd.DataFrame
+    """
+
+    # captures before/after meal weight discrepancies, offset from mean weight
+    offsets = [0] * 7 + [
+        -1,
+        -1,
+        -0.5,
+        -0.5,
+        0.5,
+        0.5,
+        0.2,
+        0,
+        -0.2,
+        -0.5,
+        -0.1,
+        0.7,
+        0.8,
+        0.7,
+        0.6,
+        0.6,
+    ]
+
+    total_duration = 75168000  # 2.5 years in seconds
+    start_ts = int(datetime.strptime(start_date, "%Y-%m-%d").timestamp())
+
+    # generate times by the day, sample from 8am to 11:59pm
+    random_times = []
+    for dt in range(start_ts, start_ts + total_duration, 24 * 3600):
+        random_times += list(
+            np.random.uniform(
+                dt + 8 * 3600, dt + 24 * 3600, size=np.random.randint(0, 5)
+            )
+        )
+
+    # delete so we have 1400 elements in the end
+    to_delete = np.random.choice(
+        len(random_times), size=len(random_times) - 1400, replace=False
+    )
+    random_times = np.delete(random_times, to_delete)
+
+    weights = np.random.normal(60, 1, len(random_times)) + np.concatenate(
+        (np.linspace(8, 10, 200), np.linspace(10, 0, 1200))
+    )
+
+    random_times_hour = np.array(
+        [int(datetime.fromtimestamp(t).strftime("%H")) for t in random_times]
+    )
+
+    # now actually offset the weights
+    for i, offset in zip(range(24), offsets):
+        special_idxes = np.where(random_times_hour == i)[0]
+        weights[special_idxes] = weights[special_idxes] + np.random.normal(
+            offset, 1, len(special_idxes)
+        )
+
+    fat_percent = np.random.normal(3, 1, len(random_times)) + np.concatenate(
+        (np.linspace(25, 30, 200), np.linspace(30, 13, 1200))
+    )
+
+    df = pd.DataFrame(columns=["date", "Weight (kg)", "Fat Ratio (%)"])
+
+    df.date = [datetime.fromtimestamp(t) for t in random_times]
+    df["Weight (kg)"] = weights
+    df["Fat Ratio (%)"] = fat_percent
+
+    # user left out some data, went on vacation, etc.
+    df.drop(index=df.index[300:310], axis=0, inplace=True)
+
+    df.drop(index=df.index[400:410], axis=0, inplace=True)
+
+    return df
