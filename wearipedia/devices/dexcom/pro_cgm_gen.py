@@ -15,8 +15,21 @@ def lerp(x1, x2, t):
 base_keypoints = [100] * 4 + [120] * 4 + [130] * 8 + [120] * 4 + [100] * 4
 
 
-def create_synth_df(start_day_str="2022-03-31", num_days=80):
-    start_day = datetime.strptime("2022-03-31", "%Y-%m-%d")
+def create_synth_df(start_day_str, end_day_str):
+    """Create a synthetic dataframe of CGM data.
+
+    :param start_day_str: the start date represented as a string in the format "YYYY-MM-DD"
+    :type start_day_str: str
+    :param end_day_str: the end date represented as a string in the format "YYYY-MM-DD"
+    :type end_day_str: str
+    :return: the synthetic dataframe
+    :rtype: pd.DataFrame
+    """
+
+    start_day = datetime.strptime(start_day_str, "%Y-%m-%d")
+    end_day = datetime.strptime(end_day_str, "%Y-%m-%d")
+
+    num_days = (end_day - start_day).days
 
     datetimes = []
     glucoses = []
