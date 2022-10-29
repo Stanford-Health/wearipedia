@@ -85,13 +85,26 @@ class Whoop4(BaseDevice):
         seed_everything(self.init_params["seed"])
 
         # and based on start and end dates
-        self.cycles = create_fake_cycles_df()
+        self.cycles = create_fake_cycles_df(
+            self.init_params["synthetic_start_date"],
+            self.init_params["synthetic_end_date"],
+        )
 
-        self.health_metrics = create_fake_metrics_df()
+        self.health_metrics = create_fake_metrics_df(
+            self.init_params["synthetic_start_date"],
+            self.init_params["synthetic_end_date"],
+        )
 
-        self.sleeps = create_fake_sleeps_df()
+        self.sleeps = create_fake_sleeps_df(
+            self.init_params["synthetic_start_date"],
+            self.init_params["synthetic_end_date"],
+        )
 
-        self.hr = create_fake_hr_df(self.sleeps)
+        self.hr = create_fake_hr_df(
+            self.init_params["synthetic_start_date"],
+            self.init_params["synthetic_end_date"],
+            self.sleeps,
+        )
 
     def _authenticate(self, auth_creds):
         # authenticate this device against API
