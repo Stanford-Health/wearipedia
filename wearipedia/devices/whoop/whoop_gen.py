@@ -199,9 +199,13 @@ def create_fake_hr_df(start_date, end_date, sleeps_syn):
     :rtype: pd.DataFrame
     """
 
-    start_ts = 1650931200.0
+    start_day_orig = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+    start_day = start_day_orig.replace(tzinfo=dateutil.tz.gettz("US/Pacific"))
+    end_day_orig = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+    end_day = end_day_orig.replace(tzinfo=dateutil.tz.gettz("US/Pacific"))
+    start_ts = start_day.timestamp()
 
-    N = 275000
+    N = int((end_day - start_day).days * 24 * 60 * 60 / 7)
 
     hr_df_syn = pd.DataFrame(
         np.empty((N, 2)) * np.nan, columns=["heart_rate", "timestamp"]
@@ -210,10 +214,12 @@ def create_fake_hr_df(start_date, end_date, sleeps_syn):
     heart_rate = np.random.normal(loc=80, scale=20, size=(N,)).astype("int")
     hr_df_syn.heart_rate = heart_rate
 
-    hr_df_syn.timestamp = np.linspace(start_ts, start_ts + 7 * (N - 1), N)
+    hr_df_syn.timestamp = pd.date_range(
+        start_day_orig, end_day_orig, freq="7S", inclusive="left"
+    )[:-1]
 
-    hr_df_syn.timestamp = hr_df_syn.timestamp.progress_apply(
-        lambda x: datetime.datetime.fromtimestamp(x, tz=dateutil.tz.gettz("US/Pacific"))
+    hr_df_syn.timestamp = hr_df_syn.timestamp.dt.tz_localize(
+        "US/Pacific", nonexistent="shift_forward"
     )
 
     for lower, upper, is_nap in tqdm(
