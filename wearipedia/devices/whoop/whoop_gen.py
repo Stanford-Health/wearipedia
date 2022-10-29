@@ -16,6 +16,11 @@ __all__ = [
 
 
 def create_fake_cycles_df():
+    """Create fake cycles dataframe. Each "cycle" is essentially a day.
+
+    :return: cycles dataframe
+    :rtype: pd.DataFrame
+    """
 
     cycles_df_syn = pd.DataFrame(
         columns=[
@@ -128,6 +133,12 @@ def create_fake_cycles_df():
 
 
 def create_fake_metrics_df():
+    """Create fake metrics dataframe. Each row in the dataframe is a single
+    day.
+
+    :return: metrics dataframe
+    :rtype: pd.DataFrame
+    """
 
     n_rows = 58
 
@@ -254,9 +265,21 @@ def create_fake_metrics_df():
     return metrics_df_syn
 
 
-def create_fake_hr_df(sleeps_syn):  # heart rate depends on sleeps
+def create_fake_hr_df(sleeps_syn):
+    """Create a fake heart rate dataframe. This is a dataframe with
+    a row for every seven seconds of the day. Though the heart rate is
+    "recorded" throughout the entire day, this function depends on the
+    sleeps_syn dataframe to determine when the user is asleep and when
+    they are awake. The heart rate is set based on whether the user
+    is asleep in a nap, asleep at night, or awake.
 
-    # start_ts = 1651104000.0
+    :param sleeps_syn: A dataframe with a row for every sleep event
+    :type sleeps_syn: pd.DataFrame
+    :return: A dataframe of heart rates with a row for every seven seconds
+        of the day
+    :rtype: pd.DataFrame
+    """
+
     start_ts = 1650931200.0
 
     N = 275000
@@ -292,6 +315,12 @@ def create_fake_hr_df(sleeps_syn):  # heart rate depends on sleeps
 
 
 def create_fake_sleeps_df():
+    """Create a fake sleeps dataframe. This is a dataframe with a row
+    for every sleep event (nap or night sleep).
+
+    :return: A dataframe of sleep events
+    :rtype: pd.DataFrame
+    """
 
     columns = [
         "cycle_id",

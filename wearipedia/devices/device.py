@@ -6,8 +6,6 @@ The core module for the wearipedia library.
 
 __all__ = ["BaseDevice"]
 
-import wearipedia
-
 
 class BaseDevice:
     """This class is a base class for all devices. It should not be instantiated directly.
