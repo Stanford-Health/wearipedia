@@ -58,7 +58,7 @@ class Whoop4(BaseDevice):
         start_idx = (datetime_str_to_obj(params["start"]) - synthetic_start).days
         end_idx = (datetime_str_to_obj(params["end"]) - synthetic_start).days
 
-        return data[start_idx:end_idx]
+        return data.iloc[start_idx:end_idx]
 
     def _gen_synthetic(self):
         # generate random data according to seed

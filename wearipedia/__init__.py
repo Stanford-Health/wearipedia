@@ -3,7 +3,6 @@
 
 import importlib
 import importlib.util
-import sys
 from importlib import import_module
 from importlib import metadata as importlib_metadata
 
