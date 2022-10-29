@@ -18,7 +18,7 @@ class BaseDevice:
     The child class should implement the following methods:
     * __init__
     * _get_real
-    * _get_synthetic
+    * _filter_synthetic
     * _gen_synthetic
     * _default_params
     * authenticate
