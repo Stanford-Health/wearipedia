@@ -15,9 +15,13 @@ __all__ = [
 ]
 
 
-def create_fake_cycles_df():
+def create_fake_cycles_df(start_date, end_date):
     """Create fake cycles dataframe. Each "cycle" is essentially a day.
 
+    :param start_date: the start date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type start_date: str
+    :param end_date: the end date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type end_date: str
     :return: cycles dataframe
     :rtype: pd.DataFrame
     """
@@ -132,10 +136,14 @@ def create_fake_cycles_df():
     return cycles_df_syn
 
 
-def create_fake_metrics_df():
+def create_fake_metrics_df(start_date, end_date):
     """Create fake metrics dataframe. Each row in the dataframe is a single
     day.
 
+    :param start_date: the start date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type start_date: str
+    :param end_date: the end date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type end_date: str
     :return: metrics dataframe
     :rtype: pd.DataFrame
     """
@@ -265,7 +273,7 @@ def create_fake_metrics_df():
     return metrics_df_syn
 
 
-def create_fake_hr_df(sleeps_syn):
+def create_fake_hr_df(start_date, end_date, sleeps_syn):
     """Create a fake heart rate dataframe. This is a dataframe with
     a row for every seven seconds of the day. Though the heart rate is
     "recorded" throughout the entire day, this function depends on the
@@ -273,6 +281,10 @@ def create_fake_hr_df(sleeps_syn):
     they are awake. The heart rate is set based on whether the user
     is asleep in a nap, asleep at night, or awake.
 
+    :param start_date: The start date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type start_date: str
+    :param end_date: The end date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type end_date: str
     :param sleeps_syn: A dataframe with a row for every sleep event
     :type sleeps_syn: pd.DataFrame
     :return: A dataframe of heart rates with a row for every seven seconds
@@ -314,10 +326,14 @@ def create_fake_hr_df(sleeps_syn):
     return hr_df_syn
 
 
-def create_fake_sleeps_df():
+def create_fake_sleeps_df(start_date, end_date):
     """Create a fake sleeps dataframe. This is a dataframe with a row
     for every sleep event (nap or night sleep).
 
+    :param start_date: The start date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type start_date: str
+    :param end_date: The end date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type end_date: str
     :return: A dataframe of sleep events
     :rtype: pd.DataFrame
     """
