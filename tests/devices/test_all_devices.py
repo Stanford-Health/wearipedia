@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 import wearipedia
 
-MAX_DEVICE_TEST_TIME = 10
+MAX_DEVICE_TEST_TIME = 15
 
 
 def test_all_devices():
