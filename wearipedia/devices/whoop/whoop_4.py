@@ -1,11 +1,29 @@
 from datetime import datetime
 
+import numpy as np
+import pandas as pd
+
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .whoop_gen import *
 from .whoop_user import *
 
 class_name = "Whoop4"
+
+
+def bin_search(data, start, end, target):
+    if start > end:
+        return -1
+    elif start == end:
+        return start
+
+    mid = (start + end) // 2
+    if data[mid] == target:
+        return mid
+    elif data[mid] < target:
+        return bin_search(data, mid + 1, end, target)
+    else:
+        return bin_search(data, start, mid - 1, target)
 
 
 class Whoop4(BaseDevice):
@@ -48,16 +66,34 @@ class Whoop4(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
-        datetime_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%fZ")
+        if data_type != "hr":
+            # synthetic data is generated day-by-day, so we can just
+            # index into it based on the start and end dates
 
-        # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
+            date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
+            datetime_str_to_obj = lambda x: datetime.strptime(
+                x, "%Y-%m-%dT%H:%M:%S.%fZ"
+            )
 
-        start_idx = (datetime_str_to_obj(params["start"]) - synthetic_start).days
-        end_idx = (datetime_str_to_obj(params["end"]) - synthetic_start).days
+            # get the indices by subtracting against the start of the synthetic data
+            synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
 
-        return data.iloc[start_idx:end_idx]
+            start_idx = (datetime_str_to_obj(params["start"]) - synthetic_start).days
+            end_idx = (datetime_str_to_obj(params["end"]) - synthetic_start).days
+
+            return data.iloc[start_idx:end_idx]
+        else:
+            # hr data is generated in 7 second intervals, so we need to
+            # do a binary search to find the start and end indices
+            # and then return the data between those indices
+
+            start_ts = pd.Timestamp(params["start"])
+            end_ts = pd.Timestamp(params["end"])
+
+            start_idx = bin_search(np.array(data.timestamp), 0, len(data) - 1, start_ts)
+            end_idx = bin_search(np.array(data.timestamp), 0, len(data) - 1, end_ts)
+
+            return data.iloc[start_idx:end_idx]
 
     def _gen_synthetic(self):
         # generate random data according to seed
