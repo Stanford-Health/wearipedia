@@ -16,23 +16,45 @@ os.makedirs(Path(CSV_LOCAL_PATH).parent, exist_ok=True)
 class_name = "BodyPlus"
 
 
+def bin_search(data, start, end, target):
+    if start >= end:
+        return start
+
+    mid = (start + end) // 2
+    if data[mid] == target:
+        return mid
+    elif data[mid] < target:
+        return bin_search(data, mid + 1, end, target)
+    else:
+        return bin_search(data, start, mid - 1, target)
+
+
 class BodyPlus(BaseDevice):
     def __init__(self, params):
 
         self._initialize_device_params(
             ["measurements"],
             params,
-            {"seed": 0},
+            {"seed": 0, "synthetic_start": "2021-06-01", "synthetic_end": "2022-05-30"},
         )
 
     def _default_params(self):
-        return dict()
+        return {
+            "start": self.init_params["synthetic_start"],
+            "end": self.init_params["synthetic_end"],
+        }
 
     def _get_real(self, data_type, params):
         return fetch_measurements(self.access_token)
 
     def _filter_synthetic(self, data, data_type, params):
-        return self.measurements
+        start_ts = pd.Timestamp(params["start"])
+        end_ts = pd.Timestamp(params["end"])
+
+        start_idx = bin_search(np.array(data.date), 0, len(data) - 1, start_ts)
+        end_idx = bin_search(np.array(data.date), 0, len(data) - 1, end_ts)
+
+        return data.iloc[start_idx:end_idx]
 
     def _gen_synthetic(self):
         # generate random data according to seed
@@ -47,14 +69,12 @@ class BodyPlus(BaseDevice):
             lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f")
         )
 
+        # filter out the unnamed column that pandas adds in for some reason
         self.measurements = self.measurements[
             [col for col in self.measurements.columns if "Unnamed: 0" not in col]
         ]
 
-    def authenticate(self, auth_creds):
+    def _authenticate(self, auth_creds):
         # authenticate this device against API
 
-        self.auth_creds = auth_creds
-
         self.access_token = withings_authenticate(auth_creds)
-        self._authenticated = True

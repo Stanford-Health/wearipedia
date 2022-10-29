@@ -19,7 +19,7 @@ class BaseDevice:
     * _filter_synthetic
     * _gen_synthetic
     * _default_params
-    * authenticate
+    * _authenticate
     """
 
     def __init__(self, params):
@@ -159,6 +159,17 @@ class BaseDevice:
                     getattr(self, data_type), data_type, params
                 )
 
+    def _authenticate(self, auth_creds):
+        """Authenticates the device. This is called by the authenticate() method.
+
+        :param auth_creds: a dictionary containing authentication credentials for the device.
+        :type auth_creds: Dict
+        :raises NotImplementedError: for now, raises NotImplementedError, but should be implemented
+            by child classes.
+        """
+
+        raise NotImplementedError
+
     def authenticate(self, auth_creds):
         """Authenticates the device against the API. For now, should be user-interactive, if
         the authentication protocol requires a step in which you get a code by visiting their
@@ -166,11 +177,10 @@ class BaseDevice:
 
         :param auth_creds: a dictionary containing the authentication credentials.
         :type auth_creds: Dict
-        :raises NotImplementedError: for now, raises NotImplementedError, but should be implemented
-            by child classes.
         """
 
-        raise NotImplementedError
+        self._authenticate(auth_creds)
+        self._authenticated = True
 
     @property
     def authenticated(self):

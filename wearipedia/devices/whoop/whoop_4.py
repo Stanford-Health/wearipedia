@@ -12,9 +12,7 @@ class_name = "Whoop4"
 
 
 def bin_search(data, start, end, target):
-    if start > end:
-        return -1
-    elif start == end:
+    if start >= end:
         return start
 
     mid = (start + end) // 2
@@ -108,11 +106,7 @@ class Whoop4(BaseDevice):
 
         self.hr = create_fake_hr_df(self.sleeps)
 
-    def authenticate(self, auth_creds):
+    def _authenticate(self, auth_creds):
         # authenticate this device against API
 
-        self.auth_creds = auth_creds
-
         self.user = WhoopUser(auth_creds["email"], auth_creds["password"])
-
-        self._authenticated = True

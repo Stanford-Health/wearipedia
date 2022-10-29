@@ -37,11 +37,9 @@ class DexcomProCGM(BaseDevice):
 
         self.dataframe = create_synth_df()
 
-    def authenticate(self, auth_creds, use_cache=True):
+    def _authenticate(self, auth_creds, use_cache=True):
         if use_cache and hasattr(self, "access_token"):
             return
-
-        self.auth_creds = auth_creds
 
         your_client_secret = auth_creds[
             "client_secret"
@@ -100,5 +98,3 @@ class DexcomProCGM(BaseDevice):
             print(f"Our access token is {access_token}")
 
         self.access_token = access_token
-
-        self._authenticated = True
