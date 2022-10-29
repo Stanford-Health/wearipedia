@@ -1,3 +1,4 @@
+import time
 import unittest.mock as mock
 
 from checker_util import check
@@ -5,11 +6,14 @@ from tqdm import tqdm
 
 import wearipedia
 
+MAX_DEVICE_TEST_TIME = 10
+
 
 def test_all_devices():
     pbar = tqdm(wearipedia.get_all_device_names())
 
     for device_name in pbar:
+        device_start_time = time.time()
         pbar.set_description(f"Testing {device_name}...")
         device = wearipedia.get_device(device_name)
 
@@ -63,3 +67,9 @@ def test_all_devices():
 
                 mock_get_real.assert_not_called()
                 mock_authenticate.assert_not_called()
+
+        assert time.time() - device_start_time < MAX_DEVICE_TEST_TIME, (
+            f"{device_name} took too long to test, expected less than {MAX_DEVICE_TEST_TIME}"
+            f" seconds but took {time.time() - device_start_time:.2f} seconds. This is probably"
+            "because your device generates synthetic data inefficiently. Try to make it faster."
+        )
