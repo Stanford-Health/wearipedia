@@ -52,8 +52,6 @@ class DreemHeadband2(BaseDevice):
         self.eeg_file = []
 
     def _authenticate(self, auth_creds):
-        # authenticate this device against API
-
         authorization_str = (
             "Basic "
             + base64.b64encode(

@@ -1,9 +1,10 @@
 import time
 
 from ...devices.device import BaseDevice
-from ...utils import seed_everything
+from ...utils import bin_search, seed_everything
 from .withings_authenticate import *
 from .withings_extract import *
+from .withings_gen import *
 
 class_name = "ScanWatch"
 
@@ -21,7 +22,10 @@ class ScanWatch(BaseDevice):
         )
 
     def _default_params(self):
-        return {"start": "2022-03-01", "end": "2022-06-17"}
+        return {
+            "start": self.init_params["synthetic_start_date"],
+            "end": self.init_params["synthetic_end_date"],
+        }
 
     def _get_real(self, data_type, params):
         if data_type == "heart_rates":
@@ -32,25 +36,35 @@ class ScanWatch(BaseDevice):
             return fetch_all_sleeps(self.access_token, params["start"], params["end"])
 
     def _filter_synthetic(self, data, data_type, params):
-        return getattr(self, data_type)
+
+        if data_type == "sleeps":
+            key = "date"
+            target_start = params["start"]
+            target_end = params["end"]
+        elif data_type == "heart_rates":
+            key = "datetime"
+            target_start = pd.Timestamp(params["start"])
+            target_end = pd.Timestamp(params["end"])
+
+        start_idx = bin_search(np.array(data[key]), target_start)
+        end_idx = bin_search(np.array(data[key]), target_end)
+
+        return data.iloc[start_idx:end_idx]
 
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
 
-        self.sleeps = []
-        self.heart_rates = []
+        self.sleeps = create_synthetic_sleeps_df(
+            self.init_params["synthetic_start_date"],
+            self.init_params["synthetic_end_date"],
+        )
 
-        # load in the CSV that we've pre-generated
-        # df = pd.read_csv("random_data.csv")
-        # fix dates, convert to datetime obj from string
-        # df.date = df.date.apply(lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f"))
-
-        # df = df[[col for col in df.columns if "Unnamed: 0" not in col]]
-
-        # return df
+        self.heart_rates = create_syn_hr(
+            self.init_params["synthetic_start_date"],
+            self.init_params["synthetic_end_date"],
+            self.sleeps,
+        )
 
     def _authenticate(self, auth_creds):
-        # authenticate this device against API
-
         self.access_token = withings_authenticate(auth_creds)

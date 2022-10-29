@@ -51,5 +51,4 @@ class SleepMat(BaseDevice):
         # ]
 
     def _authenticate(self, auth_creds):
-        # authenticate this device against API
         self.access_token = withings_authenticate(auth_creds)

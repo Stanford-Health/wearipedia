@@ -5,14 +5,32 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-# below is for withings scanwatch
+__all__ = ["create_synthetic_sleeps_df", "create_syn_hr"]
+
+#############
+# ScanWatch #
+#############
 
 
-def create_synthetic_sleeps_df():
+def create_synthetic_sleeps_df(start_date, end_date):
+    """Create a synthetic dataframe of sleep data. This is for
+    the ScanWatch.
+
+    :param start_date: the start date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type start_date: str
+    :param end_date: the end date of the synthetic data as a string formatted as YYYY-MM-DD
+    :type end_date: str
+    :return: the synthetic dataframe containing sleep data
+    :rtype: pd.DataFrame
+    """
+
+    start_day = datetime.strptime(start_date, "%Y-%m-%d")
+    end_day = datetime.strptime(end_date, "%Y-%m-%d")
+    num_days = (end_day - start_day).days
 
     syn_sleeps = pd.DataFrame()
 
-    syn_sleeps["id"] = np.random.randint(0, 100000000, size=(20,))
+    syn_sleeps["id"] = np.random.randint(0, 100000000, size=(num_days,))
     syn_sleeps["timezone"] = "America/Los_Angeles"
     syn_sleeps["model"] = 16
     syn_sleeps["model_id"] = 93
@@ -21,9 +39,9 @@ def create_synthetic_sleeps_df():
     ] = "d41d8cd98f00b204e9800998ecf8427e"  # randomly generated
     syn_sleeps["date"] = [
         datetime.fromtimestamp(
-            datetime.strptime("2022-05-17", "%Y-%m-%d").timestamp() + i * 24 * 3600
+            datetime.strptime(start_date, "%Y-%m-%d").timestamp() + i * 24 * 3600
         ).strftime("%Y-%m-%d")
-        for i in range(20)
+        for i in range(num_days)
     ]
 
     startdates = []
@@ -46,7 +64,7 @@ def create_synthetic_sleeps_df():
 
     all_data = []
 
-    for i in range(20):
+    for _ in range(num_days):
 
         data = {
             "wakeupduration": np.random.randint(0, 3000),
@@ -82,14 +100,25 @@ def create_synthetic_sleeps_df():
     return syn_sleeps
 
 
-def create_syn_hr(syn_sleeps):
-    start_day = datetime.strptime("2022-05-20", "%Y-%m-%d")
+def create_syn_hr(start_date, end_date, syn_sleeps):
+    """Create a synthetic dataframe of heart rate data. This is for
+    the ScanWatch.
+
+    :param syn_sleeps: the synthetic sleep dataframe
+    :type syn_sleeps: pd.DataFrame
+    :return: the synthetic dataframe containing heart rate data
+    :rtype: pd.DataFrame
+    """
+    start_day = datetime.strptime(start_date, "%Y-%m-%d")
+    end_day = datetime.strptime(end_date, "%Y-%m-%d")
+
+    num_days = (end_day - start_day).days
 
     hour_usage = [0.8] * 3 + [0.9] * 7 + [1.0] * 10 + [0.9] * 4
 
     datetimes = []
 
-    for day_offset in tqdm(range(20)):
+    for day_offset in tqdm(range(num_days)):
         for hour_offset in range(24):
             for minute_offset in range(0, 60, 10):
                 day = start_day + timedelta(days=day_offset)
@@ -145,3 +174,8 @@ def create_syn_hr(syn_sleeps):
     syn_hr = pd.concat((garbage_df, syn_hr), ignore_index=True)
 
     return syn_hr
+
+
+#########
+# Body+ #
+#########
