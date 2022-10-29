@@ -22,13 +22,17 @@ class BodyPlus(BaseDevice):
         self._initialize_device_params(
             ["measurements"],
             params,
-            {"seed": 0, "synthetic_start": "2021-06-01", "synthetic_end": "2022-05-30"},
+            {
+                "seed": 0,
+                "synthetic_start_date": "2021-06-01",
+                "synthetic_end_date": "2022-05-30",
+            },
         )
 
     def _default_params(self):
         return {
-            "start": self.init_params["synthetic_start"],
-            "end": self.init_params["synthetic_end"],
+            "start": self.init_params["synthetic_start_date"],
+            "end": self.init_params["synthetic_end_date"],
         }
 
     def _get_real(self, data_type, params):

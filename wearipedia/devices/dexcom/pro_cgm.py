@@ -19,13 +19,17 @@ class DexcomProCGM(BaseDevice):
         self._initialize_device_params(
             ["dataframe"],
             params,
-            {"seed": 0, "synthetic_start": "2022-02-16", "synthetic_end": "2022-05-15"},
+            {
+                "seed": 0,
+                "synthetic_start_date": "2022-02-16",
+                "synthetic_end_date": "2022-05-15",
+            },
         )
 
     def _default_params(self):
         return {
-            "start_date": self.init_params["synthetic_start"],
-            "end_date": self.init_params["synthetic_end"],
+            "start_date": self.init_params["synthetic_start_date"],
+            "end_date": self.init_params["synthetic_end_date"],
         }
 
     def _get_real(self, data_type, params):
@@ -55,7 +59,8 @@ class DexcomProCGM(BaseDevice):
         seed_everything(self.init_params["seed"])
 
         self.dataframe = create_synth_df(
-            self.init_params["synthetic_start"], self.init_params["synthetic_end"]
+            self.init_params["synthetic_start_date"],
+            self.init_params["synthetic_end_date"],
         )
 
     def _authenticate(self, auth_creds, use_cache=True):
