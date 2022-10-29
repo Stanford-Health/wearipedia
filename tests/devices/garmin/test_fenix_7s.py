@@ -5,7 +5,7 @@ from datetime import datetime
 import wearipedia
 
 
-def test_fenix_7s():
+def test_fenix_7s_synthetic():
     # first test with default params
 
     start_synthetic = datetime(2021, 1, 1)
