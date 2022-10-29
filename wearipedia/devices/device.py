@@ -97,7 +97,8 @@ class BaseDevice:
         raise NotImplementedError
 
     def _gen_synthetic(self):
-        """Generates synthetic data for the device. This is automatically called by get_data().
+        """Generates synthetic data for the device. This is automatically called by get_data()
+        exactly once, when the user calls get_data() without first calling authenticate().
 
         :raises NotImplementedError: for now, raises NotImplementedError, but should be implemented
             by child classes.
