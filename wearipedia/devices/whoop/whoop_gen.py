@@ -262,7 +262,7 @@ def create_fake_hr_df(sleeps_syn):  # heart rate depends on sleeps
     N = 275000
 
     hr_df_syn = pd.DataFrame(
-        pd.np.empty((N, 2)) * pd.np.nan, columns=["heart_rate", "timestamp"]
+        np.empty((N, 2)) * np.nan, columns=["heart_rate", "timestamp"]
     )
 
     heart_rate = np.random.normal(loc=80, scale=20, size=(N,)).astype("int")

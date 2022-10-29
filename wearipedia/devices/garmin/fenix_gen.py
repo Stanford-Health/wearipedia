@@ -43,14 +43,7 @@ def get_start_end(start_remove, remove_duration, mult):
     return int(start_remove * mult), int((start_remove + remove_duration) * mult)
 
 
-start_date = "2022-03-01"
-end_date = "2022-06-17"
-num_days = (
-    datetime.strptime(end_date, "%Y-%m-%d") - datetime.strptime(start_date, "%Y-%m-%d")
-).days
-
-
-def get_steps():
+def get_steps(start_date, num_days):
     """Generate steps data for a given number of days.
 
     :return: steps data, a list of lists, where each list represents a single day, and each
@@ -159,7 +152,7 @@ def get_steps():
     return steps_synth
 
 
-def get_hrs(steps_synth):
+def get_hrs(start_date, num_days, steps_synth):
     """Get synthetic heart rate data for a given number of days, based on the steps data that
     has already been generated.
 
@@ -245,7 +238,7 @@ def get_hrs(steps_synth):
     return synth_hrs
 
 
-def get_brpms(synth_hrs):
+def get_brpms(start_date, num_days, synth_hrs):
     """Generate synthetic breath rate per minute data.
 
     This function is fairly straightforward.
@@ -329,6 +322,8 @@ def delete_stuff(dates, steps, hrs, brpms):
     :rtype: Tuple[List[str], List[Dict], List[Dict], List[Dict]]
     """
 
+    num_days = len(dates)  # we can just use the length of the dates list
+
     for day_idx in tqdm(range(num_days)):
         # the duration to remove (in hours) is sampled from an exponential distribution,
         # except we truncate the undesirable long tails of the distribution
@@ -368,7 +363,7 @@ def delete_stuff(dates, steps, hrs, brpms):
     return dates, steps, hrs, brpms
 
 
-def create_syn_data():
+def create_syn_data(start_date, end_date):
     """Returns a tuple of dates, steps, heart rates, and breath rates. The data
     format is as follows. Each element in the tuple is a list of length num_days.
     For each tuple:
@@ -378,10 +373,19 @@ def create_syn_data():
     - heart rates: List of heart rate data (each element is a dictionary)
     - breath rates: List of breathing rate data (each element is a dictionary)
 
+    :param start_date: the start date (inclusive) as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :param end_date: the end date (inclusive) as a string in the format "YYYY-MM-DD"
+    :type end_date: str
     :return: A four-tuple of dates, steps, heart rates, and breath rates, each
         of which is just a list where each element represents a particular day.
     :rtype: Tuple[List[str], List[List[Dict]], List[Dict], List[Dict]]
     """
+
+    num_days = (
+        datetime.strptime(end_date, "%Y-%m-%d")
+        - datetime.strptime(start_date, "%Y-%m-%d")
+    ).days
 
     # first get the dates as datetime objects
     synth_dates = [
@@ -392,9 +396,9 @@ def create_syn_data():
     # process is to first get the steps, then the heart rate (since you can just compute
     # the heart rate from the steps), then the breathing rate (since you can just compute
     # the breathing rate from the heart rate)
-    synth_steps = get_steps()
-    synth_hrs = get_hrs(synth_steps)
-    synth_brpms = get_brpms(synth_hrs)
+    synth_steps = get_steps(start_date, num_days)
+    synth_hrs = get_hrs(start_date, num_days, synth_steps)
+    synth_brpms = get_brpms(start_date, num_days, synth_hrs)
 
     # finally, we just iterate over the steps and
     # turn the start and end timestamps to strings

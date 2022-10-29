@@ -9,14 +9,21 @@ class_name = "ScanWatch"
 
 
 class ScanWatch(BaseDevice):
-    def __init__(self):
-        self._authenticated = False
-        self.valid_data_types = ["measurements"]
+    def __init__(self, params):
+        self._initialize_device_params(
+            ["heart_rates", "sleeps"],
+            params,
+            {
+                "seed": 0,
+                "synthetic_start_date": "2022-03-01",
+                "synthetic_end_date": "2022-06-17",
+            },
+        )
 
     def _default_params(self):
         return {"start": "2022-03-01", "end": "2022-06-17"}
 
-    def _get_data(self, data_type, params):
+    def _get_real(self, data_type, params):
         if data_type == "heart_rates":
             return fetch_all_heart_rate(
                 self.access_token, params["start"], params["end"]
@@ -24,11 +31,15 @@ class ScanWatch(BaseDevice):
         elif data_type == "sleeps":
             return fetch_all_sleeps(self.access_token, params["start"], params["end"])
 
-    def _gen_synthetic(self, seed=0):
-        # generate random data according to seed
-        seed_everything(seed)
+    def _filter_synthetic(self, data, data_type, params):
+        return getattr(self, data_type)
 
-        self.measurements = []
+    def _gen_synthetic(self):
+        # generate random data according to seed
+        seed_everything(self.init_params["seed"])
+
+        self.sleeps = []
+        self.heart_rates = []
 
         # load in the CSV that we've pre-generated
         # df = pd.read_csv("random_data.csv")
