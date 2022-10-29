@@ -3,8 +3,11 @@ import json
 import time
 import urllib
 
+import numpy as np
+import pandas as pd
+
 from ...devices.device import BaseDevice
-from ...utils import seed_everything
+from ...utils import bin_search, seed_everything
 from .pro_cgm_fetch import *
 from .pro_cgm_gen import *
 
@@ -13,10 +16,17 @@ class_name = "DexcomProCGM"
 
 class DexcomProCGM(BaseDevice):
     def __init__(self, params):
-        self._initialize_device_params(["dataframe"], params, {"seed": 0})
+        self._initialize_device_params(
+            ["dataframe"],
+            params,
+            {"seed": 0, "synthetic_start": "2022-02-16", "synthetic_end": "2022-05-15"},
+        )
 
     def _default_params(self):
-        return {"start_date": "2022-02-16", "end_date": "2022-05-15"}
+        return {
+            "start_date": self.init_params["synthetic_start"],
+            "end_date": self.init_params["synthetic_end"],
+        }
 
     def _get_real(self, data_type, params):
         # there is really only one data type for this device,
@@ -29,24 +39,31 @@ class DexcomProCGM(BaseDevice):
         )
 
     def _filter_synthetic(self, data, data_type, params):
-        return self.dataframe
+        # there is really only one data type for this device,
+        # so we don't need to check the data_type
+
+        start_ts = pd.Timestamp(params["start_date"])
+        end_ts = pd.Timestamp(params["end_date"])
+
+        start_idx = bin_search(np.array(self.dataframe.datetime), start_ts)
+        end_idx = bin_search(np.array(self.dataframe.datetime), end_ts)
+
+        return self.dataframe.iloc[start_idx:end_idx]
 
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
 
-        self.dataframe = create_synth_df()
+        self.dataframe = create_synth_df(
+            self.init_params["synthetic_start"], self.init_params["synthetic_end"]
+        )
 
     def _authenticate(self, auth_creds, use_cache=True):
         if use_cache and hasattr(self, "access_token"):
             return
 
-        your_client_secret = auth_creds[
-            "client_secret"
-        ]  # "NtWS1ViwrO9zuNkZ" #@param {type:"string"}
-        your_client_id = auth_creds[
-            "client_id"
-        ]  # "n92KUDE2pumPUO4u3FStNhKmmpUaV7Gw" #@param {type:"string"}
+        your_client_secret = auth_creds["client_secret"]
+        your_client_id = auth_creds["client_id"]
         your_redirect_uri = "https://www.google.com"  # @param {type:"string"}
         your_state_value = "1234"
 
@@ -57,9 +74,6 @@ class DexcomProCGM(BaseDevice):
         print("redirect url below:")
         time.sleep(0.1)
         redirect_url = input(">")
-
-        # @title Copy the URL into the text box below
-        # redirect_url = "https://www.google.com/?code=6fa48a835c032d81eba4991963106771&state=1234" #@param {type:"string"}
 
         try:
             your_authorization_code = urllib.parse.parse_qs(
