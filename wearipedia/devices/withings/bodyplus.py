@@ -26,14 +26,16 @@ class BodyPlus(BaseDevice):
             {
                 "seed": 0,
                 "synthetic_start_date": "2021-06-01",
-                "synthetic_end_date": "2022-05-30",
             },
         )
 
     def _default_params(self):
         return {
             "start": self.init_params["synthetic_start_date"],
-            "end": self.init_params["synthetic_end_date"],
+            "end": str(
+                datetime.strptime(self.init_params["synthetic_start_date"], "%Y-%m-%d")
+                + timedelta(days=900)
+            ),
         }
 
     def _get_real(self, data_type, params):
@@ -52,7 +54,9 @@ class BodyPlus(BaseDevice):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
 
-        self.measurements = create_syn_bodyplus()
+        self.measurements = create_syn_bodyplus(
+            self.init_params["synthetic_start_date"]
+        )
 
     def _authenticate(self, auth_creds):
         self.access_token = withings_authenticate(auth_creds)

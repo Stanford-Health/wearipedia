@@ -181,10 +181,15 @@ def create_syn_hr(start_date, end_date, syn_sleeps):
 #########
 
 
-def create_syn_bodyplus():
+def create_syn_bodyplus(start_date):
     """Create a synthetic dataframe of body+ data. This is for
-    the Body+ scale.
+    the Body+ scale. The reason why we don't have an end date is
+    because we wish to generate 2.5 years' worth of data to portray
+    a fictional scenario where the user has been using the scale
+    for a year and we see the impact of a fictional medication.
 
+    :param start_date: the start date as a string formatted as YYYY-MM-DD
+    :type start_date: str
     :return: the synthetic dataframe containing body+ data
     :rtype: pd.DataFrame
     """
@@ -209,9 +214,12 @@ def create_syn_bodyplus():
         0.6,
     ]
 
+    total_duration = 75168000  # 2.5 years in seconds
+    start_ts = int(datetime.strptime(start_date, "%Y-%m-%d").timestamp())
+
     # generate times by the day, sample from 8am to 11:59pm
     random_times = []
-    for dt in range(1577836800, 1653004800, 24 * 3600):
+    for dt in range(start_ts, start_ts + total_duration, 24 * 3600):
         random_times += list(
             np.random.uniform(
                 dt + 8 * 3600, dt + 24 * 3600, size=np.random.randint(0, 5)
