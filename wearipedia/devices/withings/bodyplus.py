@@ -4,7 +4,7 @@ from pathlib import Path
 import wget
 
 from ...devices.device import BaseDevice
-from ...utils import seed_everything
+from ...utils import bin_search, seed_everything
 from .withings_authenticate import *
 from .withings_extract import *
 
@@ -14,19 +14,6 @@ CSV_LOCAL_PATH = "/tmp/wearipedia-cache/withings/bodyplus/random_data.csv"
 os.makedirs(Path(CSV_LOCAL_PATH).parent, exist_ok=True)
 
 class_name = "BodyPlus"
-
-
-def bin_search(data, start, end, target):
-    if start >= end:
-        return start
-
-    mid = (start + end) // 2
-    if data[mid] == target:
-        return mid
-    elif data[mid] < target:
-        return bin_search(data, mid + 1, end, target)
-    else:
-        return bin_search(data, start, mid - 1, target)
 
 
 class BodyPlus(BaseDevice):
@@ -51,8 +38,8 @@ class BodyPlus(BaseDevice):
         start_ts = pd.Timestamp(params["start"])
         end_ts = pd.Timestamp(params["end"])
 
-        start_idx = bin_search(np.array(data.date), 0, len(data) - 1, start_ts)
-        end_idx = bin_search(np.array(data.date), 0, len(data) - 1, end_ts)
+        start_idx = bin_search(np.array(data.date), start_ts)
+        end_idx = bin_search(np.array(data.date), end_ts)
 
         return data.iloc[start_idx:end_idx]
 
