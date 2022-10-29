@@ -39,12 +39,17 @@ class DreemHeadband2(BaseDevice):
         elif data_type == "eeg_file":
             return fetch_eeg_file(self.auth_dict, params["record_ref"])
 
-    def _get_synthetic(self, data_type, params):
+    def _filter_synthetic(self, data, data_type, params):
         return []
 
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
+
+        self.users = []
+        self.records = []
+        self.hypnogram = []
+        self.eeg_file = []
 
     def authenticate(self, auth_creds):
         # authenticate this device against API

@@ -28,7 +28,7 @@ class DexcomProCGM(BaseDevice):
             end_date=params["end_date"],
         )
 
-    def _get_synthetic(self, data_type, params):
+    def _filter_synthetic(self, data, data_type, params):
         return self.dataframe
 
     def _gen_synthetic(self):

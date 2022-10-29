@@ -43,11 +43,10 @@ class Whoop4(BaseDevice):
         api_func = getattr(self.user, self.data_types_methods_map[data_type])
         return api_func(params=params)
 
-    def _get_synthetic(self, data_type, params):
+    def _filter_synthetic(self, data, data_type, params):
         # Here we just return the data we've already generated,
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
-        data = getattr(self, data_type)
 
         date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
         datetime_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%fZ")

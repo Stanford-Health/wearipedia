@@ -31,7 +31,7 @@ class ScanWatch(BaseDevice):
         elif data_type == "sleeps":
             return fetch_all_sleeps(self.access_token, params["start"], params["end"])
 
-    def _get_synthetic(self, data_type, params):
+    def _filter_synthetic(self, data, data_type, params):
         return getattr(self, data_type)
 
     def _gen_synthetic(self):

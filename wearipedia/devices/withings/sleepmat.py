@@ -28,7 +28,7 @@ class SleepMat(BaseDevice):
     def _get_real(self, data_type, params):
         return fetch_measurements(self.access_token)
 
-    def _get_synthetic(self, data_type, params):
+    def _filter_synthetic(self, data, data_type, params):
         return self.measurements
 
     def _gen_synthetic(self):

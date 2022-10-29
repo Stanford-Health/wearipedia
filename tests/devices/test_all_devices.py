@@ -32,7 +32,7 @@ def test_all_devices():
         # This is essentially checking that the child class has re-implemented
         # the methods correctly.
         with mock.patch.object(
-            device.__class__, "_get_synthetic", wraps=device._get_synthetic
+            device.__class__, "_filter_synthetic", wraps=device._filter_synthetic
         ) as mock_get_synthetic, mock.patch.object(
             device.__class__, "_gen_synthetic", wraps=device._gen_synthetic
         ) as mock_gen_synthetic, mock.patch.object(
