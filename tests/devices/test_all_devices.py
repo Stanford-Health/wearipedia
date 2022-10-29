@@ -1,7 +1,6 @@
 import time
 import unittest.mock as mock
 
-from checker_util import check
 from tqdm import tqdm
 
 import wearipedia
@@ -48,15 +47,6 @@ def test_all_devices():
         ) as mock_authenticate:
             for data_type in device.valid_data_types:
                 data = device.get_data(data_type)
-
-                # Check that the data is valid.
-                # This is just going to check that the data follows the correct
-                # format, but not necessarily anything super strict that depends
-                # on the chosen random seed or other synthetic generation parameters.
-                # This means that for example if in the future we implement the
-                # ability to synthetically generate different personas, this test will
-                # not detect that.
-                check(device_name, data_type, data)
 
                 mock_gen_synthetic.assert_called_once()
 

@@ -332,9 +332,7 @@ def create_fake_sleeps_df():
         dur.append(np.clip(np.random.normal(loc=8.0), 0, 14))
         dur.append(np.clip(np.random.normal(loc=1.0, scale=0.5), 0.2, 6))
 
-    sleeps_syn.in_bed_duration = dur[
-        :num_sleeps
-    ]  # ([np.clip(np.random.exponential(scale=1.0), 0, 14), np.clip(np.random.exponential(scale=8.0), 0, 14)] * num_sleeps)[:num_sleeps]#np.clip(np.random.exponential(scale=8.0), 0, 14)
+    sleeps_syn.in_bed_duration = dur[:num_sleeps]
     sleeps_syn.light_sleep_duration = sleeps_syn.in_bed_duration * 0.5
     sleeps_syn.latency_duration = 0
     sleeps_syn.no_data_duration = 0
