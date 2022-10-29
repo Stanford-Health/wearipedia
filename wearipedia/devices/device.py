@@ -23,7 +23,8 @@ class BaseDevice:
     """
 
     def __init__(self, params):
-        """Initializes the device.
+        """Initializes the device. If you are implementing a child device, the overrided
+        __init__() should call _initialize_device_params().
 
         :param params: a dictionary containing parameters for the device. These are specific
             to each device, and should usually consist of parameters for synthetic data
@@ -44,6 +45,8 @@ class BaseDevice:
         This method will set some member attributes and override the default_init_params
         with the params provided by the user.
 
+        IF YOU ARE IMPLEMENTING A NEW DEVICE, YOU SHOULD NOT NEED TO OVERRIDE THIS METHOD.
+
         :param valid_data_types: a list of valid data types for the device.
         :type valid_data_types: List
         :param params: a dictionary containing parameters for the device. These are specific
@@ -54,8 +57,6 @@ class BaseDevice:
         :type default_init_params: Dict
         """
 
-        # the following lines of code must be initialized in any child class,
-        # but self.valid_data_types should be set to a list of actual valid data types
         self._authenticated = False
         self.valid_data_types = valid_data_types
         self._synthetic_has_been_generated = False
@@ -174,6 +175,8 @@ class BaseDevice:
         """Authenticates the device against the API. For now, should be user-interactive, if
         the authentication protocol requires a step in which you get a code by visiting their
         website.
+
+        IF YOU ARE IMPLEMENTING A NEW DEVICE, YOU SHOULD NOT NEED TO OVERRIDE THIS METHOD.
 
         :param auth_creds: a dictionary containing the authentication credentials.
         :type auth_creds: Dict
