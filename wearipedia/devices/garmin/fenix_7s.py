@@ -70,10 +70,7 @@ class Fenix7S(BaseDevice):
             self.init_params["synthetic_end_date"],
         )
 
-    def authenticate(self, auth_creds):
-
-        self.auth_creds = auth_creds
-
+    def _authenticate(self, auth_creds):
         # check if we have cached credentials
         if self.init_params["use_cache"] and os.path.exists(CRED_CACHE_PATH):
             self.api = pickle.load(open(CRED_CACHE_PATH, "rb"))
@@ -82,5 +79,3 @@ class Fenix7S(BaseDevice):
             self.api.login()
 
             pickle.dump(self.api, open(CRED_CACHE_PATH, "wb"))
-
-        self._authenticated = True

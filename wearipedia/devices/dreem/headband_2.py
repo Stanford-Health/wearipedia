@@ -51,10 +51,8 @@ class DreemHeadband2(BaseDevice):
         self.hypnogram = []
         self.eeg_file = []
 
-    def authenticate(self, auth_creds):
+    def _authenticate(self, auth_creds):
         # authenticate this device against API
-
-        self.auth_creds = auth_creds
 
         authorization_str = (
             "Basic "
@@ -69,5 +67,3 @@ class DreemHeadband2(BaseDevice):
                 headers={"Authorization": authorization_str},
             ).text
         )
-
-        self._authenticated = True

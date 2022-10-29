@@ -50,10 +50,6 @@ class SleepMat(BaseDevice):
         #    [col for col in self.measurements.columns if "Unnamed: 0" not in col]
         # ]
 
-    def authenticate(self, auth_creds):
+    def _authenticate(self, auth_creds):
         # authenticate this device against API
-
-        self.auth_creds = auth_creds
-
         self.access_token = withings_authenticate(auth_creds)
-        self._authenticated = True
