@@ -100,7 +100,7 @@ If you use this library for academic research, please cite the following paper:
 
 ## Disclaimer
 
-This project is currently in a *pre-alpha* stage. This means that formal tests are not yet integrated, and the codebase is still really a prototype. Expect many things to simply not work at all.
+This project is currently in a *pre-alpha* stage. This means that formal tests are not yet integrated, and the codebase is still really a prototype. Expect for most things to work, but also small bugs, rough edges, and no documentation.
 
 ## Contributing
 
