@@ -16,7 +16,7 @@
 </div>
 
 <h3 align="center">
-    <p>A one-stop shop for wearable device data extraction</p>
+    <p>A one-stop shop for wearable device data extraction and simulation</p>
 </h3>
 
 Wearipedia provides a one-stop shop for accessing and extracting data from dozens of wearable devices, including devices from FitBit and Oura.
