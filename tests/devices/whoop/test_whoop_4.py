@@ -9,7 +9,11 @@ def test_whoop_4_synthetic():
     # first testing with default params
 
     start_synthetic = datetime(2021, 1, 1)
-    end_synthetic = datetime(2021, 3, 18)
+    end_synthetic = datetime(2021, 2, 1)
+
+    assert (
+        end_synthetic - start_synthetic
+    ).days >= 1, f"The difference between start and end date should be at least 1 day"
 
     device = wearipedia.get_device(
         "whoop/whoop_4",
@@ -58,11 +62,11 @@ def test_whoop_4_synthetic():
         health_metrics["day"][0] == start_synthetic
     ), f"First date is not correct: {health_metrics['day'][0]}"
 
-    # Now we make sure that each dataframes [cycles, health_metrics, sleeps and hr ] data are correct
+    # Now we make sure that the data in each dataframe (cycles, health_metrics, sleeps, and hr) is correct
     # checking for cycles data
 
     assert (
-        (cycles.columns)
+        cycles.columns
         == [
             "id",
             "day",
@@ -86,18 +90,45 @@ def test_whoop_4_synthetic():
     # checking heart rate is within the range of 0 to 500
     for resting_hr in cycles["resting_hr"]:
         assert (
-            resting_hr >= 0 and resting_hr <= 500
+            0 <= resting_hr <= 500
         ), f"Resting heart rate is not in correct range: {resting_hr}"
 
     for average_hr in cycles["avg_hr"]:
         assert (
-            average_hr >= 0 and average_hr <= 500
+            0 <= average_hr <= 500
         ), f"Average heart rate is not in correct range: {average_hr}"
+
+    for max_hr in cycles["max_hr"]:
+        assert (
+            0 <= max_hr <= 500
+        ), f"Maximum heart rate is not in correct range: {max_hr}"
+
+    # checking number of naps are non negative
+    for naps in cycles["n_naps"]:
+        assert naps >= 0, f"Number of naps cannot be non negative: {naps}"
+
+    # checking recovery score is within the range of 0 to 100
+    for recovery_score in cycles["recovery_score"]:
+        assert (
+            0 <= recovery_score <= 100
+        ), f"Recovery score is not in correct range: {recovery_score}"
+
+    # checking strain score is within the range of 0 to 21
+    for strain_score in cycles["strain_score"]:
+        assert (
+            0 <= strain_score <= 21
+        ), f"Strain score is not in correct range: {strain_score}"
+
+    # checking kilojoules is within the range of 0 to 20000
+    for kilojoules in cycles["kilojoules"]:
+        assert (
+            0 <= kilojoules <= 20000
+        ), f"Kilojoules is not in correct range: {kilojoules}"
 
     # checking for health_metrics data
 
     assert (
-        (health_metrics.columns)
+        health_metrics.columns
         == [
             "id",
             "day",
@@ -117,31 +148,44 @@ def test_whoop_4_synthetic():
     ).all(), f"Health metrics data is not correct: {health_metrics}"
 
     # checking columns within health_metrics dataframe
+
+    # checking respiratory rate is within the range of 0 to 100
+    for respiratory_rate in health_metrics["RESPIRATORY_RATE.current_value"]:
+        assert (
+            0 <= respiratory_rate <= 100
+        ), f"Respiratory rate is not in correct range: {respiratory_rate}"
+
     # checking that blood oxygen is within the range of 0 to 100
     for bo in health_metrics["BLOOD_OXYGEN.current_value"]:
-        assert bo >= 0 and bo <= 100, (
+        assert 0 <= bo <= 100, (
             f"Blood oxygen current value is not correct: {bo}"
-            f"Expected a value between 0 to 100, but got {bo}"
+            f"Expected a value between 0 and 100, but got {bo}"
         )
+
+    # checking that resting heart rate is within the range of 0 to 500
+    for rhr in health_metrics["RHR.current_value"]:
+        assert (
+            0 <= rhr <= 500
+        ), f"Resting heart rate current value is not correct: {rhr}"
 
     for hr_value in health_metrics["HRV.current_value"]:
         assert (
-            hr_value >= 0 and hr_value <= 500
+            0 <= hr_value <= 500
         ), f"Current heart rate value is not correct: {hr_value}"
 
     for temperature in health_metrics["SKIN_TEMPERATURE_CELSIUS.current_value"]:
         assert (
-            temperature >= 0 and temperature <= 60
+            0 <= temperature <= 60
         ), f"Current celsius temperature value is not correct: {temperature}"
 
     for f_temperature in health_metrics["SKIN_TEMPERATURE_FAHRENHEIT.current_value"]:
         assert (
-            f_temperature >= 32 and f_temperature <= 140
+            32 <= f_temperature <= 140
         ), f"Current fahrenheit temperature value is not correct: {f_temperature}"
 
     # checking for sleeps data
     assert (
-        (sleeps.columns)
+        sleeps.columns
         == [
             "cycle_id",
             "sleep_id",
@@ -165,7 +209,41 @@ def test_whoop_4_synthetic():
         ]
     ).all(), f"Sleep data is not correct: {sleeps}"
 
+    # checking columns within sleeps dataframe
+
+    # checking respiratory rate is within the range of 0 to 100
+    for respiratory_rate in sleeps["respiratory_rate"]:
+        assert (
+            0 <= respiratory_rate <= 100
+        ), f"Respiratory rate is not in correct range: {respiratory_rate}"
+
+    # checking sleep score is within the range of 0 to 100
+    for sleep_score in sleeps["sleep_score"]:
+        assert (
+            0 <= sleep_score <= 100
+        ), f"Sleep score is not in correct range: {sleep_score}"
+
+    # checking sleep consistency is within the range of 0 to 1
+    for sleep_consistency in sleeps["sleep_consistency"]:
+        assert (
+            0 <= sleep_consistency <= 1
+        ), f"Sleep consistency is not in correct range: {sleep_consistency}"
+
     # checking for hr data
     assert (
-        (hr.columns) == ["heart_rate", "timestamp"]
+        hr.columns == ["heart_rate", "timestamp"]
     ).all(), f"Heart rate data is not correct: {hr}"
+
+    # checking columns within hr dataframe
+
+    # make sure heart rate is within the range of 0 to 500
+    # for heart_rate in hr["heart_rate"]:
+    #     assert (
+    #         0 <= heart_rate <= 500
+    #     ), f"Heart rate is not in correct range: {heart_rate}"
+
+    # make sure timestamps are at 7s intervals
+    for timestamp1, timestamp2 in zip(hr["timestamp"][:-1], hr["timestamp"][1:]):
+        assert (
+            int((timestamp2 - timestamp1).total_seconds()) == 7
+        ), f"Timestamps are not at 7s intervals: {timestamp1}, {timestamp2}"
