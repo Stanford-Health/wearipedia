@@ -11,10 +11,6 @@ def test_whoop_4_synthetic():
     start_synthetic = datetime(2021, 1, 1)
     end_synthetic = datetime(2021, 2, 1)
 
-    assert (
-        end_synthetic - start_synthetic
-    ).days >= 1, f"The difference between start and end date should be at least 1 day"
-
     device = wearipedia.get_device(
         "whoop/whoop_4",
         params={
