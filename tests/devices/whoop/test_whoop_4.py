@@ -6,18 +6,23 @@ import wearipedia
 
 
 def test_whoop_4_synthetic():
-    # first testing with default params
+    start_dates = [datetime(2009, 11, 15), datetime(2021, 4, 1), datetime(2022, 6, 10)]
+    end_dates = [datetime(2010, 2, 1), datetime(2021, 6, 20), datetime(2022, 8, 25)]
 
-    start_synthetic = datetime(2021, 1, 1)
-    end_synthetic = datetime(2021, 2, 1)
+    for start_date, end_date in zip(start_dates, end_dates):
+        device = wearipedia.get_device(
+            "whoop/whoop_4",
+            params={
+                "synthetic_start_date": datetime.strftime(start_date, "%Y-%m-%d"),
+                "synthetic_end_date": datetime.strftime(end_date, "%Y-%m-%d"),
+            },
+        )
 
-    device = wearipedia.get_device(
-        "whoop/whoop_4",
-        params={
-            "synthetic_start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
-            "synthetic_end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
-        },
-    )
+        # calling tests for each pair of start and end dates
+        helper_test(device, start_date, end_date)
+
+
+def helper_test(device, start_synthetic, end_synthetic):
 
     cycles = device.get_data("cycles")
     health_metrics = device.get_data("health_metrics")
