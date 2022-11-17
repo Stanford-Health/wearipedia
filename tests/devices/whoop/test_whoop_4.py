@@ -107,35 +107,35 @@ def helper_test(device, start_synthetic, end_synthetic):
 
     # checking number of naps are non negative
     for naps in cycles["n_naps"]:
-        assert naps >= 0, f"Number of naps cannot be non negative: {naps}"
+        assert naps >= 0, f"Number of naps cannot be negative: {naps}"
 
     # checking that sleep need baseline is non negative
     for sleep_need_baseline in cycles["sleep_need_baseline"]:
         assert (
             sleep_need_baseline >= 0
-        ), f"Sleep need baseline cannot be non negative: {sleep_need_baseline}"
+        ), f"Sleep need baseline cannot be negative: {sleep_need_baseline}"
 
     # checking that sleep debt is non negative
     for sleep_debt in cycles["sleep_debt"]:
-        assert sleep_debt >= 0, f"Sleep debt cannot be non negative: {sleep_debt}"
+        assert sleep_debt >= 0, f"Sleep debt cannot be negative: {sleep_debt}"
 
     # checking that sleep need strain is non negative
     for sleep_need_strain in cycles["sleep_need_strain"]:
         assert (
             sleep_need_strain >= 0
-        ), f"Sleep need strain cannot be non negative: {sleep_need_strain}"
+        ), f"Sleep need strain cannot be negative: {sleep_need_strain}"
 
     # checking that sleep need total is non negative
     for sleep_need_total in cycles["sleep_need_total"]:
         assert (
             sleep_need_total >= 0
-        ), f"Sleep need total cannot be non negative: {sleep_need_total}"
+        ), f"Sleep need total cannot be negative: {sleep_need_total}"
 
     # checking that sleep quality duration is non negative
     for sleep_quality_duration in cycles["sleep_quality_duration"]:
         assert (
             sleep_quality_duration >= 0
-        ), f"Sleep quality duration cannot be non negative: {sleep_quality_duration}"
+        ), f"Sleep quality duration cannot be negative: {sleep_quality_duration}"
 
     # checking that average heart rate is within the range of 0 to 500
     for average_hr in cycles["avg_hr"]:
@@ -293,7 +293,7 @@ def helper_test(device, start_synthetic, end_synthetic):
 
     # checking that cycles count is non negative
     for cycles_count in sleeps["cycles_count"]:
-        assert cycles_count >= 0, f"Cycles count cannot be non negative: {cycles_count}"
+        assert cycles_count >= 0, f"Cycles count cannot be negative: {cycles_count}"
 
     # checking that disturbance count is non negative
     for disturbance_count in sleeps["disturbance_count"]:
