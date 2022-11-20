@@ -23,6 +23,49 @@ def test_withings_scanwatch_synthetic():
         helper_test(device, start_date, end_date)
 
 
+def sleeps_data_helper(data):
+    # Series data has each row as a dictionary, we check the keys for each attribute
+    for d in data:
+        return (
+            (lambda df, c: True if 0 <= df[c] <= 3000 else False)(d, "wakeupduration")
+            and (lambda df, c: True if df[c] >= 0 else False)(d, "wakeupcount")
+            and (lambda df, c: True if 120 <= df[c] <= 180 else False)(
+                d, "durationtosleep"
+            )
+            and (lambda df, c: True if 0 <= df[c] <= 700 else False)(
+                d, "durationtowakeup"
+            )
+            and (lambda df, c: True if 10000 <= df[c] <= 50000 else False)(
+                d, "total_timeinbed"
+            )
+            and (lambda df, c: True if 10000 <= df[c] <= 50000 else False)(
+                d, "total_sleep_time"
+            )
+            and (lambda df, c: True if 0 <= df[c] <= 1 else False)(
+                d, "sleep_efficiency"
+            )
+            and (lambda df, c: True if 120 <= df[c] <= 300 else False)(
+                d, "sleep_latency"
+            )
+            and (lambda df, c: True if 0 <= df[c] <= 800 else False)(
+                d, "wakeup_latency"
+            )
+            and (lambda df, c: True if 0 <= df[c] <= 4000 else False)(d, "waso")
+            and (lambda df, c: True if df[c] >= 0 else False)(d, "nb_rem_episodes")
+            and (lambda df, c: True if df[c] >= 0 else False)(d, "out_of_bed_count")
+            and (lambda df, c: True if 6000 <= df[c] <= 35000 else False)(
+                d, "lightsleepduration"
+            )
+            and (lambda df, c: True if 3000 <= df[c] <= 17000 else False)(
+                d, "deepsleepduration"
+            )
+            and (lambda df, c: True if 55 <= df[c] <= 65 else False)(d, "hr_average")
+            and (lambda df, c: True if 40 <= df[c] <= 60 else False)(d, "hr_min")
+            and (lambda df, c: True if 70 <= df[c] <= 120 else False)(d, "hr_max")
+            and (lambda df, c: True if 30 <= df[c] <= 80 else False)(d, "sleep_score")
+        )
+
+
 def helper_test(device, start_synthetic, end_synthetic):
 
     sleeps = device.get_data("sleeps")
@@ -70,106 +113,11 @@ def helper_test(device, start_synthetic, end_synthetic):
             hash_deviceid == "d41d8cd98f00b204e9800998ecf8427e"
         ), f"Hash Device ID is not correct: {hash_deviceid}"
 
-    # checking the dates are consecutive
-    # for date_1, date_2 in zip(sleeps["date"][:-1], sleeps["date"][1:]):
-    #     assert (
-    #         date_2 - date_1
-    #     ).days == 1, f"Sleeps dates are not consecutive: {date_1}, {date_2}"
-
-    # checking the Series sleeps["data"] which contains 18 attributes
-
-    # checking wakeup duration
-    for data_row in sleeps["data"]:
-
-        # checking the wakeupduration is in range of 0 to 3000
-        assert (
-            0 <= data_row["wakeupduration"] <= 3000
-        ), f"Wakeup duration is not in range: {data_row['wakeupduration']}"
-
-        # checking the wakeupcount is non negative
-        assert (
-            data_row["wakeupcount"] >= 0
-        ), f"Wakeup count is not correct: {data_row['wakeupcount']}"
-
-        # checking the durationtosleep is in range of 120 to 180
-        assert (
-            120 <= data_row["durationtosleep"] <= 180
-        ), f"Duration to sleep is not in correct range: {data_row['durationtosleep']}"
-
-        # checking the durationtowakeup is in range of 0 to 700
-        assert (
-            0 <= data_row["durationtowakeup"] <= 700
-        ), f"Duration to wakeup is not in correct range: {data_row['durationtowakeup']}"
-
-        # checking the total_timeinbed is in range of 10000 to 50000
-        assert (
-            10000 <= data_row["total_timeinbed"] <= 50000
-        ), f"Total time in bed is not in correct range: {data_row['total_timeinbed']}"
-
-        # checking the total_sleep_time is in range of 10000 to 50000
-        assert (
-            10000 <= data_row["total_sleep_time"] <= 50000
-        ), f"Total sleep is not in correct range: {data_row['total_sleep_time']}"
-
-        # checking sleep_efficiency is in range of 0 to 1
-        assert (
-            0 <= data_row["sleep_efficiency"] <= 1
-        ), f"Sleep efficiency is not in correct range: {data_row['sleep_efficiency']}"
-
-        # checking sleep_latency is in range of 120 to 300
-        assert (
-            120 <= data_row["sleep_latency"] <= 300
-        ), f"Sleep latency is not in correct range: {data_row['sleep_latency']}"
-
-        # checking wakeup_latency is in range of 0 to 800
-        assert (
-            0 <= data_row["wakeup_latency"] <= 800
-        ), f"Wakeup latency is not in correct range: {data_row['wakeup_latency']}"
-
-        # checking waso is in range of 0 to 4000
-        assert (
-            0 <= data_row["waso"] <= 4000
-        ), f"WASO is not in correct range: {data_row['waso']}"
-
-        # checking nb_rem_episodes is non negative
-        assert (
-            data_row["nb_rem_episodes"] >= 0
-        ), f"Number of REM episodes is not correct: {data_row['nb_rem_episodes']}"
-
-        # checking out_of_bed_count is non negative
-        assert (
-            data_row["out_of_bed_count"] >= 0
-        ), f"Out of bed episodes is not correct: {data_row['out_of_bed_count']}"
-
-        # checking lightsleepduration is in range of 6000 to 35000
-        assert (
-            6000 <= data_row["lightsleepduration"] <= 35000
-        ), f"Light sleep duration is not in correct range: {data_row['lightsleepduration']}"
-
-        # checking deepsleepduration is in range of 3000 to 17000
-        assert (
-            3000 <= data_row["deepsleepduration"] <= 17000
-        ), f"Deep sleep duration is not in correct range: {data_row['deepsleepduration']}"
-
-        # checking hr_average is in range of 55 to 65
-        assert (
-            55 <= data_row["hr_average"] <= 65
-        ), f"HR average is not in correct range: {data_row['hr_average']}"
-
-        # checking hr_min is in range of 40 to 60
-        assert (
-            40 <= data_row["hr_min"] <= 60
-        ), f"HR min is not in correct range: {data_row['hr_min']}"
-
-        # checking hr_max is in range of 70 to 120
-        assert (
-            70 <= data_row["hr_max"] <= 120
-        ), f"HR max is not in correct range: {data_row['hr_max']}"
-
-        # checking sleep_score is in range 30 to 80
-        assert (
-            30 <= data_row["sleep_score"] <= 80
-        ), f"Sleep score is not in correct range: {data_row['sleep_score']}"
+    # checking the column sleeps["data"], a Series which contains 18 attributes
+    # calling helper function to check each of the attributes
+    assert (
+        sleeps_data_helper(sleeps["data"]) == True
+    ), f"Sleeps data is not correct: {sleeps['data']}"
 
     # checking the columns of heart_rates dataframe
     assert (
