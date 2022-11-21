@@ -150,6 +150,7 @@ class WhoopUser:
         ]
         result_df = pd.DataFrame(columns=df_columns)
         json_data = self.get_cycles_json(params=params)
+        print("JSON_DATA IS", json_data)
         for day in json_data:
             if not (
                 day["recovery"]
