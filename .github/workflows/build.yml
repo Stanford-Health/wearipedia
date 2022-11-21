@@ -25,6 +25,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: check git hash
+      run: git rev-parse HEAD
+
     - name: Test presence of env variables
       run: python3 -c "import os; print([x for x in os.environ if 'W' in x])"
       env:
