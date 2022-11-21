@@ -34,6 +34,8 @@ If you're not familiar with GitHub, it's a web-based hosting service for softwar
 
 If you want to learn more about GitHub, check out the [GitHub Help](https://help.github.com/) page.
 
+tiny change.
+
 ### Working with GitHub
 
 In order to start working on the Wearipedia, you'll need to create a GitHub account. Once you have an account, you can [fork](https://help.github.com/articles/fork-a-repo/) the Wearipedia repository. This will create your own copy of the project that you can work on.
