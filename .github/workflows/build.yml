@@ -2,7 +2,13 @@ name: build
 
 # TODO: change this to pull_request before release
 # see https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
-on: [push, pull_request_target]
+on: 
+  push:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Git Ref (Optional)    
+        required: false
 
 jobs:
   build:
@@ -13,10 +19,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        ref: "${{ github.event.inputs.git-ref }}"
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4.3.0
       with:
         python-version: ${{ matrix.python-version }}
+
+    - name: check git hash
+      run: git rev-parse HEAD
+
+    - name: Test presence of env variables
+      run: python3 -c "import os; print([x for x in os.environ if 'W' in x])"
+      env:
+        WHOOP_4_EMAIL: ${{ secrets.WHOOP_4_EMAIL }}
+        WHOOP_4_PASSWORD: ${{ secrets.WHOOP_4_PASSWORD }}
+
+    - name: check which commit this was
+      run: git log -1
 
     - name: Install poetry
       run: make poetry-download
