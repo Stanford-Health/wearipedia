@@ -17,12 +17,12 @@ jobs:
       uses: actions/setup-python@v4.3.0
       with:
         python-version: ${{ matrix.python-version }}
-      env:
-        WHOOP_4_EMAIL: ${{ secrets.WHOOP_4_EMAIL }}
-        WHOOP_4_PASSWORD: ${{ secrets.WHOOP_4_PASSWORD }}
 
     - name: Test presence of env variables
       run: python3 -c "import os; print([x for x in os.environ])"
+      env:
+        WHOOP_4_EMAIL: ${{ secrets.WHOOP_4_EMAIL }}
+        WHOOP_4_PASSWORD: ${{ secrets.WHOOP_4_PASSWORD }}
 
     - name: Install poetry
       run: make poetry-download
