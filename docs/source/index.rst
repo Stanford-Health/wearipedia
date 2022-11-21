@@ -23,18 +23,6 @@ Instructions on how to install Wearipedia.
 Tutorials are the best place to start for anyone new to Wearipedia or one of
 Wearipedia's features.
 
-:ref:`How-to Guides <guides>`
------------------------------
-
-How-to guides are step-by-step instructions on how to do specific tasks.
-
-:ref:`Explanations <explanations>`
-----------------------------------
-
-Explanations provide in-depth discussions about select Wearipedia features. These
-topic guides talk about things like the motivation behind design decisions,
-technical implementation details, and opinionated recommendations.
-
 :ref:`API Reference <reference>`
 --------------------------------
 
