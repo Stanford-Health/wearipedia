@@ -40,7 +40,7 @@ formatting: codestyle
 #* Doc building
 .PHONY: dochost
 dochost:
-	cd docs && make html && cd build/html && python -m http.server
+	cd docs && make clean && make html && cd build/html && poetry run python -m http.server
 
 #* Doc tests
 .PHONY: doctest

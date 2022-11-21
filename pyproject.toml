@@ -41,6 +41,12 @@ tqdm = "^4.64.1"
 garminconnect = "^0.1.48"
 scipy = "^1.9.2"
 wget = "^3.2"
+insipid-sphinx-theme = "^0.3.6"
+numpydoc = "^1.5.0"
+sphinx-reredirects = "^0.1.1"
+sphinx-copybutton = "^0.5.1"
+matplotlib = "^3.6.2"
+myst-parser = "^0.18.1"
 
 [tool.poetry.dev-dependencies]
 bandit = "^1.7.1"

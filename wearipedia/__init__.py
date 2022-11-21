@@ -22,6 +22,16 @@ def get_device(device_name, params=None):
     :type params: Dict, optional
     :return: a device object
     :rtype: BaseDevice
+
+    **Example**
+
+    .. code-block:: python
+
+        import wearipedia
+
+        # Get a device object
+        device = wearipedia.get_device("whoop/whoop_4")
+        ...
     """
     company, model = device_name.split("/")
 

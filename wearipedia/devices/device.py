@@ -14,12 +14,19 @@ class BaseDevice:
     is specific to the Garmin Fenix7S device.
 
     The child class should implement the following methods:
+
     * __init__
+
     * _get_real
+
     * _filter_synthetic
+
     * _gen_synthetic
+
     * _default_params
+
     * _authenticate
+
     """
 
     def __init__(self, params):
