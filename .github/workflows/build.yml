@@ -4,7 +4,6 @@ name: build
 # see https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
 on: 
   push:
-  pull_request:
   workflow_dispatch:
     inputs:
       git-ref:
@@ -21,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        ref: "c234a741bb407901cabfdaec203189f3d7b4d8d7"
+        ref: "${{ github.event.inputs.git-ref }}"
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4.3.0
       with:
