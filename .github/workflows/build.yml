@@ -18,7 +18,8 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
       env:
-        HELLO: hello
+        WHOOP_4_EMAIL: ${{ secrets.WHOOP_4_EMAIL }}
+        WHOOP_4_PASSWORD: ${{ secrets.WHOOP_4_PASSWORD }}
 
     - name: Test presence of env variables
       run: python3 -c "import os; print([x for x in os.environ])"
