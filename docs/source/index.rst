@@ -2,7 +2,6 @@ Welcome to wearipedia's documentation!
 ======================================
 
 `Wearipedia <https://wearipedia.org>`_ is a Python library for extracting data from wearable devices.
-If you are new to Wearipedia, start with the :ref:`introductory tutorial <intro-tutorial>`.
    
 .. _documentation:
 
@@ -36,9 +35,6 @@ Wearipedia wiki.
    :hidden:
 
    install.md
-   tutorials/index.rst
-   guides/index.rst
-   explanation/index.rst
    reference/index.rst
    contributing/index.rst
 
