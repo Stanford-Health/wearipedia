@@ -5,7 +5,7 @@ Welcome to wearipedia's documentation!
    
 .. _documentation:
 
-.. module:: sympy
+.. module:: wearipedia
 
 This is the central page for all of Wearipedia's documentation.
 

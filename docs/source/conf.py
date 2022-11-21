@@ -50,7 +50,6 @@ extensions = [
     "sphinx.ext.doctest",
 ]
 
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
@@ -74,8 +73,8 @@ html_theme = "insipid"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
-
+# html_static_path = ["_static"]
+html_static_path = []
 commit_hash_filepath = "../commit_hash.txt"
 
 commit_hash = None
@@ -95,15 +94,15 @@ if not commit_hash:
         warnings.warn(
             "Failed to get the git commit hash as the command "
             "'git rev-parse HEAD' is not working. The commit hash will be "
-            "assumed as the SymPy master, but the lines may be misleading "
+            "assumed as the Wearipedia master, but the lines may be misleading "
             "or nonexistent as it is not the correct branch the doc is "
             "built with. Check your installation of 'git' if you want to "
             "resolve this warning."
         )
         commit_hash = "master"
 
-fork = "sympy"
-blobpath = f"https://github.com/{fork}/sympy/blob/{commit_hash}/sympy/"
+fork = "Stanford-Health"
+blobpath = f"https://github.com/{fork}/wearipedia/blob/{commit_hash}/wearipedia/"
 
 
 def linkcode_resolve(domain, info):
@@ -119,7 +118,6 @@ def linkcode_resolve(domain, info):
         return
 
     obj = submod
-    print("IN HERE!!!!!!!!!!!!!!")
     for part in fullname.split("."):
         try:
             obj = getattr(obj, part)
