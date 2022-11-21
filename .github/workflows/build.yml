@@ -2,7 +2,14 @@ name: build
 
 # TODO: change this to pull_request before release
 # see https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
-on: [push, pull_request]
+on: 
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Git Ref (Optional)    
+        required: false
 
 jobs:
   build:
