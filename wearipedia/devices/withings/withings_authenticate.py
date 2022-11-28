@@ -4,23 +4,24 @@ import urllib
 
 import requests
 
-__all__ = ["withings_authenticate"]
+__all__ = ["refresh_access_token", "withings_authenticate"]
+
+STATE = "string"
+ACCOUNT_URL = "https://account.withings.com"
+CALLBACK_URI = "https://wbsapi.withings.net/v2/oauth2"
 
 
-def withings_authenticate(auth_creds):
+def refresh_access_token(refresh_token, client_id, customer_secret):
+    # gives us access token given the refresh token
+    raise NotImplementedError
+
+
+def withings_authenticate(client_id, customer_secret):
     # gives us access token given the auth_creds + going through the process, it's interactive
-
-    # @title 6. Enter your credentials below (from the application you just created)
-    CLIENT_ID = auth_creds["client_id"]
-    CUSTOMER_SECRET = auth_creds["customer_secret"]
-
-    STATE = "string"
-    ACCOUNT_URL = "https://account.withings.com"
-    CALLBACK_URI = "https://wbsapi.withings.net/v2/oauth2"
 
     payload = {
         "response_type": "code",  # imposed string by the api
-        "client_id": CLIENT_ID,
+        "client_id": client_id,
         "state": STATE,
         "scope": "user.info,user.metrics,user.activity",  # see docs for enhanced scope
         "redirect_uri": CALLBACK_URI,  # URL of this app
@@ -35,8 +36,6 @@ def withings_authenticate(auth_creds):
     url = url[:-1]
 
     print(url)
-    # @title 7. Copy and paste the URL you were redirected to below
-    # redirect_url = "https://wbsapi.withings.net/v2/oauth2?code=e46275ce54994fa6e6eadc50cd4dd45467c01e0e&state=string"
     print("redirect url below:")
     time.sleep(0.1)
     redirect_url = input(">")
@@ -52,8 +51,8 @@ def withings_authenticate(auth_creds):
     params = {
         "action": "requesttoken",
         "grant_type": "authorization_code",
-        "client_id": CLIENT_ID,
-        "client_secret": CUSTOMER_SECRET,
+        "client_id": client_id,
+        "client_secret": customer_secret,
         "code": code,
         #'scope': 'user.info',
         "redirect_uri": "https://wbsapi.withings.net/v2/oauth2",

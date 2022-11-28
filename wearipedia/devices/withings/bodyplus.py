@@ -9,11 +9,6 @@ from .withings_authenticate import *
 from .withings_extract import *
 from .withings_gen import *
 
-CSV_URL = "https://gist.githubusercontent.com/stanford-health-wearables/3e5bdd4dfc06a4290038fabf34732ca3/raw/c99a50c1d943903c867364dc6c9a11d83fb4e42a/random_data.csv"
-CSV_LOCAL_PATH = "/tmp/wearipedia-cache/withings/bodyplus/random_data.csv"
-
-os.makedirs(Path(CSV_LOCAL_PATH).parent, exist_ok=True)
-
 class_name = "BodyPlus"
 
 
@@ -59,4 +54,13 @@ class BodyPlus(BaseDevice):
         )
 
     def _authenticate(self, auth_creds):
-        self.access_token = withings_authenticate(auth_creds)
+        if "refresh_token" in auth_creds:
+            self.refresh_token, self.access_token = refresh_access_token(
+                auth_creds["refresh_token"],
+                auth_creds["client_id"],
+                auth_creds["customer_secret"],
+            )
+        else:
+            self.refresh_token, self.access_token = withings_authenticate(
+                auth_creds["client_id"], auth_creds["customer_secret"]
+            )

@@ -1,7 +1,5 @@
 import http
 import json
-import time
-import urllib
 
 import numpy as np
 import pandas as pd
@@ -67,53 +65,13 @@ class DexcomProCGM(BaseDevice):
         if use_cache and hasattr(self, "access_token"):
             return
 
-        your_client_secret = auth_creds["client_secret"]
-        your_client_id = auth_creds["client_id"]
-        your_redirect_uri = "https://www.google.com"  # @param {type:"string"}
-        your_state_value = "1234"
-
-        url = f"https://api.dexcom.com/v2/oauth2/login?client_id={your_client_id}&redirect_uri={your_redirect_uri}&response_type=code&scope=offline_access&state={your_state_value}"
-
-        print(url)
-
-        print("redirect url below:")
-        time.sleep(0.1)
-        redirect_url = input(">")
-
-        try:
-            your_authorization_code = urllib.parse.parse_qs(
-                urllib.parse.urlparse(redirect_url).query
-            )["code"][0]
-        except Exception as e:
-            print(f"Caught error:\n{e}\n")
-            print("Please copy and paste the entire URL (including https)")
-
-        conn = http.client.HTTPSConnection("api.dexcom.com")
-
-        payload = f"client_secret={your_client_secret}&client_id={your_client_id}&code={your_authorization_code}&grant_type=authorization_code&redirect_uri={your_redirect_uri}"
-
-        headers = {
-            "content-type": "application/x-www-form-urlencoded",
-            "cache-control": "no-cache",
-        }
-
-        conn.request("POST", "/v2/oauth2/token", payload, headers)
-
-        res = conn.getresponse()
-        data = res.read()
-
-        json_response = json.loads(data.decode("utf-8"))
-
-        if (
-            "error" in json_response.keys()
-            and json_response["error"] == "invalid_grant"
-        ):
-            print("The code you got has expired.")
-            print("Authorize and enter the redirect URL again.")
+        if "refresh_token" in auth_creds:
+            self.refresh_token, self.access_token = refresh_access_token(
+                auth_creds["refresh_token"],
+                auth_creds["client_id"],
+                auth_creds["client_secret"],
+            )
         else:
-            access_token = json.loads(data.decode("utf-8"))["access_token"]
-
-            print(f'Entire response was {data.decode("utf-8")}')
-            print(f"Our access token is {access_token}")
-
-        self.access_token = access_token
+            self.refresh_token, self.access_token = dexcom_authenticate(
+                auth_creds["client_id"], auth_creds["client_secret"]
+            )
