@@ -12,13 +12,19 @@ DEVICE_TO_AUTH_DICT = {
     "garmin/fenix_7s": {
         "email": os.environ["GARMIN_FENIX_7S_EMAIL"],
         "password": os.environ["GARMIN_FENIX_7S_PASSWORD"],
-    }
+    },
+    "whoop/whoop_4": {
+        "email": os.environ["WHOOP_4_EMAIL"],
+        "password": os.environ["WHOOP_4_PASSWORD"],
+    },
 }
 
 
 def test_all_devices_real():
     # this test emphasizes actually integrating with the real API,
     # so we mainly just check that
+
+    # TODO: also test that real agrees with synthetic
 
     pbar = tqdm(
         [

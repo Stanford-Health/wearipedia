@@ -7,8 +7,6 @@ import wearipedia
 
 
 def test_fenix_7s_real():
-    # first test with default params
-
     device = wearipedia.get_device(
         "garmin/fenix_7s",
     )

@@ -15,10 +15,8 @@ class Whoop4(BaseDevice):
     def __init__(self, params):
 
         self.data_types_methods_map = {
-            "cycles": "get_cycles_df",
-            "health_metrics": "get_health_metrics_df",
-            "sleeps": "get_sleeps_df",
-            "hr": "get_heart_rate_df",
+            "cycles": "get_cycles_json",
+            "hr": "get_heart_rate_json",
         }
 
         self._initialize_device_params(
@@ -32,19 +30,16 @@ class Whoop4(BaseDevice):
         )
 
     def _default_params(self):
-        start_str = "2000-01-01"
-        end_str = "2100-02-03"
-        # get cycle data from start to end
         params = {
-            "start": start_str + "T00:00:00.000Z",
-            "end": end_str + "T00:00:00.000Z",
+            "start": "2022-04-24T00:00:00.000Z",
+            "end": "2022-04-28T00:00:00.000Z",
         }
 
         return params
 
     def _get_real(self, data_type, params):
         api_func = getattr(self.user, self.data_types_methods_map[data_type])
-        return api_func(params=params)
+        return api_func(params)
 
     def _filter_synthetic(self, data, data_type, params):
         # Here we just return the data we've already generated,
@@ -86,16 +81,6 @@ class Whoop4(BaseDevice):
 
         # and based on start and end dates
         self.cycles = create_fake_cycles_df(
-            self.init_params["synthetic_start_date"],
-            self.init_params["synthetic_end_date"],
-        )
-
-        self.health_metrics = create_fake_metrics_df(
-            self.init_params["synthetic_start_date"],
-            self.init_params["synthetic_end_date"],
-        )
-
-        self.sleeps = create_fake_sleeps_df(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
