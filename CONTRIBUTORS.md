@@ -7,3 +7,5 @@
 - Jonathan Tseng (jtseng20@stanford.edu)
 - Tristan Peng (tristan.peng@stanford.edu)
 - Hetav Modi (hetav.1805@gmail.com)
+- Jack Hung (jjhung66@stanford.edu)
+- Saarth Shah (sashah@ucsd.edu)
