@@ -405,10 +405,10 @@ def create_syn_data(start_date, end_date):
     for i, synth_steps_day in enumerate(synth_steps):
         for j in range(len(synth_steps_day)):
             synth_steps[i][j]["startGMT"] = datetime.strftime(
-                synth_steps[i][j]["startGMT"], "%Y-%-m-%dT%H:%M:%S"
+                synth_steps[i][j]["startGMT"], "%Y-%m-%dT%H:%M:%S"
             )
             synth_steps[i][j]["endGMT"] = datetime.strftime(
-                synth_steps[i][j]["endGMT"], "%Y-%-m-%dT%H:%M:%S"
+                synth_steps[i][j]["endGMT"], "%Y-%m-%dT%H:%M:%S"
             )
 
     # randomly delete stuff (to simulate missing data)
