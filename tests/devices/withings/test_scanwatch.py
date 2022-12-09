@@ -144,5 +144,5 @@ def helper_test(device, start_synthetic, end_synthetic):
     # checking deviceid is correct hashcode
     for deviceid in heart_rates["deviceid"]:
         assert (
-            deviceid == hashlib.md5(usedforsecurity=False).hexdigest()
+            deviceid == hashlib.md5().hexdigest()
         ), f"Device ID is not correct: {deviceid}"
