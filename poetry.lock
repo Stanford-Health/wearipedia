@@ -349,7 +349,7 @@ python-versions = "*"
 name = "insipid-sphinx-theme"
 version = "0.3.6"
 description = "An insipid Sphinx theme"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -973,7 +973,7 @@ test = ["cython", "html5lib", "pytest (>=4.6)", "typed_ast"]
 name = "sphinx-copybutton"
 version = "0.5.1"
 description = "Add a copy button to each of your code cells."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -988,7 +988,7 @@ rtd = ["ipython", "myst-nb", "sphinx", "sphinx-book-theme", "sphinx-examples"]
 name = "sphinx-reredirects"
 version = "0.1.1"
 description = "Handles redirects for moved pages in Sphinx documentation projects"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.5"
 
@@ -1217,7 +1217,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "708bc6ae4df6a142f4cbc7a6211c5679e8950ce993723e378a6d2ad0e0766326"
+content-hash = "98227d864d82d9cb88b1134de1070a19d8f26d9d8c6ba00c1ca1a5b60896c22b"
 
 [metadata.files]
 alabaster = [

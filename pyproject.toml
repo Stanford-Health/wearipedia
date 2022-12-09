@@ -41,17 +41,14 @@ tqdm = "^4.64.1"
 garminconnect = "^0.1.48"
 scipy = "^1.6"
 wget = "^3.2"
-insipid-sphinx-theme = "^0.3.6"
 numpydoc = "^1.5.0"
-sphinx-reredirects = "^0.1.1"
-sphinx-copybutton = "^0.5.1"
 myst-parser = "^0.18.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 bandit = "^1.7.1"
-#black = {version = "^21.10b0", allow-prereleases = true}
 black = {version = "^22.10.0", allow-prereleases = true}
 darglint = "^1.8.1"
+insipid-sphinx-theme = "^0.3.6"
 isort = {extras = ["colors"], version = "^5.10.1"}
 mypy = "^0.982"
 mypy-extensions = "^0.4.3"
@@ -65,6 +62,8 @@ coverage = "^6.5.0"
 coverage-badge = "^1.1.0"
 pytest-html = "^3.1.1"
 pytest-cov = "^4.0.0"
+sphinx-reredirects = "^0.1.1"
+sphinx-copybutton = "^0.5.1"
 
 [tool.black]
 # https://github.com/psf/black
