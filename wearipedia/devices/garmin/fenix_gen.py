@@ -109,7 +109,8 @@ def get_steps(start_date, num_days):
         sedentary_poi[medium_idxes] = medium_poi[medium_idxes]
         sedentary_poi[high_idxes] = high_poi[high_idxes]
 
-        synth_steps_day = sedentary_poi
+        # convert to regular int, no need for np.int64
+        synth_steps_day = [int(synth_step) for synth_step in sedentary_poi]
 
         # compute the start and end timestamps for each 15-minute chunk
         start_gmts = [
