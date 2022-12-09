@@ -43,6 +43,9 @@ jobs:
     - name: Install poetry
       run: make poetry-download
 
+    - name: check poetry
+      run: poetry
+
     - name: Set up cache
       uses: actions/cache@v3.0.11
       with:
