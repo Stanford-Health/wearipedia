@@ -46,6 +46,9 @@ jobs:
     - name: add poetry to path
       run: export PATH="/Users/runner/.local/bin:$PATH"
 
+    - name: check poetry
+      run: poetry --version
+
     - name: Set up cache
       uses: actions/cache@v3.0.11
       with:
