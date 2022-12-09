@@ -53,7 +53,9 @@ def create_fake_cycles_df(start_date, end_date):
 
     cycles_df_syn.id = np.random.choice(range(1000), size=(num_sleeps,), replace=False)
 
-    cycles_df_syn.day = pd.date_range(start_day, end_day - datetime.timedelta(days=1), freq="D")
+    cycles_df_syn.day = pd.date_range(
+        start_day, end_day - datetime.timedelta(days=1), freq="D"
+    )
 
     cycles_df_syn.recovery_score = np.clip(
         50 + 10 * np.random.randn(num_sleeps), 0, 100
@@ -137,7 +139,9 @@ def create_fake_metrics_df(start_date, end_date):
 
     metrics_df_syn.id = np.random.choice(range(1000), size=(n_rows,), replace=False)
 
-    metrics_df_syn.day = pd.date_range(start_day, end_day - datetime.timedelta(days=1), freq="D")
+    metrics_df_syn.day = pd.date_range(
+        start_day, end_day - datetime.timedelta(days=1), freq="D"
+    )
 
     metrics_df_syn["RESPIRATORY_RATE.current_value"] = np.clip(
         np.random.normal(loc=15, scale=1, size=(n_rows,)), 0, None
@@ -214,9 +218,7 @@ def create_fake_hr_df(start_date, end_date, sleeps_syn):
     heart_rate = np.random.normal(loc=80, scale=20, size=(N,)).astype("int")
     hr_df_syn.heart_rate = heart_rate
 
-    hr_df_syn.timestamp = pd.date_range(
-        start_day_orig, end_day_orig, freq="7S"
-    )[:-1]
+    hr_df_syn.timestamp = pd.date_range(start_day_orig, end_day_orig, freq="7S")[:-1]
 
     hr_df_syn.timestamp = hr_df_syn.timestamp.dt.tz_localize(
         "US/Pacific", nonexistent="shift_forward"
