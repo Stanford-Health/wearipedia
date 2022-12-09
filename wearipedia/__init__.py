@@ -4,7 +4,10 @@
 import importlib
 import importlib.util
 from importlib import import_module
-from importlib import metadata as importlib_metadata
+try:
+    from importlib import metadata as importlib_metadata
+except ImportError: # for Python<3.8
+    import importlib_metadata as importlib_metadata
 
 from .constants import *
 from .devices import *
