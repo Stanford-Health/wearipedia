@@ -29,24 +29,15 @@ def gen_data(start_date, end_date):
             np.random.uniform(low=durations[0], high=durations[1], size=(1,))[0]
         )
         hrate = []
-        start_rate = 70
-        decrease = False
+        start_rate = np.random.uniform(low=70, high=110, size=(1,))[0]
         for j in range(duration * 60):
-            if start_rate <= 190 and not decrease:
-                start_rate += float(
-                    int(np.random.uniform(low=-1, high=2, size=(1,))[0])
-                )
-            elif start_rate < 100:
-                decrease = False
-                start_rate += float(
-                    int(np.random.uniform(low=-1, high=1, size=(1,))[0])
-                )
-            else:
-                decrease = True
-                start_rate += float(
-                    int(np.random.uniform(low=-2, high=1, size=(1,))[0])
-                )
             hrate.append(start_rate)
+            added = np.random.normal(scale=1) + 0.01 * (160 / start_rate)
+            if start_rate < 50:
+                added = abs(added)
+            elif start_rate > 190:
+                added = -1 * abs(added)
+            start_rate += added
         result[pd.to_datetime(day).strftime("%Y-%m-%d")] = {
             "heart_rates": copy.deepcopy(hrate),
             "calories": int(np.random.uniform(low=200, high=500, size=(1,))[0]),

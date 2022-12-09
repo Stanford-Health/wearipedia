@@ -1,4 +1,5 @@
 import numpy as np
+import requests
 
 from ...devices.device import BaseDevice
 from .verity_gen import *
@@ -30,7 +31,8 @@ class VeritySense(BaseDevice):
             params["start_date"],
             params["end_date"],
             data_type,
-            {"email": self.email, "password": self.password},
+            self.session,
+            self.post,
         )
 
     def _filter_synthetic(self, data, data_type, params):
@@ -52,9 +54,15 @@ class VeritySense(BaseDevice):
             self.init_params["end_date"],
         )
 
-    def authenticate(self, auth_creds):
+    def _authenticate(self, auth_creds):
 
-        # login first not during data extraction
-        # set credentials for device object to be accessed later
+        # set credentials for device object to be accessed later if needed
         self.email = auth_creds["email"]
         self.password = auth_creds["password"]
+
+        # authenticate device in a python session and save it
+        auth = {"email": self.email, "password": self.password}
+        self.session = requests.Session()
+
+        # contains polar global variables we need later
+        self.post = self.session.post("https://flow.polar.com/login", data=auth)
