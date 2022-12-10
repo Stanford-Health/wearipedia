@@ -50,6 +50,7 @@ class VeritySense(BaseDevice):
     def _gen_synthetic(self):
         # generate heart rate data according to start and end dates
         self.sessions = gen_data(
+            self.init_params["seed"],
             self.init_params["start_date"],
             self.init_params["end_date"],
         )
