@@ -23,6 +23,9 @@ def fetch_real_data(self, start_date, end_date, data_type):
 
     df_strava = pd.json_normalize(my_dataset)
 
+    if data_type == 'map_summary_polyline':
+        data_type = 'map.summary_polyline'
+
     filtered = df_strava.get(['name','id',
        'start_date',data_type]).to_dict('index')
 
