@@ -5,6 +5,7 @@ from datetime import datetime
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .myfitnesspal_fetch import *
+from .myfitnesspal_synthetic import *
 
 import myfitnesspal
 import browsercookie
@@ -62,11 +63,11 @@ class MyFitnessPal(BaseDevice):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
 
-        # # and based on start and end dates
-        # self.dates, self.steps, self.hrs, self.brpms = create_syn_data(
-        #     self.init_params["synthetic_start_date"],
-        #     self.init_params["synthetic_end_date"],
-        # )
+        # and based on start and end dates
+        self.goals, self.daily_summary, self.exercises_cardio, self.exercises_strength,self.breakfast,self.lunch,self.dinner,self.snacks = create_syn_data(
+            self.init_params["synthetic_start_date"],
+            self.init_params["synthetic_end_date"],
+        )
 
     def _authenticate(self, auth_creds):
 

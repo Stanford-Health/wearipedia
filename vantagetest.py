@@ -7,4 +7,4 @@ vantage.authenticate({
     "password":"StanfordHealth123"
 })
 
-print(len(vantage.get_data("training_by_id", params={"start_date": "2022-08-11", "end_date": "2022-08-11", 'training_id': '7472390363'})))
+print(vantage.get_data("training_history", params={"start_date": "2022-08-18", "end_date": "2022-08-31", 'training_id': '7472390363'}))

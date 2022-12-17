@@ -25,20 +25,14 @@ def fetch_real_data(self,start_date, end_date, data_type):
         cardio = []
         for day in days:
             res = self.client.get_date(int(day.year),int(day.month),int(day.day)).exercises[0].get_as_list()
-            if len(res) == 0:
-                res.append({'date':day})
-            else:
-                res[0]['date'] = day
+            res = [{'day':day}]+res
             cardio.append(res)
         return cardio
     if data_type == 'exercises_strength':
         strength = []
         for day in days:
             res = self.client.get_date(int(day.year),int(day.month),int(day.day)).exercises[1].get_as_list()
-            if len(res) == 0:
-                res.append({'date':day})
-            else:
-                res[0]['date'] = day
+            res = [{'day':day}]+res
             strength.append(res)
         return strength
     if data_type == 'breakfast':
