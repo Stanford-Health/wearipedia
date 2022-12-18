@@ -620,11 +620,3 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/osx,python,pycharm,windows,visualstudio,visualstudiocode
-
-
-# Personal gitignore stuff -- Saarth
-.wearipediavnv/ 
-.stravatest.py
-.mfptest.py
-.gfittest.py
-.vantagetest.py

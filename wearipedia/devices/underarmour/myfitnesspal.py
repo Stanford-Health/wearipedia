@@ -15,6 +15,7 @@ class_name = "MyFitnessPal"
 # todo: change this to better path
 CRED_CACHE_PATH = "/tmp/wearipedia_myfitnesspal_data.pkl"
 
+
 class MyFitnessPal(BaseDevice):
     def __init__(self, params):
 
@@ -24,7 +25,8 @@ class MyFitnessPal(BaseDevice):
         #
 
         self._initialize_device_params(
-            ["goals", "daily_summary", "exercises_cardio", "exercises_strength","lunch",'breakfast','dinner','snacks'],
+            ["goals", "daily_summary", "exercises_cardio",
+                "exercises_strength", "lunch", 'breakfast', 'dinner', 'snacks'],
             params,
             {
                 "seed": 0,
@@ -33,6 +35,7 @@ class MyFitnessPal(BaseDevice):
                 "use_cache": True,
             },
         )
+
     def _default_params(self):
         return {
             "start_date": self.init_params["synthetic_start_date"],
@@ -41,7 +44,7 @@ class MyFitnessPal(BaseDevice):
 
     def _get_real(self, data_type, params):
         return fetch_real_data(
-            self,params["start_date"], params["end_date"], data_type
+            self, params["start_date"], params["end_date"], data_type
         )
 
     def _filter_synthetic(self, data, data_type, params):
@@ -49,12 +52,14 @@ class MyFitnessPal(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
+        def date_str_to_obj(x): return datetime.strptime(x, "%Y-%m-%d")
 
         # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
+        synthetic_start = date_str_to_obj(
+            self.init_params["synthetic_start_date"])
 
-        start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
+        start_idx = (date_str_to_obj(
+            params["start_date"]) - synthetic_start).days
         end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
 
         return data[start_idx:end_idx]
@@ -64,7 +69,7 @@ class MyFitnessPal(BaseDevice):
         seed_everything(self.init_params["seed"])
 
         # and based on start and end dates
-        self.goals, self.daily_summary, self.exercises_cardio, self.exercises_strength,self.breakfast,self.lunch,self.dinner,self.snacks = create_syn_data(
+        self.goals, self.daily_summary, self.exercises_cardio, self.exercises_strength, self.breakfast, self.lunch, self.dinner, self.snacks = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
@@ -76,7 +81,8 @@ class MyFitnessPal(BaseDevice):
             try:
                 client = myfitnesspal.Client(auth_creds['cookies'])
             except myfitnesspal.exceptions.MyfitnesspalLoginError as e:
-                print("Could not authenticate with MyFitnessPal using the cookies provided, retry using a local machine")
+                print(
+                    "Could not authenticate with MyFitnessPal using the cookies provided, retry using a local machine")
                 return
         else:
             try:
@@ -84,13 +90,10 @@ class MyFitnessPal(BaseDevice):
             except myfitnesspal.exceptions.MyfitnesspalLoginError as e:
                 print("Could not authenticate with MyFitnessPal using the cookies provided by your device, retry using a local machine")
                 return
-        
+
         self.client = client
-    
+
         print('Authenticated!')
 
         # figure out how to cache this, considering I am not using an API
         # pickle.dump(self, open(CRED_CACHE_PATH, "wb"))
-
-
-    

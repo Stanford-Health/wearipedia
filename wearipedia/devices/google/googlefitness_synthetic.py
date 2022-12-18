@@ -18,10 +18,12 @@ datasourceids = {
     'oxygen_saturation': 'derived:com.google.oxygen_saturation:com.google.android.gms:merged',
     'body_temperature': 'derived:com.google.body.temperature:com.google.android.gms:merged',
     'mensuration':  'derived:com.google.menstruation:com.google.android.gms:merged'
-    }
+}
 
 # Function takes in a start date and end date and returns generated synthetic data for each data type
-def create_syn_data(start_date,end_date):
+
+
+def create_syn_data(start_date, end_date):
 
     # Create a list of dates between start_date and end_date
     dates = pd.date_range(start_date, end_date)
@@ -44,7 +46,8 @@ def create_syn_data(start_date,end_date):
     mensuration = []
 
     # Create a random device id for the synthetic data
-    device_id = ''.join(np.random.choice([*'abcdefghijklmnopqrstuvwxyz0123456789'],8, replace=True))
+    device_id = ''.join(np.random.choice(
+        [*'abcdefghijklmnopqrstuvwxyz0123456789'], 8, replace=True))
 
     # Iterate through each date in the list of dates
     for d in dates:
@@ -59,27 +62,36 @@ def create_syn_data(start_date,end_date):
         res['endTimeMillis'] = str(endmillis)
 
         syn_steps = max(0, int(np.random.normal(10000, 9000)))
-        avg_syn_hrs = lambda x: np.round(np.random.normal(100,20),14)
-        max_syn_hrs = lambda x: np.round(np.random.normal(120,20),14)
-        min_syn_hrs = lambda x: np.round(np.random.normal(80,20),14)
-        syn_sleep_duration = lambda x: np.round(np.random.normal(8,3),1)
-        syn_weight = lambda x: np.round(np.random.normal(70,30),1)
-        syn_height = lambda x: np.round(np.random.normal(1.7,0.3),14)
-        syn_speed_avg = lambda x: np.round(np.random.normal(2,1),1)
-        syn_speed_max = lambda x: np.round(np.random.normal(3,1),1)
-        syn_speed_min = lambda x: np.round(np.random.normal(1,0.5),1)
-        syn_heart_minutes = lambda x: np.round(np.random.normal(90,30),1)
-        syn_calories_expended = lambda x: np.round(np.random.normal(2000,1000),1)
-        syn_blood_pressure_sys = lambda x: np.round(np.random.normal(120,20),1)
-        syn_blood_pressure_dia = lambda x: np.round(np.random.normal(80,20),1)
-        syn_blood_glucose = lambda x: np.round(np.random.normal(100,20),1)
-        syn_activity = lambda x: np.round(np.random.normal(100,50))
-        syn_distance = lambda x: np.round(np.random.normal(3000,2000),1)
-        syn_oxygen_saturation = lambda x: np.round(np.random.normal(96.5,5),1)
-        syn_oxygen_flow = lambda x: np.round(np.random.normal(3,2),1)
-        syn_body_temperature = lambda x: np.round(np.random.normal(36.5,2),1)
-        syn_mensuration = lambda x: np.random.choice([1,2,3,4])
+        def avg_syn_hrs(x): return np.round(np.random.normal(100, 20), 14)
+        def max_syn_hrs(x): return np.round(np.random.normal(120, 20), 14)
+        def min_syn_hrs(x): return np.round(np.random.normal(80, 20), 14)
+        def syn_sleep_duration(x): return np.round(np.random.normal(8, 3), 1)
+        def syn_weight(x): return np.round(np.random.normal(70, 30), 1)
+        def syn_height(x): return np.round(np.random.normal(1.7, 0.3), 14)
+        def syn_speed_avg(x): return np.round(np.random.normal(2, 1), 1)
+        def syn_speed_max(x): return np.round(np.random.normal(3, 1), 1)
+        def syn_speed_min(x): return np.round(np.random.normal(1, 0.5), 1)
+        def syn_heart_minutes(x): return np.round(np.random.normal(90, 30), 1)
 
+        def syn_calories_expended(x): return np.round(
+            np.random.normal(2000, 1000), 1)
+
+        def syn_blood_pressure_sys(x): return np.round(
+            np.random.normal(120, 20), 1)
+        def syn_blood_pressure_dia(x): return np.round(
+            np.random.normal(80, 20), 1)
+
+        def syn_blood_glucose(x): return np.round(np.random.normal(100, 20), 1)
+        def syn_activity(x): return np.round(np.random.normal(100, 50))
+        def syn_distance(x): return np.round(np.random.normal(3000, 2000), 1)
+        def syn_oxygen_saturation(x): return np.round(
+            np.random.normal(96.5, 5), 1)
+
+        def syn_oxygen_flow(x): return np.round(np.random.normal(3, 2), 1)
+        def syn_body_temperature(x): return np.round(
+            np.random.normal(36.5, 2), 1)
+
+        def syn_mensuration(x): return np.random.choice([1, 2, 3, 4])
 
         # Building the resulting dictionary for steps
         res['dataset'] = [{
@@ -260,7 +272,8 @@ def create_syn_data(start_date,end_date):
                             'fpVal': syn_blood_glucose(0),
                             'mapVal': []
                         },
-                        {'intVal': 2, 'mapVal': []}, {'intVal': 3, 'mapVal': []}, {'mapVal': []}, {'intVal': 2, 'mapVal': []}
+                        {'intVal': 2, 'mapVal': []}, {'intVal': 3, 'mapVal': []}, {
+                            'mapVal': []}, {'intVal': 2, 'mapVal': []}
                     ]
                 }
             ]
@@ -498,14 +511,3 @@ def create_syn_data(start_date,end_date):
 
     # Retuning the resulting lists
     return steps, hrs, weight, height, speed, heart_minutes, calories_expended, sleep, blood_pressure, blood_glucose, activity_mins, distance, oxygen_saturation, body_temperature, mensuration
-
-
-
-
-
-
-
-
-
-
-

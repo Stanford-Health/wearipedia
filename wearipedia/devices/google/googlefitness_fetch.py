@@ -2,24 +2,27 @@ import requests
 import json
 from datetime import datetime, timedelta, date
 
-year, month, day = 0,1,2
+year, month, day = 0, 1, 2
 
 default_time_bucket = 86400000
 
-milliconvert = lambda d: int(datetime(int(d.split('-')[year]), int(d.split('-')[month]), int(d.split('-')[day])).timestamp()*1000)
+
+def milliconvert(d): return int(datetime(int(d.split(
+    '-')[year]), int(d.split('-')[month]), int(d.split('-')[day])).timestamp()*1000)
+
 
 def fetch_real_data(self, start_date, end_date, data_type, time_bucket=default_time_bucket):
-    
+
     # URL to access all of participant's activities.
     api_url = "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate"
 
     # Access token that enables us to access the user's data using google's API
     g_access_token = self.access_token
 
-    #Header that sends the Access Token in the GET request
+    # Header that sends the Access Token in the GET request
     headers = {
-  "Authorization": "Bearer {}".format(g_access_token),
-  "Content-Type": "application/json;encoding=utf-8"
+        "Authorization": "Bearer {}".format(g_access_token),
+        "Content-Type": "application/json;encoding=utf-8"
     }
 
     # The data type names and data source ids are used to specify the type of data we want to access
@@ -42,7 +45,8 @@ def fetch_real_data(self, start_date, end_date, data_type, time_bucket=default_t
         'body_temperature': 'com.google.body.temperature',
         'mensuration': 'com.google.mensuration'
     }
-    
+
+    # The data source ids are used to specify the type of data we want to access from the API.
     datasourceids = {
         'steps': 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps',
         'heart_rate': 'derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm',
@@ -61,19 +65,23 @@ def fetch_real_data(self, start_date, end_date, data_type, time_bucket=default_t
         'mensuration':  'derived:com.google.menstruation:com.google.android.gms:merged'
     }
 
+    # The body of the GET request that specifies the data type, data source, start date, and end date
     body = {
-    "aggregateBy": [{
-        "dataTypeName": datatypenames[data_type],
-        "dataSourceId": datasourceids[data_type]
-    }],
-    "bucketByTime": { "durationMillis": time_bucket },
-    "startTimeMillis": milliconvert(start_date),
-    "endTimeMillis": milliconvert(end_date)
+        "aggregateBy": [{
+            "dataTypeName": datatypenames[data_type],
+            "dataSourceId": datasourceids[data_type]
+        }],
+        "bucketByTime": {"durationMillis": time_bucket},
+        "startTimeMillis": milliconvert(start_date),
+        "endTimeMillis": milliconvert(end_date)
     }
 
-    #GET request to get all your activities from the API
+    # GET request to get all your activities from the API
     response = requests.post(api_url, data=json.dumps(body), headers=headers)
 
+    # If there is an error in the response, raise an exception
     if 'error' in response.json():
         raise Exception(f"Error in response: {response.json()['error']}")
+
+    # Return the bucket of data
     return response.json()['bucket']

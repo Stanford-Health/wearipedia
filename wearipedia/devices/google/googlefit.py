@@ -9,6 +9,7 @@ from .googlefitness_synthetic import *
 
 class_name = "GoogleFitness"
 
+
 class GoogleFitness(BaseDevice):
     def __init__(self, params):
 
@@ -17,7 +18,8 @@ class GoogleFitness(BaseDevice):
         # rate-limit a lot, see this GitHub issue:
         #
         self._initialize_device_params(
-            ['steps','heart_rate', 'sleep', 'heart_minutes','blood_pressure', 'blood_glucose', 'body_temperature', 'calories_expended', 'activity_minutes', 'height', 'oxygen_saturation', 'mensuration', 'speed', 'weight','distance'],
+            ['steps', 'heart_rate', 'sleep', 'heart_minutes', 'blood_pressure', 'blood_glucose', 'body_temperature',
+                'calories_expended', 'activity_minutes', 'height', 'oxygen_saturation', 'mensuration', 'speed', 'weight', 'distance'],
             params,
             {
                 "seed": 0,
@@ -27,6 +29,7 @@ class GoogleFitness(BaseDevice):
                 "use_cache": True,
             },
         )
+
     def _default_params(self):
         return {
             "start_date": self.init_params["synthetic_start_date"],
@@ -36,9 +39,9 @@ class GoogleFitness(BaseDevice):
 
     def _get_real(self, data_type, params):
         if 'time_bucket' not in params:
-            return fetch_real_data(self,params["start_date"], params["end_date"], data_type)
+            return fetch_real_data(self, params["start_date"], params["end_date"], data_type)
         return fetch_real_data(
-            self,params["start_date"], params["end_date"], data_type, params['time_bucket']
+            self, params["start_date"], params["end_date"], data_type, params['time_bucket']
         )
 
     def _filter_synthetic(self, data, data_type, params):
@@ -46,12 +49,14 @@ class GoogleFitness(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
+        def date_str_to_obj(x): return datetime.strptime(x, "%Y-%m-%d")
 
         # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
+        synthetic_start = date_str_to_obj(
+            self.init_params["synthetic_start_date"])
 
-        start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
+        start_idx = (date_str_to_obj(
+            params["start_date"]) - synthetic_start).days
         end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
 
         return data[start_idx:end_idx]
@@ -59,10 +64,9 @@ class GoogleFitness(BaseDevice):
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
-        # steps, hrs, weight, height, speed, heart_minutes, calories_expended, sleep, 
-        #  blood_pressure, blood_glucose, activity_mins, distance, oxygen_saturation, 
+        # steps, hrs, weight, height, speed, heart_minutes, calories_expended, sleep,
+        #  blood_pressure, blood_glucose, activity_mins, distance, oxygen_saturation,
         # body_temperature, mensuration
-
 
         # # and based on start and end dates
         self.steps, self.heart_rate, self.weight, self.height, self.speed, self.heart_minutes, self.calories_expended, self.sleep, self.blood_pressure, self.blood_glucose, self.activity_minutes, self.distance, self.oxygen_saturation, self.body_temperature, self.mensuration = create_syn_data(
@@ -70,7 +74,7 @@ class GoogleFitness(BaseDevice):
             self.init_params["synthetic_end_date"])
 
     def _authenticate(self, auth_creds):
-       
+
         if 'access_token' not in auth_creds:
             raise ValueError('access_token not found in credentials')
 
@@ -80,13 +84,13 @@ class GoogleFitness(BaseDevice):
         # The acces token that enables us to access the user's data using google's API
         g_access_token = auth_creds['access_token']
 
-        #headers sends the user's credentials to the API during POST request
+        # headers sends the user's credentials to the API during POST request
         headers = {
-        "Authorization": "Bearer {}".format(g_access_token),
-        "Content-Type": "application/json;encoding=utf-8"
+            "Authorization": "Bearer {}".format(g_access_token),
+            "Content-Type": "application/json;encoding=utf-8"
         }
 
-        #POST request to get the participant's ACCESS TOKEN
+        # POST request to get the participant's ACCESS TOKEN
         res = requests.get(auth_url, headers=headers)
 
         # saving the participant's ACCESS TOKEN
@@ -99,5 +103,3 @@ class GoogleFitness(BaseDevice):
 
         # figure out how to cache this, considering I am not using an API
         # pickle.dump(self, open(CRED_CACHE_PATH, "wb"))
-
-    
