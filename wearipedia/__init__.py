@@ -66,6 +66,11 @@ def get_all_device_names():
         "dreem/headband_2",
         "dexcom/pro_cgm",
         "garmin/fenix_7s",
+        "polar/vantage",
+        "strava/strava",
+        "cronometer/cronometer",
+        "underarmour/myfitnesspal",
+        "google/googlefit",
     ]
 
 
