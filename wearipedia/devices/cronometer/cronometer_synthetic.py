@@ -19,7 +19,7 @@ def create_syn_data(start_date, end_date):
     def caffeine(x): return np.round(np.random.uniform(0, 500), 2)
     def water(x): return np.round(np.random.uniform(1000, 5000), 2)
 
-    servings_data = pd.read_csv('wearipedia/devices/cronometer/servings.csv')
+    servings_data = pd.read_json('wearipedia/devices/cronometer/servings.json')
 
     # create random id
     for d in dates:
