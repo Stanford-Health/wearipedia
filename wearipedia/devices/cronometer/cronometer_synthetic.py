@@ -42,7 +42,16 @@ def create_syn_data(start_date, end_date):
         calories2 = minutes2 * np.random.randint(4, 6)
 
         # create random exercises
-        exercises.append({'Day':  d.strftime('%Y-%m-%d'), 'Exercise': 'High Intensity Interval Training (Apple Health)',
+        exercises.append({'Day':  d.strftime('%Y-%m-%d'), 'Exercise':
+                          np.random.choice(['Running',
+                                            'Traditional Strength Training', 'High Intensity Interval Training',
+                                            'Walking', 'Swimming', 'Boxing', 'Golf', 'Elliptical', 'Hiking', 'Cycling',
+                                            'Rower', 'Yoga', 'Dance', 'Pilates', 'Tai Chi', 'Martial Arts', 'Climbing',
+                                            'Skiing', 'Snowboarding', 'Squash', 'Tennis', 'Volleyball', 'Basketball',
+                                            'Football', 'Rugby', 'Baseball', 'Softball', 'Cricket', 'Hockey', 'Badminton',
+                                            'Table Tennis', 'Lacrosse', 'Handball', 'Water Polo', 'Fencing', 'Gymnastics',
+                                            'Skateboarding', 'Surfing', 'Wrestling', 'Soccer', 'American Football',
+                                            'Australian Football', 'Racquetball', 'Field Hockey', 'Ice Hockey', 'Netball']),
                          'Minutes': minutes1, 'Calories Burned': -calories1})
         exercises.append({'Day':  d.strftime('%Y-%m-%d'), 'Exercise': 'Active Energy Balance (Apple Health)',
                          'Minutes': minutes2, 'Calories Burned': -calories2})
