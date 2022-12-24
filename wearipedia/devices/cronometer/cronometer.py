@@ -61,7 +61,10 @@ class Cronometer(BaseDevice):
             params["start_date"]) - synthetic_start).days
         end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
 
-        return data[start_idx:end_idx]
+        if data_type in ["exercises", "biometrics"]:
+            return data[start_idx*2:end_idx*2]
+        else:
+            return data[start_idx:end_idx]
 
     def _gen_synthetic(self):
         # generate random data according to seed
