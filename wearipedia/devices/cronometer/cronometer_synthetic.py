@@ -35,8 +35,8 @@ def create_syn_data(start_date, end_date):
         biometrics.append({'Day':  d.strftime('%Y-%m-%d'), 'Metric': 'Heart Rate (Apple Health)',
                           'Unit': 'bpm', 'Amount': np.random.randint(100, 130)})
 
-        minutes1 = np.random.randint(30, 90)
-        minutes2 = np.random.randint(30, 90)
+        minutes1 = np.random.uniform(30, 90)
+        minutes2 = np.random.uniform(30, 90)
 
         calories1 = minutes1 * np.random.randint(4, 6)
         calories2 = minutes2 * np.random.randint(4, 6)
