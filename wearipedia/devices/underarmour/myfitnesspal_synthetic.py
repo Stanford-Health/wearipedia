@@ -777,11 +777,12 @@ def create_syn_data(start_date, end_date):
 
         # Adding each exercise to the list of cardio exercises for that day
         for exercise in random_exercises:
+            minutes = np.random.randint(10, 60)
             syn_exercise = {
                 'name': exercise,
                 'nutrition_information': {
-                    'duration': float(np.random.randint(10, 60)),
-                    'distance': float(np.random.randint(1, 10))
+                    'minutes': minutes,
+                    'calories burned': minutes * max(2, np.random.uniform(3, 5)),
                 }
             }
 
