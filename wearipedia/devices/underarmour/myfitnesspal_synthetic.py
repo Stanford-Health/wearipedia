@@ -924,4 +924,4 @@ def create_syn_data(start_date, end_date):
             }
         }])
 
-    return goals, daily_summary, cardio_exercises, exercises_strength, breakfast, lunch, dinner, snacks
+    return goals, daily_summary, cardio_exercises, strength_exercises, breakfast, lunch, dinner, snacks
