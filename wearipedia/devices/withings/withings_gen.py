@@ -151,7 +151,7 @@ def create_syn_hr(start_date, end_date, syn_sleeps):
 
     syn_hr["model"] = "ScanWatch"
     syn_hr["model_id"] = 93
-    syn_hr["deviceid"] = hashlib.md5(usedforsecurity=False).hexdigest()
+    syn_hr["deviceid"] = hashlib.md5().hexdigest()
 
     num_garbage = 1000
 

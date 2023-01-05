@@ -12,10 +12,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9"]
+        os: [ubuntu-latest]
+        python-version: ["3.7", "3.8", "3.9"]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
@@ -41,6 +42,15 @@ jobs:
 
     - name: Install poetry
       run: make poetry-download
+
+    - name: add poetry to path
+      run: echo "/Users/runner/.local/bin" >> $GITHUB_PATH
+
+    - name: check path
+      run: echo $PATH; echo $GITHUB_PATH
+
+    - name: check poetry
+      run: poetry --version
 
     - name: Set up cache
       uses: actions/cache@v3.0.11
