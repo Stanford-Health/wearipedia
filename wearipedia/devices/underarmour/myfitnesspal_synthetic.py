@@ -21,7 +21,7 @@ def create_syn_data(start_date, end_date):
     def syn_calories(x): return np.round(np.random.normal(2500, 200), 1)
     def syn_carbs(x): return np.round(np.random.normal(250, 75), 1)
     def syn_fat(x): return np.round(np.random.normal(75, 25), 1)
-    def syn_protein(x): return np.round(max(0, np.random.normal(100, 25)), 1)
+    def syn_protein(x): return np.round(max(0, np.random.normal(100, 33)), 1)
 
     def syn_sodium(x): return np.round(np.random.normal(2300, 500), 1)
     def syn_sugar(x): return np.round(np.random.normal(75, 25), 1)
