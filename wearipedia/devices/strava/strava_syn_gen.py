@@ -79,32 +79,28 @@ def create_syn_data(start_date, end_date):
     for d in dates:
 
         # Generating 12 different coordinates for each run
-
-        coordinates = [(coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005))
-                       for c in np.arange(12)]
-        print(coordinates)
-        # coordinates = [(coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005),
-        #                 coordinate[1]+np.random.normal(-0.005, 0.005)),
-        #                (coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005))]
+        coordinates = [(coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005),
+                        coordinate[1]+np.random.normal(-0.005, 0.005)),
+                       (coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005))]
 
         # Generating random run distance
         distance = distance_generator(d)
