@@ -99,6 +99,8 @@ def create_syn_data(start_date, end_date):
 
         # Building the resulting dictionary for steps
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['steps'],
             'point': [
                 {
@@ -116,10 +118,11 @@ def create_syn_data(start_date, end_date):
             ]
         }]
         steps.append(res)
-
         # Building the resulting dictionary for heart rate
         syn_hrs = max_syn_hrs(0)
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['heart_rate'],
             'point': [
                 {
@@ -150,6 +153,8 @@ def create_syn_data(start_date, end_date):
         # Building the resulting dictionary for sleep duration
 
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['sleep'],
             'point': [
                 {
@@ -171,6 +176,8 @@ def create_syn_data(start_date, end_date):
         weightGen = np.round(weight_gen + np.random.normal(-1, 1), 1)
         # Building the resulting dictionary for weight
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['weight'],
             'point': [
                 {
@@ -201,6 +208,8 @@ def create_syn_data(start_date, end_date):
         heightGen = np.round(height_gen + np.random.normal(-0.5, 0.5), 1)
         # Building the resulting dictionary for height
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['height'],
             'point': [
                 {
@@ -230,6 +239,8 @@ def create_syn_data(start_date, end_date):
 
         # Building the resulting dictionary for speed
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['speed'],
             'point': [
                 {
@@ -259,6 +270,8 @@ def create_syn_data(start_date, end_date):
         # Building the resulting dictionary for blood glucose
 
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['blood_glucose'],
             'point': [
                 {
@@ -291,6 +304,8 @@ def create_syn_data(start_date, end_date):
         # Building the resulting dictionary for blood pressure
 
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['blood_pressure'],
             'point': [
                 {
@@ -335,6 +350,8 @@ def create_syn_data(start_date, end_date):
 
         # Building the resulting dictionary for distance
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['distance'],
             'point': [
                 {
@@ -354,6 +371,8 @@ def create_syn_data(start_date, end_date):
 
         # Building the resulting dictionary for heart minutes
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['heart_minutes'],
             'point': [
                 {
@@ -378,6 +397,8 @@ def create_syn_data(start_date, end_date):
         # Building the resulting dictionary for calories
 
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['calories_expended'],
             'point': [
                 {
@@ -398,6 +419,8 @@ def create_syn_data(start_date, end_date):
 
         # Building the resulting dictionary for activity_minutes
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['activity_minutes'],
             'point': [
                 {
@@ -419,6 +442,8 @@ def create_syn_data(start_date, end_date):
         # Building the resulting dictionary for menstrual cycle
 
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['mensuration'],
             'point': [
                 {
@@ -439,6 +464,8 @@ def create_syn_data(start_date, end_date):
         # Building the resulting dictionary for body temperature
 
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['body_temperature'],
             'point': [
                 {
@@ -467,6 +494,8 @@ def create_syn_data(start_date, end_date):
         # Building the resulting dictionary for oxygen saturation
 
         res = [{
+            'startTimeMillis': startmillis,
+            'endTimeMillis': endmillis,
             'dataSourceId': datasourceids['oxygen_saturation'],
             'point': [
                 {
