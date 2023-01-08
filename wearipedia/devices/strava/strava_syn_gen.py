@@ -79,9 +79,8 @@ def create_syn_data(start_date, end_date):
     for d in dates:
 
         # Generating 1000 different coordinates for each run
-        coordinates = [
-            [(coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005))
-             for c in np.arange(1000)]]
+        coordinates = [(coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005))
+                       for c in np.arange(1000)]
 
         # Generating random run distance
         distance = distance_generator(d)
