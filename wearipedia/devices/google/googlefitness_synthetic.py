@@ -21,8 +21,8 @@ datasourceids = {
 }
 
 
-def syn_weight(x): return np.round(np.random.normal(70, 30), 1)
-def syn_height(x): return np.round(np.random.normal(1.7, 0.3), 14)
+def syn_weight(x): return np.round(np.random.normal(70, 10), 1)
+def syn_height(x): return np.round(np.random.normal(1.7, 0.15), 14)
 
 
 weight_gen = syn_weight(1)
