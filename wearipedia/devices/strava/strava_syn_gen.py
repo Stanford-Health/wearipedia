@@ -80,9 +80,9 @@ def create_syn_data(start_date, end_date):
 
         # Generating 12 different coordinates for each run
 
-        coordinates = [(coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005))
-                       for c in np.arange(1000)]
-        print(coordinates[0])
+        coordinates1 = [(coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005))
+                        for c in np.arange(1000)]
+        print(coordinates1[0], 'coordinates1')
         coordinates = [(coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005)),
                        (coordinate[0]+np.random.normal(-0.005, 0.005),
                         coordinate[1]+np.random.normal(-0.005, 0.005)),
@@ -105,7 +105,7 @@ def create_syn_data(start_date, end_date):
                        (coordinate[0]+np.random.normal(-0.005, 0.005),
                         coordinate[1]+np.random.normal(-0.005, 0.005)),
                        (coordinate[0]+np.random.normal(-0.005, 0.005), coordinate[1]+np.random.normal(-0.005, 0.005))]
-        print(coordinates[0])
+        print(coordinates[0], 'coordinates')
 
         # Generating random run distance
         distance = distance_generator(d)
