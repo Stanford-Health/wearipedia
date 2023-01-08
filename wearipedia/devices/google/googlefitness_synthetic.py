@@ -168,7 +168,7 @@ def create_syn_data(start_date, end_date):
         }]
         sleep.append(res)
 
-        weightGen = weight_gen + np.random.normal(-2, 2)
+        weightGen = np.round(weight_gen + np.random.normal(-2, 2), 1)
         # Building the resulting dictionary for weight
         res = [{
             'dataSourceId': datasourceids['weight'],
@@ -198,7 +198,7 @@ def create_syn_data(start_date, end_date):
 
         weight.append(res)
 
-        heightGen = height_gen + np.random.normal(-2, 2)
+        heightGen = np.round(height_gen + np.random.normal(-2, 2), 1)
         # Building the resulting dictionary for height
         res = [{
             'dataSourceId': datasourceids['height'],
