@@ -421,7 +421,7 @@ def create_syn_data(start_date, end_date):
                     'originDataSourceId': 'raw:com.google.menstrual_cycle:com.google.android.apps.fitness:user_input',
                     'value': [
                         {
-                            'fpVal': syn_mensuration(0),
+                            'fpVal': float(syn_mensuration(0)),
                             'mapVal': []
                         }]
                 }
