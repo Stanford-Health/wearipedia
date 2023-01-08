@@ -47,7 +47,7 @@ def create_syn_data(start_date, end_date):
         np.random.normal(155, 20), 1)
 
     # We will use Stanford's coordinate as the benchmark coordinates to generate random runs based off
-    coordinate = (-122.168861, 37.428230)
+    coordinate = (37.4275, -122.1697)
 
     # Generating random elev_high with average run being 40m and standard deviation of 25m
     def elev_high_generator(x): return max(
