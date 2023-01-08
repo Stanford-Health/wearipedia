@@ -20,6 +20,14 @@ datasourceids = {
     'mensuration':  'derived:com.google.menstruation:com.google.android.gms:merged'
 }
 
+
+def syn_weight(x): return np.round(np.random.normal(70, 30), 1)
+def syn_height(x): return np.round(np.random.normal(1.7, 0.3), 14)
+
+
+weight_gen = syn_weight(1)
+height_gen = syn_height(1)
+
 # Function takes in a start date and end date and returns generated synthetic data for each data type
 
 
@@ -62,12 +70,8 @@ def create_syn_data(start_date, end_date):
         res['endTimeMillis'] = str(endmillis)
 
         syn_steps = max(0, int(np.random.normal(10000, 9000)))
-        def avg_syn_hrs(x): return np.round(np.random.normal(100, 20), 14)
         def max_syn_hrs(x): return np.round(np.random.normal(120, 20), 14)
-        def min_syn_hrs(x): return np.round(np.random.normal(80, 20), 14)
         def syn_sleep_duration(x): return np.round(np.random.normal(8, 3), 1)
-        def syn_weight(x): return np.round(np.random.normal(70, 30), 1)
-        def syn_height(x): return np.round(np.random.normal(1.7, 0.3), 14)
         def syn_speed_avg(x): return np.round(np.random.normal(2, 1), 1)
         def syn_speed_max(x): return np.round(np.random.normal(3, 1), 1)
         def syn_speed_min(x): return np.round(np.random.normal(1, 0.5), 1)
@@ -114,6 +118,7 @@ def create_syn_data(start_date, end_date):
         steps.append(res)
 
         # Building the resulting dictionary for heart rate
+        syn_hrs = max_syn_hrs(0)
         res = [{
             'dataSourceId': datasourceids['heart_rate'],
             'point': [
@@ -124,15 +129,15 @@ def create_syn_data(start_date, end_date):
                     'originDataSourceId': f'derived:com.google.heart_rate.bpm:com.google.ios.fit:appleinc.:watch:{device_id}:top_level',
                     'value': [
                         {
-                            'fpVal': avg_syn_hrs(0),
+                            'fpVal': syn_hrs,
                             'mapVal': []
                         },
                         {
-                            'fpVal': max_syn_hrs(0),
+                            'fpVal': syn_hrs,
                             'mapVal': []
                         },
                         {
-                            'fpVal': min_syn_hrs(0),
+                            'fpVal': syn_hrs,
                             'mapVal': []
                         }
                     ]
@@ -163,6 +168,7 @@ def create_syn_data(start_date, end_date):
         }]
         sleep.append(res)
 
+        weightGen = syn_weight + np.random.normal(-2, 2)
         # Building the resulting dictionary for weight
         res = [{
             'dataSourceId': datasourceids['weight'],
@@ -174,15 +180,15 @@ def create_syn_data(start_date, end_date):
                     'originDataSourceId': f'derived:com.google.weight:com.google.ios.fit:appleinc.:watch:{device_id}:top_level',
                     'value': [
                         {
-                            'fpVal': syn_weight(0),
+                            'fpVal': weightGen,
                             'mapVal': []
                         },
                         {
-                            'fpVal': syn_weight(0),
+                            'fpVal': weightGen,
                             'mapVal': []
                         },
                         {
-                            'fpVal': syn_weight(0),
+                            'fpVal': weightGen,
                             'mapVal': []
                         },
                     ]
@@ -192,6 +198,7 @@ def create_syn_data(start_date, end_date):
 
         weight.append(res)
 
+        heightGen = syn_height + np.random.normal(-2, 2)
         # Building the resulting dictionary for height
         res = [{
             'dataSourceId': datasourceids['height'],
@@ -203,15 +210,15 @@ def create_syn_data(start_date, end_date):
                     'originDataSourceId': 'raw:com.google.height:com.google.android.apps.fitness:user_input',
                     'value': [
                         {
-                            'fpVal': syn_height(0),
+                            'fpVal': heightGen,
                             'mapVal': []
                         },
                         {
-                            'fpVal': syn_height(0),
+                            'fpVal': heightGen,
                             'mapVal': []
                         },
                         {
-                            'fpVal': syn_height(0),
+                            'fpVal': heightGen,
                             'mapVal': []
                         },
                     ]
