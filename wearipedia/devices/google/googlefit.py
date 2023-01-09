@@ -71,7 +71,7 @@ class GoogleFitness(BaseDevice):
         # # and based on start and end dates
         self.steps, self.heart_rate, self.weight, self.height, self.speed, self.heart_minutes, self.calories_expended, self.sleep, self.blood_pressure, self.blood_glucose, self.activity_minutes, self.distance, self.oxygen_saturation, self.body_temperature, self.mensuration = create_syn_data(
             self.init_params["synthetic_start_date"],
-            self.init_params["synthetic_end_date"])
+            self.init_params["synthetic_end_date"], self.init_params["time_bucket"])
 
     def _authenticate(self, auth_creds):
 
