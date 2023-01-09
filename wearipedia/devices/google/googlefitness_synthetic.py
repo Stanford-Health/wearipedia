@@ -132,15 +132,15 @@ def create_syn_data(start_date, end_date):
                     'originDataSourceId': f'derived:com.google.heart_rate.bpm:com.google.ios.fit:appleinc.:watch:{device_id}:top_level',
                     'value': [
                         {
-                            'fpVal': syn_hrs,
+                            'fpVal': np.round(syn_hrs, 1),
                             'mapVal': []
                         },
                         {
-                            'fpVal': syn_hrs + np.round(np.random.uniform(10, 30), 1),
+                            'fpVal': np.round(syn_hrs + np.random.uniform(10, 40), 1),
                             'mapVal': []
                         },
                         {
-                            'fpVal': syn_hrs - np.round(np.random.uniform(10, 30), 1),
+                            'fpVal': np.round(syn_hrs - np.random.uniform(10, 40), 1),
                             'mapVal': []
                         }
                     ]
