@@ -136,11 +136,11 @@ def create_syn_data(start_date, end_date):
                             'mapVal': []
                         },
                         {
-                            'fpVal': syn_hrs,
+                            'fpVal': syn_hrs + np.round(np.random.uniform(10, 15), 1),
                             'mapVal': []
                         },
                         {
-                            'fpVal': syn_hrs,
+                            'fpVal': syn_hrs - np.round(np.random.uniform(10, 15), 1),
                             'mapVal': []
                         }
                     ]
