@@ -62,7 +62,7 @@ def create_syn_data(start_date, end_date, bucketByTime):
     for d in dates:
         for iter in range(int(iter_count)):
             # Convert the date to milliseconds
-            startmillis = int(d.timestamp()) * 1000 + iter * bucketByTime
+            startmillis = int(d.timestamp()) * 1000 + iter * int(bucketByTime)
             endmillis = startmillis + 86400000 / iter_count
 
             # Create a resulting dictionary that we will alter for each data type
