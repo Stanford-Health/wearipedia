@@ -108,7 +108,7 @@ def create_syn_data(start_date, end_date):
             'calories': int(random_calories(duration)),
             'note': ' ',
             'sportName': np.random.choice(['Running', 'Cycling', 'Strength_Training', 'Swimming']),
-            'sportId': np.random.choice([1, 2, 15, 16]),
+            'sportId': int(np.random.choice([1, 2, 15, 16])),
             'startDate': d.strftime('%Y-%m-%d') + ' ' + str(pd.to_datetime(activity_time(d)[:19])).split(' ')[1]+'.'+str(np.random.randint(0, 1000)).zfill(3),
             'recoveryTime': random_recoveryTime(duration),
             'iconUrl': 'https://platform.cdn.polar.com/ecosystem/sport/icon/d1ce94078aec226be28f6c602e6803e1-2015-10-20_13_45_19',
