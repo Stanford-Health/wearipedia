@@ -57,7 +57,7 @@ def create_syn_data(start_date, end_date, bucketByTime):
     device_id = ''.join(np.random.choice(
         [*'abcdefghijklmnopqrstuvwxyz0123456789'], 8, replace=True))
 
-    iter_count = 86400000 / bucketByTime
+    iter_count = 86400000 / int(bucketByTime)
     # Iterate through each date in the list of dates
     for d in dates:
         for iter in range(int(iter_count)):
