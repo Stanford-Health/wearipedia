@@ -86,7 +86,7 @@ def create_syn_data(start_date, end_date):
         # Create random sleep wake states
         for i in range(total_sleep_time.seconds//300):
             current_sleep['sleepWakeStates'].append({
-                'sleepWakeState': np.random.randint(0, 3),
+                'sleepWakeState': int(np.random.choice([0]*35 + [1]*15 + [2]*40 + [3]*10)),
                 'offsetFromStart': i*300,
                 'longInterruption': bool(np.random.choice([True]+[False]*9))})
 
