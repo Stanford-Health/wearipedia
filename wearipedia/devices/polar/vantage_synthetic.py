@@ -88,7 +88,7 @@ def create_syn_data(start_date, end_date):
             current_sleep['sleepWakeStates'].append({
                 'sleepWakeState': np.random.randint(0, 3),
                 'offsetFromStart': i*300,
-                'longInterruption': np.random.choice([True]+[False]*9)})
+                'longInterruption': bool(np.random.choice([True]+[False]*9))})
 
         # Append the current sleep to the list of sleeps
         sleeps.append(current_sleep)

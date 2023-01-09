@@ -37,9 +37,14 @@ class PolarVantage(BaseDevice):
         }
 
     def _get_real(self, data_type, params):
-        return fetch_real_data(
-            self, params["start_date"], params["end_date"], data_type, params['training_id']
-        )
+        if 'training_id' in params:
+            return fetch_real_data(
+                self, params["start_date"], params["end_date"], data_type, params['training_id']
+            )
+        else:
+            return fetch_real_data(
+                self, params["start_date"], params["end_date"], data_type, ''
+            )
 
     def _filter_synthetic(self, data, data_type, params):
         # Here we just return the data we've already generated,
