@@ -47,6 +47,10 @@ sphinx-reredirects = "^0.1.1"
 sphinx-copybutton = "^0.5.1"
 matplotlib = "^3.6.2"
 myst-parser = "^0.18.1"
+myfitnesspal = "^2.0.0"
+browsercookie = "^0.7.7"
+beautifulsoup4 = "^4.11.1"
+polyline = "^1.4.0"
 
 [tool.poetry.dev-dependencies]
 bandit = "^1.7.1"
