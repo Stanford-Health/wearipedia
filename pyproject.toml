@@ -32,7 +32,7 @@ classifiers = [  #! Update me
 "wearipedia" = "wearipedia.__main__:app"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 
 typer = {extras = ["all"], version = "^0.6.1"}
 rich = "^12.6.0"

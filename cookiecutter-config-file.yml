@@ -5,7 +5,7 @@ default_context:
   project_description: "wearables in development"
   organization: "Rodrigo Castellon"
   license: "MIT"
-  minimal_python_version: 3.9
+  minimal_python_version: 3.8
   github_name: "rodrigo-castellon"
   email: "rjcaste@stanford.edu"
   version: "0.1.0"
