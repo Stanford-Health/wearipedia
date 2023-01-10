@@ -41,6 +41,10 @@ tqdm = "^4.64.1"
 garminconnect = "^0.1.48"
 scipy = "^1.6"
 wget = "^3.2"
+myfitnesspal = "^2.0.0"
+browsercookie = "^0.7.7"
+polyline = "^1.4.0"
+beautifulsoup4 = "^4.11.1"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "^1.7.1"
