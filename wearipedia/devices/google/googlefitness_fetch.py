@@ -43,7 +43,7 @@ def fetch_real_data(self, start_date, end_date, data_type, time_bucket=default_t
         'distance': 'com.google.distance.delta',
         'oxygen_saturation': 'com.google.oxygen_saturation',
         'body_temperature': 'com.google.body.temperature',
-        'mensuration': 'com.google.mensuration'
+        'menstruation': 'com.google.menstruation'
     }
 
     # The data source ids are used to specify the type of data we want to access from the API.
@@ -62,7 +62,7 @@ def fetch_real_data(self, start_date, end_date, data_type, time_bucket=default_t
         'distance': 'derived:com.google.distance.delta:com.google.android.gms:merge_distance_delta',
         'oxygen_saturation': 'derived:com.google.oxygen_saturation:com.google.android.gms:merged',
         'body_temperature': 'derived:com.google.body.temperature:com.google.android.gms:merged',
-        'mensuration':  'derived:com.google.menstruation:com.google.android.gms:merged'
+        'menstruation':  'derived:com.google.menstruation:com.google.android.gms:merged'
     }
 
     # The body of the GET request that specifies the data type, data source, start date, and end date

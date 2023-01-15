@@ -39,11 +39,11 @@ class PolarVantage(BaseDevice):
     def _get_real(self, data_type, params):
         if 'training_id' in params:
             return fetch_real_data(
-                self, params["start_date"], params["end_date"], data_type, params['training_id']
+                self.session, self.USERID, self.email,self.password, params["start_date"], params["end_date"], data_type, params['training_id']
             )
         else:
             return fetch_real_data(
-                self, params["start_date"], params["end_date"], data_type, ''
+                self.session, self.USERID, self.email,self.password, params["start_date"], params["end_date"], data_type, ''
             )
 
     def _filter_synthetic(self, data, data_type, params):

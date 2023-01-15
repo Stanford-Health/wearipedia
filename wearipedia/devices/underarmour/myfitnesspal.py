@@ -12,9 +12,6 @@ import browsercookie
 
 class_name = "MyFitnessPal"
 
-# todo: change this to better path
-CRED_CACHE_PATH = "/tmp/wearipedia_myfitnesspal_data.pkl"
-
 
 class MyFitnessPal(BaseDevice):
     def __init__(self, params):

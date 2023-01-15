@@ -19,7 +19,7 @@ class GoogleFitness(BaseDevice):
         #
         self._initialize_device_params(
             ['steps', 'heart_rate', 'sleep', 'heart_minutes', 'blood_pressure', 'blood_glucose', 'body_temperature',
-                'calories_expended', 'activity_minutes', 'height', 'oxygen_saturation', 'mensuration', 'speed', 'weight', 'distance'],
+                'calories_expended', 'activity_minutes', 'height', 'oxygen_saturation', 'menstruation', 'speed', 'weight', 'distance'],
             params,
             {
                 "seed": 0,
@@ -66,10 +66,10 @@ class GoogleFitness(BaseDevice):
         seed_everything(self.init_params["seed"])
         # steps, hrs, weight, height, speed, heart_minutes, calories_expended, sleep,
         #  blood_pressure, blood_glucose, activity_mins, distance, oxygen_saturation,
-        # body_temperature, mensuration
+        # body_temperature, menstruation
 
         # # and based on start and end dates
-        self.steps, self.heart_rate, self.weight, self.height, self.speed, self.heart_minutes, self.calories_expended, self.sleep, self.blood_pressure, self.blood_glucose, self.activity_minutes, self.distance, self.oxygen_saturation, self.body_temperature, self.mensuration = create_syn_data(
+        self.steps, self.heart_rate, self.weight, self.height, self.speed, self.heart_minutes, self.calories_expended, self.sleep, self.blood_pressure, self.blood_glucose, self.activity_minutes, self.distance, self.oxygen_saturation, self.body_temperature, self.menstruation = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"], self.init_params["time_bucket"])
 

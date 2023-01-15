@@ -17,8 +17,8 @@ def create_syn_data(start_date, end_date):
     # create random distance
     def random_distance(d): return d / 6000 * 5
 
-    # create random hrAvg
-    def random_hrAvg(d): return np.random.randint(60, 180)
+    # create random hr_avg
+    def random_hr_avg(d): return np.random.randint(60, 180)
 
     # create random calories with the assumption that 1
     def random_calories(dur): return dur / 6000 * 5 * 0.1
@@ -33,7 +33,7 @@ def create_syn_data(start_date, end_date):
     def random_vo2Max(x): return np.random.randint(40, 60)
 
     # create random recoveryTime
-    def random_recoveryTime(dur): return dur - np.random.randint(0, dur)
+    def random_recovery_time(dur): return dur - np.random.randint(0, dur)
 
     # generating the name for the the syntehtic user
     randomName = 'John Doe'
@@ -104,13 +104,13 @@ def create_syn_data(start_date, end_date):
             'id': random_id(''),
             'duration': duration,
             'distance': distance,
-            'hrAvg': random_hrAvg(''),
+            'hr_avg': random_hr_avg(''),
             'calories': int(random_calories(duration)),
             'note': ' ',
             'sportName': np.random.choice(['Running', 'Cycling', 'Strength_Training', 'Swimming']),
             'sportId': int(np.random.choice([1, 2, 15, 16])),
             'startDate': d.strftime('%Y-%m-%d') + ' ' + str(pd.to_datetime(activity_time(d)[:19])).split(' ')[1]+'.'+str(np.random.randint(0, 1000)).zfill(3),
-            'recoveryTime': random_recoveryTime(duration),
+            'recoveryTime': random_recovery_time(duration),
             'iconUrl': 'https://platform.cdn.polar.com/ecosystem/sport/icon/d1ce94078aec226be28f6c602e6803e1-2015-10-20_13_45_19',
             'trainingLoadHtml': '',
             'hasTrainingTarget': False,
@@ -145,7 +145,7 @@ def create_syn_data(start_date, end_date):
                 'Start time': str(pd.to_datetime(activity['startDate'][:19])).split(' ')[1]+' '+suffix,
                 'Duration': str(int(duration/3600000)).zfill(2)+':'+str(int(duration/60000)).zfill(2)+':'+str(int(duration % 1000))[:2].zfill(2),
                 'Total distance (mi)': np.round(distance, 2) if activity['sportId'] != 15 else None,
-                'Average heart rate (bpm)': activity['hrAvg'],
+                'Average heart rate (bpm)': activity['hr_avg'],
                 'Average speed (mi/h)': np.round(distance/(activity['duration']/3600000), 1) if activity['sportId'] != 15 else None,
                 'Max speed (mi/h)': np.round(distance/(activity['duration']/3600000)) if activity['sportId'] != 15 else None,
                 'Average pace (min/mi)': distance/(activity['distance']/3600000) if activity['sportId'] != 5 else None,
@@ -180,7 +180,7 @@ def create_syn_data(start_date, end_date):
             curr_id_traning.append({
                 'Sample rate': 1,
                 'Time': str(i//3600).zfill(2)+':'+str(i//60).zfill(2)+':'+str(i % 60).zfill(2),
-                'HR (bpm)': int(random_hrAvg('')),
+                'HR (bpm)': int(random_hr_avg('')),
                 'Speed (mi/h)': np.round(distance/(activity['duration']/3600000), 1) if activity['sportId'] not in [15, 16] else None,
                 'Pace (min/mi)': distance/(activity['distance']/3600000) if activity['sportId'] not in [15, 16] else None,
                 'Cadence (rpm)': 0,

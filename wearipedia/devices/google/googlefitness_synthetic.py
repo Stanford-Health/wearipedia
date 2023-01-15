@@ -17,7 +17,7 @@ datasourceids = {
     'distance': 'derived:com.google.distance.delta:com.google.android.gms:merge_distance_delta',
     'oxygen_saturation': 'derived:com.google.oxygen_saturation:com.google.android.gms:merged',
     'body_temperature': 'derived:com.google.body.temperature:com.google.android.gms:merged',
-    'mensuration':  'derived:com.google.menstruation:com.google.android.gms:merged'
+    'menstruation':  'derived:com.google.menstruation:com.google.android.gms:merged'
 }
 
 
@@ -51,7 +51,7 @@ def create_syn_data(start_date, end_date, bucketByTime):
     distance = []
     oxygen_saturation = []
     body_temperature = []
-    mensuration = []
+    menstruation = []
 
     # Create a random device id for the synthetic data
     device_id = ''.join(np.random.choice(
@@ -106,7 +106,7 @@ def create_syn_data(start_date, end_date, bucketByTime):
             def syn_body_temperature(x): return np.round(
                 np.random.normal(36.5, 2), 1)
 
-            def syn_mensuration(x): return np.random.choice([1, 2, 3, 4])
+            def syn_menstruation(x): return np.random.choice([1, 2, 3, 4])
 
             # Building the resulting dictionary for steps
             res = [{
@@ -455,7 +455,7 @@ def create_syn_data(start_date, end_date, bucketByTime):
             res = [{
                 'startTimeMillis': startmillis,
                 'endTimeMillis': endmillis,
-                'dataSourceId': datasourceids['mensuration'],
+                'dataSourceId': datasourceids['menstruation'],
                 'point': [
                     {
                         'startTimeNanos': str(startmillis * 1000000),
@@ -464,13 +464,13 @@ def create_syn_data(start_date, end_date, bucketByTime):
                         'originDataSourceId': 'raw:com.google.menstrual_cycle:com.google.android.apps.fitness:user_input',
                         'value': [
                             {
-                                'fpVal': float(syn_mensuration(0)),
+                                'fpVal': float(syn_menstruation(0)),
                                 'mapVal': []
                             }]
                     }
                 ]
             }]
-            mensuration.append(res)
+            menstruation.append(res)
 
             # Building the resulting dictionary for body temperature
 
@@ -557,4 +557,4 @@ def create_syn_data(start_date, end_date, bucketByTime):
             oxygen_saturation.append(res)
 
     # Retuning the resulting lists
-    return steps, hrs, weight, height, speed, heart_minutes, calories_expended, sleep, blood_pressure, blood_glucose, activity_mins, distance, oxygen_saturation, body_temperature, mensuration
+    return steps, hrs, weight, height, speed, heart_minutes, calories_expended, sleep, blood_pressure, blood_glucose, activity_mins, distance, oxygen_saturation, body_temperature, menstruation

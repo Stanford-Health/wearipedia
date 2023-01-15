@@ -3,8 +3,8 @@ import pandas as pd
 import time
 import numpy as np
 
-perPageLimit = 200
-pageCount = 1
+PER_PAGE_LIMIT = 200
+PAGE_COUNT = 1
 
 # Convert date to timestamp
 
@@ -20,7 +20,7 @@ def fetch_real_data(self, start_date, end_date, data_type):
 
     # Header that sends the Access Token in the GET request
     header = {'Authorization': 'Bearer ' + self.access_token}
-    param = {'per_page': perPageLimit, 'page': pageCount,
+    param = {'per_page': PER_PAGE_LIMIT, 'page': PAGE_COUNT,
              'before': dateConvert(end_date), 'after': dateConvert(start_date)}
 
     # GET request to get all your activities from the API

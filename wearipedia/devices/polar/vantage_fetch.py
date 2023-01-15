@@ -6,11 +6,11 @@ import io
 # This is the class that will be used to fetch data from Polar Flow
 
 
-def fetch_real_data(self, start_date, end_date, data_type, training_id=None):
+def fetch_real_data(session, uid, email, password, start_date, end_date, data_type, training_id=None):
 
     # the json data that will be sent to the API as the request body
     json_data = {
-        'userId': self.USERID,
+        'userId': uid,
         'fromDate': start_date,
         'toDate': end_date,
     }
@@ -22,41 +22,24 @@ def fetch_real_data(self, start_date, end_date, data_type, training_id=None):
 
     # login details are sent as payload
     payload = {
-        "email": self.email,
-        "password": self.password,
+        "email": email,
+        "password": password,
     }
 
-    # if the session is not set, we need to login
-    if self.session == None:
-
-        # login to polar flow
-        with requests.Session() as session:
-
-            # send the login request
-            post = session.post('https://flow.polar.com/login', data=payload)
-
-            # using regular expressions, we can search for the userId in the session response
-            result = re.search('AppGlobal.init((.*))', post.text)
-
-            # if the userId is not found, the login failed
-            if result == None:
-                print('Not Authenticated')
-                return
-
-        # if the login was successful, we can set the session to the vantage object
-        self.session = session
+    # if the session is not set, we need to throw an error
+    if session == None:
+        raise Exception('Not Authenticated, please login')
 
     # get the actual training session data
     if data_type == "training_history":
 
         # send the request to the API
-        activities = self.session.post('https://flow.polar.com/api/training/history',
-                                       cookies=self.session.cookies.get_dict(), headers=headers, json=json_data)
+        activities = session.post('https://flow.polar.com/api/training/history',
+                                       cookies=session.cookies.get_dict(), headers=headers, json=json_data)
 
         # if the request was not successful, return an empty list
         if activities.status_code != 200:
-            print('Activity data not found')
-            return []
+            raise Exception('Activity data not found')
 
         # if the request was successful, return the json data
         activities = activities.json()
@@ -74,14 +57,14 @@ def fetch_real_data(self, start_date, end_date, data_type, training_id=None):
         sleep_req_link = f'https://sleep-api.flow.polar.com/api/sleep/report?from={start_date}&to={end_date}'
 
         # send the request to the API
-        sleep = self.session.get(sleep_req_link, cookies=self.session.cookies.get_dict(
+        sleep = session.get(sleep_req_link, cookies=session.cookies.get_dict(
         ), headers=headers, json=json_data)
 
         # if the request was not successful, return an empty list
         if sleep.status_code != 200:
             print('Sleep data not found')
             if len(dates) < 31:
-                print('Please provide a date range of at 1 month')
+                raise Exception('Please provide a date range of at 1 month')
             return []
 
         # if the request was successful, return the json data
@@ -92,17 +75,15 @@ def fetch_real_data(self, start_date, end_date, data_type, training_id=None):
 
         # if the training id is not provided, return an empty list
         if training_id == None:
-            print('Please provide training_id')
-            return []
+            raise Exception('Please provide training_id')
 
         # send the request to the API
-        r = self.session.get(
+        r = session.get(
             'https://flow.polar.com/api/export/training/csv/'+training_id)
 
         # if the request was not successful, return an empty list
         if r.status_code != 200:
-            print('Training data not found')
-            return []
+            raise Exception('Training data not found')
 
         # this extracts the first row of the csv file, which contains the actvity info
         res_df_info = pd.read_csv(io.StringIO(

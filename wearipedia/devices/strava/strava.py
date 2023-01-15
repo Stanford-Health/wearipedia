@@ -11,18 +11,9 @@ from .strava_syn_gen import *
 
 class_name = "Strava"
 
-# todo: change this to better path
-CRED_CACHE_PATH = "/tmp/strava.pkl"
-
 
 class Strava(BaseDevice):
     def __init__(self, params):
-
-        # use_cache just means that we'll use the cached credentials
-        # as opposed to re-authenticating every time (the API tends to
-        # rate-limit a lot, see this GitHub issue:
-        # https://github.com/cyberjunky/python-garminconnect/issues/85
-
         self._initialize_device_params(
             ['distance', 'moving_time', 'elapsed_time',
              'total_elevation_gain', 'average_speed',
@@ -131,7 +122,3 @@ class Strava(BaseDevice):
             return res.json()['message']
         self.access_token = res.json()['access_token']
         print("Access Token = {}\n".format(self.access_token))
-        print('Authenticated!\n')
-
-        # figure out how to cache this, considering I am not using an API
-        # pickle.dump(self, open(CRED_CACHE_PATH, "wb"))

@@ -7,7 +7,7 @@ def fetch_real_data(self, start_date, end_date, data_type):
 
     # if the client is not set, we need to login
     if self.client == None:
-        print('Not Authenticated, login and try again')
+        raise Exception('Not Authenticated, login and try again')
 
     # creating the date range from the start and end dates
     days = pd.date_range(start_date, end_date, freq='D')
