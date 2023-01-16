@@ -1,3 +1,6 @@
 numpydoc
 pygments==2.13.0 ; python_version >= "3.7" and python_version < "4.0"
 pyparsing==3.0.9 ; python_version >= "3.7" and python_version < "4.0"
+sphinx-reredirects
+sphinx-copybutton
+myst-parser
