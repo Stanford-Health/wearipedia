@@ -24,7 +24,7 @@ Package-level Methods
 .. autofunction:: wearipedia.get_all_device_names
 
 
-Device Methods
+Devices
 ------------------------
 .. autoclass:: wearipedia.devices.dexcom.DexcomProCGM
     :members:
