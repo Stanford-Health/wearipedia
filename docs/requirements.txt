@@ -6,3 +6,4 @@ sphinx-copybutton
 myst-parser
 matplotlib
 insipid-sphinx-theme
+wearipedia
