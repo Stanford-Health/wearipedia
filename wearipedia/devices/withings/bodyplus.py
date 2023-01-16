@@ -13,7 +13,20 @@ class_name = "BodyPlus"
 
 
 class BodyPlus(BaseDevice):
-    def __init__(self, params):
+    """This device allows you to work with data from the `Withings Body+ <https://www.withings.com/us/en/body-plus>`_ device.
+    Available datatypes for this device are:
+
+    * `measurements`: contains all measurements made with the scale
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2021-06-01"
+    :type start_date: str, optional
+    """
+
+    def __init__(self, seed=0, synthetic_start_date="2021-06-01"):
+
+        params = {"seed": seed, "synthetic_start_date": synthetic_start_date}
 
         self._initialize_device_params(
             ["measurements"],

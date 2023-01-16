@@ -11,7 +11,7 @@ classes, and methods.
   :backlinks: none
   :local:
 
-Package-Level Methods
+Package-level Methods
 ------------------------
 .. autofunction:: wearipedia.get_device
 
@@ -23,18 +23,29 @@ Package-Level Methods
 
 .. autofunction:: wearipedia.get_all_device_names
 
+
 Device Methods
 ------------------------
-
-.. autoclass:: wearipedia.device.BaseDevice
+.. autoclass:: wearipedia.devices.dexcom.DexcomProCGM
     :members:
     :show-inheritance:
 
-Utilities
-------------------------
+.. autoclass:: wearipedia.devices.garmin.Fenix7S
+    :members:
+    :show-inheritance:
 
-.. autofunction:: wearipedia.utils.is_notebook
+.. autoclass:: wearipedia.devices.polar.VeritySense
+    :members:
+    :show-inheritance:
 
-|
+.. autoclass:: wearipedia.devices.whoop.Whoop4
+    :members:
+    :show-inheritance:
 
-.. autofunction:: wearipedia.utils.seed_everything
+.. autoclass:: wearipedia.devices.withings.BodyPlus
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.withings.ScanWatch
+    :members:
+    :show-inheritance:

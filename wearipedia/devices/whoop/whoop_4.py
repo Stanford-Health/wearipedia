@@ -12,7 +12,32 @@ class_name = "Whoop4"
 
 
 class Whoop4(BaseDevice):
-    def __init__(self, params):
+    """This device allows you to work with data from the `WHOOP 4.0 <https://shop.whoop.com/en-us/collections/whoop4-0/?order_by=featured>`_ device.
+    Available datatypes for this device are:
+
+    * `cycles`: a DataFrame of all cycles (days)
+
+    * `hr`: heart rate data
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
+    :type synthetic_start_date: str, optional
+    :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
+    :type synthetic_end_date: str, optional
+    :param use_cache: decide whether to cache the credentials, defaults to True
+    :type use_cache: bool, optional
+    """
+
+    def __init__(
+        self, seed=0, synthetic_start_date="2022-03-01", synthetic_end_date="2022-06-17"
+    ):
+
+        params = {
+            "seed": seed,
+            "synthetic_start_date": synthetic_start_date,
+            "synthetic_end_date": synthetic_end_date,
+        }
 
         self.data_types_methods_map = {
             "cycles": "get_cycles_json",

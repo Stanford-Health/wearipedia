@@ -22,7 +22,7 @@ wearipedia --help
 
 If you see a list of Wearipedia commands, as shown, below, your installation was successful.
 
-![wearipedia help](https://raw.githubusercontent.com/wearipedia/wearipedia/master/docs/img/wearipedia-help.png)
+![wearipedia help](https://imgur.com/AtKNHGS.png)
 
 ## Upgrade to the Latest Version
 
