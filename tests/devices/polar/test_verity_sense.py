@@ -20,10 +20,8 @@ def test_verity_sense_synthetic():
     for start_date, end_date in zip(start_dates, end_dates):
         device = wearipedia.get_device(
             "polar/verity_sense",
-            params={
-                "start_date": np.datetime_as_string(start_date, unit="D"),
-                "end_date": np.datetime_as_string(end_date, unit="D"),
-            },
+            start_date=np.datetime_as_string(start_date, unit="D"),
+            end_date=np.datetime_as_string(end_date, unit="D"),
         )
 
         data = device.get_data("sessions")

@@ -13,10 +13,8 @@ def test_fenix_7s_synthetic():
 
     device = wearipedia.get_device(
         "garmin/fenix_7s",
-        params={
-            "synthetic_start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
-            "synthetic_end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
-        },
+        synthetic_start_date=datetime.strftime(start_synthetic, "%Y-%m-%d"),
+        synthetic_end_date=datetime.strftime(end_synthetic, "%Y-%m-%d"),
     )
 
     dates = device.get_data("dates")

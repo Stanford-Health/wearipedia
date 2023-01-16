@@ -29,14 +29,9 @@ class BaseDevice:
 
     """
 
-    def __init__(self, params):
+    def __init__(self, **kwargs):
         """Initializes the device. If you are implementing a child device, the overrided
         __init__() should call _initialize_device_params().
-
-        :param params: a dictionary containing parameters for the device. These are specific
-            to each device, and should usually consist of parameters for synthetic data
-            generation (for example, the start and end dates, persona, or random seed).
-        :type params: Dict
         """
 
         default_init_params = {
@@ -44,6 +39,8 @@ class BaseDevice:
             "synthetic_start_date": "2022-03-01",
             "synthetic_end_date": "2022-06-17",
         }
+
+        params = default_init_params
 
         self._initialize_device_params([], params, default_init_params)
 

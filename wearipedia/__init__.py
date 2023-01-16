@@ -14,16 +14,13 @@ from .constants import *
 from .devices import *
 
 
-def get_device(device_name, params=None):
+def get_device(device_name, **kwargs):
     """Get a device object by name. This is the main entry point for the library.
+
+    Keep in mind that the keyword arguments are device-specific!
 
     :param device_name: the name of the device to get, e.g. "garmin/fenix_7s"
     :type device_name: str
-    :param params: parameters to pass to the device, defaults to None. These are
-        specific to each device, and should usually consist of parameters for
-        synthetic data generation (for example, the start and end dates, persona,
-        or random seed).
-    :type params: Dict, optional
     :return: a device object
     :rtype: BaseDevice
 
@@ -52,7 +49,7 @@ def get_device(device_name, params=None):
 
     class_name = getattr(module, "class_name")
 
-    return getattr(module, class_name)(params)
+    return getattr(module, class_name)(**kwargs)
 
 
 def get_all_device_names():

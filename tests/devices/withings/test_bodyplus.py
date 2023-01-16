@@ -11,7 +11,7 @@ def test_withings_bodyplus_synthetic():
     for start_date in start_dates:
         device = wearipedia.get_device(
             "withings/bodyplus",
-            params={"synthetic_start_date": datetime.strftime(start_date, "%Y-%m-%d")},
+            synthetic_start_date=datetime.strftime(start_date, "%Y-%m-%d"),
         )
 
         # calling tests for each pair of start dates
