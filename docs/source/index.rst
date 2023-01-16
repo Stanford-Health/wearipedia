@@ -16,6 +16,12 @@ This is the central page for all of Wearipedia's documentation.
 
 Instructions on how to install Wearipedia.
 
+:ref:`Info Sheet <infosheet>`
+--------------------------------
+
+Information on every device included in the Wearipedia package.
+
+
 :ref:`API Reference <reference>`
 --------------------------------
 
@@ -27,6 +33,7 @@ function does.
    :hidden:
 
    install.md
+   infosheet/index.rst
    reference/index.rst
 
 
