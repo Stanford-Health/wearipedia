@@ -6,12 +6,12 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "wearipedia"
 version = "0.1.0"
-description = "wearables in development"
+description = "Wearable data for all"
 readme = "README.md"
-authors = ["Rodrigo Castellon <rjcaste@stanford.edu>"]
+authors = ["The Stanford Wearipedia Project <arjo@stanford.edu>"]
 license = "MIT"
-repository = "https://github.com/rodrigo-castellon/wearipedia"
-homepage = "https://github.com/rodrigo-castellon/wearipedia"
+repository = "https://github.com/Stanford-Health/wearipedia"
+homepage = "wearipedia.com"
 
 # Keywords description https://python-poetry.org/docs/pyproject/#keywords
 keywords = []  #! Update me
@@ -25,6 +25,8 @@ classifiers = [  #! Update me
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
 ]
 
 [tool.poetry.scripts]
