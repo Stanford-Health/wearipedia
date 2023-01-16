@@ -72,14 +72,11 @@ Wearipedia supports the following devices:
 
 | Company | Model Name | Description | Example Notebook | Kinds of Data Available | Unique name |
 |---|---|---|---|---|---|
-| [Oura](https://ouraring.com/) | Oura | The Oura ring is a wearable device that tracks sleep and activity data. | [Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/ouraring/Example%20Notebook.ipynb) | TBD. | `oura/ring_tbd` |
 | [Whoop](https://www.whoop.com/) | Whoop | The WHOOP 4.0 strap tracks sleep and activity data. | [Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/whoop/Example%20Notebook.ipynb) | cycles, hr. | `whoop/whoop_4` |
-| [Fitbit](https://www.fitbit.com/en-us) | Fitbit | The Fitbit wearable device tracks sleep and activity data. | [Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/fitbit/Example%20Notebook.ipynb) | TBD. | `fitbit/tbd` |
 | [Garmin](https://www.garmin.com/en-US) | Fenix 7S | The Garmin Fenix 7S is a watch that activity data. | [Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/garmin/Example%20Notebook.ipynb) |  dates, steps, hrs, brpms. | `garmin/fenix_7s` |
 | [Dexcom](https://www.dexcom.com/) | Pro CGM | The Dexcom Pro CGM wearable device tracks blood sugar levels. | [Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/dexcom/Example%20Notebook.ipynb) |  dataframe. | `dexcom/pro_cgm` |
 | [Withings](https://www.withings.com) | Body+ | The Withings Body+ is a smart scale that tracks weight and other metrics (body fat %). | [Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/withings/Example%20Notebook.ipynb) | measurements. | `withings/bodyplus` |
 | [Withings](https://www.withings.com) | ScanWatch | The Withings ScanWatch wearable device tracks sleep and activity data. | [Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/withings/Example%20Notebook.ipynb) | heart_rates, sleeps. | `withings/scanwatch` |
-| [Dreem](https://dreem.com/) | Dreem 2 | The Dreem 2 wearable device is an EEG headset that tracks EEG signals during sleep. | [Notebook](https://github.com/snyder-lab/wearipedia/blob/master/notebooks/dreem/Example%20Notebook.ipynb) | users, records, hypnogram, eeg_file. | `dreem/headband_2` |
 
 ## Documentation
 
@@ -87,16 +84,7 @@ For more information on how to use wearipedia, please refer to our [documentatio
 
 ## Citing
 
-If you use this library for academic research, please cite the following paper:
-
-```
-@article{snyder2020wearipedia,
-  title={Wearipedia: A Wearable Device Data Extraction Library},
-  author={Names go here},
-  journal={},
-  year={2022}
-}
-```
+A paper is in progress!
 
 ## Disclaimer
 
