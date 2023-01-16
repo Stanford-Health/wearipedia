@@ -104,8 +104,6 @@ if not commit_hash:
 fork = "Stanford-Health"
 blobpath = f"https://github.com/{fork}/wearipedia/blob/{commit_hash}/wearipedia/"
 
-root_doc = "source/index"
-
 
 def linkcode_resolve(domain, info):
     """Determine the URL corresponding to Python object."""
