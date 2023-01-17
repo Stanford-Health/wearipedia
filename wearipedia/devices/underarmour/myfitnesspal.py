@@ -13,7 +13,49 @@ class_name = "MyFitnessPal"
 
 
 class MyFitnessPal(BaseDevice):
-    def __init__(self, params):
+
+    """This device allows you to work with data from the `MyFitnessPal <https://www.myfitnesspal.com/>`_ app.
+    Available datatypes for this device are:
+
+    * `goals`: a list that contains goals data for each day
+
+    * `daily_summary`: a list that contains daily summary data for each day
+
+    * `exercises_cardio`: a list that contains cardio exercises data for each day
+
+    * `exercises_strength`: a list that contains strength exercises data for each day
+
+    * `lunch`: a list that contains lunch data for each day
+
+    * `breakfast`: a list that contains breakfast data for each day
+
+    * `dinner`: a list that contains dinner data for each day
+
+    * `snacks`: a list that contains snacks data for each day
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
+    :type synthetic_start_date: str, optional
+    :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
+    :type synthetic_end_date: str, optional
+    :param use_cache: decide whether to cache the credentials, defaults to True
+    :type use_cache: bool, optional
+    """
+
+    def __init__(
+        self,
+        seed=0,
+        synthetic_start_date="2022-03-01",
+        synthetic_end_date="2022-06-17",
+        use_cache=True,
+    ):
+        params = {
+            "seed": seed,
+            "synthetic_start_date": synthetic_start_date,
+            "synthetic_end_date": synthetic_end_date,
+            "use_cache": use_cache,
+        }
 
         self._initialize_device_params(
             ["goals", "daily_summary", "exercises_cardio",

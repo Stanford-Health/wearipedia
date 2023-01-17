@@ -13,7 +13,63 @@ class_name = "Strava"
 
 
 class Strava(BaseDevice):
-    def __init__(self, params):
+
+    """This device allows you to work with data from the `Strava <https://www.strava.com/>`_ app.
+    Available datatypes for this device are:
+
+    * `distance`: a list that contains distance ran for each run recorded
+
+    * `moving_time`: a list that contains moving time for each run recorded
+
+    * `elapsed_time`: a list that contains elapsed time for each run recorded
+
+    * `total_elevation_gain`: a list that contains total elevation gain for each run recorded
+
+    * `average_speed`: a list that contains average speed for each run recorded
+
+    * `max_speed`: a list that contains max speed for each run recorded
+
+    * `average_heartrate`: a list that contains average heartrate for each run recorded
+
+    * `max_heartrate`: a list that contains max heartrate for each run recorded
+
+    * `map_summary_polyline`: a list that contains map summary polyline for each run recorded
+
+    * `elev_high`: a list that contains elevation high for each run recorded
+
+    * `elev_low`: a list that contains elevation low for each run recorded
+
+    * `average_cadence`: a list that contains average cadence for each run recorded
+
+    * `average_watts`: a list that contains average watts for each run recorded
+
+    * `kilojoules`: a list that contains kilojoules for each run recorded
+
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
+    :type synthetic_start_date: str, optional
+    :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
+    :type synthetic_end_date: str, optional
+    :param use_cache: decide whether to cache the credentials, defaults to True
+    :type use_cache: bool, optional
+    """
+
+    def __init__(
+        self,
+        seed=0,
+        synthetic_start_date="2022-03-01",
+        synthetic_end_date="2022-06-17",
+        use_cache=True,
+    ):
+        params = {
+            "seed": seed,
+            "synthetic_start_date": synthetic_start_date,
+            "synthetic_end_date": synthetic_end_date,
+            "use_cache": use_cache,
+        }
+
         self._initialize_device_params(
             ['distance', 'moving_time', 'elapsed_time',
              'total_elevation_gain', 'average_speed',

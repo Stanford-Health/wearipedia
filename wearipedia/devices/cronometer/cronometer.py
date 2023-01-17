@@ -17,12 +17,42 @@ CRED_CACHE_PATH = "/tmp/wearipedia_cronometer_data.pkl"
 
 
 class Cronometer(BaseDevice):
-    def __init__(self, params):
 
-        # use_cache just means that we'll use the cached credentials
-        # as opposed to re-authenticating every time (the API tends to
-        # rate-limit a lot, see this GitHub issue:
-        #
+    """This device allows you to work with data from the `Cronometer <https://cronometer.com/>`_ app.
+    Available datatypes for this device are:
+
+    * `dailySummary`: a list that contains daily summary data for each day
+
+    * `servings`: a list that contains servings data for each day
+
+    * `exercises`: a list that contains exercises data for each day
+
+    * `biometrics`: a list that contains biometrics data for each day
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
+    :type synthetic_start_date: str, optional
+    :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
+    :type synthetic_end_date: str, optional
+    :param use_cache: decide whether to cache the credentials, defaults to True
+    :type use_cache: bool, optional
+    """
+
+    def __init__(
+        self,
+        seed=0,
+        synthetic_start_date="2022-03-01",
+        synthetic_end_date="2022-06-17",
+        use_cache=True,
+    ):
+
+        params = {
+            "seed": seed,
+            "synthetic_start_date": synthetic_start_date,
+            "synthetic_end_date": synthetic_end_date,
+            "use_cache": use_cache,
+        }
 
         self._initialize_device_params(
             ["dailySummary", "servings", "exercises", "biometrics"],

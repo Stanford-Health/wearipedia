@@ -84,12 +84,14 @@ class Fenix7S(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
+        def date_str_to_obj(x): return datetime.strptime(x, "%Y-%m-%d")
 
         # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
+        synthetic_start = date_str_to_obj(
+            self.init_params["synthetic_start_date"])
 
-        start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
+        start_idx = (date_str_to_obj(
+            params["start_date"]) - synthetic_start).days
         end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
 
         return data[start_idx:end_idx]

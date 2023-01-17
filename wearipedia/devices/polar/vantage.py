@@ -12,12 +12,40 @@ class_name = "PolarVantage"
 
 
 class PolarVantage(BaseDevice):
-    def __init__(self, params):
 
-        # use_cache just means that we'll use the cached credentials
-        # as opposed to re-authenticating every time (the API tends to
-        # rate-limit a lot, see this GitHub issue:
-        #
+    """This device allows you to work with data from the `Polar Vantage <https://www.polar.com/us-en/vantage/v2>`_ device.
+    Available datatypes for this device are:
+
+    * `sleep`: a list that contains sleep data for each day
+
+    * `training_history`: a list that contains training history data for each day
+
+    * `training_by_id`: a list that contains training data for a given training session
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
+    :type synthetic_start_date: str, optional
+    :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
+    :type synthetic_end_date: str, optional
+    :param use_cache: decide whether to cache the credentials, defaults to True
+    :type use_cache: bool, optional
+    """
+
+    def __init__(
+        self,
+        seed=0,
+        synthetic_start_date="2022-03-01",
+        synthetic_end_date="2022-06-17",
+        use_cache=True,
+    ):
+        params = {
+            "seed": seed,
+            "synthetic_start_date": synthetic_start_date,
+            "synthetic_end_date": synthetic_end_date,
+            "use_cache": use_cache,
+        }
+
         self._initialize_device_params(
             ['sleep', 'training_history', 'training_by_id'],
             params,
@@ -39,11 +67,13 @@ class PolarVantage(BaseDevice):
     def _get_real(self, data_type, params):
         if 'training_id' in params:
             return fetch_real_data(
-                self.session, self.USERID, self.email,self.password, params["start_date"], params["end_date"], data_type, params['training_id']
+                self.session, self.USERID, self.email, self.password, params[
+                    "start_date"], params["end_date"], data_type, params['training_id']
             )
         else:
             return fetch_real_data(
-                self.session, self.USERID, self.email,self.password, params["start_date"], params["end_date"], data_type, ''
+                self.session, self.USERID, self.email, self.password, params[
+                    "start_date"], params["end_date"], data_type, ''
             )
 
     def _filter_synthetic(self, data, data_type, params):

@@ -11,12 +11,64 @@ class_name = "GoogleFitness"
 
 
 class GoogleFitness(BaseDevice):
-    def __init__(self, params):
 
-        # use_cache just means that we'll use the cached credentials
-        # as opposed to re-authenticating every time (the API tends to
-        # rate-limit a lot, see this GitHub issue:
-        #
+    """This device allows you to work with data from the `Google Fit <https://www.google.com/fit/>`_ app.
+    Available datatypes for this device are:
+
+    * `steps`: a list that contains total steps walked for each day
+
+    * `heart_rate`: a list that contains heart rate data for each day
+
+    * `sleep`: a list that contains sleep data for each day
+
+    * `heart_minutes`: a list that contains heart minutes data for each day
+
+    * `blood_pressure`: a list that contains blood pressure data for each day
+
+    * `blood_glucose`: a list that contains blood glucose data for each day
+
+    * `body_temperature`: a list that contains body temperature data for each day
+
+    * `calories_expended`: a list that contains calories expended data for each day
+
+    * `activity_minutes`: a list that contains activity minutes data for each day
+
+    * `height`: a list that contains height data for each day
+
+    * `oxygen_saturation`: a list that contains oxygen saturation data for each day
+
+    * `menstruation`: a list that contains menstruation data for each day
+
+    * `speed`: a list that contains speed data for each day
+
+    * `weight`: a list that contains weight data for each day
+
+    * `distance`: a list that contains distance data for each day
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
+    :type synthetic_start_date: str, optional
+    :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
+    :type synthetic_end_date: str, optional
+    :param use_cache: decide whether to cache the credentials, defaults to True
+    :type use_cache: bool, optional
+    """
+
+    def __init__(
+        self,
+        seed=0,
+        synthetic_start_date="2022-03-01",
+        synthetic_end_date="2022-06-17",
+        use_cache=True,
+    ):
+        params = {
+            "seed": seed,
+            "synthetic_start_date": synthetic_start_date,
+            "synthetic_end_date": synthetic_end_date,
+            "use_cache": use_cache,
+        }
+
         self._initialize_device_params(
             ['steps', 'heart_rate', 'sleep', 'heart_minutes', 'blood_pressure', 'blood_glucose', 'body_temperature',
                 'calories_expended', 'activity_minutes', 'height', 'oxygen_saturation', 'menstruation', 'speed', 'weight', 'distance'],
