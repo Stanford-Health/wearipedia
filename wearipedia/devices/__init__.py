@@ -5,3 +5,8 @@ from .garmin import *
 from .oura import *
 from .whoop import *
 from .withings import *
+from .polar import *
+from .strava import *
+from .cronometer import *
+from .underarmour import *
+from .google import *
