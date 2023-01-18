@@ -27,7 +27,14 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: check that gh cli works
-      run: gh api --method PUT -H "Accept: application/vnd.github+json" /repos/Stanford-Health/wearipedia/actions/secrets/temp_secret -f encrypted_value='c2VjcmV0' -f key_id='012345678912345678' 
+      run: gh secret set test_secret --body "testing"
+      #run: gh api --method PUT -H "Accept:\ application/vnd.github+json" /repos/Stanford-Health/wearipedia/actions/secrets/temp_secret -f encrypted_value='c2VjcmV0' -f key_id='012345678912345678'
+
+    - name: Test presence of env variables
+      run: python3 -c "import os; print([x for x in os.environ if 'test_s' in x])"
+      env:
+        WHOOP_4_EMAIL: ${{ secrets.WHOOP_4_EMAIL }}
+        WHOOP_4_PASSWORD: ${{ secrets.WHOOP_4_PASSWORD }}
 
     - name: check git hash
       run: git rev-parse HEAD
