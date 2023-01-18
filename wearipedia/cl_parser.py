@@ -121,7 +121,10 @@ def create_device_object(arg_dict: dict, synthetic: bool):
 
     # for replacing the default params inside the specific device child classes
     params = get_params_dict(arg_dict)
-    data = device.get_data(arg_dict["type"], params=params)
+    raw_data = device.get_data(arg_dict["type"], params=params)
+
+    # convert data from Pandas DataFrame to string
+    data = raw_data.to_string()
 
     # check if output file exists and is valid
     print_to_console = True
