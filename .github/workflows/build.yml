@@ -32,7 +32,7 @@ jobs:
     - name: cli check
       run: gh auth login --with-token ${GITHUB_TOKEN}
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ github.token }}
 
     - name: check that gh cli works
       run: gh secret set test_secret --body "testing"
