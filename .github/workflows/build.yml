@@ -26,6 +26,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: check that gh cli works
+      run: gh --help
+
     - name: check git hash
       run: git rev-parse HEAD
 
