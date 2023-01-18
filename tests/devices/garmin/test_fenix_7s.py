@@ -2,10 +2,13 @@
 
 from datetime import datetime
 
+import pytest
+
 import wearipedia
 
 
-def test_fenix_7s_synthetic():
+@pytest.mark.parametrize("real", [True, False])
+def test_fenix_7s_synthetic(real):
     # first test with default params
 
     start_synthetic = datetime(2021, 1, 1)
@@ -16,6 +19,9 @@ def test_fenix_7s_synthetic():
         synthetic_start_date=datetime.strftime(start_synthetic, "%Y-%m-%d"),
         synthetic_end_date=datetime.strftime(end_synthetic, "%Y-%m-%d"),
     )
+
+    if real:
+        wearipedia._authenticate_device("garmin/fenix_7s", device)
 
     dates = device.get_data("dates")
     steps = device.get_data("steps")

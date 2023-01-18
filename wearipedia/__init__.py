@@ -84,3 +84,92 @@ def get_version() -> str:
 
 
 version: str = get_version()
+
+
+def get_os(key):
+    if key in os.environ.keys():
+        return os.environ[key]
+    else:
+        return None
+
+
+# this is only for testing purposes
+_DEVICE_TO_AUTH_DICT = {
+    "garmin/fenix_7s": {
+        "email": get_os("GARMIN_FENIX_7S_EMAIL"),
+        "password": get_os("GARMIN_FENIX_7S_PASSWORD"),
+    },
+    "whoop/whoop_4": {
+        "email": get_os("WHOOP_4_EMAIL"),
+        "password": get_os("WHOOP_4_PASSWORD"),
+    },
+    "withings/bodyplus": {
+        "refresh_token_env_var": "WITHINGS_REFRESH_TOKEN",
+        "client_id": get_os("WITHINGS_CLIENT_ID"),
+        "customer_secret": get_os("WITHINGS_CUSTOMER_SECRET"),
+        "refresh_token": get_os("WITHINGS_REFRESH_TOKEN"),
+    },
+    "withings/scanwatch": {
+        "refresh_token_env_var": "WITHINGS_REFRESH_TOKEN",
+        "client_id": get_os("WITHINGS_CLIENT_ID"),
+        "customer_secret": get_os("WITHINGS_CUSTOMER_SECRET"),
+        "refresh_token": get_os("WITHINGS_REFRESH_TOKEN"),
+    },
+    "dexcom/pro_cgm": {
+        "refresh_token_env_var": "DEXCOM_REFRESH_TOKEN",
+        "client_id": get_os("DEXCOM_CLIENT_ID"),
+        "client_secret": get_os("DEXCOM_CLIENT_SECRET"),
+        "refresh_token": get_os("DEXCOM_REFRESH_TOKEN"),
+    },
+}
+
+_REFRESH_TOKEN_STORE = "/tmp/refresh_tokens.json"
+
+
+def _read_refresh_token_from_json(device_name):
+    try:
+        d = json.load(open(_REFRESH_TOKEN_STORE))
+        refresh_token_env_var = _DEVICE_TO_AUTH_DICT[device_name][
+            "refresh_token_env_var"
+        ]
+        return d[refresh_token_env_var]
+    except:
+        return None
+
+
+def _dump_refresh_token_to_json(device_name, new_refresh_token):
+    # pre-emptively fill it with nothing
+    if not Path(_REFRESH_TOKEN_STORE).exists():
+        json.dump({}, open(_REFRESH_TOKEN_STORE, "w"))
+    else:
+        with open(_REFRESH_TOKEN_STORE) as f:
+            if len(f.read()) == 0:
+                json.dump({}, open(_REFRESH_TOKEN_STORE, "w"))
+
+    # we're running in GitHub Actions, so we can
+    # update the refresh token
+    refresh_token_env_var = _DEVICE_TO_AUTH_DICT[device_name]["refresh_token_env_var"]
+
+    # since we can't propagate environment variables up in Github
+    # Actions, we just keep around a file /tmp/refresh_tokens.json
+    refresh_tokens = json.load(open(_REFRESH_TOKEN_STORE))
+    refresh_tokens[refresh_token_env_var] = new_refresh_token
+    json.dump(refresh_tokens, open(_REFRESH_TOKEN_STORE, "w"))
+
+
+def _authenticate_device(device_name, device):
+    # not only authenticates device, but also manages
+    # the temporary cache JSON file for running CI on
+    # github actions
+
+    auth_dict = _DEVICE_TO_AUTH_DICT[device_name]
+
+    # replace with refresh token json on disk if possible
+    disk_refresh_token = _read_refresh_token_from_json(device_name)
+    if disk_refresh_token is not None:
+        auth_dict["refresh_token"] = disk_refresh_token
+
+    device.authenticate(auth_dict)
+
+    if "refresh_token" in auth_dict:
+        _dump_refresh_token_to_json(device_name, device.refresh_token)

@@ -1,11 +1,13 @@
 from datetime import datetime
 
 import numpy as np
+import pytest
 
 import wearipedia
 
 
-def test_verity_sense_synthetic():
+@pytest.mark.parametrize("real", [True, False])
+def test_verity_sense_synthetic(real):
     start_dates = [
         np.datetime64("2009-11-15"),
         np.datetime64("2021-04-01"),
@@ -23,6 +25,9 @@ def test_verity_sense_synthetic():
             start_date=np.datetime_as_string(start_date, unit="D"),
             end_date=np.datetime_as_string(end_date, unit="D"),
         )
+
+        if real:
+            wearipedia._authenticate_device("polar/verity_sense", device)
 
         data = device.get_data("sessions")
 

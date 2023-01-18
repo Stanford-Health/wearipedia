@@ -2,10 +2,13 @@
 
 from datetime import datetime
 
+import pytest
+
 import wearipedia
 
 
-def test_dexcom_pro_cgm():
+@pytest.mark.parametrize("real", [True, False])
+def test_dexcom_pro_cgm(real):
     start_dates = [datetime(2009, 11, 15), datetime(2021, 4, 1), datetime(2022, 6, 10)]
     end_dates = [datetime(2010, 2, 1), datetime(2021, 6, 20), datetime(2022, 8, 25)]
 
@@ -16,27 +19,51 @@ def test_dexcom_pro_cgm():
             synthetic_end_date=datetime.strftime(end_date, "%Y-%m-%d"),
         )
 
+        if real:
+            wearipedia._authenticate_device("dexcom/pro_cgm", device)
+
         # calling tests for each pair of start and end dates
         helper_test(device, start_date, end_date)
 
 
 def helper_test(device, start_date, end_date):
 
-    dataframe = device.get_data("dataframe")
+    data = device.get_data(
+        "data",
+        {
+            "start_date": start_date.strftime("%Y-%m-%d"),
+            "end_date": end_date.strftime("%Y-%m-%d"),
+        },
+    )
 
-    # making sure schema of the dataframe is correct
-    assert (
-        dataframe.columns == ["datetime", "glucose_level"]
-    ).all(), f"Dataframe data is not correct: {measurements}"
+    assert list(data.keys()) == [
+        "unit",
+        "rateUnit",
+        "egvs",
+    ], f'top-level keys are not correct: {list(data.keys())}, expected ["unit", "rateUnit", "egvs"]'
 
-    # check that the generated date is after the start date
-    for date in dataframe["datetime"]:
-        assert date >= start_date, f"Date is not correct: {date}"
+    egvs_type = type(data["egvs"])
 
-    # check that generated date is before end date
-    for date in dataframe["datetime"]:
-        assert date <= end_date, f"Date is not correct: {date}"
+    assert egvs_type == type([]), f"expected egvs to be a list, got {egvs_type}"
 
-    # check that glucose level is in a suitable range
-    for weight in dataframe["glucose_level"]:
-        assert 0 <= weight <= 500, f"Weight is not correct: {weight}"
+    if len(data["egvs"]) > 0:
+        assert list(data["egvs"][0].keys()) == [
+            "systemTime",
+            "displayTime",
+            "value",
+            "realtimeValue",
+            "smoothedValue",
+            "status",
+            "trend",
+            "trendRate",
+        ]
+
+        # TODO: add more checks
+        for egv in data["egvs"]:
+            val, realtimeval = egv["value"], egv["realtimeValue"]
+            assert (
+                50 <= val <= 200
+            ), f"Expected glucose values to be between 50 and 200, got {val}"
+            assert (
+                50 <= realtimeval <= 200
+            ), f"Expected glucose values to be between 50 and 200, got {realtimeval}"

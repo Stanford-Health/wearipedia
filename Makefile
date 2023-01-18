@@ -52,15 +52,15 @@ doctest:
 test:
 	PYTHONPATH=$(PYTHONPATH)
 	poetry run pytest -c pyproject.toml --cov-report=html --cov=wearipedia tests/test_all_devices_syn.py
-	poetry run pytest -c pyproject.toml --cov-report=html --cov=wearipedia tests/devices
+	poetry run pytest -c pyproject.toml --cov-report=html --cov=wearipedia tests/devices -k "[False]"
 	poetry run coverage-badge -o assets/images/coverage.svg -f
 
 # test the real APIs (should run in CI environment)
 .PHONY: test-real
 test-real:
 	PYTHONPATH=$(PYTHONPATH)
-	poetry run pytest -c pyproject.toml --cov-report=html --cov=wearipedia tests/test_all_devices_real.py
-	poetry run pytest -c pyproject.toml --cov-report=html --cov=wearipedia tests/devices_real
+	#poetry run pytest -c pyproject.toml --cov-report=html --cov=wearipedia tests/test_all_devices_real.py
+	poetry run pytest -c pyproject.toml --cov-report=html --cov=wearipedia tests/devices -k "[True]"
 	poetry run coverage-badge -o assets/images/coverage.svg -f
 
 .PHONY: check-codestyle

@@ -1,3 +1,4 @@
+import http
 import json
 import time
 import urllib
@@ -11,11 +12,24 @@ __all__ = ["refresh_access_token", "dexcom_authenticate", "fetch_data"]
 
 def refresh_access_token(refresh_token, client_id, client_secret):
     # gives us access token given the refresh token
-    raise NotImplementedError
+
+    params = {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "refresh_token": refresh_token,
+        "grant_type": "refresh_token",
+        "redirect_uri": "https://www.google.com",
+    }
+
+    out = requests.post("https://api.dexcom.com/v2/oauth2/token", data=params)
+
+    body = json.loads(out.text)
+
+    return body["refresh_token"], body["access_token"]
 
 
 def dexcom_authenticate(your_client_id, your_client_secret):
-    your_redirect_uri = "https://www.google.com"  # @param {type:"string"}
+    your_redirect_uri = "https://www.google.com"
     your_state_value = "1234"
 
     url = f"https://api.dexcom.com/v2/oauth2/login?client_id={your_client_id}&redirect_uri={your_redirect_uri}&response_type=code&scope=offline_access&state={your_state_value}"
@@ -31,8 +45,9 @@ def dexcom_authenticate(your_client_id, your_client_secret):
             urllib.parse.urlparse(redirect_url).query
         )["code"][0]
     except Exception as e:
-        print(f"Caught error:\n{e}\n")
-        print("Please copy and paste the entire URL (including https)")
+        exception_str = f"Caught error:\n{e}\n"
+        exception_str += "\nPlease copy and paste the entire URL (including https)"
+        raise Exception(exception_str)
 
     conn = http.client.HTTPSConnection("api.dexcom.com")
 
@@ -51,10 +66,14 @@ def dexcom_authenticate(your_client_id, your_client_secret):
     json_response = json.loads(data.decode("utf-8"))
 
     if "error" in json_response.keys() and json_response["error"] == "invalid_grant":
-        print("The code you got has expired.")
-        print("Authorize and enter the redirect URL again.")
+        exception_str = (
+            "The code you got has expired.\nAuthorize and enter the redirect URL again."
+        )
+        raise Exception(exception_str)
     else:
-        access_token = json.loads(data.decode("utf-8"))["access_token"]
+        body = json.loads(data.decode("utf-8"))
+        access_token = body["access_token"]
+        refresh_token = body["refresh_token"]
 
         print(f'Entire response was {data.decode("utf-8")}')
         print(f"Our access token is {access_token}")
@@ -73,25 +92,15 @@ def fetch_data(access_token, start_date="2022-02-16", end_date="2022-05-15"):
     out = json.loads(requests.get(endpoint, headers=headers).text)
 
     if "errors" in out.keys():
-        print(f'Got error(s) {out["errors"]}. Fix start and end dates and rerun.')
+        exception_str = (
+            f'Got error(s) {out["errors"]}. Fix start and end dates and rerun.'
+        )
+        raise Exception(exception_str)
     elif "fault" in out.keys():
-        print(
+        exception_str = (
             f'Got fault {out["fault"]}. You might need to request another access token.'
         )
+        raise Exception(exception_str)
     else:
 
-        def dt_string_to_obj(dt_str):
-            # converts string like "2022-04-10T10:13:00" to a datetime object
-            return datetime.strptime(dt_str, "%Y-%m-%dT%H:%M:%S")
-
-        data_dict = [
-            {
-                "datetime": dt_string_to_obj(x["displayTime"]),
-                "glucose_level": x["realtimeValue"],
-            }
-            for x in out["egvs"][::-1]
-        ]
-
-        df = pd.DataFrame.from_dict(data_dict)
-
-        return df
+        return out

@@ -3,10 +3,13 @@
 import os
 from datetime import datetime
 
+import pytest
+
 import wearipedia
 
 
-def test_fenix_7s_real():
+@pytest.mark.parametrize("bar", [True, False])
+def test_fenix_7s_real(bar):
     device = wearipedia.get_device(
         "garmin/fenix_7s",
     )
@@ -110,3 +113,8 @@ def test_fenix_7s_real():
                 )
 
     # TODO: stress test with other params
+
+
+@pytest.mark.parametrize("bar", [True, False])
+def test_foo_real(bar):
+    return

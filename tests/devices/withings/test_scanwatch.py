@@ -3,10 +3,13 @@
 import hashlib
 from datetime import datetime
 
+import pytest
+
 import wearipedia
 
 
-def test_withings_scanwatch_synthetic():
+@pytest.mark.parametrize("real", [True, False])
+def test_withings_scanwatch_synthetic(real):
     start_dates = [datetime(2009, 11, 15), datetime(2021, 4, 1), datetime(2022, 6, 10)]
     end_dates = [datetime(2010, 2, 1), datetime(2021, 6, 20), datetime(2022, 8, 25)]
 
@@ -16,6 +19,9 @@ def test_withings_scanwatch_synthetic():
             synthetic_start_date=datetime.strftime(start_date, "%Y-%m-%d"),
             synthetic_end_date=datetime.strftime(end_date, "%Y-%m-%d"),
         )
+
+        if real:
+            wearipedia._authenticate_device("withings/scanwatch", device)
 
         # calling tests for each pair of start and end dates
         helper_test(device, start_date, end_date)

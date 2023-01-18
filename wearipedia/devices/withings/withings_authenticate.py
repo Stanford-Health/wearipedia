@@ -13,7 +13,28 @@ CALLBACK_URI = "https://wbsapi.withings.net/v2/oauth2"
 
 def refresh_access_token(refresh_token, client_id, customer_secret):
     # gives us access token given the refresh token
-    raise NotImplementedError
+
+    params = {
+        "action": "requesttoken",
+        "grant_type": "refresh_token",
+        "client_id": client_id,
+        "client_secret": customer_secret,
+        "refresh_token": refresh_token,
+    }
+
+    out = requests.post("https://wbsapi.withings.net/v2/oauth2", data=params)
+
+    body = json.loads(out.text)["body"]
+
+    try:
+        new_refresh_token, access_token = body["refresh_token"], body["access_token"]
+        print(f"Got new refresh token: {new_refresh_token}")
+    except KeyError as e:
+        exception_str = f"Got exception: {e}\n"
+        exception_str += f"The full returned payload is: {json.loads(out.text)}"
+        raise Exception(exception_str)
+
+    return new_refresh_token, access_token
 
 
 def withings_authenticate(client_id, customer_secret):

@@ -2,10 +2,13 @@
 
 from datetime import datetime
 
+import pytest
+
 import wearipedia
 
 
-def test_withings_bodyplus_synthetic():
+@pytest.mark.parametrize("real", [True, False])
+def test_withings_bodyplus_synthetic(real):
     start_dates = [datetime(2009, 11, 15), datetime(2021, 4, 1), datetime(2022, 6, 10)]
 
     for start_date in start_dates:
@@ -13,6 +16,9 @@ def test_withings_bodyplus_synthetic():
             "withings/bodyplus",
             synthetic_start_date=datetime.strftime(start_date, "%Y-%m-%d"),
         )
+
+        if real:
+            wearipedia._authenticate_device("withings/bodyplus", device)
 
         # calling tests for each pair of start dates
         helper_test(device, start_date)
