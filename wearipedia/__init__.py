@@ -121,6 +121,10 @@ _DEVICE_TO_AUTH_DICT = {
         "client_secret": get_os("DEXCOM_CLIENT_SECRET"),
         "refresh_token": get_os("DEXCOM_REFRESH_TOKEN"),
     },
+    "polar/verity_sense": {
+        "email": get_os("POLAR_EMAIL"),
+        "password": get_os("POLAR_PASSWORD"),
+    },
 }
 
 _REFRESH_TOKEN_STORE = "/tmp/refresh_tokens.json"
