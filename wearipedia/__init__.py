@@ -106,13 +106,13 @@ _DEVICE_TO_AUTH_DICT = {
     "withings/bodyplus": {
         "refresh_token_env_var": "WITHINGS_REFRESH_TOKEN",
         "client_id": get_os("WITHINGS_CLIENT_ID"),
-        "customer_secret": get_os("WITHINGS_CUSTOMER_SECRET"),
+        "client_secret": get_os("WITHINGS_CLIENT_SECRET"),
         "refresh_token": get_os("WITHINGS_REFRESH_TOKEN"),
     },
     "withings/scanwatch": {
         "refresh_token_env_var": "WITHINGS_REFRESH_TOKEN",
         "client_id": get_os("WITHINGS_CLIENT_ID"),
-        "customer_secret": get_os("WITHINGS_CUSTOMER_SECRET"),
+        "client_secret": get_os("WITHINGS_CLIENT_SECRET"),
         "refresh_token": get_os("WITHINGS_REFRESH_TOKEN"),
     },
     "dexcom/pro_cgm": {

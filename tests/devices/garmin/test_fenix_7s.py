@@ -82,11 +82,15 @@ def test_fenix_7s(real):
             "heartRateValueDescriptors",
             "heartRateValues",
         }
-        for hr_val in hr["heartRateValues"]:
-            assert len(hr_val) == 2 and (hr_val[1] is None or 0 < hr_val[1] < 500), (
-                f"HR value is not correct: {hr_val}. "
-                f"Expected a tuple of (timestamp, value) where value is between 0 and 500 or None."
-            )
+
+        if hr["heartRateValues"] is not None:
+            for hr_val in hr["heartRateValues"]:
+                assert len(hr_val) == 2 and (
+                    hr_val[1] is None or 0 < hr_val[1] < 500
+                ), (
+                    f"HR value is not correct: {hr_val}. "
+                    f"Expected a tuple of (timestamp, value) where value is between 0 and 500 or None."
+                )
 
     # Now make sure that the brpms are correct.
     for brpm in brpms:

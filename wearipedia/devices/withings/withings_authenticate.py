@@ -11,14 +11,14 @@ ACCOUNT_URL = "https://account.withings.com"
 CALLBACK_URI = "https://wbsapi.withings.net/v2/oauth2"
 
 
-def refresh_access_token(refresh_token, client_id, customer_secret):
+def refresh_access_token(refresh_token, client_id, client_secret):
     # gives us access token given the refresh token
 
     params = {
         "action": "requesttoken",
         "grant_type": "refresh_token",
         "client_id": client_id,
-        "client_secret": customer_secret,
+        "client_secret": client_secret,
         "refresh_token": refresh_token,
     }
 
@@ -36,7 +36,7 @@ def refresh_access_token(refresh_token, client_id, customer_secret):
     return new_refresh_token, access_token
 
 
-def withings_authenticate(client_id, customer_secret):
+def withings_authenticate(client_id, client_secret):
     # gives us access token given the auth_creds + going through the process, it's interactive
 
     payload = {
@@ -73,7 +73,7 @@ def withings_authenticate(client_id, customer_secret):
         "action": "requesttoken",
         "grant_type": "authorization_code",
         "client_id": client_id,
-        "client_secret": customer_secret,
+        "client_secret": client_secret,
         "code": code,
         #'scope': 'user.info',
         "redirect_uri": "https://wbsapi.withings.net/v2/oauth2",
