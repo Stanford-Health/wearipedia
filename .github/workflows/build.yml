@@ -1,7 +1,5 @@
 name: build
 
-# TODO: change this to pull_request before release
-# see https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
 on: 
   push:
   workflow_dispatch:
@@ -12,10 +10,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9"]
+        os: [ubuntu-latest]
+        python-version: ["3.7"]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
@@ -42,11 +41,21 @@ jobs:
     - name: Install poetry
       run: make poetry-download
 
+    - name: add poetry to path
+      run: echo "/Users/runner/.local/bin" >> $GITHUB_PATH
+
+    - name: check path
+      run: echo $PATH; echo $GITHUB_PATH
+
+    - name: check poetry
+      run: poetry --version
+
     - name: Set up cache
       uses: actions/cache@v3.0.11
       with:
         path: .venv
         key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
+
     - name: Install dependencies
       run: |
         poetry config virtualenvs.in-project true
@@ -59,3 +68,29 @@ jobs:
     - name: Run tests
       run: |
         make test
+      env:
+        DEXCOM_ACCESS_TOKEN: ${{ secrets.DEXCOM_ACCESS_TOKEN }}
+        DEXCOM_CLIENT_ID: ${{ secrets.DEXCOM_CLIENT_ID }}
+        DEXCOM_CLIENT_SECRET: ${{ secrets.DEXCOM_CLIENT_SECRET }}
+        DEXCOM_EMAIL: ${{ secrets.DEXCOM_EMAIL }}
+        DEXCOM_PASSWORD: ${{ secrets.DEXCOM_PASSWORD }}
+        DEXCOM_REFRESH_TOKEN: ${{ secrets.DEXCOM_REFRESH_TOKEN }}
+        GARMIN_FENIX_7S_EMAIL: ${{ secrets.GARMIN_FENIX_7S_EMAIL }}
+        GARMIN_FENIX_7S_PASSWORD: ${{ secrets.GARMIN_FENIX_7S_PASSWORD }}
+        POLAR_EMAIL: ${{ secrets.POLAR_EMAIL }}
+        POLAR_PASSWORD: ${{ secrets.POLAR_PASSWORD }}
+        RJCASTE_PAT: ${{ secrets.RJCASTE_PAT }}
+        TEST_SECRET: ${{ secrets.TEST_SECRET }}
+        WHOOP_4_EMAIL: ${{ secrets.WHOOP_4_EMAIL }}
+        WHOOP_4_PASSWORD: ${{ secrets.WHOOP_4_PASSWORD }}
+        WITHINGS_ACCESS_TOKEN: ${{ secrets.WITHINGS_ACCESS_TOKEN }}
+        WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
+        WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
+        WITHINGS_EMAIL: ${{ secrets.WITHINGS_EMAIL }}
+        WITHINGS_REFRESH_TOKEN: ${{ secrets.WITHINGS_REFRESH_TOKEN }}
+
+    - name: Push back to github secrets
+      run: |
+        echo ${{ secrets.RJCASTE_PAT }} | gh auth login --with-token
+        gh auth status
+        python3 set_secrets_script.py

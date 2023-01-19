@@ -13,9 +13,31 @@ class_name = "DexcomProCGM"
 
 
 class DexcomProCGM(BaseDevice):
-    def __init__(self, params):
+    """This device allows you to work with data from the `Dexcom Pro CGM <https://provider.dexcom.com/products/dexcom-g6-pro>`_ device.
+    Available datatypes for this device are:
+
+    * `data`: contains all data in one dictionary
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
+    :type synthetic_start_date: str, optional
+    :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
+    :type synthetic_end_date: str, optional
+    """
+
+    def __init__(
+        self, seed=0, synthetic_start_date="2022-02-16", synthetic_end_date="2022-05-15"
+    ):
+
+        params = {
+            "seed": seed,
+            "synthetic_start_date": synthetic_start_date,
+            "synthetic_end_date": synthetic_end_date,
+        }
+
         self._initialize_device_params(
-            ["dataframe"],
+            ["data"],
             params,
             {
                 "seed": 0,
@@ -47,16 +69,22 @@ class DexcomProCGM(BaseDevice):
         start_ts = pd.Timestamp(params["start_date"])
         end_ts = pd.Timestamp(params["end_date"])
 
-        start_idx = bin_search(np.array(self.dataframe.datetime), start_ts)
-        end_idx = bin_search(np.array(self.dataframe.datetime), end_ts)
+        timestamps = [pd.Timestamp(x["systemTime"]) for x in self.data["egvs"]]
 
-        return self.dataframe.iloc[start_idx:end_idx]
+        start_idx = bin_search(timestamps, start_ts)
+        end_idx = bin_search(timestamps, end_ts)
+
+        return {
+            "unit": "mg/dL",
+            "rateUnit": "mg/dL/min",
+            "egvs": self.data["egvs"][start_idx:end_idx],
+        }
 
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
 
-        self.dataframe = create_synth_df(
+        self.data = create_synth(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )

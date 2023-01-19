@@ -5,7 +5,7 @@ import pandas as pd
 from scipy.ndimage import gaussian_filter
 from tqdm import tqdm
 
-__all__ = ["create_synth_df"]
+__all__ = ["create_synth"]
 
 
 def lerp(x1, x2, t):
@@ -15,7 +15,7 @@ def lerp(x1, x2, t):
 base_keypoints = [100] * 4 + [120] * 4 + [130] * 8 + [120] * 4 + [100] * 4
 
 
-def create_synth_df(start_day_str, end_day_str):
+def create_synth(start_day_str, end_day_str):
     """Create a synthetic dataframe of CGM data.
 
     :param start_day_str: the start date represented as a string in the format "YYYY-MM-DD"
@@ -65,27 +65,24 @@ def create_synth_df(start_day_str, end_day_str):
             datetimes.append(minute)
             glucoses.append(value)
 
-    synth_df = pd.DataFrame()
+    egvs = []
+    glucoses = gaussian_filter(glucoses, 2, mode="constant")
 
-    synth_df["datetime"] = datetimes
-    synth_df["glucose_level"] = gaussian_filter(glucoses, 2, mode="constant")
+    for dt_obj, glucose in zip(datetimes[::-1], glucoses[::-1]):
+        egvs.append(
+            {
+                "systemTime": dt_obj.strftime("%Y-%m-%dT%H:%M:%S"),
+                # this is supposed to be timezone shift
+                "displayTime": dt_obj.strftime("%Y-%m-%dT%H:%M:%S"),
+                "value": glucose,
+                "realtimeValue": glucose,
+                "smoothedValue": None,
+                "status": None,
+                "trend": "flat",
+                "trendRate": np.round(np.random.normal(), 2),
+            }
+        )
 
-    # unnecessary, included for some reason
-    # synth_df['Time of Day'] = ['Day' if dt.hour in range(8, 20) else 'Night' for dt in datetimes]
-    # synth_df['Rates of change'] = np.random.randn(synth_df.shape[0])
-    # synth_df['Rates of change'].iloc[np.where(synth_df['Time of Day'] == 'Day')[0]] *= 3
+    out = {"unit": "mg/dL", "rateUnit": "mg/dL/min", "egvs": egvs}
 
-    # take out some rows to create missing values
-
-    missing_start = datetime.strptime("2022-04-06", "%Y-%m-%d") + timedelta(hours=14)
-    missing_end = missing_start + timedelta(minutes=70)
-
-    synth_df = synth_df.drop(
-        np.where(
-            np.logical_and(
-                synth_df.datetime > missing_start, synth_df.datetime < missing_end
-            )
-        )[0]
-    )
-
-    return synth_df
+    return out

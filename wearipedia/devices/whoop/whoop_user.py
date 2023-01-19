@@ -52,7 +52,16 @@ class WhoopUser:
 
         cycles_URL = f"https://api.prod.whoop.com/activities-service/v1/cycles/aggregate/range/{self.user_id}"
         cycles_request = requests.get(cycles_URL, params=params, headers=self.header)
-        return cycles_request.json()
+
+        try:
+            data = cycles_request.json()
+        except Exception as e:
+            exception_str = f"Got exception:\n{e}\n"
+            exception_str += f"Received request response is:\n{cycles_request.text}"
+
+            raise Exception(exception_str)
+
+        return data
 
     def get_heart_rate_json(self, params):
         """
@@ -70,5 +79,12 @@ class WhoopUser:
             headers=self.header,
         )
 
-        data = hr_request.json()
+        try:
+            data = hr_request.json()
+        except Exception as e:
+            exception_str = f"Got exception:\n{e}\n"
+            exception_str += f"Received request response is:\n{hr_request.text}"
+
+            raise Exception(exception_str)
+
         return data

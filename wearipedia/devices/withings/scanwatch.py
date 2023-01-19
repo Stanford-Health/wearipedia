@@ -10,7 +10,31 @@ class_name = "ScanWatch"
 
 
 class ScanWatch(BaseDevice):
-    def __init__(self, params):
+    """This device allows you to work with data from the `Withings ScanWatch <https://www.withings.com/us/en/scanwatch>`_ device.
+    Available datatypes for this device are:
+
+    * `heart_rates`: heart rate data
+
+    * `sleeps`: sleep data
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
+    :type start_date: str, optional
+    :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
+    :type end_date: str, optional
+    """
+
+    def __init__(
+        self, seed=0, synthetic_start_date="2022-03-01", synthetic_end_date="2022-06-17"
+    ):
+
+        params = {
+            "seed": seed,
+            "synthetic_start_date": synthetic_start_date,
+            "synthetic_end_date": synthetic_end_date,
+        }
+
         self._initialize_device_params(
             ["heart_rates", "sleeps"],
             params,
@@ -67,13 +91,17 @@ class ScanWatch(BaseDevice):
         )
 
     def _authenticate(self, auth_creds):
+        if "access_token" in auth_creds:
+            self.access_token = auth_creds["access_token"]
+            return
+
         if "refresh_token" in auth_creds:
             self.refresh_token, self.access_token = refresh_access_token(
                 auth_creds["refresh_token"],
                 auth_creds["client_id"],
-                auth_creds["customer_secret"],
+                auth_creds["client_secret"],
             )
         else:
             self.refresh_token, self.access_token = withings_authenticate(
-                auth_creds["client_id"], auth_creds["customer_secret"]
+                auth_creds["client_id"], auth_creds["client_secret"]
             )

@@ -159,6 +159,9 @@ def fetch_all_heart_rate(access_token, start="2020-03-10", end="2022-05-28"):
             dict_list += [
                 {"datetime": datetime.fromtimestamp(int(k)), **v}
                 for k, v in out["body"]["series"].items()
+                if datetime.strptime(start, "%Y-%m-%d")
+                <= datetime.fromtimestamp(int(k))
+                <= datetime.strptime(end, "%Y-%m-%d")
             ]
 
     df = pd.DataFrame.from_dict(dict_list)
@@ -171,8 +174,8 @@ def fetch_all_sleeps(access_token, start="2020-03-10", end="2022-05-28"):
         "https://wbsapi.withings.net/v2/sleep",
         {
             "action": "getsummary",
-            "startdateymd": "2020-07-01",
-            "enddateymd": "2022-07-01",
+            "startdateymd": start,
+            "enddateymd": end,
             "data_fields": "nb_rem_episodes,sleep_efficiency,sleep_latency,total_sleep_time,total_timeinbed,wakeup_latency,waso,asleepduration,deepsleepduration,durationtosleep,durationtowakeup,hr_average,hr_max,hr_min,lightsleepduration,night_events,out_of_bed_count,remsleepduration,rr_average,rr_max,rr_min,sleep_score,snoring,snoringepisodecount,wakeupcount,wakeupduration",
         },
         {"Authorization": f"Bearer {access_token}"},
@@ -217,7 +220,7 @@ num_to_description = {
 }
 
 
-def fetch_measurements(access_token, measure_types="1,6"):
+def fetch_measurements(access_token, start, end, measure_types="1,6"):
     # make public API requests, while specifying the measure_types we desire
     # we make potentially multiple because the public API can return only up
     # to 200 measurements
@@ -239,6 +242,7 @@ def fetch_measurements(access_token, measure_types="1,6"):
         # a pandas dataframe
         out = json.loads(out.text)
         measurements = out["body"]["measuregrps"]
+
         data = [
             {
                 **{"date": datetime.fromtimestamp(meas["date"])},
@@ -249,7 +253,10 @@ def fetch_measurements(access_token, measure_types="1,6"):
                 },
             }
             for meas in measurements
+            if start < datetime.fromtimestamp(meas["date"]) < end
         ]
+        # filter by start/end, even though this is kind of mutating what
+        # the API gives us raw...
 
         data_complete += data
 

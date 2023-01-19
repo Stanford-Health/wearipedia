@@ -2,12 +2,12 @@
 
 default_context:
   project_name: "wearipedia"
-  project_description: "wearables in development"
-  organization: "Rodrigo Castellon"
+  project_description: "Wearable data for all"
+  organization: "The Stanford Wearipedia Project"
   license: "MIT"
   minimal_python_version: 3.9
-  github_name: "rodrigo-castellon"
-  email: "rjcaste@stanford.edu"
+  github_name: "Stanford-Health"
+  email: "arjo@stanford.edu"
   version: "0.1.0"
   line_length: "88"
   create_example_template: "cli"

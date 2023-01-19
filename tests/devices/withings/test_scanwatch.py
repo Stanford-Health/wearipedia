@@ -3,24 +3,28 @@
 import hashlib
 from datetime import datetime
 
+import pytest
+
 import wearipedia
 
 
-def test_withings_scanwatch_synthetic():
+@pytest.mark.parametrize("real", [True, False])
+def test_withings_scanwatch_synthetic(real):
     start_dates = [datetime(2009, 11, 15), datetime(2021, 4, 1), datetime(2022, 6, 10)]
     end_dates = [datetime(2010, 2, 1), datetime(2021, 6, 20), datetime(2022, 8, 25)]
 
     for start_date, end_date in zip(start_dates, end_dates):
         device = wearipedia.get_device(
             "withings/scanwatch",
-            params={
-                "synthetic_start_date": datetime.strftime(start_date, "%Y-%m-%d"),
-                "synthetic_end_date": datetime.strftime(end_date, "%Y-%m-%d"),
-            },
+            synthetic_start_date=datetime.strftime(start_date, "%Y-%m-%d"),
+            synthetic_end_date=datetime.strftime(end_date, "%Y-%m-%d"),
         )
 
+        if real:
+            wearipedia._authenticate_device("withings/scanwatch", device)
+
         # calling tests for each pair of start and end dates
-        helper_test(device, start_date, end_date)
+        helper_test(device, start_date, end_date, real)
 
 
 def sleeps_data_helper(data):
@@ -66,34 +70,28 @@ def sleeps_data_helper(data):
         )
 
 
-def helper_test(device, start_synthetic, end_synthetic):
-
-    sleeps = device.get_data("sleeps")
-    heart_rates = device.get_data("heart_rates")
+def check_sleeps(sleeps):
 
     # checking the columns of sleeps dataframe
-    assert (
-        sleeps.columns
-        == [
-            "id",
-            "timezone",
-            "model",
-            "model_id",
-            "hash_deviceid",
-            "date",
-            "startdate",
-            "enddate",
-            "data",
-            "created",
-            "modified",
-        ]
-    ).all(), f"Sleeps data is not correct: {sleeps}"
+    assert set(sleeps.columns) == {
+        "id",
+        "timezone",
+        "model",
+        "model_id",
+        "hash_deviceid",
+        "date",
+        "startdate",
+        "enddate",
+        "data",
+        "created",
+        "modified",
+    }, f"Sleeps data is not correct: {sleeps}"
 
     # checking columns in sleeps dataframe
 
-    # checking that id is in range of 0 to 100000000
+    # checking that id is >=0
     for id in sleeps["id"]:
-        assert 0 <= id <= 100000000, f"ID is not in range: {id}"
+        assert id >= 0, f"ID is not in range: {id}"
 
     # checking that timezone is "America/Los_Angeles"
     for timezone in sleeps["timezone"]:
@@ -107,23 +105,29 @@ def helper_test(device, start_synthetic, end_synthetic):
     for model_id in sleeps["model_id"]:
         assert model_id == 93, f"Model ID is not correct: {model_id}"
 
-    # checking that hash_deviceid is d41d8cd98f00b204e9800998ecf8427e
+    # checking that hash_deviceid is the correct form d41d8cd98f00b204e9800998ecf8427e
     for hash_deviceid in sleeps["hash_deviceid"]:
-        assert (
-            hash_deviceid == "d41d8cd98f00b204e9800998ecf8427e"
+        assert all(
+            [c in "abcdef0123456789" for c in hash_deviceid]
         ), f"Hash Device ID is not correct: {hash_deviceid}"
 
     # checking the column sleeps["data"], a Series which contains 18 attributes
     # calling helper function to check each of the attributes
-    assert (
-        sleeps_data_helper(sleeps["data"]) == True
+    assert sleeps_data_helper(
+        sleeps["data"]
     ), f"Sleeps data is not correct: {sleeps['data']}"
 
+
+def check_hrs(heart_rates):
+
     # checking the columns of heart_rates dataframe
-    assert (
-        heart_rates.columns
-        == ["datetime", "heart_rate", "model", "model_id", "deviceid"]
-    ).all(), f"Heart rates data is not correct: {heart_rates}"
+    assert set(heart_rates.columns) == {
+        "datetime",
+        "heart_rate",
+        "model",
+        "model_id",
+        "deviceid",
+    }, f"Heart rates data is not correct: {heart_rates}"
 
     # checking columns in heart_rates dataframe
 
@@ -135,14 +139,26 @@ def helper_test(device, start_synthetic, end_synthetic):
 
     # checking model is "ScanWatch"
     for model in heart_rates["model"]:
-        assert model == "ScanWatch", f"Model is not correct: {model}"
+        assert type(model) == str or model is None, f"Model is not correct: {model}"
 
     # checking model_id is correct
     for model_id in heart_rates["model_id"]:
-        assert model_id == 93, f"Model ID is not correct: {model_id}"
+        assert type(model_id) == int, f"Model ID is not correct: {model_id}"
 
     # checking deviceid is correct hashcode
     for deviceid in heart_rates["deviceid"]:
-        assert (
-            deviceid == hashlib.md5(usedforsecurity=False).hexdigest()
+        assert deviceid is None or all(
+            [c in "abcdef0123456789" for c in deviceid]
         ), f"Device ID is not correct: {deviceid}"
+
+
+def helper_test(device, start_synthetic, end_synthetic, real):
+
+    sleeps = device.get_data("sleeps")
+    heart_rates = device.get_data("heart_rates")
+
+    if len(sleeps) != 0 or not real:
+        check_sleeps(sleeps)
+
+    if len(heart_rates) != 0 or not real:
+        check_hrs(heart_rates)

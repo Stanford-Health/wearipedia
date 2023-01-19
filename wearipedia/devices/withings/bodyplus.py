@@ -13,7 +13,20 @@ class_name = "BodyPlus"
 
 
 class BodyPlus(BaseDevice):
-    def __init__(self, params):
+    """This device allows you to work with data from the `Withings Body+ <https://www.withings.com/us/en/body-plus>`_ device.
+    Available datatypes for this device are:
+
+    * `measurements`: contains all measurements made with the scale
+
+    :param seed: random seed for synthetic data generation, defaults to 0
+    :type seed: int, optional
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2021-06-01"
+    :type start_date: str, optional
+    """
+
+    def __init__(self, seed=0, synthetic_start_date="2021-06-01"):
+
+        params = {"seed": seed, "synthetic_start_date": synthetic_start_date}
 
         self._initialize_device_params(
             ["measurements"],
@@ -27,14 +40,18 @@ class BodyPlus(BaseDevice):
     def _default_params(self):
         return {
             "start": self.init_params["synthetic_start_date"],
-            "end": str(
+            "end": datetime.strftime(
                 datetime.strptime(self.init_params["synthetic_start_date"], "%Y-%m-%d")
-                + timedelta(days=900)
+                + timedelta(days=900),
+                "%Y-%m-%d",
             ),
         }
 
     def _get_real(self, data_type, params):
-        return fetch_measurements(self.access_token)
+        start = datetime.strptime(params["start"], "%Y-%m-%d")
+        end = datetime.strptime(params["end"], "%Y-%m-%d")
+
+        return fetch_measurements(self.access_token, start, end)
 
     def _filter_synthetic(self, data, data_type, params):
         start_ts = pd.Timestamp(params["start"])
@@ -54,13 +71,17 @@ class BodyPlus(BaseDevice):
         )
 
     def _authenticate(self, auth_creds):
+        if "access_token" in auth_creds:
+            self.access_token = auth_creds["access_token"]
+            return
+
         if "refresh_token" in auth_creds:
             self.refresh_token, self.access_token = refresh_access_token(
                 auth_creds["refresh_token"],
                 auth_creds["client_id"],
-                auth_creds["customer_secret"],
+                auth_creds["client_secret"],
             )
         else:
             self.refresh_token, self.access_token = withings_authenticate(
-                auth_creds["client_id"], auth_creds["customer_secret"]
+                auth_creds["client_id"], auth_creds["client_secret"]
             )

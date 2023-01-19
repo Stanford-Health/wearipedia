@@ -22,8 +22,8 @@ sys.path.insert(0, "..")
 # -- Project information -----------------------------------------------------
 
 project = "wearipedia"
-copyright = "2022, Rodrigo Castellon"
-author = "Rodrigo Castellon"
+copyright = "2022, The Stanford Wearipedia Project"
+author = "The Stanford Wearipedia Project"
 
 
 # -- General configuration ---------------------------------------------------

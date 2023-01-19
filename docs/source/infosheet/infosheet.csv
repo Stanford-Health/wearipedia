@@ -1,0 +1,7 @@
+Company Name,Model Name,Unique Name,Authentication Setup,Sim?,Notebook Link
+WHOOP,WHOOP 4.0,`whoop/whoop_4`,only email and password,yes*,link
+Garmin,Fenix 7S,`garmin/fenix_7s`,only email and password,yes,link
+Dexcom,Pro CGM,`dexcom/pro_cgm`,OAuth 2.0,yes,link
+Withings,Body+,`withings/bodyplus`,OAuth 2.0,yes,link
+Withings,ScanWatch,`withings/scanwatch`,OAuth 2.0,yes,link
+Polar,Verity Sense,`polar/verity_sense`,only email and password,yes,link

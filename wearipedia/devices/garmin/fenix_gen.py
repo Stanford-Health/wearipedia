@@ -109,7 +109,8 @@ def get_steps(start_date, num_days):
         sedentary_poi[medium_idxes] = medium_poi[medium_idxes]
         sedentary_poi[high_idxes] = high_poi[high_idxes]
 
-        synth_steps_day = sedentary_poi
+        # convert to regular int, no need for np.int64
+        synth_steps_day = [int(synth_step) for synth_step in sedentary_poi]
 
         # compute the start and end timestamps for each 15-minute chunk
         start_gmts = [
@@ -405,10 +406,10 @@ def create_syn_data(start_date, end_date):
     for i, synth_steps_day in enumerate(synth_steps):
         for j in range(len(synth_steps_day)):
             synth_steps[i][j]["startGMT"] = datetime.strftime(
-                synth_steps[i][j]["startGMT"], "%Y-%-m-%dT%H:%M:%S"
+                synth_steps[i][j]["startGMT"], "%Y-%m-%dT%H:%M:%S"
             )
             synth_steps[i][j]["endGMT"] = datetime.strftime(
-                synth_steps[i][j]["endGMT"], "%Y-%-m-%dT%H:%M:%S"
+                synth_steps[i][j]["endGMT"], "%Y-%m-%dT%H:%M:%S"
             )
 
     # randomly delete stuff (to simulate missing data)

@@ -15,7 +15,12 @@ class_name = "SleepMat"
 
 
 class SleepMat(BaseDevice):
-    def __init__(self, params):
+    def __init__(self, seed=0):
+
+        params = {
+            "seed": seed,
+        }
+
         self._initialize_device_params(
             ["measurements"],
             params,

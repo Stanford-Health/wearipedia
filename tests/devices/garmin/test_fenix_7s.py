@@ -2,10 +2,13 @@
 
 from datetime import datetime
 
+import pytest
+
 import wearipedia
 
 
-def test_fenix_7s_synthetic():
+@pytest.mark.parametrize("real", [True, False])
+def test_fenix_7s(real):
     # first test with default params
 
     start_synthetic = datetime(2021, 1, 1)
@@ -13,16 +16,23 @@ def test_fenix_7s_synthetic():
 
     device = wearipedia.get_device(
         "garmin/fenix_7s",
-        params={
-            "synthetic_start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
-            "synthetic_end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
-        },
+        synthetic_start_date=datetime.strftime(start_synthetic, "%Y-%m-%d"),
+        synthetic_end_date=datetime.strftime(end_synthetic, "%Y-%m-%d"),
     )
+
+    if real:
+        wearipedia._authenticate_device("garmin/fenix_7s", device)
 
     dates = device.get_data("dates")
     steps = device.get_data("steps")
     hrs = device.get_data("hrs")
     brpms = device.get_data("brpms")
+
+    if real and len(brpms) == 0:
+        # Garmin API has a tendency to rate limit, see
+        # https://github.com/cyberjunky/python-garminconnect/issues/85
+        # so we just ignore
+        return
 
     assert (
         len(dates)
@@ -72,11 +82,15 @@ def test_fenix_7s_synthetic():
             "heartRateValueDescriptors",
             "heartRateValues",
         }
-        for hr_val in hr["heartRateValues"]:
-            assert len(hr_val) == 2 and (hr_val[1] is None or 0 < hr_val[1] < 500), (
-                f"HR value is not correct: {hr_val}. "
-                f"Expected a tuple of (timestamp, value) where value is between 0 and 500 or None."
-            )
+
+        if hr["heartRateValues"] is not None:
+            for hr_val in hr["heartRateValues"]:
+                assert len(hr_val) == 2 and (
+                    hr_val[1] is None or 0 < hr_val[1] < 500
+                ), (
+                    f"HR value is not correct: {hr_val}. "
+                    f"Expected a tuple of (timestamp, value) where value is between 0 and 500 or None."
+                )
 
     # Now make sure that the brpms are correct.
     for brpm in brpms:
@@ -104,12 +118,13 @@ def test_fenix_7s_synthetic():
             "respirationValuesArray",
         }
 
-        for brpm_val in brpm["respirationValuesArray"]:
-            assert len(brpm_val) == 2 and (
-                brpm_val[1] is None or 0 < brpm_val[1] < 500
-            ), (
-                f"BRPM value is not correct: {brpm_val}. "
-                f"Expected a tuple of (timestamp, value) where value is between 0 and 500 or None."
-            )
+        if brpm["respirationValuesArray"] is not None:
+            for brpm_val in brpm["respirationValuesArray"]:
+                assert len(brpm_val) == 2 and (
+                    brpm_val[1] is None or 0 < brpm_val[1] < 500
+                ), (
+                    f"BRPM value is not correct: {brpm_val}. "
+                    f"Expected a tuple of (timestamp, value) where value is between 0 and 500 or None."
+                )
 
     # TODO: stress test with other params
