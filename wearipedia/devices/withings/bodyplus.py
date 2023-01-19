@@ -40,14 +40,18 @@ class BodyPlus(BaseDevice):
     def _default_params(self):
         return {
             "start": self.init_params["synthetic_start_date"],
-            "end": str(
+            "end": datetime.strftime(
                 datetime.strptime(self.init_params["synthetic_start_date"], "%Y-%m-%d")
-                + timedelta(days=900)
+                + timedelta(days=900),
+                "%Y-%m-%d",
             ),
         }
 
     def _get_real(self, data_type, params):
-        return fetch_measurements(self.access_token)
+        start = datetime.strptime(params["start"], "%Y-%m-%d")
+        end = datetime.strptime(params["end"], "%Y-%m-%d")
+
+        return fetch_measurements(self.access_token, start, end)
 
     def _filter_synthetic(self, data, data_type, params):
         start_ts = pd.Timestamp(params["start"])
@@ -67,6 +71,10 @@ class BodyPlus(BaseDevice):
         )
 
     def _authenticate(self, auth_creds):
+        if "access_token" in auth_creds:
+            self.access_token = auth_creds["access_token"]
+            return
+
         if "refresh_token" in auth_creds:
             self.refresh_token, self.access_token = refresh_access_token(
                 auth_creds["refresh_token"],

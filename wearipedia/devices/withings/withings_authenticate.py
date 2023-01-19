@@ -66,8 +66,9 @@ def withings_authenticate(client_id, customer_secret):
             0
         ]
     except Exception as e:
-        print(f"Caught error:\n{e}\n")
-        print("Please copy and paste the entire URL (including https)")
+        exception_str = f"Caught error:\n{e}\n"
+        exception_str += "Please copy and paste the entire URL (including https)"
+        raise Exception(exception_str)
 
     params = {
         "action": "requesttoken",
@@ -86,6 +87,6 @@ def withings_authenticate(client_id, customer_secret):
     try:
         access_token = out["body"]["access_token"]
     except KeyError as e:
-        print("Took too long to paste in redirect URL. Please repeat step 7.")
+        raise Exception("Took too long to paste in redirect URL. Please repeat step 7.")
 
     return access_token

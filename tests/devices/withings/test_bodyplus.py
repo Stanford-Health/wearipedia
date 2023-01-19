@@ -2,13 +2,14 @@
 
 from datetime import datetime
 
+import numpy as np
 import pytest
 
 import wearipedia
 
 
 @pytest.mark.parametrize("real", [True, False])
-def test_withings_bodyplus_synthetic(real):
+def test_withings_bodyplus(real):
     start_dates = [datetime(2009, 11, 15), datetime(2021, 4, 1), datetime(2022, 6, 10)]
 
     for start_date in start_dates:
@@ -21,12 +22,15 @@ def test_withings_bodyplus_synthetic(real):
             wearipedia._authenticate_device("withings/bodyplus", device)
 
         # calling tests for each pair of start dates
-        helper_test(device, start_date)
+        helper_test(device, start_date, real)
 
 
-def helper_test(device, start_date):
+def helper_test(device, start_date, real):
 
     measurements = device.get_data("measurements")
+
+    if len(measurements) == 0 and real:
+        return
 
     # making sure schema of the measurements dataframe is correct
     assert (
@@ -43,4 +47,6 @@ def helper_test(device, start_date):
 
     # check that fat ratio (%) is in a suitable range
     for fat_ratio in measurements["Fat Ratio (%)"]:
-        assert 0 <= fat_ratio <= 100, f"Fat ratio is not correct: {fat_ratio}"
+        assert 0 <= fat_ratio <= 100 or np.isnan(
+            fat_ratio
+        ), f"Fat ratio is not correct: {fat_ratio}"

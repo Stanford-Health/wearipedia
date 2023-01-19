@@ -130,18 +130,22 @@ _DEVICE_TO_AUTH_DICT = {
 _REFRESH_TOKEN_STORE = "/tmp/refresh_tokens.json"
 
 
-def _read_refresh_token_from_json(device_name):
+def _read_token_from_json(device_name, is_access_token=False):
     try:
         d = json.load(open(_REFRESH_TOKEN_STORE))
         refresh_token_env_var = _DEVICE_TO_AUTH_DICT[device_name][
             "refresh_token_env_var"
         ]
+
+        if is_access_token:
+            refresh_token_env_var = refresh_token_env_var.replace("REFRESH", "ACCESS")
+
         return d[refresh_token_env_var]
     except:
         return None
 
 
-def _dump_refresh_token_to_json(device_name, new_refresh_token):
+def _dump_token_to_json(device_name, new_refresh_token, is_access_token=False):
     # pre-emptively fill it with nothing
     if not Path(_REFRESH_TOKEN_STORE).exists():
         json.dump({}, open(_REFRESH_TOKEN_STORE, "w"))
@@ -153,6 +157,8 @@ def _dump_refresh_token_to_json(device_name, new_refresh_token):
     # we're running in GitHub Actions, so we can
     # update the refresh token
     refresh_token_env_var = _DEVICE_TO_AUTH_DICT[device_name]["refresh_token_env_var"]
+    if is_access_token:
+        refresh_token_env_var = refresh_token_env_var.replace("REFRESH", "ACCESS")
 
     # since we can't propagate environment variables up in Github
     # Actions, we just keep around a file /tmp/refresh_tokens.json
@@ -169,11 +175,18 @@ def _authenticate_device(device_name, device):
     auth_dict = _DEVICE_TO_AUTH_DICT[device_name]
 
     # replace with refresh token json on disk if possible
-    disk_refresh_token = _read_refresh_token_from_json(device_name)
+    disk_refresh_token = _read_token_from_json(device_name)
     if disk_refresh_token is not None:
         auth_dict["refresh_token"] = disk_refresh_token
 
+    disk_access_token = _read_token_from_json(device_name, is_access_token=True)
+    if disk_access_token is not None:
+        auth_dict["access_token"] = disk_access_token
+
     device.authenticate(auth_dict)
 
-    if "refresh_token" in auth_dict:
-        _dump_refresh_token_to_json(device_name, device.refresh_token)
+    if "refresh_token" in dir(device):
+        _dump_token_to_json(device_name, device.refresh_token)
+
+    if "access_token" in dir(device):
+        _dump_token_to_json(device_name, device.access_token, is_access_token=True)
