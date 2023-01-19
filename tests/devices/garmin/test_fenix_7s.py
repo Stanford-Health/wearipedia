@@ -118,7 +118,7 @@ def test_fenix_7s(real):
             "respirationValuesArray",
         }
 
-        if brpms["respirationValuesArray"] is not None:
+        if brpm["respirationValuesArray"] is not None:
             for brpm_val in brpm["respirationValuesArray"]:
                 assert len(brpm_val) == 2 and (
                     brpm_val[1] is None or 0 < brpm_val[1] < 500
