@@ -90,7 +90,7 @@ A paper is in progress!
 
 ## Disclaimer
 
-This project is currently in *alpha*. This means that test coverage is limited, and the codebase is still really a prototype. Expect for most things to work, but also small bugs, rough edges, and sparse documentation.
+This project is currently in *alpha*. This means that test coverage is limited, and the codebase is still really a prototype. Moreover, the API is unstable, as we are still rapidly iterating on it. Expect for most things to work, but also small bugs, rough edges, and sparse documentation.
 
 ## Contributing
 
