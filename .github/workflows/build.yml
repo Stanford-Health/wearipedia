@@ -26,26 +26,6 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: clear
-      run: export GITHUB_TOKEN=
-
-    - name: cli check
-      run: gh auth login --with-token ${GITHUB_TOKEN}
-      env:
-        GH_TOKEN: ${{ github.token }}
-
-    - name: check that gh cli works
-      run: gh secret set test_secret --body "testing"
-      env:
-        GH_TOKEN: ${{ github.token }}
-      #run: gh api --method PUT -H "Accept:\ application/vnd.github+json" /repos/Stanford-Health/wearipedia/actions/secrets/temp_secret -f encrypted_value='c2VjcmV0' -f key_id='012345678912345678'
-
-    - name: Test presence of env variables
-      run: python3 -c "import os; print([x for x in os.environ if 'test_s' in x])"
-      env:
-        WHOOP_4_EMAIL: ${{ secrets.WHOOP_4_EMAIL }}
-        WHOOP_4_PASSWORD: ${{ secrets.WHOOP_4_PASSWORD }}
-
     - name: check git hash
       run: git rev-parse HEAD
 
@@ -75,6 +55,7 @@ jobs:
       with:
         path: .venv
         key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
+
     - name: Install dependencies
       run: |
         poetry config virtualenvs.in-project true
@@ -87,3 +68,29 @@ jobs:
     - name: Run tests
       run: |
         make test
+      env:
+        DEXCOM_ACCESS_TOKEN: ${{ secrets.DEXCOM_ACCESS_TOKEN }}
+        DEXCOM_CLIENT_ID: ${{ secrets.DEXCOM_CLIENT_ID }}
+        DEXCOM_CLIENT_SECRET: ${{ secrets.DEXCOM_CLIENT_SECRET }}
+        DEXCOM_EMAIL: ${{ secrets.DEXCOM_EMAIL }}
+        DEXCOM_PASSWORD: ${{ secrets.DEXCOM_PASSWORD }}
+        DEXCOM_REFRESH_TOKEN: ${{ secrets.DEXCOM_REFRESH_TOKEN }}
+        GARMIN_FENIX_7S_EMAIL: ${{ secrets.GARMIN_FENIX_7S_EMAIL }}
+        GARMIN_FENIX_7S_PASSWORD: ${{ secrets.GARMIN_FENIX_7S_PASSWORD }}
+        POLAR_EMAIL: ${{ secrets.POLAR_EMAIL }}
+        POLAR_PASSWORD: ${{ secrets.POLAR_PASSWORD }}
+        RJCASTE_PAT: ${{ secrets.RJCASTE_PAT }}
+        TEST_SECRET: ${{ secrets.TEST_SECRET }}
+        WHOOP_4_EMAIL: ${{ secrets.WHOOP_4_EMAIL }}
+        WHOOP_4_PASSWORD: ${{ secrets.WHOOP_4_PASSWORD }}
+        WITHINGS_ACCESS_TOKEN: ${{ secrets.WITHINGS_ACCESS_TOKEN }}
+        WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
+        WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
+        WITHINGS_EMAIL: ${{ secrets.WITHINGS_EMAIL }}
+        WITHINGS_REFRESH_TOKEN: ${{ secrets.WITHINGS_REFRESH_TOKEN }}
+
+    - name: Push back to github secrets
+      run: |
+        echo ${{ secrets.RJCASTE_PAT }} | gh auth login --with-token
+        gh auth status
+        python3 set_secrets_script.py
