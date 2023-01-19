@@ -24,9 +24,8 @@ def refresh_access_token(refresh_token, client_id, customer_secret):
 
     out = requests.post("https://wbsapi.withings.net/v2/oauth2", data=params)
 
-    body = json.loads(out.text)["body"]
-
     try:
+        body = json.loads(out.text)["body"]
         new_refresh_token, access_token = body["refresh_token"], body["access_token"]
         print(f"Got new refresh token: {new_refresh_token}")
     except KeyError as e:
