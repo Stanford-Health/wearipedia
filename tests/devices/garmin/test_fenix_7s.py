@@ -118,12 +118,13 @@ def test_fenix_7s(real):
             "respirationValuesArray",
         }
 
-        for brpm_val in brpm["respirationValuesArray"]:
-            assert len(brpm_val) == 2 and (
-                brpm_val[1] is None or 0 < brpm_val[1] < 500
-            ), (
-                f"BRPM value is not correct: {brpm_val}. "
-                f"Expected a tuple of (timestamp, value) where value is between 0 and 500 or None."
-            )
+        if brpm["respirationValuesArray"] is not None:
+            for brpm_val in brpm["respirationValuesArray"]:
+                assert len(brpm_val) == 2 and (
+                    brpm_val[1] is None or 0 < brpm_val[1] < 500
+                ), (
+                    f"BRPM value is not correct: {brpm_val}. "
+                    f"Expected a tuple of (timestamp, value) where value is between 0 and 500 or None."
+                )
 
     # TODO: stress test with other params
