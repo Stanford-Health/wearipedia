@@ -183,6 +183,9 @@ def _authenticate_device(device_name, device):
     if disk_access_token is not None:
         auth_dict["access_token"] = disk_access_token
 
+    print("AUTHENTICATING DEVICE", device_name)
+    print("AUTHENTICATION DICTIONARY IS", auth_dict.keys())
+
     device.authenticate(auth_dict)
 
     if "refresh_token" in dir(device):
