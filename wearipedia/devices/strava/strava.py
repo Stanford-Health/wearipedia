@@ -56,18 +56,12 @@ class Strava(BaseDevice):
     :type use_cache: bool, optional
     """
 
-    def __init__(
-        self,
-        seed=0,
-        synthetic_start_date="2022-03-01",
-        synthetic_end_date="2022-06-17",
-        use_cache=True,
-    ):
+    def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
+
         params = {
             "seed": seed,
-            "synthetic_start_date": synthetic_start_date,
-            "synthetic_end_date": synthetic_end_date,
-            "use_cache": use_cache,
+            "start_date": str(start_date),
+            "end_date": str(end_date),
         }
 
         self._initialize_device_params(
@@ -79,16 +73,15 @@ class Strava(BaseDevice):
             params,
             {
                 "seed": 0,
-                "synthetic_start_date": "2022-03-01",
-                "synthetic_end_date": "2022-06-17",
-                "use_cache": True,
+                "start_date": "2022-03-01",
+                "end_date": "2022-06-17",
             },
         )
 
     def _default_params(self):
         return {
-            "start_date": self.init_params["synthetic_start_date"],
-            "end_date": self.init_params["synthetic_end_date"],
+            "start_date": self.init_params["start_date"],
+            "end_date": self.init_params["end_date"],
         }
 
     def _get_real(self, data_type, params):
@@ -105,7 +98,7 @@ class Strava(BaseDevice):
 
         # get the indices by subtracting against the start of the synthetic data
         synthetic_start = date_str_to_obj(
-            self.init_params["synthetic_start_date"])
+            self.init_params["start_date"])
 
         start_idx = (date_str_to_obj(
             params["start_date"]) - synthetic_start).days
@@ -122,8 +115,8 @@ class Strava(BaseDevice):
 
         # generate synthetic data frame based on start and end dates
         self.synthetic_df = create_syn_data(
-            self.init_params["synthetic_start_date"],
-            self.init_params["synthetic_end_date"],
+            self.init_params["start_date"],
+            self.init_params["end_date"],
         )
 
         self.distance = list(self.synthetic_df.get(

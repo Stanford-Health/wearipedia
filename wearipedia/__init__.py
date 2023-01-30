@@ -143,7 +143,8 @@ def _read_token_from_json(device_name, is_access_token=False):
         ]
 
         if is_access_token:
-            refresh_token_env_var = refresh_token_env_var.replace("REFRESH", "ACCESS")
+            refresh_token_env_var = refresh_token_env_var.replace(
+                "REFRESH", "ACCESS")
 
         return d[refresh_token_env_var]
     except:
@@ -163,7 +164,8 @@ def _dump_token_to_json(device_name, new_refresh_token, is_access_token=False):
     # update the refresh token
     refresh_token_env_var = _DEVICE_TO_AUTH_DICT[device_name]["refresh_token_env_var"]
     if is_access_token:
-        refresh_token_env_var = refresh_token_env_var.replace("REFRESH", "ACCESS")
+        refresh_token_env_var = refresh_token_env_var.replace(
+            "REFRESH", "ACCESS")
 
     # since we can't propagate environment variables up in Github
     # Actions, we just keep around a file /tmp/refresh_tokens.json
@@ -184,7 +186,8 @@ def _authenticate_device(device_name, device):
     if disk_refresh_token is not None:
         auth_dict["refresh_token"] = disk_refresh_token
 
-    disk_access_token = _read_token_from_json(device_name, is_access_token=True)
+    disk_access_token = _read_token_from_json(
+        device_name, is_access_token=True)
     if disk_access_token is not None:
         auth_dict["access_token"] = disk_access_token
 
@@ -197,4 +200,5 @@ def _authenticate_device(device_name, device):
         _dump_token_to_json(device_name, device.refresh_token)
 
     if "access_token" in dir(device):
-        _dump_token_to_json(device_name, device.access_token, is_access_token=True)
+        _dump_token_to_json(
+            device_name, device.access_token, is_access_token=True)
