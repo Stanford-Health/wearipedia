@@ -86,23 +86,48 @@ class Whoop4(BaseDevice):
             start_idx = (datetime_str_to_obj(params["start"]) - synthetic_start).days
             end_idx = (datetime_str_to_obj(params["end"]) - synthetic_start).days
 
-            return data.iloc[start_idx:end_idx]
+            cycles = {
+                "total_count": end_idx - start_idx,
+                "offset": end_idx - start_idx,
+                "records": data["records"][start_idx:end_idx],
+            }
+
+            return cycles
+
         else:
             # hr data is generated in 7 second intervals, so we need to
             # do a binary search to find the start and end indices
             # and then return the data between those indices
 
-            start_ts = pd.Timestamp(params["start"])
-            end_ts = pd.Timestamp(params["end"])
+            start_ts = pd.Timestamp(params["start"]).timestamp()
+            end_ts = pd.Timestamp(params["end"]).timestamp()
 
-            start_idx = bin_search(np.array(data.timestamp), start_ts)
-            end_idx = bin_search(np.array(data.timestamp), end_ts)
+            vals = np.array([val["data"] for val in data["values"]])
 
-            return data.iloc[start_idx:end_idx]
+            start_idx = bin_search(vals, start_ts)
+            end_idx = bin_search(vals, end_ts)
+
+            return {
+                "name": "heart_rate",
+                "start": data["values"][start_idx]["time"],
+                "values": data["values"][start_idx:end_idx],
+            }
 
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
+
+        self.cycles = create_fake_cycles(
+            datetime.strptime(self.init_params["synthetic_start_date"], "%Y-%m-%d"),
+            datetime.strptime(self.init_params["synthetic_end_date"], "%Y-%m-%d"),
+        )
+
+        self.hr = create_fake_hr(
+            datetime.strptime(self.init_params["synthetic_start_date"], "%Y-%m-%d"),
+            datetime.strptime(self.init_params["synthetic_end_date"], "%Y-%m-%d"),
+        )
+
+        return
 
         # and based on start and end dates
         self.cycles = create_fake_cycles_df(

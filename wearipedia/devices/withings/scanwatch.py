@@ -91,13 +91,17 @@ class ScanWatch(BaseDevice):
         )
 
     def _authenticate(self, auth_creds):
+        if "access_token" in auth_creds:
+            self.access_token = auth_creds["access_token"]
+            return
+
         if "refresh_token" in auth_creds:
             self.refresh_token, self.access_token = refresh_access_token(
                 auth_creds["refresh_token"],
                 auth_creds["client_id"],
-                auth_creds["customer_secret"],
+                auth_creds["client_secret"],
             )
         else:
             self.refresh_token, self.access_token = withings_authenticate(
-                auth_creds["client_id"], auth_creds["customer_secret"]
+                auth_creds["client_id"], auth_creds["client_secret"]
             )
