@@ -31,7 +31,7 @@ classifiers = [  #! Update me
 
 [tool.poetry.scripts]
 # Entry points for the package https://python-poetry.org/docs/pyproject/#scripts
-"wearipedia" = "wearipedia.__main__:app"
+"wearipedia" = "wearipedia.cl_parser:parse_CLI"
 
 [tool.poetry.dependencies]
 python = "^3.7"
