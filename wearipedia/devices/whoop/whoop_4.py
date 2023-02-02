@@ -102,7 +102,7 @@ class Whoop4(BaseDevice):
             start_ts = pd.Timestamp(params["start"]).timestamp()
             end_ts = pd.Timestamp(params["end"]).timestamp()
 
-            vals = np.array([val["data"] for val in data["values"]])
+            vals = np.array([val["time"] for val in data["values"]])
 
             start_idx = bin_search(vals, start_ts)
             end_idx = bin_search(vals, end_ts)
