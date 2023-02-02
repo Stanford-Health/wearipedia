@@ -11,7 +11,7 @@ readme = "README.md"
 authors = ["The Stanford Wearipedia Project <arjo@stanford.edu>"]
 license = "MIT"
 repository = "https://github.com/Stanford-Health/wearipedia"
-#homepage = "http://wearipedia.com"
+homepage = "http://wearipedia.com"
 
 # Keywords description https://python-poetry.org/docs/pyproject/#keywords
 keywords = []  #! Update me
