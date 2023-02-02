@@ -21,6 +21,11 @@ Instructions on how to install Wearipedia.
 
 Information on every device included in the Wearipedia package.
 
+:ref:`Notebook Tutorials <notebooks>`
+---------------------------------------
+
+Access practical use cases of the Wearipedia package via notebook tutorials for the various devices we cover.
+
 
 :ref:`API Reference <reference>`
 --------------------------------
@@ -34,6 +39,7 @@ function does.
 
    install.md
    infosheet/index.rst
+   notebooks/index.rst
    reference/index.rst
 
 
