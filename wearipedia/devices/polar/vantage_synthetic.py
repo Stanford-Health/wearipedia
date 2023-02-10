@@ -7,7 +7,6 @@ def create_syn_data(start_date, end_date):
 
     # create a list of dates between start and end date
     dates = pd.date_range(start_date, end_date)
-
     # create random id
     def random_id(x): return np.random.randint(1000000000, 9999999999)
 
@@ -104,7 +103,7 @@ def create_syn_data(start_date, end_date):
             'id': random_id(''),
             'duration': duration,
             'distance': distance,
-            'hr_avg': random_hr_avg(''),
+            'hrAvg': random_hr_avg(''),
             'calories': int(random_calories(duration)),
             'note': ' ',
             'sportName': np.random.choice(['Running', 'Cycling', 'Strength_Training', 'Swimming']),
@@ -145,7 +144,7 @@ def create_syn_data(start_date, end_date):
                 'Start time': str(pd.to_datetime(activity['startDate'][:19])).split(' ')[1]+' '+suffix,
                 'Duration': str(int(duration/3600000)).zfill(2)+':'+str(int(duration/60000)).zfill(2)+':'+str(int(duration % 1000))[:2].zfill(2),
                 'Total distance (mi)': np.round(distance, 2) if activity['sportId'] != 15 else None,
-                'Average heart rate (bpm)': activity['hr_avg'],
+                'Average heart rate (bpm)': activity['hrAvg'],
                 'Average speed (mi/h)': np.round(distance/(activity['duration']/3600000), 1) if activity['sportId'] != 15 else None,
                 'Max speed (mi/h)': np.round(distance/(activity['duration']/3600000)) if activity['sportId'] != 15 else None,
                 'Average pace (min/mi)': distance/(activity['distance']/3600000) if activity['sportId'] != 5 else None,
@@ -168,7 +167,7 @@ def create_syn_data(start_date, end_date):
                 'HR max': int(max_syn_hrs('')),
                 'HR sit': int(min_syn_hrs('')),
                 'VO2max': int(random_vo2Max('')),
-                'Unamed: 29': None,
+                'Unnamed: 29': None,
             }
         ]
 
@@ -183,11 +182,11 @@ def create_syn_data(start_date, end_date):
                 'HR (bpm)': int(random_hr_avg('')),
                 'Speed (mi/h)': np.round(distance/(activity['duration']/3600000), 1) if activity['sportId'] not in [15, 16] else None,
                 'Pace (min/mi)': distance/(activity['distance']/3600000) if activity['sportId'] not in [15, 16] else None,
-                'Cadence (rpm)': 0,
+                'Cadence': 0,
                 'Altitude (ft)': 0,
                 'Stride length (in)': 0,
                 'Distances (ft)': 0,
-                'Temperature (°F)': temp,
+                'Temperatures (F)': temp,
                 'Power (W)': 0,
                 'Unnamed: 11': None,
             })
@@ -196,4 +195,4 @@ def create_syn_data(start_date, end_date):
         training_by_ids.append(curr_id_traning)
 
     # Return the list of sleeps, activities, and training by id
-    return trainings, sleeps, training_by_ids
+    return trainings, sleeps, training_by_ids[0]

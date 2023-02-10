@@ -35,7 +35,7 @@ def fetch_real_data(session, uid, email, password, start_date, end_date, data_ty
 
         # send the request to the API
         activities = session.post('https://flow.polar.com/api/training/history',
-                                       cookies=session.cookies.get_dict(), headers=headers, json=json_data)
+                                  cookies=session.cookies.get_dict(), headers=headers, json=json_data)
 
         # if the request was not successful, return an empty list
         if activities.status_code != 200:

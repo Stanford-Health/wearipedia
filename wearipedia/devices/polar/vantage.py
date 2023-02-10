@@ -35,15 +35,13 @@ class PolarVantage(BaseDevice):
     def __init__(
         self,
         seed=0,
-        synthetic_start_date="2022-03-01",
-        synthetic_end_date="2022-06-17",
-        use_cache=True,
+        start_date="2022-03-01",
+        end_date="2022-06-17"
     ):
         params = {
             "seed": seed,
-            "synthetic_start_date": synthetic_start_date,
-            "synthetic_end_date": synthetic_end_date,
-            "use_cache": use_cache,
+            "start_date": str(start_date),
+            "end_date": str(end_date)
         }
 
         self._initialize_device_params(
@@ -51,17 +49,16 @@ class PolarVantage(BaseDevice):
             params,
             {
                 "seed": 0,
-                "synthetic_start_date": "2022-03-01",
-                "synthetic_end_date": "2022-06-17",
-                "use_cache": True,
+                "start_date": "2022-03-01",
+                "end_date": "2022-06-17"
             },
         )
 
     def _default_params(self):
         return {
             "training_id": None,
-            "start_date": self.init_params["synthetic_start_date"],
-            "end_date": self.init_params["synthetic_end_date"]
+            "start_date": self.init_params["start_date"],
+            "end_date": self.init_params["end_date"]
         }
 
     def _get_real(self, data_type, params):
@@ -86,7 +83,7 @@ class PolarVantage(BaseDevice):
 
         # get the indices by subtracting against the start of the synthetic data
         synthetic_start = date_str_to_obj(
-            self.init_params["synthetic_start_date"])
+            self.init_params["start_date"])
 
         start_idx = (date_str_to_obj(
             params["start_date"]) - synthetic_start).days
@@ -100,8 +97,8 @@ class PolarVantage(BaseDevice):
 
         # and based on start and end dates
         self.training_history, self.sleep, self.training_by_id = create_syn_data(
-            self.init_params["synthetic_start_date"],
-            self.init_params["synthetic_end_date"],
+            self.init_params["start_date"],
+            self.init_params["end_date"],
         )
 
     def _authenticate(self, auth_creds):
