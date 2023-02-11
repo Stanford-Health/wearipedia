@@ -130,6 +130,15 @@ _DEVICE_TO_AUTH_DICT = {
         "email": get_os("POLAR_EMAIL"),
         "password": get_os("POLAR_PASSWORD"),
     },
+    "strava/strava": {
+        "refresh_token": get_os("STRAVA_REFRESH_TOKEN"),
+        "client_id": get_os("STRAVA_CLIENT_ID"),
+        "client_secret": get_os("STRAVA_CLIENT_SECRET"),
+    },
+    "polar/vantage": {
+        "email": get_os("POLAR_EMAIL"),
+        "password": get_os("POLAR_PASSWORD"),
+    },
 }
 
 _REFRESH_TOKEN_STORE = "/tmp/refresh_tokens.json"
