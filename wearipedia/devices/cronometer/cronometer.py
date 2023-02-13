@@ -1,14 +1,13 @@
 from datetime import datetime
 
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .cronometer_fetch import *
 from .cronometer_synthetic import *
-
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-
 
 class_name = "Cronometer"
 
@@ -81,18 +80,17 @@ class Cronometer(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        def date_str_to_obj(x): return datetime.strptime(x, "%Y-%m-%d")
+        def date_str_to_obj(x):
+            return datetime.strptime(x, "%Y-%m-%d")
 
         # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(
-            self.init_params["synthetic_start_date"])
+        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
 
-        start_idx = (date_str_to_obj(
-            params["start_date"]) - synthetic_start).days
+        start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
         end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
 
         if data_type in ["exercises", "biometrics"]:
-            return data[start_idx*2:end_idx*2]
+            return data[start_idx * 2 : end_idx * 2]
         else:
             return data[start_idx:end_idx]
 
@@ -101,7 +99,12 @@ class Cronometer(BaseDevice):
         seed_everything(self.init_params["seed"])
 
         # and based on start and end dates
-        self.dailySummary, self.servings, self.exercises, self.biometrics = create_syn_data(
+        (
+            self.dailySummary,
+            self.servings,
+            self.exercises,
+            self.biometrics,
+        ) = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
@@ -115,13 +118,13 @@ class Cronometer(BaseDevice):
         self.session = s
 
         # getting the login page to extract the csrf token
-        res = s.get('https://cronometer.com/login/')
+        res = s.get("https://cronometer.com/login/")
 
         # parsing the html
-        soup = BeautifulSoup(res.text, 'html.parser')
+        soup = BeautifulSoup(res.text, "html.parser")
 
         # extracting the csrf token
-        anticsrf = soup.find('input', {'name': 'anticsrf'}).get('value')
+        anticsrf = soup.find("input", {"name": "anticsrf"}).get("value")
 
         if len(anticsrf) == 0:
             raise Exception("Could not find csrf token, authentication failed")
@@ -132,14 +135,15 @@ class Cronometer(BaseDevice):
         # creating the payload
         data = {
             "anticsrf": anticsrf,
-            'username': auth_creds['username'],
-            'password': auth_creds['password']}
+            "username": auth_creds["username"],
+            "password": auth_creds["password"],
+        }
 
         # creating the header for the post request
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
         # creating the url for the post request
-        login_url = 'https://cronometer.com/login'
+        login_url = "https://cronometer.com/login"
 
         # sending the post request
         client = s.post(login_url, data=data, headers=headers)

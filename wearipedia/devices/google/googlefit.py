@@ -1,9 +1,9 @@
 from datetime import datetime
+
 import requests
 
-from ..device import BaseDevice
 from ...utils import seed_everything
-
+from ..device import BaseDevice
 from .googlefitness_fetch import *
 from .googlefitness_synthetic import *
 
@@ -70,8 +70,23 @@ class GoogleFitness(BaseDevice):
         }
 
         self._initialize_device_params(
-            ['steps', 'heart_rate', 'sleep', 'heart_minutes', 'blood_pressure', 'blood_glucose', 'body_temperature',
-                'calories_expended', 'activity_minutes', 'height', 'oxygen_saturation', 'menstruation', 'speed', 'weight', 'distance'],
+            [
+                "steps",
+                "heart_rate",
+                "sleep",
+                "heart_minutes",
+                "blood_pressure",
+                "blood_glucose",
+                "body_temperature",
+                "calories_expended",
+                "activity_minutes",
+                "height",
+                "oxygen_saturation",
+                "menstruation",
+                "speed",
+                "weight",
+                "distance",
+            ],
             params,
             {
                 "seed": 0,
@@ -90,10 +105,16 @@ class GoogleFitness(BaseDevice):
         }
 
     def _get_real(self, data_type, params):
-        if 'time_bucket' not in params:
-            return fetch_real_data(self, params["start_date"], params["end_date"], data_type)
+        if "time_bucket" not in params:
+            return fetch_real_data(
+                self, params["start_date"], params["end_date"], data_type
+            )
         return fetch_real_data(
-            self, params["start_date"], params["end_date"], data_type, params['time_bucket']
+            self,
+            params["start_date"],
+            params["end_date"],
+            data_type,
+            params["time_bucket"],
         )
 
     def _filter_synthetic(self, data, data_type, params):
@@ -101,14 +122,13 @@ class GoogleFitness(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        def date_str_to_obj(x): return datetime.strptime(x, "%Y-%m-%d")
+        def date_str_to_obj(x):
+            return datetime.strptime(x, "%Y-%m-%d")
 
         # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(
-            self.init_params["synthetic_start_date"])
+        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
 
-        start_idx = (date_str_to_obj(
-            params["start_date"]) - synthetic_start).days
+        start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
         end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
 
         return data[start_idx:end_idx]
@@ -121,23 +141,45 @@ class GoogleFitness(BaseDevice):
         # body_temperature, menstruation
 
         # # and based on start and end dates
-        self.steps, self.heart_rate, self.weight, self.height, self.speed, self.heart_minutes, self.calories_expended, self.sleep, self.blood_pressure, self.blood_glucose, self.activity_minutes, self.distance, self.oxygen_saturation, self.body_temperature, self.menstruation = create_syn_data(
+        (
+            self.steps,
+            self.heart_rate,
+            self.weight,
+            self.height,
+            self.speed,
+            self.heart_minutes,
+            self.calories_expended,
+            self.sleep,
+            self.blood_pressure,
+            self.blood_glucose,
+            self.activity_minutes,
+            self.distance,
+            self.oxygen_saturation,
+            self.body_temperature,
+            self.menstruation,
+        ) = create_syn_data(
             self.init_params["synthetic_start_date"],
-            self.init_params["synthetic_end_date"], self.init_params["time_bucket"])
+            self.init_params["synthetic_end_date"],
+            self.init_params["time_bucket"],
+        )
 
     def _authenticate(self, auth_creds):
 
-        if 'authorization_code' not in auth_creds and 'access_token' not in auth_creds:
+        if "authorization_code" not in auth_creds and "access_token" not in auth_creds:
             raise ValueError(
-                'Neither authorization_code nor access_token not found in credentials')
+                "Neither authorization_code nor access_token not found in credentials"
+            )
 
-        if 'authorization_code' in auth_creds:
+        if "authorization_code" in auth_creds:
             # The exchange_auth_url specifies the URL to the endpoint that exchanges the authorization code for an access token
-            exchange_auth_url = 'https://developers.google.com/oauthplayground/exchangeAuthCode'
+            exchange_auth_url = (
+                "https://developers.google.com/oauthplayground/exchangeAuthCode"
+            )
 
-            payload = {"token_uri": "https://oauth2.googleapis.com/token",
-                       "code": auth_creds['authorization_code'],
-                       }
+            payload = {
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "code": auth_creds["authorization_code"],
+            }
 
             # POST request to get the participant's ACCESS TOKEN
             res = requests.post(exchange_auth_url, json=payload)
@@ -145,17 +187,20 @@ class GoogleFitness(BaseDevice):
             # saving the participant's ACCESS TOKEN
             if res.status_code == 200:
                 try:
-                    self.access_token = res.json()['access_token']
+                    self.access_token = res.json()["access_token"]
                     print(
-                        'Successfully generated your access token. It will remain valid for an hour. \nYour access token is:'+self.access_token)
+                        "Successfully generated your access token. It will remain valid for an hour. \nYour access token is:"
+                        + self.access_token
+                    )
                 except:
                     raise Exception(
-                        'Authentication failed!, please make sure you have a valid authorization code')
+                        "Authentication failed!, please make sure you have a valid authorization code"
+                    )
             else:
-                raise Exception('Authentication failed!')
+                raise Exception("Authentication failed!")
 
-        if 'access_token' in auth_creds and 'authorization_code' not in auth_creds:
-            self.access_token = auth_creds['access_token']
+        if "access_token" in auth_creds and "authorization_code" not in auth_creds:
+            self.access_token = auth_creds["access_token"]
 
         # The acces token that enables us to access the user's data using google's API
         g_access_token = self.access_token
@@ -166,7 +211,7 @@ class GoogleFitness(BaseDevice):
         # headers sends the user's credentials to the API during POST request
         headers = {
             "Authorization": "Bearer {}".format(g_access_token),
-            "Content-Type": "application/json;encoding=utf-8"
+            "Content-Type": "application/json;encoding=utf-8",
         }
 
         # POST request to get the participant's ACCESS TOKEN
@@ -175,9 +220,9 @@ class GoogleFitness(BaseDevice):
         # saving the participant's ACCESS TOKEN
         if res.status_code == 200:
             self.access_token = g_access_token
-            print('Authenticated!\n')
+            print("Authenticated!\n")
         else:
-            raise Exception('Authentication failed!')
+            raise Exception("Authentication failed!")
 
         # figure out how to cache this, considering I am not using an API
         # pickle.dump(self, open(CRED_CACHE_PATH, "wb"))

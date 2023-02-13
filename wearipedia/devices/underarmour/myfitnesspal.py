@@ -2,12 +2,12 @@ import os
 import pickle
 from datetime import datetime
 
+import myfitnesspal
+
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .myfitnesspal_fetch import *
 from .myfitnesspal_synthetic import *
-
-import myfitnesspal
 
 class_name = "MyFitnessPal"
 
@@ -58,8 +58,16 @@ class MyFitnessPal(BaseDevice):
         }
 
         self._initialize_device_params(
-            ["goals", "daily_summary", "exercises_cardio",
-                "exercises_strength", "lunch", 'breakfast', 'dinner', 'snacks'],
+            [
+                "goals",
+                "daily_summary",
+                "exercises_cardio",
+                "exercises_strength",
+                "lunch",
+                "breakfast",
+                "dinner",
+                "snacks",
+            ],
             params,
             {
                 "seed": 0,
@@ -85,14 +93,13 @@ class MyFitnessPal(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        def date_str_to_obj(x): return datetime.strptime(x, "%Y-%m-%d")
+        def date_str_to_obj(x):
+            return datetime.strptime(x, "%Y-%m-%d")
 
         # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(
-            self.init_params["synthetic_start_date"])
+        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
 
-        start_idx = (date_str_to_obj(
-            params["start_date"]) - synthetic_start).days
+        start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
         end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
 
         return data[start_idx:end_idx]
@@ -102,7 +109,16 @@ class MyFitnessPal(BaseDevice):
         seed_everything(self.init_params["seed"])
 
         # and based on start and end dates
-        self.goals, self.daily_summary, self.exercises_cardio, self.exercises_strength, self.breakfast, self.lunch, self.dinner, self.snacks = create_syn_data(
+        (
+            self.goals,
+            self.daily_summary,
+            self.exercises_cardio,
+            self.exercises_strength,
+            self.breakfast,
+            self.lunch,
+            self.dinner,
+            self.snacks,
+        ) = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
@@ -110,17 +126,19 @@ class MyFitnessPal(BaseDevice):
     def _authenticate(self, auth_creds):
 
         # Using cookies stored on local machine to login to myfitnesspal
-        if 'cookies' in auth_creds:
+        if "cookies" in auth_creds:
             try:
-                client = myfitnesspal.Client(auth_creds['cookies'])
+                client = myfitnesspal.Client(auth_creds["cookies"])
             except myfitnesspal.exceptions.MyfitnesspalLoginError as e:
                 raise Exception(
-                    "Could not authenticate with MyFitnessPal using the cookies provided, retry using a local machine")
+                    "Could not authenticate with MyFitnessPal using the cookies provided, retry using a local machine"
+                )
         else:
             try:
                 client = myfitnesspal.Client()
             except myfitnesspal.exceptions.MyfitnesspalLoginError as e:
                 raise Exception(
-                    "Could not authenticate with MyFitnessPal using the cookies provided by your device, retry using a local machine")
+                    "Could not authenticate with MyFitnessPal using the cookies provided by your device, retry using a local machine"
+                )
 
         self.client = client
