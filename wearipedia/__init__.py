@@ -68,6 +68,7 @@ def get_all_device_names():
         "dexcom/pro_cgm",
         "garmin/fenix_7s",
         "polar/verity_sense",
+        "polar/vantage",
     ]
 
 
@@ -122,6 +123,10 @@ _DEVICE_TO_AUTH_DICT = {
         "refresh_token": get_os("DEXCOM_REFRESH_TOKEN"),
     },
     "polar/verity_sense": {
+        "email": get_os("POLAR_EMAIL"),
+        "password": get_os("POLAR_PASSWORD"),
+    },
+    "polar/vantage": {
         "email": get_os("POLAR_EMAIL"),
         "password": get_os("POLAR_PASSWORD"),
     },
