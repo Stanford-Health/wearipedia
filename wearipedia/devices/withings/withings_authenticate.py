@@ -84,7 +84,10 @@ def withings_authenticate(client_id, client_secret):
     out = json.loads(out.text)
 
     try:
-        refresh_token, access_token = out["body"]["refresh_token"], out["body"]["access_token"]
+        refresh_token, access_token = (
+            out["body"]["refresh_token"],
+            out["body"]["access_token"],
+        )
     except KeyError as e:
         raise Exception("Took too long to paste in redirect URL. Please repeat step 7.")
 
