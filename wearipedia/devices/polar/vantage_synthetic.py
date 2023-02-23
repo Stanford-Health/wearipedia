@@ -10,7 +10,9 @@ def create_syn_data(start_date, end_date):
     dates = pd.date_range(start_date, end_date)
     # create random id
     def random_id(x):
-        return np.random.randint(1000000000, 9999999999)
+        return np.random.randint(1000000000, 4294967294) + np.random.randint(
+            0, 4294967294
+        )
 
     # create random duration in milliseconds between 15 and 120 minutes
     def random_duration(x):
