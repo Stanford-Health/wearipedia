@@ -17,16 +17,6 @@ def fetch_real_data(start_date, end_date, data_type, headers):
     :rtype: list[dict] (for continuous data) or dict (otherwise)
     """
 
-    headers = {
-        "x-requested-with": "XMLHttpRequest",
-    }
-
-    json_data = {
-        "userId": None,
-        "fromDate": start_date,
-        "toDate": end_date,
-    }
-
     if data_type in ["continuous", "summary"]:
         json_data = {
             "operationName": "allCharts",
@@ -54,9 +44,9 @@ def fetch_real_data(start_date, end_date, data_type, headers):
         data = response.json()
 
         if data_type == "continuous":
-            return data["data"]["allCharts"]["values"]
+            return data["data"]["allCharts"]["charts"][0]["values"]
         elif data_type == "summary":
-            return data["data"]["allCharts"]["range"]
+            return data["data"]["allCharts"]["charts"][0]["range"]
 
     elif data_type in ["scores", "statistics"]:
         json_data = {

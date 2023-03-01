@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-import scipy
+import scipy.stats
 from fbm import fbm
 from numpy.random import randint
 
