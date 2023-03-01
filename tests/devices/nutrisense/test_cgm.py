@@ -29,6 +29,9 @@ def test_nutrisense(real):
         if real:
             wearipedia._authenticate_device("nutrisense/cgm", device)
 
+        summary = device.get_data("summary")
+        scores = device.get_data("scores")
+        statistics = device.get_data("statistics")
         data = device.get_data("continuous")
 
         bound = end_date + np.timedelta64(3, "D")
