@@ -101,7 +101,7 @@ def training_history_helper(data):
         ]
         assert isinstance(d["id"], int)
         assert d["duration"] == None or isinstance(d["duration"], int)
-        assert d["distance"] == None or isinstance(d["distance"], float | int)
+        assert d["distance"] == None or isinstance(d["distance"], (float, int))
         assert d["hrAvg"] == None or isinstance(d["hrAvg"], int)
         assert d["calories"] == None or (
             isinstance(d["calories"], int) and d["calories"] >= 0
@@ -164,33 +164,33 @@ def training_by_id_helper(data):
             assert isinstance(d[0]["Start time"], str)
             assert isinstance(d[0]["Duration"], str)
             if d[0]["Total distance (mi)"] != None:
-                assert isinstance(d[0]["Total distance (mi)"], float | int)
+                assert isinstance(d[0]["Total distance (mi)"], (float, int))
             if d[0]["Average heart rate (bpm)"] != None:
-                assert isinstance(d[0]["Average heart rate (bpm)"], float | int)
+                assert isinstance(d[0]["Average heart rate (bpm)"], (float, int))
                 assert (
                     d[0]["Average heart rate (bpm)"] >= 0
                     and d[0]["Average heart rate (bpm)"] <= 255
                 )
             if d[0]["Average speed (mi/h)"] != None:
-                assert isinstance(d[0]["Average speed (mi/h)"], float | int)
+                assert isinstance(d[0]["Average speed (mi/h)"], (float, int))
             if d[0]["Max speed (mi/h)"] != None:
-                assert isinstance(d[0]["Max speed (mi/h)"], float | int)
+                assert isinstance(d[0]["Max speed (mi/h)"], (float, int))
             if d[0]["Average pace (min/mi)"] != None:
-                assert isinstance(d[0]["Average pace (min/mi)"], float | int)
+                assert isinstance(d[0]["Average pace (min/mi)"], (float, int))
             if d[0]["Max pace (min/mi)"] != None:
-                assert isinstance(d[0]["Max pace (min/mi)"], float | int)
+                assert isinstance(d[0]["Max pace (min/mi)"], (float, int))
             if d[0]["Calories"] != None:
-                assert isinstance(d[0]["Calories"], float | int)
+                assert isinstance(d[0]["Calories"], (float, int))
                 assert d[0]["Calories"] >= 0
             if d[0]["Fat percentage of calories(%)"] != None:
-                assert isinstance(d[0]["Fat percentage of calories(%)"], int | float)
+                assert isinstance(d[0]["Fat percentage of calories(%)"], (int, float))
                 assert (
                     d[0]["Fat percentage of calories(%)"] >= 0
                     and d[0]["Fat percentage of calories(%)"] <= 100
                 )
             if d[0]["Carbohydrate percentage of calories(%)"] != None:
                 assert isinstance(
-                    d[0]["Carbohydrate percentage of calories(%)"], int | float
+                    d[0]["Carbohydrate percentage of calories(%)"], (int, float)
                 )
                 assert (
                     d[0]["Carbohydrate percentage of calories(%)"] >= 0
@@ -198,42 +198,42 @@ def training_by_id_helper(data):
                 )
             if d[0]["Protein percentage of calories(%)"] != None:
                 assert isinstance(
-                    d[0]["Protein percentage of calories(%)"], int | float
+                    d[0]["Protein percentage of calories(%)"], (int, float)
                 )
                 assert (
                     d[0]["Protein percentage of calories(%)"] >= 0
                     and d[0]["Protein percentage of calories(%)"] <= 100
                 )
             if d[0]["Average cadence (rpm)"] != None:
-                assert isinstance(d[0]["Average cadence (rpm)"], float | int)
+                assert isinstance(d[0]["Average cadence (rpm)"], (int, float))
             if d[0]["Average stride length (in)"] != None:
-                assert isinstance(d[0]["Average stride length (in)"], float | int)
+                assert isinstance(d[0]["Average stride length (in)"], (int, float))
             if d[0]["Running index"] != None:
-                assert isinstance(d[0]["Running index"], float | int)
+                assert isinstance(d[0]["Running index"], (int, float))
             if d[0]["Training load"] != None:
-                assert isinstance(d[0]["Training load"], float | int)
+                assert isinstance(d[0]["Training load"], (int, float))
             if d[0]["Ascent (ft)"] != None:
-                assert isinstance(d[0]["Ascent (ft)"], float | int)
+                assert isinstance(d[0]["Ascent (ft)"], (int, float))
             if d[0]["Descent (ft)"] != None:
-                assert isinstance(d[0]["Descent (ft)"], float | int)
+                assert isinstance(d[0]["Descent (ft)"], (int, float))
             if d[0]["Average power (W)"] != None:
-                assert isinstance(d[0]["Average power (W)"], float | int)
+                assert isinstance(d[0]["Average power (W)"], (int, float))
             if d[0]["Max power (W)"] != None:
-                assert isinstance(d[0]["Max power (W)"], float | int)
+                assert isinstance(d[0]["Max power (W)"], (int, float))
             if d[0]["Notes"] != None:
-                assert isinstance(d[0]["Notes"], str | float)
+                assert isinstance(d[0]["Notes"], (str, float))
             if d[0]["Height (ft in)"] != None:
                 assert isinstance(d[0]["Height (ft in)"], str)
             if d[0]["Weight (lbs)"] != None:
-                assert isinstance(d[0]["Weight (lbs)"], float | int)
+                assert isinstance(d[0]["Weight (lbs)"], (int, float))
             if d[0]["HR max"] != None:
-                assert isinstance(d[0]["HR max"], float | int)
+                assert isinstance(d[0]["HR max"], (int, float))
                 assert d[0]["HR max"] >= 0 and d[0]["HR max"] <= 255
             if d[0]["HR sit"] != None:
-                assert isinstance(d[0]["HR sit"], float | int)
+                assert isinstance(d[0]["HR sit"], (int, float))
                 assert d[0]["HR sit"] >= 0 and d[0]["HR sit"] <= 255
             if d[0]["VO2max"] != None:
-                assert isinstance(d[0]["VO2max"], float | int)
+                assert isinstance(d[0]["VO2max"], (int, float))
                 assert d[0]["VO2max"] >= 0 and d[0]["VO2max"] <= 100
             assert list(d[1].keys()) == [
                 "Sample rate",
