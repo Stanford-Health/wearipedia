@@ -16,4 +16,5 @@ def fetch_real_data(start_date, end_date, data_type, headers):
     :return: the data fetched from the API according to the inputs
     :rtype: list[dict] (for continuous data) or dict (otherwise)
     """
+    print("hello")
     return {}
