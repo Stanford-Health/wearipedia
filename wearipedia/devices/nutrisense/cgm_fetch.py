@@ -17,7 +17,7 @@ def fetch_real_data(start_date, end_date, data_type, headers):
     :rtype: list[dict] (for continuous data) or dict (otherwise)
     """
 
-    if data_type in ["continuous", "summary"]:
+    if data_type == "continuous" or data_type == "summary":
         json_data = {
             "operationName": "allCharts",
             "variables": {
@@ -41,14 +41,14 @@ def fetch_real_data(start_date, end_date, data_type, headers):
             json=json_data,
             verify=False,
         )
-        data = response.json()
+        res = response.json()
 
         if data_type == "continuous":
-            return data["data"]["allCharts"]["charts"][0]["values"]
+            return res["data"]["allCharts"]["charts"][0]["values"]
         elif data_type == "summary":
-            return data["data"]["allCharts"]["charts"][0]["range"]
+            return res["data"]["allCharts"]["charts"][0]["range"]
 
-    elif data_type in ["scores", "statistics"]:
+    else:
         json_data = {
             "operationName": "allNutrition",
             "variables": {
@@ -66,9 +66,9 @@ def fetch_real_data(start_date, end_date, data_type, headers):
             json=json_data,
             verify=False,
         )
-        data = response.json()
+        res = response.json()
 
         if data_type == "scores":
-            return data["data"]["allNutrition"]["score"]["today"]
+            return res["data"]["allNutrition"]["score"]["today"]
         elif data_type == "statistics":
-            return data["data"]["allNutrition"]["statistics"]["today"]
+            return res["data"]["allNutrition"]["statistics"]["today"]

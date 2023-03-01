@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 import urllib3
@@ -65,10 +65,7 @@ class cgm(BaseDevice):
 
     def _get_real(self, data_type, params):
         return fetch_real_data(
-            params["start_date"],
-            params["end_date"],
-            data_type,
-            self.headers,
+            params["start_date"], params["end_date"], data_type, self.headers
         )
 
     def _filter_synthetic(self, data, data_type, params):

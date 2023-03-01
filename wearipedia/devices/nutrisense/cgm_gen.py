@@ -2,9 +2,9 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-import scipy.stats
 from fbm import fbm
 from numpy.random import randint
+from scipy.stats import tstd
 
 
 def gen_data(start_date, end_date):
@@ -100,7 +100,7 @@ def gen_stats(Y):
     first = {"min": 70.0, "max": 140.0, "__typename": "Range"}
     second = {"min": low, "max": high, "__typename": "Range"}
     median = np.median(Y)
-    std = scipy.stats.tstd(Y)
+    std = tstd(Y)
     q1, q3 = (np.quantile(Y, [0.25, 0.75])).round(1)
     greater = 70.0 < np.array(Y)
     less = np.array(Y) < 140.0
