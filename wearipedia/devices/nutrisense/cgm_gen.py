@@ -21,7 +21,10 @@ def gen_data(start_date, end_date):
     scores = gen_scores()
     continuous, Y = gen_continuous(start_date, end_date)
     summary = gen_summary(Y)
-    stat = gen_stats(Y)
+    stat = {
+        "today": gen_stats(Y),
+        "average": gen_stats(Y),
+    }
     return (scores, continuous, summary, stat)
 
 
@@ -95,18 +98,29 @@ def gen_scores():
     return score
 
 
-def gen_stats(Y):
-    low, high = min(Y), max(Y)
+def gen_stats(Y, weekly=False):
+    if weekly:
+        low = randint(70, 110)
+        high = randint(low, 140)
+        median = randint(low, high)
+        std = randint(0, 10)
+        q1 = randint(low, median)
+        q3 = randint(median, high)
+        timeWithinRange = randint(0, 100)
+        avg = randint(low, high)
+    else:
+        low, high = min(Y), max(Y)
+        median = np.median(Y)
+        std = tstd(Y)
+        q1, q3 = (np.quantile(Y, [0.25, 0.75])).round(1)
+        greater = 70.0 < np.array(Y)
+        less = np.array(Y) < 140.0
+        condition = greater & less
+        timeWithinRange = float(len(np.extract(condition, Y)))
+        avg = np.average(Y)
+
     first = {"min": 70.0, "max": 140.0, "__typename": "Range"}
     second = {"min": low, "max": high, "__typename": "Range"}
-    median = np.median(Y)
-    std = tstd(Y)
-    q1, q3 = (np.quantile(Y, [0.25, 0.75])).round(1)
-    greater = 70.0 < np.array(Y)
-    less = np.array(Y) < 140.0
-    condition = greater & less
-    timeWithinRange = float(len(np.extract(condition, Y)))
-    avg = np.average(Y)
 
     stat = {
         "healthyRange": first,

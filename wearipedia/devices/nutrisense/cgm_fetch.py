@@ -71,4 +71,7 @@ def fetch_real_data(start_date, end_date, data_type, headers):
         if data_type == "scores":
             return res["data"]["allNutrition"]["score"]["today"]
         elif data_type == "statistics":
-            return res["data"]["allNutrition"]["statistics"]["today"]
+            return {
+                "today": res["data"]["allNutrition"]["statistics"]["today"],
+                "average": res["data"]["allNutrition"]["statistics"]["average"],
+            }
