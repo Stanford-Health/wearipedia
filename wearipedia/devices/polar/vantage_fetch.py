@@ -23,12 +23,6 @@ def fetch_real_data(
         "x-requested-with": "XMLHttpRequest",
     }
 
-    # login details are sent as payload
-    payload = {
-        "email": email,
-        "password": password,
-    }
-
     # if the session is not set, we need to throw an error
     if session == None:
         raise Exception("Not Authenticated, please login")
@@ -75,7 +69,7 @@ def fetch_real_data(
         if sleep.status_code != 200:
             print("Sleep data not found")
             if len(dates) < 31:
-                raise Exception("Please provide a date range of at 1 month")
+                raise Exception("Please provide a date range of atleast 1 month")
             return []
 
         # if the request was successful, return the json data

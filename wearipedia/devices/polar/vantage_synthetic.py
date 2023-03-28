@@ -157,6 +157,19 @@ def create_syn_data(start_date, end_date):
         # Generating a random distance for the training session
         distance = int(random_distance(duration))
 
+        # Creating a dictionary to store images for activities
+        activity_images = {
+            "Running": "https://platform.cdn.polar.com/ecosystem/sport/icon/808d0882e97375e68844ec6c5417ea33-2015-10-20_13_46_22",
+            "Cycling": "https://platform.cdn.polar.com/ecosystem/sport/icon/561a80f6d7eef7cc328aa07fe992af8e-2015-10-20_13_46_03",
+            "Strength_Training": "https://platform.cdn.polar.com/ecosystem/sport/icon/d1ce94078aec226be28f6c602e6803e1-2015-10-20_13_45_19",
+            "Swimming": "https://platform.cdn.polar.com/ecosystem/sport/icon/f4197b0c1a4d65962b9e45226c77d4d5-2015-10-20_13_45_26",
+        }
+
+        # Randomly generating a selected activity
+        selected_activity = np.random.choice(
+            ["Running", "Cycling", "Strength_Training", "Swimming"]
+        )
+
         # Create a a dictionary for the activity on the current date
         activity = {
             "id": random_id(""),
@@ -165,9 +178,7 @@ def create_syn_data(start_date, end_date):
             "hrAvg": random_hr_avg(""),
             "calories": int(random_calories(duration)),
             "note": " ",
-            "sportName": np.random.choice(
-                ["Running", "Cycling", "Strength_Training", "Swimming"]
-            ),
+            "sportName": selected_activity,
             "sportId": int(np.random.choice([1, 2, 15, 16])),
             "startDate": d.strftime("%Y-%m-%d")
             + " "
@@ -175,7 +186,7 @@ def create_syn_data(start_date, end_date):
             + "."
             + str(np.random.randint(0, 1000)).zfill(3),
             "recoveryTime": random_recovery_time(duration),
-            "iconUrl": "https://platform.cdn.polar.com/ecosystem/sport/icon/d1ce94078aec226be28f6c602e6803e1-2015-10-20_13_45_19",
+            "iconUrl": activity_images[selected_activity],
             "trainingLoadHtml": "",
             "hasTrainingTarget": False,
             "swimmingSport": False,
@@ -230,10 +241,11 @@ def create_syn_data(start_date, end_date):
                 )
                 if activity["sportId"] != 15
                 else None,
-                "Average pace (min/mi)": distance / (activity["distance"] / 3600000)
+                "Average pace (min/mi)": (duration / 60000) / activity["distance"]
                 if activity["sportId"] != 5
                 else None,
-                "Max pace (min/mi)": distance / (activity["distance"] / 3600000)
+                "Max pace (min/mi)": (duration / 60000) / activity["distance"]
+                + np.random.randint(0, 10)
                 if activity["sportId"] != 15
                 else None,
                 "Calories": activity["calories"],
