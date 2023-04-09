@@ -43,20 +43,12 @@ class MyFitnessPal(BaseDevice):
     :type use_cache: bool, optional
     """
 
-    def __init__(
-        self,
-        seed=0,
-        synthetic_start_date="2022-03-01",
-        synthetic_end_date="2022-06-17",
-        use_cache=True,
-    ):
+    def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
         params = {
             "seed": seed,
-            "synthetic_start_date": synthetic_start_date,
-            "synthetic_end_date": synthetic_end_date,
-            "use_cache": use_cache,
+            "start_date": str(start_date),
+            "end_date": str(end_date),
         }
-
         self._initialize_device_params(
             [
                 "goals",
