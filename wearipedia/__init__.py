@@ -69,6 +69,8 @@ def get_all_device_names():
         "garmin/fenix_7s",
         "polar/verity_sense",
         "polar/vantage",
+        "strava/strava",
+        "myfitnesspal/myfitnesspal"
     ]
 
 

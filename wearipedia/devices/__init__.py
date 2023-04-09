@@ -4,5 +4,7 @@ from .fitbit import *
 from .garmin import *
 from .oura import *
 from .polar import *
+from .strava import *
 from .whoop import *
 from .withings import *
+from .myfitnesspal import *
