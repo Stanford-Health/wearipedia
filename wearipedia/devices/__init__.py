@@ -7,4 +7,4 @@ from .polar import *
 from .strava import *
 from .whoop import *
 from .withings import *
-from .myfitnesspal import *
+from .underarmour import *
