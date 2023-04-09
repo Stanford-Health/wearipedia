@@ -70,7 +70,7 @@ def get_all_device_names():
         "polar/verity_sense",
         "polar/vantage",
         "strava/strava",
-        "underarmour/myfitnesspal"
+        "underarmour/myfitnesspal",
     ]
 
 

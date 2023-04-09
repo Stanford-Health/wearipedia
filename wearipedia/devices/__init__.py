@@ -5,6 +5,6 @@ from .garmin import *
 from .oura import *
 from .polar import *
 from .strava import *
+from .underarmour import *
 from .whoop import *
 from .withings import *
-from .underarmour import *
