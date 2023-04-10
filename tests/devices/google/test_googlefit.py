@@ -29,12 +29,7 @@ def test_googlefit(real):
             end_date=np.datetime_as_string(end_date, unit="D"),
         )
 
-        # This training id is only valid for arjo@stanford.edu
-        params = {
-            "start_date": str(start_date),
-            "end_date": str(end_date),
-            "training_id": "7472390363",
-        }
+        params = {"start_date": str(start_date), "end_date": str(end_date)}
 
         if real:
             wearipedia._authenticate_device("google/googlefit", device)

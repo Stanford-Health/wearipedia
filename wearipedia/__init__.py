@@ -60,6 +60,7 @@ def get_all_device_names():
     """
 
     return [
+        "cronometer/cronometer",
         "whoop/whoop_4",
         "withings/scanwatch",
         "withings/bodyplus",
