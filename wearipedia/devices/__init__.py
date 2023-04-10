@@ -2,6 +2,7 @@ from .dexcom import *
 from .dreem import *
 from .fitbit import *
 from .garmin import *
+from .google import *
 from .oura import *
 from .polar import *
 from .strava import *
