@@ -1393,6 +1393,22 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "polyline"
+version = "2.0.0"
+description = "A Python implementation of Google's Encoded Polyline Algorithm Format."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "polyline-2.0.0-py3-none-any.whl", hash = "sha256:45c9c0e8c0814a17df78390e3196cd47f6bc69697cd8a83f00d527c72f4d2a88"},
+    {file = "polyline-2.0.0.tar.gz", hash = "sha256:1492b8fcadc2143f8aedc673d3c6d95df45131f1c62eb8d51c8183b24e771486"},
+]
+
+[package.extras]
+dev = ["pylint (>=2.15.10,<2.16.0)", "pytest (>=7.0,<8.0)", "pytest-cov (>=4.0,<5.0)", "sphinx (>=4.2.0,<4.3.0)", "sphinx-rtd-theme (>=1.0.0,<1.1.0)", "toml (>=0.10.2,<0.11.0)"]
+publish = ["build (>=0.8,<1.0)", "twine (>=4.0,<5.0)"]
+
+[[package]]
 name = "pre-commit"
 version = "2.21.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
@@ -2435,4 +2451,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8, <4.0"
-content-hash = "e969cfd28e2b09a7c26b2a6abe075db9d87a3c82f6e799501522dedf84e061e3"
+content-hash = "edd413aa1ea4db1439d2eb1a8c142078bf123f2284b4d6bd6632400f5febfa66"
