@@ -99,8 +99,6 @@ def training_history_helper(data):
             "periodDataUuid",
             "isTest",
         ]
-        print(d["id"])
-        print(type(d["id"]))
         assert isinstance(d["id"], (int, np.int64))
         assert d["duration"] == None or isinstance(d["duration"], int)
         assert d["distance"] == None or isinstance(d["distance"], (float, int))
