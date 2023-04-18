@@ -150,6 +150,26 @@ def strength_exercise_helper(data):
             assert entry["nutrition_information"]["weight/set"] >= 0.0
 
 
+def meal_nutritions(data):
+    assert isinstance(data["calories"], float)
+    assert data["calories"] >= 0
+
+    assert isinstance(data["carbohydrates"], float)
+    assert data["carbohydrates"] >= 0
+
+    assert isinstance(data["fat"], float)
+    assert data["fat"] >= 0
+
+    assert isinstance(data["protein"], float)
+    assert data["protein"] >= 0
+
+    assert isinstance(data["sodium"], float)
+    assert data["sodium"] >= 0
+
+    assert isinstance(data["sugar"], float)
+    assert data["sugar"] >= 0
+
+
 def meal_helper(data):
     for d in data:
         d1 = d[0]
@@ -170,39 +190,9 @@ def meal_helper(data):
             "sodium",
             "sugar",
         ]
-        assert isinstance(nutrition_data["calories"], float)
-        assert nutrition_data["calories"] >= 0
 
-        assert isinstance(nutrition_data["carbohydrates"], float)
-        assert nutrition_data["carbohydrates"] >= 0
-
-        assert isinstance(nutrition_data["fat"], float)
-        assert nutrition_data["fat"] >= 0
-
-        assert isinstance(nutrition_data["protein"], float)
-        assert nutrition_data["protein"] >= 0
-
-        assert isinstance(nutrition_data["sodium"], float)
-        assert nutrition_data["sodium"] >= 0
-
-        assert isinstance(nutrition_data["sugar"], float)
-        assert nutrition_data["sugar"] >= 0
+        meal_nutritions(nutrition_data)
 
         totals_data = d2["totals"]
-        assert isinstance(totals_data["calories"], float)
-        assert totals_data["calories"] >= 0
 
-        assert isinstance(totals_data["carbohydrates"], float)
-        assert totals_data["carbohydrates"] >= 0
-
-        assert isinstance(totals_data["fat"], float)
-        assert totals_data["fat"] >= 0
-
-        assert isinstance(totals_data["protein"], float)
-        assert totals_data["protein"] >= 0
-
-        assert isinstance(totals_data["sodium"], float)
-        assert totals_data["sodium"] >= 0
-
-        assert isinstance(totals_data["sugar"], float)
-        assert totals_data["sugar"] >= 0
+        meal_nutritions(totals_data)

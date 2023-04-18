@@ -52,53 +52,13 @@ def create_syn_data(start_date, end_date):
 
     # Random sleep time generator function
     def sleep_time():
-        return (
-            "T"
-            + str(np.random.randint(20, 24))
-            + ":"
-            + str(np.random.randint(0, 60)).zfill(2)
-            + ":"
-            + str(np.random.randint(0, 60)).zfill(2)
-            + "."
-            + str(np.random.randint(0, 1000)).zfill(3)
-            + "-"
-            + str(np.random.randint(0, 24)).zfill(2)
-            + ":"
-            + str(np.random.randint(0, 60)).zfill(2)
-        )
+        return f"T{np.random.randint(20, 24)}:{np.random.randint(0, 60):02d}:{np.random.randint(0, 60):02d}.{np.random.randint(0, 1000):03d}-{np.random.randint(0, 24):02d}:{np.random.randint(0, 60):02d}"
 
     def wake_time():
-        return (
-            "T"
-            + str(np.random.randint(5, 10)).zfill(2)
-            + ":"
-            + str(np.random.randint(0, 60)).zfill(2)
-            + ":"
-            + str(np.random.randint(0, 60)).zfill(2)
-            + "."
-            + str(np.random.randint(0, 1000)).zfill(3)
-            + "-"
-            + str(np.random.randint(4, 8)).zfill(2)
-            + ":"
-            + str(np.random.randint(0, 60)).zfill(2)
-        )
+        return f"T{np.random.randint(5, 10):02d}:{np.random.randint(0, 60):02d}:{np.random.randint(0, 60):02d}.{np.random.randint(0, 1000):03d}-{np.random.randint(4, 8):02d}:{np.random.randint(0, 60):02d}"
 
     def activity_time(d):
-        return (
-            d.strftime("%Y-%m-%d")
-            + "T"
-            + str(np.random.randint(5, 22)).zfill(2)
-            + ":"
-            + str(np.random.randint(0, 60)).zfill(2)
-            + ":"
-            + str(np.random.randint(0, 60)).zfill(2)
-            + "."
-            + str(np.random.randint(0, 1000)).zfill(3)
-            + "-"
-            + str(np.random.randint(4, 8)).zfill(2)
-            + ":"
-            + str(np.random.randint(0, 60)).zfill(2)
-        )
+        return f"{d.strftime('%Y-%m-%d')}T{np.random.randint(5, 22):02d}:{np.random.randint(0, 60):02d}:{np.random.randint(0, 60):02d}.{np.random.randint(0, 1000):03d}-{np.random.randint(4, 8):02d}:{np.random.randint(0, 60):02d}"
 
     # Continutity of sleep
     def continuity(x):
@@ -180,11 +140,7 @@ def create_syn_data(start_date, end_date):
             "note": " ",
             "sportName": selected_activity,
             "sportId": int(np.random.choice([1, 2, 15, 16])),
-            "startDate": d.strftime("%Y-%m-%d")
-            + " "
-            + str(pd.to_datetime(activity_time(d)[:19])).split(" ")[1]
-            + "."
-            + str(np.random.randint(0, 1000)).zfill(3),
+            "startDate": f"{d.strftime('%Y-%m-%d')} {str(pd.to_datetime(activity_time(d)[:19])).split(' ')[1]}.{str(np.random.randint(0, 1000)).zfill(3)}",
             "recoveryTime": random_recovery_time(duration),
             "iconUrl": activity_images[selected_activity],
             "trainingLoadHtml": "",
@@ -217,11 +173,7 @@ def create_syn_data(start_date, end_date):
                 "Name": randomName,
                 "Sport": activity["sportName"].upper(),
                 "Date": d.strftime("%d-%m-%Y"),
-                "Start time": str(pd.to_datetime(activity["startDate"][:19])).split(
-                    " "
-                )[1]
-                + " "
-                + suffix,
+                "Start time": f"{str(pd.to_datetime(activity['startDate'][:19])).split(' ')[1]} {suffix}",
                 "Duration": str(int(duration / 3600000)).zfill(2)
                 + ":"
                 + str(int(duration / 60000)).zfill(2)
@@ -278,11 +230,7 @@ def create_syn_data(start_date, end_date):
             curr_id_traning.append(
                 {
                     "Sample rate": 1,
-                    "Time": str(i // 3600).zfill(2)
-                    + ":"
-                    + str(i // 60).zfill(2)
-                    + ":"
-                    + str(i % 60).zfill(2),
+                    "Time": f"{str(i // 3600).zfill(2)}:{str(i // 60).zfill(2)}:{str(i % 60).zfill(2)}",
                     "HR (bpm)": int(random_hr_avg("")),
                     "Speed (mi/h)": np.round(
                         distance / (activity["duration"] / 3600000), 1

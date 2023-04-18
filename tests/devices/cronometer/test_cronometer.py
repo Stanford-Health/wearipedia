@@ -47,15 +47,15 @@ def test_cronometer(real):
 
 
 valid_bounds = {
-    'Energy (kcal)': (0, 7500),
-    'Alcohol (g)': (0, 100),
-    'Caffeine (mg)': (0, 1000),
-    'Water (g)': (0, 10000),
-    'B1 (Thiamine) (mg)': (0, 100),
-    'B2 (Riboflavin) (mg)': (0, 100),
-    'B3 (Niacin) (mg)': (0, 100),
-    'B5 (Pantothenic Acid) (mg)': (0, 100),
-    'B6 (Pyridoxine) (mg)': (0, 100),
+    "Energy (kcal)": (0, 7500),
+    "Alcohol (g)": (0, 100),
+    "Caffeine (mg)": (0, 1000),
+    "Water (g)": (0, 10000),
+    "B1 (Thiamine) (mg)": (0, 100),
+    "B2 (Riboflavin) (mg)": (0, 100),
+    "B3 (Niacin) (mg)": (0, 100),
+    "B5 (Pantothenic Acid) (mg)": (0, 100),
+    "B6 (Pyridoxine) (mg)": (0, 100),
     "B12 (Cobalamin) (µg)": (0, 10000),
     "Folate (µg)": (0, 1000),
     "Vitamin A (µg)": (0, 10000),
@@ -97,7 +97,7 @@ valid_bounds = {
     "Tryptophan (g)": (0, 1000),
     "Tyrosine (g)": (0, 1000),
     "Valine (g)": (0, 1000),
-    }
+}
 
 
 def nutriton_checker(d):

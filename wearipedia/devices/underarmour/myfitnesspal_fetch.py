@@ -78,17 +78,16 @@ def strength_generator(self, days):
     return strength
 
 
-def breakfast_generator(self, days):
-    # creating an empty list to store the breakfast foods
-    breakfast = []
+def food_fetcher(client, type, days):
+    # creating an empty list to store the food items
+    food = []
 
-    # for each day in the date range, we get the breakfast foods for that day
+    # for each day in the date range, we get the food items for that day
     for day in days:
-
-        # using the client, we get the breakfast foods for the day
+        # using the client, we get the food items for the day
         res = (
-            self.client.get_date(int(day.year), int(day.month), int(day.day))
-            .meals[0]
+            client.get_date(int(day.year), int(day.month), int(day.day))
+            .meals[type]
             .get_as_list()
         )
 
@@ -100,109 +99,35 @@ def breakfast_generator(self, days):
         else:
             res[0]["date"] = day
             res[0]["totals"] = (
-                self.client.get_date(int(day.year), int(day.month), int(day.day))
-                .meals[0]
+                client.get_date(int(day.year), int(day.month), int(day.day))
+                .meals[type]
                 .totals
             )
 
-        # we append the breakfast foods to the list
-        breakfast.append(res)
+        # we append the food items to the list
+        food.append(res)
+    # we return the list of food items
+    return food
 
-    # we return the list of breakfast foods
-    return breakfast
+
+def breakfast_generator(self, days):
+    # creating an empty list to store the breakfast foods
+    return food_fetcher(self.client, 0, days)
 
 
 def lunch_generator(self, days):
     # creating an empty list to store the lunch foods
-    lunch = []
-    # for each day in the date range, we get the lunch foods for that day using the client
-    for day in days:
-
-        # using the client, we get the lunch foods for the day
-        res = (
-            self.client.get_date(int(day.year), int(day.month), int(day.day))
-            .meals[1]
-            .get_as_list()
-        )
-
-        # if the length of the list is 0, skip the totals
-        if len(res) == 0:
-            res.append({"date": day})
-        else:
-            res[0]["date"] = day
-            res[0]["totals"] = (
-                self.client.get_date(int(day.year), int(day.month), int(day.day))
-                .meals[1]
-                .totals
-            )
-
-        # we append the lunch foods to the list
-        lunch.append(res)
-
-    # we return the list of lunch foods
-    return lunch
+    return food_fetcher(self.client, 1, days)
 
 
 def dinner_generator(self, days):
     # creating an empty list to store the dinner foods
-    dinner = []
-
-    # for each day in the date range, we get the dinner foods for that day using the client
-    for day in days:
-
-        # using the client, we get the dinner foods for the day
-        res = (
-            self.client.get_date(int(day.year), int(day.month), int(day.day))
-            .meals[2]
-            .get_as_list()
-        )
-
-        # if the length of the list is 0, skip the totals
-        if len(res) == 0:
-            res.append({"date": day})
-        else:
-            res[0]["date"] = day
-            res[0]["totals"] = (
-                self.client.get_date(int(day.year), int(day.month), int(day.day))
-                .meals[2]
-                .totals
-            )
-
-        # we append the dinner foods to the list
-        dinner.append(res)
-    # we return the list of dinner foods
-    return dinner
+    return food_fetcher(self.client, 2, days)
 
 
 def snacks_generator(self, days):
-    # creating an empty list to store the snacks
-    snacks = []
-
-    # for each day in the date range, we get the snacks for that day using the client
-    for day in days:
-
-        # using the client, we get the snacks for the day
-        res = (
-            self.client.get_date(int(day.year), int(day.month), int(day.day))
-            .meals[3]
-            .get_as_list()
-        )
-
-        # if the length of the list is 0, skip the totals
-        if len(res) == 0:
-            res.append({"date": day})
-        else:
-            res[0]["date"] = day
-            res[0]["totals"] = (
-                self.client.get_date(int(day.year), int(day.month), int(day.day))
-                .meals[3]
-                .totals
-            )
-
-        # we append the snacks to the list
-        snacks.append(res)
-    # we return the list of snacks
-    return snacks
+    # creating an empty list to store the snacks foods
+    return food_fetcher(self.client, 3, days)
 
 
 # This is the function that will be used to fetch data from MyFitnessPal
