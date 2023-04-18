@@ -188,7 +188,7 @@ def create_syn_data(start_date, end_date):
                 "Isoleucine (g)": np.round(np.random.normal(19, 2), 2),
                 "Leucine (g)": np.round(np.random.normal(2.5, 0.05), 2),
                 "Lysine (g)": np.round(np.random.normal(78, 5), 2),
-                "Methionine (g)": np.round(np.random.normal(1000), 2),
+                "Methionine (g)": np.round(np.random.normal(500), 2),
                 "Phenylalanine (g)": np.round(np.random.normal(55, 5), 2),
                 "Protein (g)": np.round(np.random.uniform(50, 125), 2),
                 "Threonine (g)": np.round(np.random.normal(41.2, 5), 2),
