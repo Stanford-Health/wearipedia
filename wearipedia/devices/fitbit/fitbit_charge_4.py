@@ -44,8 +44,26 @@ class Fitbit_charge_4(BaseDevice):
             "single_day": single_day,
         }
 
+        # self.data_types_methods_map = {
+        #     "sleep": "get_sleep_json",
+        #     "steps": "get_steps_json",
+        #     "minutesVeryActive": "get_minutesVeryActive_json",
+        #     "minutesLightlyActive": "get_minutesLightlyActive_json",
+        #     "minutesFairlyActive": "get_minutesFairlyActive_json",
+        #     "distance": "get_distance_json",
+        #     "minutesSedentary": "get_minutesSedentary_json",
+        # }
+
         self._initialize_device_params(
-            list(self.data_types_methods_map.keys()),
+            [
+                "sleep",
+                "steps",
+                "minutesVeryActive",
+                "minutesLightlyActive",
+                "minutesFairlyActive",
+                "distance",
+                "minutesSedentary",
+            ],
             params,
             {
                 "seed": 0,
@@ -77,16 +95,21 @@ class Fitbit_charge_4(BaseDevice):
 
     def _gen_synthetic(self):
 
-        dictionary = create_syn_data(
+        syn_data = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
-
-        return dictionary
+        self.sleep = syn_data["sleep"]
+        self.steps = syn_data["steps"]
+        self.minutesVeryActive = syn_data["minutesVeryActive"]
+        self.minutesFairlyActive = syn_data["minutesFairlyActive"]
+        self.minutesLightlyActive = syn_data["minutesLightlyActive"]
+        self.distance = syn_data["distance"]
+        self.minutesSedentary = syn_data["minutesSedentary"]
 
     def _authenticate(self):
         # authenticate this device against API
         fitbit_application()
         client_id = input("enter client id: ")
         client_secret = input("enter client secret: ")
-        self.user = fitbit_authenticate.fitbit_token(client_id, client_secret)
+        self.user = fitbit_token(client_id, client_secret)

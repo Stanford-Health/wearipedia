@@ -92,4 +92,4 @@ class Fitbit_sense(BaseDevice):
         fitbit_application()
         client_id = input("enter client id: ")
         client_secret = input("enter client secret: ")
-        self.user = fitbit_authenticate.fitbit_token(client_id, client_secret)
+        self.user = fitbit_token(client_id, client_secret)

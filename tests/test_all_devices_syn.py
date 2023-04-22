@@ -34,6 +34,7 @@ def test_all_devices():
         # that they're called the correct number of times.
         # This is essentially checking that the child class has re-implemented
         # the methods correctly.
+        print(device_name)
         with mock.patch.object(
             device.__class__, "_filter_synthetic", wraps=device._filter_synthetic
         ) as mock_get_synthetic, mock.patch.object(

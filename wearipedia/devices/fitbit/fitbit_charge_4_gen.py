@@ -1,5 +1,4 @@
 import collections
-import datetime
 from datetime import datetime, timedelta
 from random import choice, randrange
 
@@ -27,8 +26,8 @@ def get_sleep(date):
     tofall = np.random.randint(0, 200) / 100
 
     percents = (100 - awake - afterwake - tofall, awake, afterwake, tofall)
-    start = datetime.datetime.strptime(date + " 9:00 PM", "%Y-%m-%d %I:%M %p")
-    end = datetime.datetime.strptime(date + " 11:58 PM", "%Y-%m-%d %I:%M %p")
+    start = datetime.strptime(date + " 9:00 PM", "%Y-%m-%d %I:%M %p")
+    end = datetime.strptime(date + " 11:58 PM", "%Y-%m-%d %I:%M %p")
 
     # generate random date
     delta = end - start
@@ -185,13 +184,13 @@ def create_syn_data(start_date, end_date):
     """
 
     num_days = (
-        datetime.datetime.strptime(end_date, "%Y-%m-%d")
-        - datetime.datetime.strptime(start_date, "%Y-%m-%d")
+        datetime.strptime(end_date, "%Y-%m-%d")
+        - datetime.strptime(start_date, "%Y-%m-%d")
     ).days
 
     # first get the dates as datetime objects
     synth_dates = [
-        datetime.datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+        datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
         for i in range(num_days)
     ]
 
