@@ -14,7 +14,7 @@ def create_syn_data(start_date, end_date):
 
     # create random duration in milliseconds between 15 and 120 minutes
     def random_duration(x):
-        return np.random.randint(900000, 7200000)
+        return np.random.randint(900000, 7200000, dtype=np.int64)
 
     # create random distance
     def random_distance(d):
@@ -22,7 +22,7 @@ def create_syn_data(start_date, end_date):
 
     # create random hr_avg
     def random_hr_avg(d):
-        return np.random.randint(60, 180)
+        return np.random.randint(60, 180, dtype=np.int64)
 
     # create random calories with the assumption that 1
     def random_calories(dur):
@@ -42,7 +42,7 @@ def create_syn_data(start_date, end_date):
 
     # create random recoveryTime
     def random_recovery_time(dur):
-        return dur - np.random.randint(0, dur)
+        return dur - np.random.randint(0, dur, dtype=np.int64)
 
     # generating the name for the the syntehtic user
     randomName = "John Doe"
