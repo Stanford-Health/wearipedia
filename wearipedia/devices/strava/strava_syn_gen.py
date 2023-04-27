@@ -28,7 +28,7 @@ def create_syn_data(start_date, end_date):
 
     # Generating 10 digit random id
     def id_generator(x):
-        return np.random.randint(1000000000, 9999999999)
+        return np.random.randint(1000000000, 9999999999, dtype=np.int64)
 
     # Generating random distance with average run being 3000m and standard deviation of 750m
     def distance_generator(x):
