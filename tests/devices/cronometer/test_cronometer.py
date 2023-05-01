@@ -135,5 +135,5 @@ def biometrics_helper(data):
         assert isinstance(d["Day"], str)
         assert isinstance(d["Metric"], str)
         assert isinstance(d["Unit"], str)
-        assert isinstance(d["Amount"], float | int)
+        assert isinstance(d["Amount"], (float, int))
         assert d["Amount"] >= 0
