@@ -102,15 +102,15 @@ def training_history_helper(data):
         assert isinstance(d["id"], (int, np.int64))
         assert d["duration"] == None or isinstance(d["duration"], (int, np.int64))
         assert d["distance"] == None or isinstance(d["distance"], (float, int))
-        assert d["hrAvg"] == None or isinstance(d["hrAvg"], int)
+        assert d["hrAvg"] == None or isinstance(d["hrAvg"], (int, np.int64))
         assert d["calories"] == None or (
             isinstance(d["calories"], int) and d["calories"] >= 0
         )
         assert d["note"] == None or isinstance(d["note"], str)
         assert isinstance(d["sportName"], str)
-        assert isinstance(d["sportId"], int)
+        assert isinstance(d["sportId"], (int, np.int64))
         assert isinstance(d["startDate"], str)
-        assert isinstance(d["recoveryTime"], int)
+        assert isinstance(d["recoveryTime"], (int, np.int64))
         assert isinstance(d["iconUrl"], str)
         assert isinstance(d["trainingLoadHtml"], str)
         assert isinstance(d["hasTrainingTarget"], bool)
@@ -166,7 +166,7 @@ def training_by_id_helper(data):
             if d[0]["Total distance (mi)"] != None:
                 assert isinstance(d[0]["Total distance (mi)"], (float, int))
             if d[0]["Average heart rate (bpm)"] != None:
-                assert isinstance(d[0]["Average heart rate (bpm)"], (float, int))
+                assert isinstance(d[0]["Average heart rate (bpm)"], (float, int, np.int64))
                 assert (
                     d[0]["Average heart rate (bpm)"] >= 0
                     and d[0]["Average heart rate (bpm)"] <= 255
