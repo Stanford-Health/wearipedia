@@ -1,4 +1,5 @@
 from ...utils import bin_search, seed_everything
+from datetime import datetime, time, timedelta
 from ..device import BaseDevice
 from .fitbit_authenticate import *
 from .fitbit_sense_fetch import *
@@ -66,6 +67,27 @@ class Fitbit_sense(BaseDevice):
         }
 
         return params
+
+    def _filter_synthetic(self, data, data_type, params):
+
+        date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
+        datetime_str_to_obj = lambda x: datetime.strptime(
+            x, "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+
+        # get the indices by subtracting against the start of the synthetic data
+        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
+
+        start_idx = (datetime_str_to_obj(params["start"]) - synthetic_start).days
+        end_idx = (datetime_str_to_obj(params["end"]) - synthetic_start).days
+
+        cycles = {
+            "total_count": end_idx - start_idx,
+            "offset": end_idx - start_idx,
+            "records": data["records"][start_idx:end_idx],
+        }
+
+        return cycles
 
     def _get_real(self, data_type, params):
 
