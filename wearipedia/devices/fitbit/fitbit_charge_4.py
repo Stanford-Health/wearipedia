@@ -29,7 +29,6 @@ class Fitbit_charge_4(BaseDevice):
     :type single_day: str, optional
     """
 
-
     def __init__(
         self,
         seed=0,

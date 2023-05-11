@@ -1,8 +1,9 @@
 import collections
 from datetime import datetime, time, timedelta
-from random import choice, choices, randrange
 
 import numpy as np
+from random import choice, choices, randrange
+
 
 __all__ = ["create_syn_data"]
 
