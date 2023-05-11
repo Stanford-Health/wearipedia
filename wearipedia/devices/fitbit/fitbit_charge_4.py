@@ -37,7 +37,8 @@ class Fitbit_charge_4(BaseDevice):
         synthetic_end_date="2022-06-17",
         single_day="2022-09-19",
     ):
-
+        self._gen_synthetic()
+        
         params = {
             "seed": seed,
             "synthetic_start_date": synthetic_start_date,
