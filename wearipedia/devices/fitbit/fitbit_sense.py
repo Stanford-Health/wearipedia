@@ -72,7 +72,7 @@ class Fitbit_sense(BaseDevice):
 
         date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
         datetime_str_to_obj = lambda x: datetime.strptime(
-            x, "%Y-%m-%dT%H:%M:%S.%fZ"
+            x, "%Y-%m-%d"
         )
 
         # get the indices by subtracting against the start of the synthetic data
