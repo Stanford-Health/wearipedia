@@ -49,18 +49,18 @@ class Fitbit_sense(BaseDevice):
         }
 
 
-        self.data_types_methods_map = {
-            "sleep": "get_sleep_json",
-            "steps": "get_steps_json",
-            "minutesVeryActive": "get_minutesVeryActive_json",
-            "minutesLightlyActive": "get_minutesLightlyActive_json",
-            "minutesFairlyActive": "get_minutesFairlyActive_json",
-            "distance": "get_distance_json",
-            "minutesSedentary": "get_minutesSedentary_json",
-            "heart_rate_day": "get_heart_rate_day_json",
-            "hrv": "get_hrv_json",
-            "distance_day": "get_distance_day_json",
-        }
+        # self.data_types_methods_map = {
+        #     "sleep": "get_sleep_json",
+        #     "steps": "get_steps_json",
+        #     "minutesVeryActive": "get_minutesVeryActive_json",
+        #     "minutesLightlyActive": "get_minutesLightlyActive_json",
+        #     "minutesFairlyActive": "get_minutesFairlyActive_json",
+        #     "distance": "get_distance_json",
+        #     "minutesSedentary": "get_minutesSedentary_json",
+        #     "heart_rate_day": "get_heart_rate_day_json",
+        #     "hrv": "get_hrv_json",
+        #     "distance_day": "get_distance_day_json",
+        # }
 
         self._initialize_device_params(
             list(self.data_types_methods_map.keys()),
