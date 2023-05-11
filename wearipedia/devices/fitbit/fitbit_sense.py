@@ -84,7 +84,6 @@ class Fitbit_sense(BaseDevice):
         cycles = {
             "total_count": end_idx - start_idx,
             "offset": end_idx - start_idx,
-            "records": data["records"][start_idx:end_idx],
         }
 
         return cycles
