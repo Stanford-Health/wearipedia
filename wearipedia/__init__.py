@@ -60,6 +60,7 @@ def get_all_device_names():
     """
 
     return [
+        "cronometer/cronometer",
         "whoop/whoop_4",
         "withings/scanwatch",
         "withings/bodyplus",
@@ -67,8 +68,12 @@ def get_all_device_names():
         "dreem/headband_2",
         "dexcom/pro_cgm",
         "garmin/fenix_7s",
+        "google/googlefit",
         "polar/verity_sense",
         "nutrisense/cgm",
+        "polar/vantage",
+        "strava/strava",
+        "underarmour/myfitnesspal",
     ]
 
 
@@ -123,6 +128,10 @@ _DEVICE_TO_AUTH_DICT = {
         "refresh_token": get_os("DEXCOM_REFRESH_TOKEN"),
     },
     "polar/verity_sense": {
+        "email": get_os("POLAR_EMAIL"),
+        "password": get_os("POLAR_PASSWORD"),
+    },
+    "polar/vantage": {
         "email": get_os("POLAR_EMAIL"),
         "password": get_os("POLAR_PASSWORD"),
     },
