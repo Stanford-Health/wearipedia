@@ -1,5 +1,6 @@
-from ...utils import bin_search, seed_everything
 from datetime import datetime, time, timedelta
+
+from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
 from .fitbit_authenticate import *
 from .fitbit_sense_fetch import *
@@ -35,15 +36,13 @@ class Fitbit_charge_4(BaseDevice):
         seed=0,
         synthetic_start_date="2022-03-01",
         synthetic_end_date="2022-06-17",
-        single_day="2022-09-19",
     ):
         self._gen_synthetic()
-        
+
         params = {
             "seed": seed,
             "synthetic_start_date": synthetic_start_date,
             "synthetic_end_date": synthetic_end_date,
-            "single_day": single_day,
         }
 
         # self.data_types_methods_map = {
@@ -71,7 +70,6 @@ class Fitbit_charge_4(BaseDevice):
                 "seed": 0,
                 "synthetic_start_date": "2022-03-01",
                 "synthetic_end_date": "2022-06-17",
-                "single_day": "2022-09-19",
             },
         )
 
@@ -79,7 +77,6 @@ class Fitbit_charge_4(BaseDevice):
         params = {
             "start": "2022-04-24",
             "end": "2022-04-28",
-            "single_date": "2022-09-19",
         }
 
         return params
@@ -87,9 +84,7 @@ class Fitbit_charge_4(BaseDevice):
     def _filter_synthetic(self, data, data_type, params):
 
         date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
-        datetime_str_to_obj = lambda x: datetime.strptime(
-            x, "%Y-%m-%d"
-        )
+        datetime_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
 
         # get the indices by subtracting against the start of the synthetic data
         synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
@@ -111,7 +106,6 @@ class Fitbit_charge_4(BaseDevice):
             self.user,
             start_date=self.init_params["synthetic_start_date"],
             end_date=self.init_params["synthetic_end_date"],
-            single_date=self.init_params["single_day"],
         )
         return data
 

@@ -25,6 +25,7 @@ def fetch_real_data(
     :return: the data fetched from the API according to the inputs
     :rtype: List
     """
+    single_date = start_date
 
     categories = {
         "sleep": {
