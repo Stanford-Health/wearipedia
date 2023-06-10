@@ -37,7 +37,6 @@ class Fitbit_charge_4(BaseDevice):
         synthetic_start_date="2022-03-01",
         synthetic_end_date="2022-06-17",
     ):
-        self._gen_synthetic()
 
         params = {
             "seed": seed,
@@ -75,8 +74,8 @@ class Fitbit_charge_4(BaseDevice):
 
     def _default_params(self):
         params = {
-            "start": "2022-04-24",
-            "end": "2022-04-28",
+            "start_date": "2022-04-24",
+            "end_date": "2022-04-28",
         }
 
         return params
@@ -89,8 +88,8 @@ class Fitbit_charge_4(BaseDevice):
         # get the indices by subtracting against the start of the synthetic data
         synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
 
-        start_idx = (datetime_str_to_obj(params["start"]) - synthetic_start).days
-        end_idx = (datetime_str_to_obj(params["end"]) - synthetic_start).days
+        start_idx = (datetime_str_to_obj(params["start_date"]) - synthetic_start).days
+        end_idx = (datetime_str_to_obj(params["end_date"]) - synthetic_start).days
 
         cycles = {
             "total_count": end_idx - start_idx,
@@ -104,8 +103,8 @@ class Fitbit_charge_4(BaseDevice):
         data = fetch_real_data(
             data_type,
             self.user,
-            start_date=self.init_params["synthetic_start_date"],
-            end_date=self.init_params["synthetic_end_date"],
+            start_date=self.init_params["start_date"],
+            end_date=self.init_params["end_date"],
         )
         return data
 

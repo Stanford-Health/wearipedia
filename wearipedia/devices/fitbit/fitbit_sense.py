@@ -61,7 +61,18 @@ class Fitbit_sense(BaseDevice):
         # }
 
         self._initialize_device_params(
-            list(self.data_types_methods_map.keys()),
+            [
+                "sleep",
+                "steps",
+                "minutesVeryActive",
+                "minutesLightlyActive",
+                "minutesFairlyActive",
+                "distance",
+                "minutesSedentary",
+                "heart_rate_day",
+                "hrv",
+                "distance_day",
+            ],
             params,
             {
                 "seed": 0,
@@ -108,12 +119,21 @@ class Fitbit_sense(BaseDevice):
 
     def _gen_synthetic(self):
 
-        dictionary = create_syn_data(
+        syn_data = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
 
-        return dictionary
+        self.sleep = syn_data["sleep"]
+        self.steps = syn_data["steps"]
+        self.minutesVeryActive = syn_data["minutesVeryActive"]
+        self.minutesFairlyActive = syn_data["minutesFairlyActive"]
+        self.minutesLightlyActive = syn_data["minutesLightlyActive"]
+        self.distance = syn_data["distance"]
+        self.minutesSedentary = syn_data["minutesSedentary"]
+        self.heart_rate_day = syn_data["heart_rate_day"]
+        self.hrv = syn_data["hrv"]
+        self.distance_day = syn_data["distance_day"]
 
     def _authenticate(self):
         # authenticate this device against API
