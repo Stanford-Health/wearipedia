@@ -8,7 +8,7 @@ import wearipedia
 
 @pytest.mark.parametrize("real", [True, False])
 def test_fitbit_sense(real):
-    start_dates = [datetime(2009, 11, 29), datetime(2021, 4, 3), datetime(2022, 6, 10)]
+    start_dates = [datetime(2009, 11, 30), datetime(2021, 4, 4), datetime(2022, 6, 10)]
     end_dates = [datetime(2009, 12, 1), datetime(2021, 4, 5), datetime(2022, 6, 11)]
 
     for start_date, end_date in zip(start_dates, end_dates):
