@@ -28,16 +28,52 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     sleep = device.get_data(
         "sleep",
         params={
-            "start_date": datetime.strftime(start_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
-            "end_date": datetime.strftime(end_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
+            "start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+            "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
         },
     )
-    steps = device.get_data(
-        "steps",
+    # steps = device.get_data(
+    #     "steps",
+    #     params={
+    #         "start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+    #         "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
+    #     },
+    # )
+    # minutesVeryActive = device.get_data(
+    #     "minutesVeryActive",
+    #     params={
+    #         "start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+    #         "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
+    #     },
+    # )
+    # minutesLightlyActive = device.get_data(
+    #     "minutesLightlyActive",
+    #     params={
+    #         "start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+    #         "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
+    #     },
+    # )
+    # minutesFairlyActive = device.get_data(
+    #     "minutesFairlyActive",
+    #     params={
+    #         "start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+    #         "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
+    #     },
+    # )
+    # distance = device.get_data(
+    #     "distance",
+    #     params={
+    #         "start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+    #         "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
+    #     },
+    # )
+    minutesSedentary = device.get_data(
+        "minutesSedentary",
         params={
-            "start_date": datetime.strftime(start_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
-            "end_date": datetime.strftime(end_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
+            "start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+            "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
         },
     )
 
+    print(minutesSedentary)
     assert 1 == 1

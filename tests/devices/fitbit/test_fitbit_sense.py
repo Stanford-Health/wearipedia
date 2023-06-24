@@ -28,15 +28,15 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     sleep = device.get_data(
         "sleep",
         params={
-            "start": datetime.strftime(start_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
-            "end": datetime.strftime(end_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
+            "start": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+            "end": datetime.strftime(end_synthetic, "%Y-%m-%d"),
         },
     )
     steps = device.get_data(
         "steps",
         params={
-            "start": datetime.strftime(start_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
-            "end": datetime.strftime(end_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
+            "start": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+            "end": datetime.strftime(end_synthetic, "%Y-%m-%d"),
         },
     )
 
