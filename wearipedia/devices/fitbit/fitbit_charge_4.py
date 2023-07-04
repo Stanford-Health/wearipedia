@@ -91,12 +91,7 @@ class Fitbit_charge_4(BaseDevice):
         start_idx = (datetime_str_to_obj(params["start_date"]) - synthetic_start).days
         end_idx = (datetime_str_to_obj(params["end_date"]) - synthetic_start).days
 
-        cycles = {
-            "total_count": end_idx - start_idx,
-            "offset": end_idx - start_idx,
-        }
-
-        return cycles
+        return data
 
     def _get_real(self, data_type, params):
 

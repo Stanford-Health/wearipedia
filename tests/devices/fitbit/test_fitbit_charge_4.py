@@ -32,6 +32,7 @@ def helper_test(device, start_synthetic, end_synthetic, real):
             "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
         },
     )
+
     steps = device.get_data(
         "steps",
         params={
@@ -75,39 +76,38 @@ def helper_test(device, start_synthetic, end_synthetic, real):
         },
     )
 
-    rem = []
-    for datapoint in sleep[0]["sleep"]:
-        steps_arr.append(datapoint["value"])
-        if "rem" in datapoint["levels"]["summary"]:
-            rem.append(datapoint["levels"]["summary"]["rem"]["minutes"])
-    assert (len(rem)) >= 1
+    minutesAsleep = []
+    for datapoint in sleep:
+        minutesAsleep.append(datapoint["minutesAsleep"])
+
+    assert (len(minutesAsleep)) >= 1
 
     steps_arr = []
-    for datapoint in steps[0]["activities-steps"]:
+    for datapoint in steps:
         steps_arr.append(datapoint["value"])
     assert (len(steps_arr)) >= 1
 
     light = []
-    for datapoint in minutesLightlyActive[0]["activities-minutesLightlyActive"]:
-        steps_arr.append(datapoint["value"])
+    for datapoint in minutesLightlyActive:
+        light.append(datapoint["value"])
     assert (len(light)) >= 1
 
     fair = []
-    for datapoint in minutesFairlyActive[0]["activities-minutesFairlyActive"]:
-        steps_arr.append(datapoint["value"])
+    for datapoint in minutesFairlyActive:
+        fair.append(datapoint["value"])
     assert (len(fair)) >= 1
 
     very = []
-    for datapoint in minutesVeryActive[0]["activities-minutesVeryActive"]:
-        steps_arr.append(datapoint["value"])
+    for datapoint in minutesVeryActive:
+        very.append(datapoint["value"])
     assert (len(very)) >= 1
 
     sedentary = []
-    for datapoint in minutesSedentary[0]["activities-minutesSedentary"]:
-        steps_arr.append(datapoint["value"])
+    for datapoint in minutesSedentary:
+        sedentary.append(datapoint["value"])
     assert (len(sedentary)) >= 1
 
     distance_arr = []
-    for datapoint in distance[0]["activities-distance"]:
-        steps_arr.append(datapoint["value"])
+    for datapoint in distance:
+        distance_arr.append(datapoint["value"])
     assert (len(distance_arr)) >= 1
