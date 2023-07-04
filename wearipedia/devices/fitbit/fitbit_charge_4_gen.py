@@ -212,12 +212,3 @@ def create_syn_data(start_date, end_date):
         full_dict["minutesSedentary"].append(activity[5])
 
     return full_dict
-
-
-d = create_syn_data("2018-1-1", "2018-1-2")
-
-steps = d["steps"]
-
-steps_arr = []
-for datapoint in steps:
-    steps_arr.append(datapoint["value"])
