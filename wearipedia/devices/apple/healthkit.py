@@ -75,7 +75,7 @@ class HealthKit(BaseDevice):
         return data[start_idx:end_idx]
 
     def _gen_synthetic(self):
-        seed_everything(self.init.params["seed"])
+        seed_everything(self.init_params["seed"])
 
         self.dates, self.steps, self.hrs = create_syn_data(
             self.init_params["synthetic_start_date"],
