@@ -5,11 +5,11 @@ from ...devices.device import BaseDevice
 from .polar_gen import *
 from .polar_get import *
 
-class_name = "VeritySense"
+class_name = "H10"
 
 
-class VeritySense(BaseDevice):
-    """This device allows you to work with data from the `Polar Verity Sense <https://www.polar.com/us-en/products/accessories/polar-verity-sense>`_ device.
+class H10(BaseDevice):
+    """This device allows you to work with data from the `Polar H10 <https://www.polar.com/us-en/sensors/h10-heart-rate-sensor>`_ device.
     Available datatypes for this device are:
 
     * `sessions`: contains data from all sessions in one
