@@ -5,6 +5,7 @@ import pytest
 
 import wearipedia
 
+
 def test_polar(real):
     start_dates = [
         np.datetime64("2009-11-15"),
