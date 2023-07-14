@@ -166,7 +166,9 @@ def training_by_id_helper(data):
             if d[0]["Total distance (mi)"] != None:
                 assert isinstance(d[0]["Total distance (mi)"], (float, int))
             if d[0]["Average heart rate (bpm)"] != None:
-                assert isinstance(d[0]["Average heart rate (bpm)"], (float, int, np.int64))
+                assert isinstance(
+                    d[0]["Average heart rate (bpm)"], (float, int, np.int64)
+                )
                 assert (
                     d[0]["Average heart rate (bpm)"] >= 0
                     and d[0]["Average heart rate (bpm)"] <= 255

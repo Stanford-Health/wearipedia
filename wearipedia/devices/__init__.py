@@ -1,3 +1,4 @@
+from .apple import *
 from .cronometer import *
 from .dexcom import *
 from .dreem import *
