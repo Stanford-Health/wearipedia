@@ -1,63 +1,91 @@
 import os
 import pickle
+import webbrowser
 from datetime import datetime
+from urllib.parse import urlencode
 
 import requests
 
-from ...devices.device import BaseDevice
 from ...utils import seed_everything
+from ..device import BaseDevice
 from .evo_fetch import *
 from .evo_gen import *
 
 class_name = "EVO"
 
-# todo: change this to better path
-CRED_CACHE_PATH = "/tmp/wearipedia_evo_data.pkl"
-
 
 class EVO(BaseDevice):
-    BASE_URL = "https://api-beta.biostrap.com"
-    ACCESS_TOKEN = os.getenv("BIOSTRAP_ACCESS_TOKEN")
-
-    def __init__(self, user_id):
-        self.headers = {
-            "Authorization": f"Bearer {self.ACCESS_TOKEN}",
-        }
-        self.user_id = user_id
-
-    def fetch_real_data(self, start_date, end_date):
-        activities = self.fetch_activities()
-        biometrics = self.fetch_biometrics()
-        calories = self.fetch_calories(start_date, end_date)
-
-        return activities, biometrics, calories
-
-    def fetch_activities(self):
-        url = f"{self.BASE_URL}/v1/activities"
-        params = {"user_id": self.user_id, "last-timestamp": 0, "limit": 50}
-        response = requests.get(url, headers=self.headers, params=params)
-
-        return response.json()
-
-    def fetch_biometrics(self):
-        url = f"{self.BASE_URL}/v1/biometrics"
-        params = {"user_id": self.user_id, "last-timestamp": 0, "limit": 50}
-        response = requests.get(url, headers=self.headers, params=params)
-
-        return response.json()
-
-    def fetch_calories(self, start_date, end_date):
-        url = f"{self.BASE_URL}/v1/calorie/details"
+    def __init__(self, seed=0, start_date="2023-06-05", end_date="2023-06-20"):
         params = {
-            "user_id": self.user_id,
-            "user_timezone_offset_in_mins": -420,  # Assuming user is in Pacific Time
-            "date": end_date,  # Date in format "YYYY-MM-DD"
-            "granularity": "day",  # Assuming granularity is "day"
+            "seed": seed,
+            "start_date": str(start_date),
+            "end_date": str(end_date),
         }
-        response = requests.get(url, headers=self.headers, params=params)
 
-        return response.json()
+        self._initialize_device_params(
+            ["steps", "calories", "bpm", "brpm", "spo2"],
+            params,
+            {
+                "seed": 0,
+                "synthetic_start_date": "2023-06-05",
+                "synthetic_end_date": "2023-06-20",
+            },
+        )
 
-    def fetch_syn_data(self, start_date, end_date):
-        # This function will be implemented later
-        pass
+    def _default_params(self):
+        return {
+            "start_date": self.init_params["synthetic_start_date"],
+            "end_date": self.init_params["synthetic_end_date"],
+        }
+
+    def _get_real(self, data_type, params):
+        return fetch_real_data(
+            self.access_token, params["start_date"], params["end_date"], data_type
+        )
+
+    def _filter_synthetic(self, data, data_type, params):
+        return data
+
+    def _gen_synthetic(self):
+        # generate random data according to seed
+        seed_everything(self.init_params["seed"])
+
+        # and based on start and end dates
+        self.steps, self.calories, self.bpm, self.brpm, self.spo2 = create_syn_data(
+            self.init_params["synthetic_start_date"],
+            self.init_params["synthetic_end_date"],
+        )
+
+    # We get the access token to make requests to the Biostrap API
+    def _authenticate(self, auth_creds):
+        self.client_id = auth_creds["client_id"]
+        self.client_secret = auth_creds["client_secret"]
+        redirect_uri = "https://127.0.0.1:8080"
+        token_url = "https://auth.biostrap.com/token"
+
+        # Generate the authorization URL and open it in the default web browser
+        params = {
+            "client_id": self.client_id,
+            "response_type": "code",
+            "redirect_uri": redirect_uri,
+        }
+        authorization_url = f"https://auth.biostrap.com/authorize?{urlencode(params)}"
+        webbrowser.open(authorization_url)
+
+        # Get the authorization response URL from the command line: is there a better way to do this?
+        authorization_response = input("Enter the full callback URL: ")
+
+        code = authorization_response.split("code=")[1].split("&")[0]
+
+        # Now we can request the access token
+        data = {
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": redirect_uri,
+        }
+        auth = (self.client_id, self.client_secret)
+        response = requests.post(token_url, auth=auth, data=data)
+
+        # Get the access token from the response
+        token_json = response.json()
+        self.access_token = token_json["access_token"]
