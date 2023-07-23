@@ -30,10 +30,6 @@ def test_all_devices():
             len(device.init_params) > 0
         ), f"{device_name} has no init params, should have at least a random seed"
 
-        # It's a bit ugly, but we mock all the relevant methods and check
-        # that they're called the correct number of times.
-        # This is essentially checking that the child class has re-implemented
-        # the methods correctly.
         print(device_name)
         with mock.patch.object(
             device.__class__, "_filter_synthetic", wraps=device._filter_synthetic

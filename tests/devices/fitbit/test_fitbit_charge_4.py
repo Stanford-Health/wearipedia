@@ -79,35 +79,41 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     minutesAsleep = []
     for datapoint in sleep:
         minutesAsleep.append(datapoint["minutesAsleep"])
-
     assert (len(minutesAsleep)) >= 1
+    assert sum(minutesAsleep) / len(minutesAsleep) < 800
 
     steps_arr = []
     for datapoint in steps:
         steps_arr.append(datapoint["value"])
     assert (len(steps_arr)) >= 1
+    assert sum(steps_arr) / len(steps_arr) < 20000
 
     light = []
     for datapoint in minutesLightlyActive:
         light.append(datapoint["value"])
+        assert datapoint["value"] < 1440
     assert (len(light)) >= 1
 
     fair = []
     for datapoint in minutesFairlyActive:
         fair.append(datapoint["value"])
+        assert datapoint["value"] < 1440
     assert (len(fair)) >= 1
 
     very = []
     for datapoint in minutesVeryActive:
         very.append(datapoint["value"])
+        assert datapoint["value"] < 1440
     assert (len(very)) >= 1
 
     sedentary = []
     for datapoint in minutesSedentary:
         sedentary.append(datapoint["value"])
+        assert datapoint["value"] < 1440
     assert (len(sedentary)) >= 1
 
     distance_arr = []
     for datapoint in distance:
         distance_arr.append(datapoint["value"])
+    assert sum(distance_arr) / len(distance_arr) < 30
     assert (len(distance_arr)) >= 1

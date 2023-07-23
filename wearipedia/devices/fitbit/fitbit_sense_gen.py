@@ -7,11 +7,6 @@ import numpy as np
 __all__ = ["create_syn_data"]
 
 
-################
-# some helpers #
-################
-
-
 def get_sleep(date):
     """Generate sleep data for a given date.
 
@@ -159,7 +154,7 @@ def get_activity(date):
     }
     minutesSedentary = {
         "dateTime": date,
-        "value": 1440 - very_active + fairly_active + lightly_active,
+        "value": 1440 - (very_active + fairly_active + lightly_active),
     }
 
     return (
