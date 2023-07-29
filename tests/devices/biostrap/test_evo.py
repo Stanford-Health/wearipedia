@@ -34,10 +34,16 @@ def test_evo(real):
     # first make sure that the dates are correct
     for date_1, date_2 in zip(dates[:-1], dates[1:]):
         assert (
-            date_2 - date_1
+            datetime.strptime(date_2, "%Y-%m-%d")
+            - datetime.strptime(date_1, "%Y-%m-%d")
         ).days == 1, f"Dates are not consecutive: {date_1}, {date_2}"
 
-    assert dates[0] == start_synthetic, f"First date is not correct: {dates[0]}"
+    assert dates[0] == start_synthetic.strftime(
+        "%Y-%m-%d"
+    ), f"First date is not correct: {dates[0]}"
+    assert dates[-1] == end_synthetic.strftime(
+        "%Y-%m-%d"
+    ), f"Last date is not correct: {dates[-1]}"
 
     # Now make sure that the steps are correct.
     for step in steps.values():
