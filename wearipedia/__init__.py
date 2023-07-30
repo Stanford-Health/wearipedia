@@ -71,6 +71,7 @@ def get_all_device_names():
         "nutrisense/cgm",
         "fitbit/fitbit_charge_4",
         "fitbit/fitbit_sense",
+        "oura/oura_ring3",
     ]
 
 
@@ -135,6 +136,10 @@ _DEVICE_TO_AUTH_DICT = {
     "fitbit/fitbit_sense": {
         "client_id": get_os("FITBIT_CLIENT_ID"),
         "client_secret": get_os("FITBIT_CLIENT_SECRET"),
+    },
+    "oura/oura_ring3": {
+        "client_id": get_os("OURA_CLIENT_ID"),
+        "client_secret": get_os("OURA_CLIENT_SECRET"),
     },
 }
 
