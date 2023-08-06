@@ -74,7 +74,7 @@ def get_all_device_names():
         "nutrisense/cgm",
         "polar/vantage",
         "strava/strava",
-        "underarmour/myfitnesspal",
+        "myfitnesspal/myfitnesspal",
     ]
 
 

@@ -49,3 +49,7 @@ Devices
 .. autoclass:: wearipedia.devices.withings.ScanWatch
     :members:
     :show-inheritance:
+
+.. autoclass:: wearipedia.devices.cromometer.Cronometer
+    :members:
+    :show-inheritance:

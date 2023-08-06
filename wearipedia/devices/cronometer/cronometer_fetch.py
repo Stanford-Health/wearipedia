@@ -5,6 +5,20 @@ import requests
 
 
 def fetch_real_data(self, start_date, end_date, data_type):
+
+    """Main function for fetching real data from the Cronometer API.
+
+    :param start_date: the start date represented as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :param end_date: the end date represented as a string in the format "YYYY-MM-DD"
+    :type end_date: str
+    :param data_type: the type of data to fetch, one of "dailySummary", "servings", "exercises", "biometrics"
+    :type data_type: str
+    :return: the data fetched from the API according to the inputs
+    :rtype: List
+    """
+
+
     # This function is called when we want to fetch real data from the
     # device. It is called by the _get_real function in the base class.
 
