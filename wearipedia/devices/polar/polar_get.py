@@ -128,7 +128,7 @@ def fetch_real_data(
 
                 # convert to bytes then read raw text as csv
                 bstring = str(s, "utf-8")
-                data = StringIO(bstring)
+                data = io.StringIO(bstring)
                 df = pd.read_csv(data)
 
                 # rename the columns correctly
