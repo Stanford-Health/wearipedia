@@ -72,6 +72,7 @@ def get_all_device_names():
         "fitbit/fitbit_charge_4",
         "fitbit/fitbit_sense",
         "oura/oura_ring3",
+        "coros/coros_pace_2",
     ]
 
 
@@ -140,6 +141,10 @@ _DEVICE_TO_AUTH_DICT = {
     "oura/oura_ring3": {
         "client_id": get_os("OURA_CLIENT_ID"),
         "client_secret": get_os("OURA_CLIENT_SECRET"),
+    },
+    "coros/coros_pace_2": {
+        "client_id": get_os("COROS_CLIENT_ID"),
+        "client_secret": get_os("COROS_CLIENT_SECRET"),
     },
 }
 
