@@ -93,8 +93,6 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     # aggregate data for version 2 endpoints
     api_data = dict()
     api_data["personal_info"] = [personal_info]
-    # api_data["heart_rate"] = heart_rate["data"]
-    print(heart_rate)
     api_data["sessions"] = (
         sessions["detail"] if sessions["detail"] != "Not Found" else [{}]
     )

@@ -75,45 +75,64 @@ def helper_test(device, start_synthetic, end_synthetic, real):
             "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
         },
     )
-
     minutesAsleep = []
     for datapoint in sleep:
         minutesAsleep.append(datapoint["minutesAsleep"])
-    assert (len(minutesAsleep)) >= 1
-    assert sum(minutesAsleep) / len(minutesAsleep) < 800
+    assert len(minutesAsleep) >= 1, "Number of sleep data points should be at least 1"
+    assert (
+        sum(minutesAsleep) / len(minutesAsleep) < 800
+    ), f"Average minutes asleep should be less than 800 but was {sum(minutesAsleep) / len(minutesAsleep)}"
 
     steps_arr = []
     for datapoint in steps:
         steps_arr.append(datapoint["value"])
-    assert (len(steps_arr)) >= 1
-    assert sum(steps_arr) / len(steps_arr) < 20000
+    assert len(steps_arr) >= 1, "Number of steps data points should be at least 1"
+    assert (
+        sum(steps_arr) / len(steps_arr) < 20000
+    ), f"Average steps should be less than 20000 but was {sum(steps_arr) / len(steps_arr)}"
 
     light = []
     for datapoint in minutesLightlyActive:
         light.append(datapoint["value"])
-        assert datapoint["value"] < 1440
-    assert (len(light)) >= 1
+        assert (
+            datapoint["value"] < 1440
+        ), f"Value should be less than 1440 but was {datapoint['value']}"
+    assert len(light) >= 1, "Number of light activity data points should be at least 1"
 
     fair = []
     for datapoint in minutesFairlyActive:
         fair.append(datapoint["value"])
-        assert datapoint["value"] < 1440
-    assert (len(fair)) >= 1
+        assert (
+            datapoint["value"] < 1440
+        ), f"Value should be less than 1440 but was {datapoint['value']}"
+    assert (
+        len(fair) >= 1
+    ), "Number of fairly active minutes data points should be at least 1"
 
     very = []
     for datapoint in minutesVeryActive:
         very.append(datapoint["value"])
-        assert datapoint["value"] < 1440
-    assert (len(very)) >= 1
+        assert (
+            datapoint["value"] < 1440
+        ), f"Value should be less than 1440 but was {datapoint['value']}"
+    assert (
+        len(very) >= 1
+    ), "Number of very active minutes data points should be at least 1"
 
     sedentary = []
     for datapoint in minutesSedentary:
         sedentary.append(datapoint["value"])
-        assert datapoint["value"] < 1440
-    assert (len(sedentary)) >= 1
+        assert (
+            datapoint["value"] < 1440
+        ), f"Value should be less than 1440 but was {datapoint['value']}"
+    assert (
+        len(sedentary) >= 1
+    ), "Number of sedentary minutes data points should be at least 1"
 
     distance_arr = []
     for datapoint in distance:
         distance_arr.append(datapoint["value"])
-    assert sum(distance_arr) / len(distance_arr) < 30
-    assert (len(distance_arr)) >= 1
+    assert (
+        sum(distance_arr) / len(distance_arr) < 30
+    ), f"Average distance should be less than 30 but was {sum(distance_arr) / len(distance_arr)}"
+    assert len(distance_arr) >= 1, "Number of distance data points should be at least 1"

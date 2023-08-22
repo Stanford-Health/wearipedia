@@ -75,40 +75,62 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     awake = []
     dates = []
     for elem in sleep:
-        deep.append(elem["deep"] / 60 / 60)  # sec -> min -> hour
+        deep_hours = elem["deep"] / 60 / 60
+        deep.append(deep_hours)  # sec -> min -> hour
 
-        assert elem["deep"] / 60 / 60 < 8
-        assert elem["deep"] / 60 / 60 > 0
+        assert (
+            deep_hours < 8
+        ), f"Deep sleep hours should be less than 8 but was {deep_hours}"
+        assert (
+            deep_hours > 0
+        ), f"Deep sleep hours should be greater than 0 but was {deep_hours}"
 
-        light.append(elem["light"] / 60 / 60)
-        rem.append(elem["rem"] / 60 / 60)
-        awake.append(elem["awake"] / 60 / 60)
+        light_hours = elem["light"] / 60 / 60
+        light.append(light_hours)
+        rem_hours = elem["rem"] / 60 / 60
+        rem.append(rem_hours)
+        awake_hours = elem["awake"] / 60 / 60
+        awake.append(awake_hours)
         dates.append(elem["summary_date"])
 
-    assert len(deep) != 0
-    assert len(rem) != 0
-    assert len(light) != 0
-    assert len(awake) != 0
-    assert len(dates) != 0
+    assert len(deep) != 0, "Number of deep sleep data points should be greater than 0"
+    assert len(rem) != 0, "Number of REM sleep data points should be greater than 0"
+    assert len(light) != 0, "Number of light sleep data points should be greater than 0"
+    assert len(awake) != 0, "Number of awake sleep data points should be greater than 0"
+    assert len(dates) != 0, "Number of dates should be greater than 0"
 
     bpm = []
     for elem in heart_rate:
-        bpm.append(elem["bpm"])
-        assert elem["bpm"] < 200
+        bpm_value = elem["bpm"]
+        bpm.append(bpm_value)
+        assert (
+            bpm_value < 200
+        ), f"Heart rate should be less than 200 but was {bpm_value}"
 
     daily_activiy_score = []
     for elem in daily_activity:
-        daily_activiy_score.append(elem["score"])
-        assert elem["score"] < 100
+        score = elem["score"]
+        daily_activiy_score.append(score)
+        assert (
+            score < 100
+        ), f"Daily activity score should be less than 100 but was {score}"
 
     cal_total = []
     for elem in activity:
-        cal_total.append(elem["cal_total"])
-        assert elem["cal_total"] < 5000
+        cal_total_value = elem["cal_total"]
+        cal_total.append(cal_total_value)
+        assert (
+            cal_total_value < 5000
+        ), f"Calories total should be less than 5000 but was {cal_total_value}"
 
     score_temperature = []
     for elem in readiness:
-        score_temperature.append(elem["score_temperature"])
-        assert elem["score_temperature"] < 100
+        temperature_score = elem["score_temperature"]
+        score_temperature.append(temperature_score)
+        assert (
+            temperature_score < 100
+        ), f"Temperature score should be less than 100 but was {temperature_score}"
 
-    assert len(ideal_bedtime[0]["status"]) > 0
+    assert (
+        len(ideal_bedtime[0]["status"]) > 0
+    ), "Ideal bedtime status should not be empty"

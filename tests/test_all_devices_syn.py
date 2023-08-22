@@ -30,7 +30,6 @@ def test_all_devices():
             len(device.init_params) > 0
         ), f"{device_name} has no init params, should have at least a random seed"
 
-        print(device_name)
         with mock.patch.object(
             device.__class__, "_filter_synthetic", wraps=device._filter_synthetic
         ) as mock_get_synthetic, mock.patch.object(
