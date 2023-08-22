@@ -1,12 +1,16 @@
+import datetime
 import io
 import re
+import zipfile
 
 import numpy as np
 import pandas as pd
 import requests
 
 
-def fetch_real_data(start_date, end_date, data_type, session, post):
+def fetch_real_data(
+    start_date, end_date, data_type, session, post, elite_hrv_session=None
+):
     """Main function for fetching real data from the Polar website.
     Does not use Polar's API, but instead scrapes the website.
 
@@ -88,5 +92,64 @@ def fetch_real_data(start_date, end_date, data_type, session, post):
                 "calories": sesh["calories"],
                 "minutes": sesh["duration"] / 60000,
             }
+
+        return result
+    elif data_type == "rr":
+
+        # set the session data
+        session_id = elite_hrv_session["sessionId"]
+        user_id = elite_hrv_session["user"]["id"]
+
+        headers = {
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Connection": "keep-alive",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Origin": "https://dashboard.elitehrv.com",
+            "Referer": "https://dashboard.elitehrv.com/",
+        }
+
+        data = f"userId={user_id}&startDate={start_date}%3A01%3A52.615Z&endDate={end_date}T23%3A01%3A52.615Z&version=*&locale=en-us&language=en&sessionId={session_id}"
+
+        # get the output raw text file
+        response = requests.post(
+            "https://app.elitehrv.com/application/reading/exportUser",
+            headers=headers,
+            data=data,
+        )
+        z = zipfile.ZipFile(io.BytesIO(response.content))
+
+        # for each of the session data, read the file
+        s = None
+        for f in z.namelist():
+            if f.endswith(".txt") and f != "!About This Export.txt":
+                dte = (f.split("/")[1]).split(".")[0]  # get the date from the file name
+                s = z.read(f)
+
+                # convert to bytes then read raw text as csv
+                bstring = str(s, "utf-8")
+                data = StringIO(bstring)
+                df = pd.read_csv(data)
+
+                # rename the columns correctly
+                df = df.rename(columns={str(df.columns[0]): "rr"})
+
+                # create a list of timestamps
+                cur_time = datetime.datetime.strptime("00:00:00.0", "%H:%M:%S.%f")
+                date_list = []
+
+                for interval in list(df["rr"]):
+                    date_list.append(cur_time)
+                    cur_time = cur_time + datetime.timedelta(milliseconds=interval)
+
+                # complete dataframe by setting index to the time
+                df["time"] = date_list
+                df = df.set_index("time")
+
+                # add the data to the result dictionary
+                result[dte] = {
+                    "rr": list(df["rr"]),
+                    "time": list(df.index),
+                }
 
         return result

@@ -14,6 +14,8 @@ class H10(BaseDevice):
 
     * `sessions`: contains data from all sessions in one
 
+    * `rr`: contains data from all rr sessions in one
+
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
     :param start_date: start date for synthetic data generation, defaults to "2022-03-01"
@@ -31,7 +33,7 @@ class H10(BaseDevice):
         }
 
         self._initialize_device_params(
-            ["sessions"],
+            ["sessions", "rr"],
             params,
             {
                 "seed": 0,
@@ -53,11 +55,14 @@ class H10(BaseDevice):
             data_type,
             self.session,
             self.post,
+            self.elite_hrv_session,
         )
 
     def _filter_synthetic(self, data, data_type, params):
         # return data within range of start date and end date
+        # includes both RR and HR data
         result = {}
+
         for key in data.keys():
             if np.datetime64(key) - np.datetime64(params["end_date"]) > 0:
                 break
@@ -65,6 +70,7 @@ class H10(BaseDevice):
                 continue
             else:
                 result[key] = data[key]
+
         return result
 
     def _gen_synthetic(self):
@@ -73,6 +79,13 @@ class H10(BaseDevice):
             self.init_params["seed"],
             self.init_params["start_date"],
             self.init_params["end_date"],
+        )
+
+        self.rr = gen_data(
+            self.init_params["seed"],
+            self.init_params["start_date"],
+            self.init_params["end_date"],
+            rr=True,
         )
 
     def _authenticate(self, auth_creds):
@@ -87,3 +100,29 @@ class H10(BaseDevice):
 
         # contains polar global variables we need later
         self.post = self.session.post("https://flow.polar.com/login", data=auth)
+
+        self.elite_hrv_session = None
+        self.elite_hrv_email = None
+        self.elite_hrv_password = None
+        # check if eliteHRV credentials exist
+        if "elite_hrv_email" in auth_creds:
+            self.elite_hrv_email = auth_creds["elite_hrv_email"]
+            self.elite_hrv_password = auth_creds["elite_hrv_password"]
+
+            headers = {
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Connection": "keep-alive",
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Origin": "https://dashboard.elitehrv.com",
+                "Referer": "https://dashboard.elitehrv.com/",
+            }
+            data = f"email={self.elite_hrv_email}%40gmail.com&password={self.elite_hrv_password}&version=*&locale=en-us&language=en"
+
+            # authenticate device in a python session and save it
+            response = requests.post(
+                "https://app.elitehrv.com/application/index/login",
+                headers=headers,
+                data=data,
+            )
+            self.elite_hrv_session = response.json()
