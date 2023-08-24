@@ -32,7 +32,7 @@ def fetch_real_data(self, start_date, end_date, data_type):
     GWTBaseURL = "https://cronometer.com/cronometer/app"
 
     # Header that refers to the GWT module representing the app version
-    GWTHeader = "4487F7F4BACD5C9158608F034F085B7E"
+    GWTHeader = "2DA0DF17ADF09997618F40942ACB02D7"
 
     # The body for the request to get the authentication
     body = f"7|0|5|https://cronometer.com/cronometer/|{GWTHeader}|com.cronometer.shared.rpc.CronometerService|authenticate|java.lang.Integer/3438268394|1|2|3|4|1|5|5|-480|"
@@ -41,7 +41,7 @@ def fetch_real_data(self, start_date, end_date, data_type):
     header = {
         "content-type": "text/x-gwt-rpc; charset=UTF-8",
         "x-gwt-module-base": "https://cronometer.com/cronometer/",
-        "x-gwt-permutation": "2D9CD46DC0AA857A2A22311352F8EA94",
+        "x-gwt-permutation": "7B31ED48EA8904F2F0BEDF3FE6B17BA4",
     }
 
     # Making the request to get the authentication
