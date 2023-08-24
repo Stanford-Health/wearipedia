@@ -6,7 +6,7 @@ Withings,Body+,`withings/bodyplus`,OAuth 2.0,yes,link
 Withings,ScanWatch,`withings/scanwatch`,OAuth 2.0,yes,link
 Polar,Verity Sense,`polar/verity_sense`,only email and password,yes,link
 Cronometer, Cronometer App, 'cromometer/Cronometer', only email and password,yes,link
-MyFitnessPal, MyFitnessPal App, 'myfitnesspal/myfitnesspal', browser cookies, link
-Google, Fitness, 'google/googlefit', authorization_code, link
-Strava, Strava App, 'strava/strava', client_id client_secret and refresh_token, link
+MyFitnessPal, MyFitnessPal App, 'myfitnesspal/myfitnesspal', browser cookies,yes,link
+Google, Fitness, 'google/googlefit', authorization_code,yes,link
+Strava, Strava App, 'strava/strava', client_id client_secret and refresh_token,yes, link
 Polar,Vantage V2,`polar/vantage`,only email and password,yes,link
