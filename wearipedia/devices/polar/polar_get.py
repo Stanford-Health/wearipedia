@@ -28,42 +28,43 @@ def fetch_real_data(
     :rtype: Dict[str: Dict[str: list, str: int, str: int]]
     """
 
-    headers = {
-        "x-requested-with": "XMLHttpRequest",
-    }
-
-    json_data = {
-        "userId": None,
-        "fromDate": start_date,
-        "toDate": end_date,
-    }
-
-    # using regular expressions, we can search for the userId in the session response
-    result = re.search("AppGlobal.init((.*))", post.text)
-    target = str(result.group(1)).split('"')
-    userid = int(target[1])
-
-    # get the actual training session data
-    json_data["userId"] = userid
-
-    trainhist = session.post(
-        "https://flow.polar.com/api/training/history",
-        cookies=session.cookies.get_dict(),
-        headers=headers,
-        json=json_data,
-    )
-    trainhist = trainhist.json()
-
-    # this is just to filter unwanted entries (i.e. too short sessions, error in data)
-    trainhist = [
-        e for e in trainhist if (e["hrAvg"] != None and e["duration"] > 1200000)
-    ]
-
     # declare some new functions to help us parse the data
     result = {}
     func = lambda x: list(str(x).split())[0]
 
     if data_type == "sessions":
+
+        headers = {
+            "x-requested-with": "XMLHttpRequest",
+        }
+
+        json_data = {
+            "userId": None,
+            "fromDate": start_date,
+            "toDate": end_date,
+        }
+
+        # using regular expressions, we can search for the userId in the session response
+        result = re.search("AppGlobal.init((.*))", post.text)
+        target = str(result.group(1)).split('"')
+        userid = int(target[1])
+
+        # get the actual training session data
+        json_data["userId"] = userid
+
+        trainhist = session.post(
+            "https://flow.polar.com/api/training/history",
+            cookies=session.cookies.get_dict(),
+            headers=headers,
+            json=json_data,
+        )
+        trainhist = trainhist.json()
+
+        # this is just to filter unwanted entries (i.e. too short sessions, error in data)
+        trainhist = [
+            e for e in trainhist if (e["hrAvg"] != None and e["duration"] > 1200000)
+        ]
+
         for sesh in trainhist[::-1]:
             train_id = sesh["id"]
             date = list(sesh["startDate"].split())[0]

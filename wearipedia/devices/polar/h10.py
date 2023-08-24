@@ -89,25 +89,27 @@ class H10(BaseDevice):
         )
 
     def _authenticate(self, auth_creds):
-
-        # set credentials for device object to be accessed later if needed
-        self.email = auth_creds["email"]
-        self.password = auth_creds["password"]
-
-        # authenticate device in a python session and save it
-        auth = {"email": self.email, "password": self.password}
-        self.session = requests.Session()
-
-        # contains polar global variables we need later
-        self.post = self.session.post("https://flow.polar.com/login", data=auth)
-
         self.elite_hrv_session = None
-        self.elite_hrv_email = None
-        self.elite_hrv_password = None
+        self.session = None
+        self.post = None
+
+        # check if auth_creds has email and password
+        if "email" in auth_creds and "password" in auth_creds:
+            # set credentials for device object to be accessed later if needed
+            email = auth_creds["email"]
+            password = auth_creds["password"]
+
+            # authenticate device in a python session and save it
+            auth = {"email": email, "password": password}
+            self.session = requests.Session()
+
+            # contains polar global variables we need later
+            self.post = self.session.post("https://flow.polar.com/login", data=auth)
+
         # check if eliteHRV credentials exist
-        if "elite_hrv_email" in auth_creds:
-            self.elite_hrv_email = auth_creds["elite_hrv_email"]
-            self.elite_hrv_password = auth_creds["elite_hrv_password"]
+        if "elite_hrv_email" in auth_creds and "elite_hrv_password" in auth_creds:
+            elite_hrv_email = auth_creds["elite_hrv_email"]
+            elite_hrv_password = auth_creds["elite_hrv_password"]
 
             headers = {
                 "Accept": "application/json, text/plain, */*",
@@ -117,7 +119,7 @@ class H10(BaseDevice):
                 "Origin": "https://dashboard.elitehrv.com",
                 "Referer": "https://dashboard.elitehrv.com/",
             }
-            data = f"email={self.elite_hrv_email}%40gmail.com&password={self.elite_hrv_password}&version=*&locale=en-us&language=en"
+            data = f"email={elite_hrv_email}%40gmail.com&password={elite_hrv_password}&version=*&locale=en-us&language=en"
 
             # authenticate device in a python session and save it
             response = requests.post(
