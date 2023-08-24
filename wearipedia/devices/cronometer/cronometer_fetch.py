@@ -73,6 +73,8 @@ def fetch_real_data(self, start_date, end_date, data_type):
     # creating the url for the get request
     data = self.session.get("https://cronometer.com/export", params=params)
 
+    print(data)
+
     # parsing the data
     content = data.content
 
