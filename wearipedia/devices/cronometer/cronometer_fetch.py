@@ -2,6 +2,7 @@ import io
 
 import pandas as pd
 import requests
+import re
 
 
 def fetch_real_data(self, start_date, end_date, data_type):
