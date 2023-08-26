@@ -49,3 +49,19 @@ Devices
 .. autoclass:: wearipedia.devices.withings.ScanWatch
     :members:
     :show-inheritance:
+
+.. autoclass:: wearipedia.devices.coros.Pace2
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.oura.Ring3
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.fitbit.Charge4
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.fitbit.Sense
+    :members:
+    :show-inheritance:
