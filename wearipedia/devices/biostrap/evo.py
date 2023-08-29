@@ -23,7 +23,24 @@ class EVO(BaseDevice):
         }
 
         self._initialize_device_params(
-            ["steps", "calories", "bpm", "brpm", "spo2"],
+            [
+                "activities",
+                "bpm",
+                "brpm",
+                "hrv",
+                "resting_bpm",
+                "resting_hrv",
+                "spo2",
+                "rest_cals",
+                "work_cals",
+                "active_cals",
+                "step_cals",
+                "total_cals",
+                "sleep_session",
+                "sleep_detail",
+                "steps",
+                "distance",
+            ],
             params,
             {
                 "seed": 0,
@@ -44,14 +61,76 @@ class EVO(BaseDevice):
         )
 
     def _filter_synthetic(self, data, data_type, params):
+        start_date = params["start_date"]
+        end_date = params["end_date"]
+
+        start_datetime = f"{start_date} 00:00:00"
+        end_datetime = f"{end_date} 23:59:59"
+
+        # For data types that are stored with a date string as a key
+        if data_type in [
+            "rest_cals",
+            "work_cals",
+            "active_cals",
+            "step_cals",
+            "total_cals",
+            "sleep_session",
+            "sleep_detail",
+        ]:
+            return {
+                date: value
+                for date, value in data.items()
+                if start_date <= date <= end_date
+            }
+
+        # For data types that are stored with a datetime string as a key in a tuple
+        elif data_type in [
+            "bpm",
+            "brpm",
+            "spo2",
+            "activities",
+            "hrv",
+            "resting_bpm",
+            "resting_hrv",
+        ]:
+            return {
+                key: value
+                for key, value in data.items()
+                if start_datetime <= key[0] <= end_datetime
+            }
+
+        # For steps and distance that use datetime strings as keys (assuming distance also has datetime as per steps)
+        elif data_type in ["steps", "distance"]:
+            return {
+                datetime: value
+                for datetime, value in data.items()
+                if start_datetime <= datetime <= end_datetime
+            }
+
         return data
 
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
-
         # and based on start and end dates
-        self.steps, self.calories, self.bpm, self.brpm, self.spo2 = create_syn_data(
+        (
+            self.activities,
+            self.bpm,
+            self.brpm,
+            self.hrv,
+            self.resting_bpm,
+            self.resting_hrv,
+            self.spo2,
+            self.rest_cals,
+            self.work_cals,
+            self.active_cals,
+            self.step_cals,
+            self.total_cals,
+            self.sleep_session,
+            self.sleep_detail,
+            self.steps,
+            self.distance,
+        ) = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
@@ -72,7 +151,7 @@ class EVO(BaseDevice):
         authorization_url = f"https://auth.biostrap.com/authorize?{urlencode(params)}"
         webbrowser.open(authorization_url)
 
-        # Get the authorization response URL from the command line: is there a better way to do this?
+        # Get the authorization response URL from the command line (the method Jack and I talked about didn't work)
         authorization_response = input("Enter the full callback URL: ")
 
         code = authorization_response.split("code=")[1].split("&")[0]
