@@ -10,6 +10,7 @@ __all__ = ["create_syn_data"]
 def get_sleep(date):
     """Generate sleep data for a given date.
 
+    :param: date in a string format
     :return: sleep data dictionary
     :rtype: dictionary
     """
@@ -21,8 +22,8 @@ def get_sleep(date):
     tofall = np.random.randint(0, 200) / 100
 
     percents = (100 - awake - afterwake - tofall, awake, afterwake, tofall)
-    start = datetime.strptime(date + " 9:00 PM", "%Y-%m-%d %I:%M %p")
-    end = datetime.strptime(date + " 11:58 PM", "%Y-%m-%d %I:%M %p")
+    start = datetime.strptime(f"{date} 9:00 PM", "%Y-%m-%d %I:%M %p")
+    end = datetime.strptime(f"{date} 11:58 PM", "%Y-%m-%d %I:%M %p")
 
     # generate random date
     delta = end - start

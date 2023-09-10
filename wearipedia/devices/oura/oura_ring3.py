@@ -26,8 +26,6 @@ class Oura_Ring_3(BaseDevice):
     :type synthetic_start_date: str, optional
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type synthetic_end_date: str, optional
-    :param single_day: end date for real data data fetching, defaults to "2022-09-19"
-    :type single_day: str, optional
     """
 
     def __init__(
@@ -104,6 +102,7 @@ class Oura_Ring_3(BaseDevice):
         self.readiness = syn_data["readiness"]
         self.heart_rate = syn_data["heart_rate"]
 
-    def _authenticate(self):
+    def _authenticate(self, email, password):
 
-        self.user = Oura_token()
+        login(email, password)
+        self.user = oura_token()

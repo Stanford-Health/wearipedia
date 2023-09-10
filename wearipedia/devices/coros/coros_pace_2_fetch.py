@@ -9,8 +9,6 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     :type start_date: str
     :param end_date: the end date represented as a string in the format "YYYY-MM-DD"
     :type end_date: str
-    :param single_date: the day data is being requested from represented as a string in the format "YYYY-MM-DD"
-    :type end_date: str
     :param data_type: the type of data to fetch, one of "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary"
     :type data_type: str
     :param access_token: access token for the API
@@ -18,16 +16,16 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     :return: the data fetched from the API according to the inputs
     :rtype: List
     """
-    # # From intercepting the API requests, we were able to retrieve the following requests
+    # From intercepting the API requests, we were able to retrieve the following requests
 
     # dictionary to aggregate the data in
     data = dict()
 
     ## Getting user data
-    saver = rq.post(
+    response = rq.post(
         url="https://api.coros.com/coros/data/userExtend/query?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9"
     )
-    data["user_data"] = saver.text
+    data["user_data"] = response.text
 
     # Getting steps data
     j = {
@@ -39,11 +37,11 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         "statisticType": 1,
     }
 
-    saver = rq.post(
+    response = rq.post(
         url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
         json=j,
     )
-    data["steps"] = saver.text
+    data["steps"] = response.text
 
     # Getting exercise tiem data
     j = {
@@ -55,11 +53,11 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         "statisticType": 1,
     }
 
-    saver = rq.post(
+    response = rq.post(
         url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
         json=j,
     )
-    data["exercise_time"] = saver.text
+    data["exercise_time"] = response.text
 
     # Getting Heart_rate data
     j = {
@@ -71,11 +69,11 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         "statisticType": 1,
     }
 
-    saver = rq.post(
+    response = rq.post(
         url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
         json=j,
     )
-    data["heart_rate"] = saver.text
+    data["heart_rate"] = response.text
 
     # Getting sports data
     j = {
@@ -84,41 +82,41 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         "size": 20,
     }
 
-    saver = rq.post(
+    response = rq.post(
         url="https://api.coros.com/coros/data/sport/query?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
         json=j,
     )
-    data["sports"] = saver.text
+    data["sports"] = response.text
 
     # Getting sleep data
 
     j = {
-        "startTime": 20221108,
-        "endTime": 20230206,
+        "startTime": start_date,
+        "endTime": end_date,
         "accessToken": "YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
         "dataType": [5, 13],
         "dataVersion": 1,
         "statisticType": 1,
     }
 
-    saver = rq.post(
+    response = rq.post(
         url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
         json=j,
     )
-    data["sleep"] = saver.text
+    data["sleep"] = response.text
 
     j = {
-        "startTime": 20221108,
-        "endTime": 20230206,
+        "startTime": start_date,
+        "endTime": end_date,
         "accessToken": "YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
         "dataType": [1, 14],
         "dataVersion": 1,
         "statisticType": 1,
     }
-    saver = rq.post(
+    response = rq.post(
         url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
         json=j,
     )
-    data["active_energy"] = saver.text
+    data["active_energy"] = response.text
 
     return data

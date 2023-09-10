@@ -1,4 +1,5 @@
 import collections
+import random
 from datetime import datetime, time, timedelta
 from random import choice, choices, randrange
 
@@ -141,6 +142,8 @@ def get_activity(date):
     fairly_active = np.random.randint(0, 240)
     lightly_active = np.random.randint(0, 240)
 
+    minutes_in_a_day = 1440
+
     steps = {
         "dateTime": date,
         "value": very_active * 50 + fairly_active * 25 + lightly_active * 10,
@@ -154,7 +157,7 @@ def get_activity(date):
     }
     minutesSedentary = {
         "dateTime": date,
-        "value": 1440 - (very_active + fairly_active + lightly_active),
+        "value": minutes_in_a_day - (very_active + fairly_active + lightly_active),
     }
 
     return (
@@ -226,14 +229,25 @@ def get_heart_rate(date):
     }
 
     the_time = time(hour=0, minute=0, second=0)
-    for i in range(1440):
 
-        max_heart_rate = [110, 136, 169, 220]
-        min_dict = {110: 30, 136: 110, 169: 136, 220: 169}
-        weights = [0.14, 0.0058, 0.0008, 0.0001]
-        max_heart = choices(max_heart_rate, weights)
+    minutes_in_a_day = 1440
 
-        inx = max_heart_rate.index(max_heart[0])
+    bpm = random.randint(50, 120)
+
+    for i in range(minutes_in_a_day):
+        hour = the_time.hour
+
+        # Determine which heart rate zone based on the hour
+        if hour < 6 or hour >= 22:
+            inx = 0
+        elif 6 <= hour < 10:
+            inx = 1
+        elif 10 <= hour < 18:
+            inx = 2
+        else:
+            inx = 3
+
+        # Update heart rate zone data
         heart_rate_data["heart_rate_day"][0]["activities-heart"][0]["value"][
             "heartRateZones"
         ][inx]["minutes"] += 1
@@ -241,12 +255,16 @@ def get_heart_rate(date):
             "heartRateZones"
         ][inx]["caloriesOut"] += 2 * (inx + 0.5)
 
-        val = np.random.randint(min_dict[max_heart[0]], max_heart)
+        # Simulate gradual heart rate changes within a realistic range
+        bpm += random.randint(-1, 1)
+        bpm = max(50, min(220, bpm))
 
+        # Create a new data point and add it to the dataset
         heart_rate_data["heart_rate_day"][0]["activities-heart-intraday"][
             "dataset"
-        ].append({"time": the_time.strftime("%H:%M:%S"), "value": val})
+        ].append({"time": the_time.strftime("%H:%M:%S"), "value": bpm})
 
+        # Update the time for the next iteration
         newtime = (
             datetime.combine(datetime.today(), the_time) + timedelta(seconds=60)
         ).time()
@@ -302,7 +320,9 @@ def get_distance_day(date):
 
     the_time = time(hour=0, minute=0, second=0)
 
-    for i in range(1440):
+    minutes_in_a_day = 1440
+
+    for i in range(minutes_in_a_day):
 
         distance = [0, 0.1]
         weights = [0.6, 0.3]

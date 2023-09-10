@@ -8,10 +8,9 @@ def call_API(access_token: str, url: str, call: str = "GET"):
     return requests.request(call, url=url, headers=headers).json()
 
 
-def fetch_real_data(
-    data_type, access_token, start_date="", end_date="", single_date=""
-):
+def fetch_real_data(data_type, access_token, start_date, end_date, single_date):
     """Main function for fetching real data from the Fitbit API.
+
     :param start_date: the start date represented as a string in the format "YYYY-MM-DD"
     :type start_date: str
     :param end_date: the end date represented as a string in the format "YYYY-MM-DD"
@@ -26,69 +25,34 @@ def fetch_real_data(
     :rtype: List
     """
     single_date = start_date
-
     categories = {
         "sleep": {
-            "url": "https://api.fitbit.com/1.2/user/-/sleep/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1.2/user/-/sleep/date/{start_date}/{end_date}.json"
         },
         "steps": {
-            "url": "https://api.fitbit.com/1/user/-/activities/steps/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/steps/date/{start_date}/{end_date}.json"
         },
         "minutesVeryActive": {
-            "url": "https://api.fitbit.com/1/user/-/activities/minutesVeryActive/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/minutesVeryActive/date/{start_date}/{end_date}.json"
         },
         "minutesFairlyActive": {
-            "url": "https://api.fitbit.com/1/user/-/activities/minutesFairlyActive/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/minutesFairlyActive/date/{start_date}/{end_date}.json"
         },
         "minutesLightlyActive": {
-            "url": "https://api.fitbit.com/1/user/-/activities/minutesLightlyActive/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/minutesLightlyActive/date/{start_date}/{end_date}.json"
         },
         "distance": {
-            "url": "https://api.fitbit.com/1/user/-/activities/distance/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/distance/date/{start_date}/{end_date}.json"
         },
         "minutesSedentary": {
-            "url": "https://api.fitbit.com/1/user/-/activities/minutesSedentary/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/minutesSedentary/date/{start_date}/{end_date}.json"
         },
         "heart_rate_day": {
-            "url": "https://api.fitbit.com/1/user/-/activities/heart/date/"
-            + single_date
-            + "/1d.json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/heart/date/{single_date}/1d.json"
         },
-        "hrv": {
-            "url": "https://api.fitbit.com/1/user/-/hrv/date/" + single_date + ".json"
-        },
+        "hrv": {"url": f"https://api.fitbit.com/1/user/-/hrv/date/{single_date}.json"},
         "distance_day": {
-            "url": "https://api.fitbit.com/1/user/-/activities/distance/date/"
-            + single_date
-            + "/1d.json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/distance/date/{single_date}/1d.json"
         },
     }
 

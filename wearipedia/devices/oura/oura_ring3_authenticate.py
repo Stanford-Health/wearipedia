@@ -4,7 +4,7 @@ import os
 
 import requests
 
-__all__ = ["login", "Oura_token"]
+__all__ = ["login", "oura_token"]
 
 
 def login(email, password):
@@ -23,9 +23,12 @@ def login(email, password):
         )
 
 
-def Oura_token():
+def oura_token():
     """gives us access token given the login info
-    Returns access token"""
+
+    :return: access token
+    :rtype: str
+    """
 
     print(
         "fill the login info in this url then generate the token: ",

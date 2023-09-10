@@ -10,15 +10,15 @@ __all__ = ["create_syn_data"]
 def get_daily_activity(date):
     """Generate daily activity data for a given date.
 
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
     :return: daily activity data dictionary
     :rtype: dictionary
     """
 
     def convert_string_to_datetime(date_str):
         date_object = datetime.strptime(date_str, "%Y-%m-%d")
-
-        formatted_date_str = date_object.strftime("%Y-%m-%dT%H:%M:%S.%f-00:00")
-
+        formatted_date_str = f"{date_object.strftime('%Y-%m-%dT%H:%M:%S.%f')} -00:00"
         return formatted_date_str
 
     daily_activity = {
@@ -172,6 +172,8 @@ def get_sleep(date):
 def get_activity(date):
     """Generate activity data for a given date.
 
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
     :return: dictionary of activity data
     :rtype: dictionary
     """
@@ -221,6 +223,13 @@ def get_activity(date):
 
 
 def get_readiness(date):
+    """Generate readiness data for a given date.
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :return: daily activity data dictionary
+    :rtype: dictionary
+    """
 
     summary_date = datetime.strptime(date, "%Y-%m-%d")
     score = random.randint(70, 100)
@@ -231,7 +240,7 @@ def get_readiness(date):
     score_recovery_index = random.randint(70, 100)
     score_resting_hr = random.randint(70, 100)
     score_sleep_balance = random.randint(70, 100)
-    score_temperature = random.randint(70, 100)
+    score_temperature = random.randint(70, 99)
 
     rest_mode_state = random.randint(0, 1)
     period_id = random.randint(1, 4)
@@ -255,6 +264,13 @@ def get_readiness(date):
 
 
 def get_ideal_bedtime(date):
+    """Generate ideal bedtime data for a given date.
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :return: daily activity data dictionary
+    :rtype: dictionary
+    """
     date = datetime.strptime(date, "%Y-%m-%d")
 
     start_time = random.randint(0, 86400)
@@ -270,18 +286,38 @@ def get_ideal_bedtime(date):
 
 
 def get_heart_rate(date):
+
     date = datetime.strptime(date, "%Y-%m-%d")
 
     timestamp = date.timestamp()
 
     heart_rate_data = []
 
-    for i in range(0, 24 * 60, 5):
-        bpm = random.randint(50, 120)
+    number_of_minues_in_a_day = 1440
 
+    bpm = random.randint(50, 120)
+
+    for i in range(0, number_of_minues_in_a_day, 5):
+        # Calculate the current hour based on the timestamp
         hour = int((date + timedelta(minutes=i)).strftime("%H"))
+
+        # Determine if the person is awake (6 AM to 10 PM)
         is_awake = 6 <= hour < 22
         status = "awake" if is_awake else "asleep"
+
+        # Gradually change the heart rate within a realistic range
+        if is_awake:
+            # Simulate an increase in heart rate during awake hours
+            bpm += random.randint(-3, 5)
+            bpm = min(
+                random.randint(100, 120), bpm
+            )  # Ensure heart rate doesn't exceed 120 bpm
+        else:
+            # Simulate a decrease in heart rate during asleep hours
+            bpm -= random.randint(-3, 5)
+            bpm = max(
+                random.randint(50, 70), bpm
+            )  # Ensure heart rate doesn't go below 50 bpm
 
         heart_rate_entry = {
             "bpm": bpm,
@@ -333,12 +369,4 @@ def create_syn_data(start_date, end_date):
     return full_dict
 
 
-data = create_syn_data("2022-05-02", "2022-05-5")
-
-heart_rate = data["heart_rate"]
-
-bpm = []
-for elem in heart_rate:
-    bpm.append(elem["bpm"])
-
-print(bpm)
+print(get_heart_rate("2011-12-06"))

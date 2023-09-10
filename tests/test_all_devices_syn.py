@@ -9,6 +9,10 @@ MAX_DEVICE_TEST_TIME = 15
 
 
 def test_all_devices():
+    # that they're called the correct number of times.
+    # This is essentially checking that the child class has re-implemented
+    # the methods correctly.
+
     pbar = tqdm(wearipedia.get_all_device_names())
 
     for device_name in pbar:

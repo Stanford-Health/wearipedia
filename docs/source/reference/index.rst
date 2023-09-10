@@ -50,18 +50,18 @@ Devices
     :members:
     :show-inheritance:
 
-.. autoclass:: wearipedia.devices.coros.Pace2
+.. autoclass:: wearipedia.devices.coros.Coros_pace_2
     :members:
     :show-inheritance:
 
-.. autoclass:: wearipedia.devices.oura.Ring3
+.. autoclass:: wearipedia.devices.oura.Oura_Ring_3
     :members:
     :show-inheritance:
 
-.. autoclass:: wearipedia.devices.fitbit.Charge4
+.. autoclass:: wearipedia.devices.fitbit.Fitbit_charge_4
     :members:
     :show-inheritance:
 
-.. autoclass:: wearipedia.devices.fitbit.Sense
+.. autoclass:: wearipedia.devices.fitbit.Fitbit_sense
     :members:
     :show-inheritance:

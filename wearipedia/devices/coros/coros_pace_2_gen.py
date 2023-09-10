@@ -9,6 +9,13 @@ __all__ = ["create_syn_data"]
 
 
 def get_steps(date):
+    """Returns a an array of steps data
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :rtype: dictionary
+    """
+
     """Generate steps data for a given date.
 
     :return: steps data dictionary
@@ -17,15 +24,15 @@ def get_steps(date):
     date = datetime.strptime(date, "%Y-%m-%d")
 
     def generate_step_line():
-        step_line = "[[15],[["
         num_segments = random.randint(5, 20)
 
+        step_segments = []
         for _ in range(num_segments):
             x = random.randint(0, 100)
             y = random.randint(0, 1000)
-            step_line += f"[{x},{y}],"
+            step_segments.append(f"[{x},{y}]")
 
-        step_line = step_line.rstrip(",") + "]]]"
+        step_line = f"[[15],[{','.join(step_segments)}]]"
         return step_line
 
     data = {
@@ -53,6 +60,13 @@ def get_steps(date):
 
 
 def get_exercise(date_str):
+    """Returns a an array of exercise data
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :rtype: dictionary
+    """
+
     def generate_motion_time_line(motion_time):
         motion_time_line = f"[[15],[[63,{motion_time}]]]"
         return motion_time_line
@@ -86,17 +100,26 @@ def get_exercise(date_str):
 
 
 def get_heart_rate(date_str):
+    """Returns a an array of heart rate data
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :rtype: dictionary
+    """
+
     def generate_heart_rate_line():
-        heart_rate_line = "[[15],[["
+        heart_rate_segments = []
 
         for hour in range(24):
             avg_hr = random.randint(40, 120)
             max_hr = avg_hr + random.randint(0, 20)
             min_hr = avg_hr - random.randint(0, 20)
             test_rhr = random.randint(40, 100)
-            heart_rate_line += f"[{hour},{avg_hr},{max_hr},{min_hr},{test_rhr}],"
+            heart_rate_segments.append(
+                f"[{hour},{avg_hr},{max_hr},{min_hr},{test_rhr}]"
+            )
 
-        heart_rate_line = heart_rate_line.rstrip(",") + "]]]"
+        heart_rate_line = f"[[15],[{','.join(heart_rate_segments)}]]"
         return heart_rate_line
 
     date = datetime.strptime(date_str, "%Y-%m-%d")
@@ -134,10 +157,18 @@ def get_heart_rate(date_str):
 
 
 def get_sports(date_str):
+    """Returns a an array of sports data
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :rtype: dictionary
+    """
+
     data = {"sports": {"apiCode": "B7D57DB7", "data": []}}
 
     date = datetime.strptime(date_str, "%Y-%m-%d")
 
+    # (1,5) represents a random number of sport sessions
     for _ in range(random.randint(1, 5)):
         sport_entry = {
             "ascentDuration": random.randint(0, 600),
@@ -199,6 +230,12 @@ def get_sports(date_str):
 
 
 def get_sleep(date):
+    """Returns a an array of active sleep data
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :rtype: dictionary
+    """
     date = datetime.strptime(date, "%Y-%m-%d")
 
     data = {
@@ -212,6 +249,7 @@ def get_sleep(date):
                     {
                         "happenDay": date,
                         "performance": -1,
+                        # creating random numbers based on average sleep cycle lengths in humans
                         "sleepData": {
                             "avgHeartRate": random.randint(50, 70),
                             "deepTime": random.randint(40, 70),
@@ -219,7 +257,7 @@ def get_sleep(date):
                             "lightTime": random.randint(200, 230),
                             "maxHeartRate": random.randint(60, 80),
                             "minHeartRate": random.randint(45, 55),
-                            "totalSleepTime": random.randint(350, 400),
+                            "totalSleepTime": random.randint(350, 600),
                             "wakeTime": random.randint(8, 12),
                         },
                         "sleepList": [
@@ -237,9 +275,14 @@ def get_sleep(date):
 
 
 def get_active_energy(date):
+    """Returns a an array of active energy data
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :rtype: dictionary
+    """
 
     date = datetime.strptime(date, "%Y-%m-%d")
-
     data = {
         "apiCode": "BB640AE4",
         "data": {
@@ -250,11 +293,7 @@ def get_active_energy(date):
                 "dayDataList": [
                     {
                         "calorie": random.randint(1000, 3000),
-                        "calorieLine": "[[15],[["
-                        + ",".join(
-                            [f"{i},{random.randint(100, 20000)}" for i in range(15, 95)]
-                        )
-                        + "]]",
+                        "calorieLine": f"[[15],[[{''.join([f'{i},{random.randint(100, 20000)}' for i in range(15, 95)])}]]",
                         "happenDay": date,
                         "performance": -1,
                     }
