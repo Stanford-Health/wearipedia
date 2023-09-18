@@ -1,8 +1,8 @@
+import collections
 from datetime import datetime, time, timedelta
 
 from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
-from .coros_authenticate import *
 from .coros_pace_2_fetch import *
 from .coros_pace_2_gen import *
 
@@ -68,16 +68,26 @@ class Coros_pace_2(BaseDevice):
 
     def _filter_synthetic(self, data, data_type, params):
 
-        date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
-        datetime_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
+        date_format = "%Y-%m-%d"
+        date1 = datetime.strptime(self.init_params["synthetic_start_date"], date_format)
+        date2 = datetime.strptime(params["start_date"], date_format)
 
-        # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
+        date3 = datetime.strptime(self.init_params["synthetic_end_date"], date_format)
+        date4 = datetime.strptime(params["end_date"], date_format)
 
-        start_idx = (datetime_str_to_obj(params["start_date"]) - synthetic_start).days
-        end_idx = (datetime_str_to_obj(params["end_date"]) - synthetic_start).days
+        delta1 = date2 - date1
+        delta2 = date3 - date4
 
-        return data
+        num_days_start = delta1.days
+        num_days_end = delta2.days
+
+        if num_days_start < 0:
+            raise (ValueError("start date should be after the synthetic start date"))
+
+        if num_days_end < 0:
+            raise (ValueError("end date should be before the synthetic end date"))
+
+        return data[num_days_start : -num_days_end + 1]
 
     def _get_real(self, data_type, params):
 
@@ -102,8 +112,6 @@ class Coros_pace_2(BaseDevice):
         self.sleep = syn_data["sleep"]
         self.active_energy = syn_data["active_energy"]
 
-    def _authenticate(self):
+    def _authenticate(self, token):
         # authenticate this device against API
-        email = input("enter email: ")
-        password = input("enter password: ")
-        self.user = login(email, password)
+        self.user = token
