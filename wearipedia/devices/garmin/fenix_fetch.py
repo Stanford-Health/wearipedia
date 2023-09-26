@@ -49,6 +49,8 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
     if data_type == "steps":
         api_func = api.get_steps_data
+    elif data_type == "stats":
+        api_func = api.get_stats
     elif data_type == "hrs":
         api_func = api.get_heart_rates
     elif data_type == "brpms":

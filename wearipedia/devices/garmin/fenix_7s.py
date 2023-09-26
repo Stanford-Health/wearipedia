@@ -58,7 +58,7 @@ class Fenix7S(BaseDevice):
         }
 
         self._initialize_device_params(
-            ["dates", "steps", "hrs", "brpms"],
+            ["dates", "steps", "hrs", "brpms", "stats"],
             params,
             {
                 "seed": 0,
