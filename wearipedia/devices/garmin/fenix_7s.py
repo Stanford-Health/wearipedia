@@ -1,6 +1,7 @@
 import os
 import pickle
 from datetime import datetime
+import garth
 
 from garminconnect import Garmin
 
@@ -57,8 +58,53 @@ class Fenix7S(BaseDevice):
             "use_cache": use_cache,
         }
 
+        # self._initialize_device_params(
+        #     ["dates", "steps", "hrs", "brpms", "stats"],
+        #     params,
+        #     {
+        #         "seed": 0,
+        #         "synthetic_start_date": "2022-03-01",
+        #         "synthetic_end_date": "2022-06-17",
+        #         "use_cache": True,
+        #     },
+        # )
+
         self._initialize_device_params(
-            ["dates", "steps", "hrs", "brpms", "stats"],
+            ["stats",
+             "user_summary",
+             "body_composition",
+             "steps",
+             "hr",
+             "training_readiness",
+             "body_battery",
+             "blood_pressure",
+             "daily_steps",
+             "floors",
+             "training_status",
+             "rhr",
+             "hydration",
+             "sleep",
+             "stress",
+             "respiration",
+             "spo2",
+             "max_metrics",
+             "personal_record",
+             "earned_badges",
+             "adhoc_challenges",
+             "avail_badge_challenges",
+             "activities",
+             "devices",
+             "device_settings",
+             "active_goals",
+             "future_goals",
+             "past_goals",
+             "alarms",
+             "hrv",
+             "weigh_ins",
+             "weigh_ins_daily",
+             "hill_score",
+             "endurance_score",
+             "virtual_challenges"],
             params,
             {
                 "seed": 0,
@@ -104,12 +150,22 @@ class Fenix7S(BaseDevice):
             self.init_params["synthetic_end_date"],
         )
 
+    # def _authenticate(self, auth_creds):
+    #     # check if we have cached credentials
+    #     if self.init_params["use_cache"] and os.path.exists(CRED_CACHE_PATH):
+    #         self.api = pickle.load(open(CRED_CACHE_PATH, "rb"))
+    #     else:
+    #         self.api = Garmin(auth_creds["email"], auth_creds["password"])
+    #         self.api.login()
+
+    #         pickle.dump(self.api, open(CRED_CACHE_PATH, "wb"))
+
+
     def _authenticate(self, auth_creds):
         # check if we have cached credentials
         if self.init_params["use_cache"] and os.path.exists(CRED_CACHE_PATH):
             self.api = pickle.load(open(CRED_CACHE_PATH, "rb"))
         else:
-            self.api = Garmin(auth_creds["email"], auth_creds["password"])
-            self.api.login()
-
+            self.api = garth.Client(domain="garmin.com")
+            self.api.login(auth_creds["email"], auth_creds["password"])
             pickle.dump(self.api, open(CRED_CACHE_PATH, "wb"))
