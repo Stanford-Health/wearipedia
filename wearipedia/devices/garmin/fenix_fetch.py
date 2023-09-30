@@ -355,30 +355,30 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
 
 
-    arr = []
+    # arr = []
 
-    # create a thread per each day, and assign it
-    # to fetch the data for that day
-    print("configuring threads...")
-    threads = []
+    # # create a thread per each day, and assign it
+    # # to fetch the data for that day
+    # print("configuring threads...")
+    # threads = []
 
-    for i in tqdm(range(num_days)):
-        new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+    # for i in tqdm(range(num_days)):
+    #     new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
 
-        new_thread = Thread(target=fetch_day_data, args=(new_date, arr, api_func, lock))
+    #     new_thread = Thread(target=fetch_day_data, args=(new_date, arr, api_func, lock))
 
-        threads.append(new_thread)
+    #     threads.append(new_thread)
 
-    # start threads
-    for thread in threads:
-        thread.start()
+    # # start threads
+    # for thread in threads:
+    #     thread.start()
 
-    # wait for all threads to terminate
-    print("Main thread waiting for child threads...")
-    for thread in tqdm(threads):
-        thread.join()
+    # # wait for all threads to terminate
+    # print("Main thread waiting for child threads...")
+    # for thread in tqdm(threads):
+    #     thread.join()
 
-    # report the number of items in the list
-    print("\ndone")
+    # # report the number of items in the list
+    # print("\ndone")
 
     return response
