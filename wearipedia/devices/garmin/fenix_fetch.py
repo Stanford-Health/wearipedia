@@ -82,7 +82,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            params = {"calendarDate": str(new_date)}
+            params = {"calendarDate": str(new_date.date())}
             response.append(api.connectapi(url, params=params))
 
         # ==================================
@@ -95,7 +95,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            params = {"calendarDate": str(new_date)}
+            params = {"calendarDate": str(new_date.date())}
             response.append(api.connectapi(url, params=params))
 
         # ==================================
@@ -112,7 +112,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            params = {"date": str(new_date)}
+            params = {"date": str(new_date.date())}
             response.append(api.connectapi(url, params=params))
 
         # ==================================
@@ -124,7 +124,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            params = {"date": str(new_date)}
+            params = {"date": str(new_date.date())}
             response.append(api.connectapi(url, params=params))
 
         # ==================================
@@ -135,7 +135,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
             response.append(api.connectapi(url))
 
         # ==================================
@@ -160,7 +160,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
             response.append(api.connectapi(url))
 
         # ==================================
@@ -170,7 +170,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
             response.append(api.connectapi(url))
 
         # ==================================
@@ -189,7 +189,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
             response.append(api.connectapi(url))
 
         # ==================================
@@ -200,7 +200,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            params = {"date": str(new_date), "nonSleepBufferMinutes": 60}
+            params = {"date": str(new_date.date()), "nonSleepBufferMinutes": 60}
             response.append(api.connectapi(url, params=params))
 
         # ==================================
@@ -210,7 +210,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
             response.append(api.connectapi(url))
 
         # ==================================
@@ -220,7 +220,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
             response.append(api.connectapi(url))
 
         # ==================================
@@ -230,7 +230,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
             response.append(api.connectapi(url))
 
         # ==================================
@@ -240,7 +240,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}/{new_date.date()}"
             response.append(api.connectapi(url))
 
         # ==================================
@@ -372,7 +372,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
             response.append(api.connectapi(url))
 
         # ==================================
@@ -387,7 +387,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         # ==================================
         for i in tqdm(range(num_days)):
             new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
             params = {"includeAll": True}
             response.append(api.connectapi(url, params=params))
 
