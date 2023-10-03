@@ -2,6 +2,8 @@ import os
 from datetime import datetime, timedelta
 from threading import Lock, Thread
 
+from tqdm import tqdm
+
 __all__ = ["fetch_real_data"]
 
 
@@ -76,13 +78,28 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
     if data_type == "stats":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
-        params = {"calendarDate": str(end_date)}
-        response = api.connectapi(url, params=params)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            params = {"calendarDate": str(new_date)}
+            response.append(api.connectapi(url, params=params))
+
+        # ==================================
+
+
 
     elif data_type == "user_summary":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
-        params = {"calendarDate": str(end_date)}
-        response = api.connectapi(url, params=params)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            params = {"calendarDate": str(new_date)}
+            response.append(api.connectapi(url, params=params))
+
+        # ==================================
+
 
     elif data_type == "body_composition":
         url = f"{fetch_garmin_url(data_type)}/weight/dateRange"
@@ -91,17 +108,38 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
     elif data_type == "steps":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
-        params = {"date": str(end_date)}
-        response = api.connectapi(url, params=params)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            params = {"date": str(new_date)}
+            response.append(api.connectapi(url, params=params))
+
+        # ==================================
+
 
     elif data_type == "hr":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
-        params = {"date": str(end_date)}
-        response = api.connectapi(url, params=params)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            params = {"date": str(new_date)}
+            response.append(api.connectapi(url, params=params))
+
+        # ==================================
+
 
     elif data_type == "training_readiness":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}"
-        response = api.connectapi(url)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            response.append(api.connectapi(url))
+
+        # ==================================
+
 
     elif data_type == "body_battery":
         url = fetch_garmin_url(data_type)
@@ -118,12 +156,24 @@ def fetch_real_data(start_date, end_date, data_type, api):
         response = api.connectapi(url)
 
     elif data_type == "floors":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}"
-        response = api.connectapi(url)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            response.append(api.connectapi(url))
+
+        # ==================================
 
     elif data_type == "training_status":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}"
-        response = api.connectapi(url)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            response.append(api.connectapi(url))
+
+        # ==================================
 
     elif data_type == "rhr":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
@@ -135,29 +185,65 @@ def fetch_real_data(start_date, end_date, data_type, api):
         response = api.connectapi(url, params=params)
 
     elif data_type == "hydration":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}"
-        response = api.connectapi(url)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            response.append(api.connectapi(url))
+
+        # ==================================
 
     elif data_type == "sleep":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
-        params = {"date": str(end_date), "nonSleepBufferMinutes": 60}
-        response = api.connectapi(url, params=params)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            params = {"date": str(new_date), "nonSleepBufferMinutes": 60}
+            response.append(api.connectapi(url, params=params))
+
+        # ==================================
 
     elif data_type == "stress":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}"
-        response = api.connectapi(url)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            response.append(api.connectapi(url))
+
+        # ==================================
 
     elif data_type == "respiration":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}"
-        response = api.connectapi(url)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            response.append(api.connectapi(url))
+
+        # ==================================
 
     elif data_type == "spo2":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}"
-        response = api.connectapi(url)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            response.append(api.connectapi(url))
+
+        # ==================================
 
     elif data_type == "max_metrics":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}/{end_date}"
-        response = api.connectapi(url)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}/{new_date}"
+            response.append(api.connectapi(url))
+
+        # ==================================
 
     elif data_type == "personal_record":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
@@ -174,7 +260,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
     elif data_type == "avail_badge_challenges":
         url = fetch_garmin_url(data_type)
-        params = {"start": str(1), "limit": str(1)}
+        params = {"start": str(1), "limit": str(100)}
         response = api.connectapi(url, params=params)
 
     elif data_type == "activities":
@@ -282,8 +368,14 @@ def fetch_real_data(start_date, end_date, data_type, api):
         response = alarms
 
     elif data_type == "hrv":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}"
-        response = api.connectapi(url)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            response.append(api.connectapi(url))
+
+        # ==================================
 
     elif data_type == "weigh_ins":
         url = f"{fetch_garmin_url(data_type)}/{start_date}/{end_date}"
@@ -291,9 +383,15 @@ def fetch_real_data(start_date, end_date, data_type, api):
         response = api.connectapi(url, params=params)
 
     elif data_type == "weigh_ins_daily":
-        url = f"{fetch_garmin_url(data_type)}/{end_date}"
-        params = {"includeAll": True}
-        response = api.connectapi(url, params=params)
+        response = []
+        # ==================================
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date}"
+            params = {"includeAll": True}
+            response.append(api.connectapi(url, params=params))
+
+        # ==================================
 
     elif data_type == "hill_score":
         url = f"{fetch_garmin_url(data_type)}/stats"
@@ -317,6 +415,13 @@ def fetch_real_data(start_date, end_date, data_type, api):
         url = fetch_garmin_url(data_type)
         params = {"start": str(start_date), "limit": str(end_date)}
         response = api.connectapi(url, params=params)
+
+    elif data_type == "dates":
+        # no API interaction here
+        return [
+            datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            for i in tqdm(range(num_days))
+        ]
 
 
     return response

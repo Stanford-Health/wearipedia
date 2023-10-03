@@ -58,17 +58,6 @@ class Fenix7S(BaseDevice):
             "use_cache": use_cache,
         }
 
-        # self._initialize_device_params(
-        #     ["dates", "steps", "hrs", "brpms", "stats"],
-        #     params,
-        #     {
-        #         "seed": 0,
-        #         "synthetic_start_date": "2022-03-01",
-        #         "synthetic_end_date": "2022-06-17",
-        #         "use_cache": True,
-        #     },
-        # )
-
         self._initialize_device_params(
             ["stats",
              "user_summary",
@@ -104,7 +93,8 @@ class Fenix7S(BaseDevice):
              "weigh_ins_daily",
              "hill_score",
              "endurance_score",
-             "virtual_challenges"],
+             "virtual_challenges",
+             "dates"],
             params,
             {
                 "seed": 0,
@@ -149,17 +139,6 @@ class Fenix7S(BaseDevice):
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
-
-    # def _authenticate(self, auth_creds):
-    #     # check if we have cached credentials
-    #     if self.init_params["use_cache"] and os.path.exists(CRED_CACHE_PATH):
-    #         self.api = pickle.load(open(CRED_CACHE_PATH, "rb"))
-    #     else:
-    #         self.api = Garmin(auth_creds["email"], auth_creds["password"])
-    #         self.api.login()
-
-    #         pickle.dump(self.api, open(CRED_CACHE_PATH, "wb"))
-
 
     def _authenticate(self, auth_creds):
         # check if we have cached credentials
