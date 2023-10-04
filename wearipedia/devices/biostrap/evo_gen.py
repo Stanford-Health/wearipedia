@@ -1,3 +1,4 @@
+import math
 import random
 from datetime import datetime, timedelta
 
@@ -49,27 +50,45 @@ def create_syn_data(start_date, end_date):
 
         curr_date_obj = start_date_obj
 
+        # We add continuous and periodic fluctuations this time by using a sinusoidal function or a combination of sinusoidal functions, combined with random noise.
+        # This introduces some sort of temporal correlation.
+
+        time_index = (
+            0  # This will be used as a reference point for our sinusoidal function
+        )
+
         while curr_date_obj <= end_date_obj:
             curr_time = curr_date_obj
             while curr_time < curr_date_obj + timedelta(days=1):
                 key = (curr_time.strftime("%Y-%m-%d %H:%M:%S"), TZ_OFFSET)
 
-                bpm_val = random.randint(55, 100)
+                # Sinusoidal function for bpm
+                bpm_val = int(
+                    75 + 10 * math.sin(math.pi * time_index / 180)
+                ) + random.randint(-5, 5)
                 bpm[key] = bpm_val
 
+                # Conditional brpm based on bpm
                 brpm[key] = (
                     random.randint(12, 20) if bpm_val < 80 else random.randint(16, 24)
                 )
 
-                hrv[key] = random.randint(30, 60)
+                hrv[key] = int(
+                    45 + 10 * math.sin(math.pi * time_index / 360)
+                ) + random.randint(-5, 5)
 
-                resting_bpm[key] = random.randint(50, 70)
+                resting_bpm[key] = int(
+                    60 + 5 * math.sin(math.pi * time_index / 720)
+                ) + random.randint(-2, 2)
 
-                resting_hrv[key] = random.randint(40, 70)
+                resting_hrv[key] = int(
+                    55 + 7 * math.sin(math.pi * time_index / 600)
+                ) + random.randint(-5, 5)
 
                 spo2[key] = random.randint(95, 100)
 
                 curr_time += timedelta(seconds=10)
+                time_index += 10  # Increase our reference point
 
             curr_date_obj += timedelta(days=1)
 

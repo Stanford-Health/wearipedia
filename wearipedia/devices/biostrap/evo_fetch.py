@@ -61,7 +61,7 @@ def fetch_real_data(access_token, start_date, end_date, data_type):
         else:
             ENDPOINT = "biometrics"
 
-        URL = BASE_URL + ENDPOINT
+        URL = f"{BASE_URL}{ENDPOINT}"
 
         last_timestamp = 0
         limit = 50  # The max limit allowed by API
@@ -139,7 +139,7 @@ def fetch_real_data(access_token, start_date, end_date, data_type):
             "total_cals": "Total Calories",
         }
 
-        URL = BASE_URL + "calorie/details"
+        URL = f"{BASE_URL}calorie/details"
 
         while start_date_obj <= end_date_obj:
 
@@ -185,7 +185,7 @@ def fetch_real_data(access_token, start_date, end_date, data_type):
         else:
             ENDPOINT = "sleep/details/day"
 
-        URL = BASE_URL + ENDPOINT
+        URL = f"{BASE_URL}{ENDPOINT}"
 
         # We'll loop through each date between the start_date_obj and end_date_obj (inclusive)
         current_date = start_date_obj
