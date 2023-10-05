@@ -24,6 +24,8 @@ def fetch_real_data(
     :type session: requests.sessions.Session
     :param post: response from logging into polar. Contains relevant global variables.
     :type post: requests.models.Response
+    :param elite_hrv_session: current login session to Elite HRV, pre authenticated, defaults to None
+    :type elite_hrv_session: requests.sessions.Session, optional
     :return: a dictionary with keys the training session dates and values a dictionary with keys heart_rates, calories, and minutes
     :rtype: Dict[str: Dict[str: list, str: int, str: int]]
     """
@@ -69,7 +71,7 @@ def fetch_real_data(
             train_id = sesh["id"]
             date = list(sesh["startDate"].split())[0]
             r = session.get(
-                "https://flow.polar.com/api/export/training/csv/" + str(train_id)
+                f"https://flow.polar.com/api/export/training/csv/{str(train_id)}"
             )
             raw = pd.read_csv(io.StringIO(r.text), sep=",", engine="python")
 
@@ -80,7 +82,7 @@ def fetch_real_data(
             raw.columns = ["time", "bpm"]
 
             # add the date and time stamp of data point
-            mapping = lambda x: np.datetime64(date + " " + x)
+            mapping = lambda x: np.datetime64(f"{date} {x}")
             raw["time"] = raw["time"].apply(mapping)
             raw["bpm"] = pd.to_numeric(raw["bpm"])
 

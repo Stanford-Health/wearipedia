@@ -2,7 +2,7 @@ import numpy as np
 import requests
 
 from ...devices.device import BaseDevice
-from .polar_gen import *
+from .h10_gen import *
 from .polar_get import *
 
 class_name = "H10"
@@ -75,17 +75,10 @@ class H10(BaseDevice):
 
     def _gen_synthetic(self):
         # generate heart rate data according to start and end dates
-        self.sessions = gen_data(
+        self.rr, self.sessions = gen_data(
             self.init_params["seed"],
             self.init_params["start_date"],
             self.init_params["end_date"],
-        )
-
-        self.rr = gen_data(
-            self.init_params["seed"],
-            self.init_params["start_date"],
-            self.init_params["end_date"],
-            rr=True,
         )
 
     def _authenticate(self, auth_creds):

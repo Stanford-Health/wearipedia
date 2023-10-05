@@ -42,7 +42,7 @@ def gen_continuous(start_date, end_date):
 
     start = datetime.strptime(start_date, "%Y-%m-%d")
     end = datetime.strptime(end_date, "%Y-%m-%d")
-    dToStr = lambda x: datetime.strftime(x, "%Y-%m-%dT%H:%M:%S") + "-08:00"
+    dToStr = lambda x: f"{datetime.strftime(x, '%Y-%m-%dT%H:%M:%S')}-08:00"
 
     n = (end - start).days + 1
 
@@ -75,6 +75,14 @@ def gen_continuous(start_date, end_date):
 
 
 def gen_summary(Y):
+    """Generate a summary of data.
+
+    :param Y: the synthetic sensor data
+    :type Y: list[float]
+    :return: a short dictionary of the summary statistics
+    :rtype: dict
+    """
+
     summary = {
         "min": min(Y),
         "max": max(Y),
@@ -87,6 +95,12 @@ def gen_summary(Y):
 
 
 def gen_scores():
+    """Generate random scores for the daily statistics
+
+    :return: a short dictionary of the random scores
+    :rtype: dict
+    """
+
     score = {
         "scoreTimeOutsideRange": randint(0, 11),
         "scorePeak": randint(0, 11),
@@ -99,6 +113,17 @@ def gen_scores():
 
 
 def gen_stats(Y, weekly=False):
+    """Generate random scores for the daily statistics
+
+    :param Y: the synthetic sensor data
+    :type Y: list[float]
+    :param weekly: whether statistics are weekly, defaults to False
+    :type weekly: bool, optional
+    :return: a short dictionary of the random scores
+    :rtype: dict
+    """
+
+    # if weekly, statistics not based on synthetic data Y, generate randomly
     if weekly:
         low = randint(70, 110)
         high = randint(low, 140)
