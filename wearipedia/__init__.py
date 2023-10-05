@@ -70,6 +70,7 @@ def get_all_device_names():
         "dexcom/pro_cgm",
         "garmin/fenix_7s",
         "google/googlefit",
+        "polar/h10",
         "polar/verity_sense",
         "nutrisense/cgm",
         "polar/vantage",

@@ -128,7 +128,7 @@ class cgm(BaseDevice):
             verify=False,
         )
         res = response.json()
-        bearer = "Bearer " + res["data"]["signinUser"]["token"]
+        bearer = f"Bearer {res['data']['signinUser']['token']}"
 
         # save the token to the header for future requests
         self.headers["Authorization"] = bearer

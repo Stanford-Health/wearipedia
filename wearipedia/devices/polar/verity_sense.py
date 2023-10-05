@@ -2,8 +2,8 @@ import numpy as np
 import requests
 
 from ...devices.device import BaseDevice
-from .polar_gen import *
 from .polar_get import *
+from .verity_gen import *
 
 class_name = "VeritySense"
 
