@@ -120,6 +120,11 @@ def fetch_real_data(
             headers=headers,
             data=data,
         )
+
+        # elitehrv returns empty byte stream if no data is available
+        if response.content == b"":
+            return {}
+
         z = zipfile.ZipFile(io.BytesIO(response.content))
 
         # for each of the session data, read the file
