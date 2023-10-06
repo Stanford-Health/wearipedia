@@ -4,7 +4,7 @@ __all__ = ["fetch_real_data"]
 
 
 def call_API(access_token: str, url: str, call: str = "GET"):
-    headers = {"Authorization": "Bearer " + access_token}
+    headers = {"Authorization": f"Bearer {access_token}"}
     return requests.request(call, url=url, headers=headers).json()
 
 
@@ -25,53 +25,25 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     """
     categories = {
         "sleep": {
-            "url": "https://api.fitbit.com/1.2/user/-/sleep/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1.2/user/-/sleep/date/{start_date}/{end_date}.json"
         },
         "steps": {
-            "url": "https://api.fitbit.com/1/user/-/activities/steps/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/steps/date/{start_date}/{end_date}.json"
         },
         "minutesVeryActive": {
-            "url": "https://api.fitbit.com/1/user/-/activities/minutesVeryActive/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/minutesVeryActive/date/{start_date}/{end_date}.json"
         },
         "minutesFairlyActive": {
-            "url": "https://api.fitbit.com/1/user/-/activities/minutesFairlyActive/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/minutesFairlyActive/date/{start_date}/{end_date}.json"
         },
         "minutesLightlyActive": {
-            "url": "https://api.fitbit.com/1/user/-/activities/minutesLightlyActive/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/minutesLightlyActive/date/{start_date}/{end_date}.json"
         },
         "distance": {
-            "url": "https://api.fitbit.com/1/user/-/activities/distance/date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/distance/date/{start_date}/{end_date}.json"
         },
         "minutesSedentary": {
-            "url": "https://api.fitbit.com/1/user/-/activities/minutesSedentary        /date/"
-            + start_date
-            + "/"
-            + end_date
-            + ".json"
+            "url": f"https://api.fitbit.com/1/user/-/activities/minutesSedentary/date/{start_date}/{end_date}.json"
         },
     }
 

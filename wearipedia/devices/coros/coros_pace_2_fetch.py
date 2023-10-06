@@ -1,3 +1,5 @@
+from typing import List
+
 import requests as rq
 
 __all__ = ["fetch_real_data"]
@@ -12,7 +14,7 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     :param data_type: the type of data to fetch, one of "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary"
     :type data_type: str
     :param access_token: access token for the API
-    :type api: str
+    :type access_token: str
     :return: the data fetched from the API according to the inputs
     :rtype: List
     """
@@ -23,7 +25,7 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
 
     ## Getting user data
     response = rq.post(
-        url="https://api.coros.com/coros/data/userExtend/query?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9"
+        url=f"https://api.coros.com/coros/data/userExtend/query?accessToken={access_token}"
     )
     data["user_data"] = response.text
 
@@ -31,30 +33,30 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     j = {
         "startTime": start_date,
         "endTime": end_date,
-        "accessToken": "YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        "accessToken": access_token,
         "dataType": [3, 16],
         "dataVersion": 1,
         "statisticType": 1,
     }
 
     response = rq.post(
-        url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        url=f"https://api.coros.com/coros/data/statistic/daily?accessToken={access_token}",
         json=j,
     )
     data["steps"] = response.text
 
-    # Getting exercise tiem data
+    # Getting exercise time data
     j = {
         "startTime": start_date,
         "endTime": end_date,
-        "accessToken": "YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        "accessToken": access_token,
         "dataType": [2, 15],
         "dataVersion": 1,
         "statisticType": 1,
     }
 
     response = rq.post(
-        url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        url=f"https://api.coros.com/coros/data/statistic/daily?accessToken={access_token}",
         json=j,
     )
     data["exercise_time"] = response.text
@@ -63,27 +65,27 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     j = {
         "startTime": start_date,
         "endTime": end_date,
-        "accessToken": "YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        "accessToken": access_token,
         "dataType": [4, 17],
         "dataVersion": 1,
         "statisticType": 1,
     }
 
     response = rq.post(
-        url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        url=f"https://api.coros.com/coros/data/statistic/daily?accessToken={access_token}",
         json=j,
     )
     data["heart_rate"] = response.text
 
     # Getting sports data
     j = {
-        "accessToken": "YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        "accessToken": access_token,
         "month": start_date[0:7],
         "size": 20,
     }
 
     response = rq.post(
-        url="https://api.coros.com/coros/data/sport/query?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        url=f"https://api.coros.com/coros/data/sport/query?accessToken={access_token}",
         json=j,
     )
     data["sports"] = response.text
@@ -93,14 +95,14 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     j = {
         "startTime": start_date,
         "endTime": end_date,
-        "accessToken": "YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        "accessToken": access_token,
         "dataType": [5, 13],
         "dataVersion": 1,
         "statisticType": 1,
     }
 
     response = rq.post(
-        url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        url=f"https://api.coros.com/coros/data/statistic/daily?accessToken={access_token}",
         json=j,
     )
     data["sleep"] = response.text
@@ -108,13 +110,13 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     j = {
         "startTime": start_date,
         "endTime": end_date,
-        "accessToken": "YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        "accessToken": access_token,
         "dataType": [1, 14],
         "dataVersion": 1,
         "statisticType": 1,
     }
     response = rq.post(
-        url="https://api.coros.com/coros/data/statistic/daily?accessToken=YJ1VVZ3EUCC7Z9OWLCFDN2L0P7EET2P9",
+        url=f"https://api.coros.com/coros/data/statistic/daily?accessToken={access_token}",
         json=j,
     )
     data["active_energy"] = response.text

@@ -1,5 +1,7 @@
 import collections
 import random
+import secrets
+import string
 from datetime import datetime, timedelta
 from random import choice, randrange
 
@@ -236,7 +238,14 @@ def get_sleep(date):
     :type start_date: str
     :rtype: dictionary
     """
+
+    def generate_random_string(length):
+        # Generate a random string of the specified length
+        alphabet = string.ascii_letters + string.digits + "+/"
+        return "".join(secrets.choice(alphabet) for _ in range(length))
+
     date = datetime.strptime(date, "%Y-%m-%d")
+    sleep_list = generate_random_string(300)  # Adjust the length as needed
 
     data = {
         "apiCode": "BB640AE4",
@@ -260,9 +269,8 @@ def get_sleep(date):
                             "totalSleepTime": random.randint(350, 600),
                             "wakeTime": random.randint(8, 12),
                         },
-                        "sleepList": [
-                            "AA8AKAAAAJYAAABTAQAA7OCSY+AoO5Nj4BmNNAGBAQoA0wAxAAgAL0U4a4hAdIAaOq1zAEQCAQAAtAAAtAAsAQHgASMDAwMFtAAAtwV6AAExBhwDA00JmwQB6A2HBQJvE1cEAcYXPAAAAhhpCAFrIPMBAl4iUwABsSItAADeItMIAbErHAoDzTXJBwGWPREEAqdBAAABp0EPAAC2QYYFATxHXwYDm034BwGTVQICA5VXGQAArlcxAQPfWHgAAFdZYQADuFkbAADTWZYAA5wAPNgAQgQCQjADRE4DRRYERJwFL/AGPv4HOjoIOU0JO1sKPFsKPOELPpUMO+8MPQcOPAsPPh8PPC0QPUURPWMRPWASPaATOPQUOgwWOgwWOiQXOmQYPpYYPa4ZPbwaPLwaO6wbOsAcOvwcOVoeNmgfOHIfOYAgN5ghN24jNgQkNnwkNEgmN94mNvYnOdIoOwQpOrgpN9AqOBYrN6wrNcQsOWQtOdItOvQuNtovOgYwNh4xN9IxNxgyOf4yNYQ0PLY0OsQ1O9w2Otw2O+A3N/g4OCE5OJ06No07NbU7NMM8M9s9NOU9NPM+NAtANClANBlBNEVCNoBCNXpDM5JENdhEOSJGNDpHN0RHOkhIOWBJOIhJNx5KNXxLOOFLOYtMN6NNNzlONrFON/FPNpFQNf9QNklSNd9SM1dTNI1UM0BVMhxWNypXOqJXP9hYOvpZPV5aPQ=="
-                        ],
+                        # a unique identifier for the sleep session
+                        "sleepList": [sleep_list],
                     }
                 ]
             },

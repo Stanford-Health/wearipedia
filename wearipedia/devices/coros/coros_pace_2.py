@@ -81,12 +81,6 @@ class Coros_pace_2(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        if num_days_start < 0:
-            raise (ValueError("start date should be after the synthetic start date"))
-
-        if num_days_end < 0:
-            raise (ValueError("end date should be before the synthetic end date"))
-
         return data[num_days_start : -num_days_end + 1]
 
     def _get_real(self, data_type, params):
@@ -112,6 +106,10 @@ class Coros_pace_2(BaseDevice):
         self.sleep = syn_data["sleep"]
         self.active_energy = syn_data["active_energy"]
 
-    def _authenticate(self, token):
+    def _authenticate(self):
         # authenticate this device against API
+        print(
+            "Get the access token here: https://colab.research.google.com/drive/1cnVktqcPXPtGS6JcdHVVCqIC3nngfxhm?usp=sharing"
+        )
+        token = input("Enter your access token: ")
         self.user = token

@@ -86,20 +86,6 @@ def get_sleep(date):
         seconds=round(duration / 60 * percents[3] / 100) * 60
     )
 
-    # add phases
-    for i, item in enumerate(arr_of_durations):
-        if i != 0:
-            start_phases += timedelta(seconds=arr_of_durations[i - 1])
-
-        type = choice(["deep", "rem", "light"])
-
-        sleep_dict["levels"]["summary"][type]["count"] += 1
-        sleep_dict["levels"]["summary"][type]["minutes"] += round(item / 60)
-
-        sleep_dict["levels"]["data"].append(
-            {"dateTime": str(start_phases.isoformat()), "level": type, "seconds": item}
-        )
-
     start_phases += timedelta(seconds=arr_of_durations[-1])
     sleep_dict["levels"]["data"].append(
         {
@@ -114,6 +100,19 @@ def get_sleep(date):
     arr_of_durations = list(generator)
 
     for i, item in enumerate(arr_of_durations):
+
+        if i != 0:
+            start_phases += timedelta(seconds=arr_of_durations[i - 1])
+
+        type = choice(["deep", "rem", "light"])
+
+        sleep_dict["levels"]["summary"][type]["count"] += 1
+        sleep_dict["levels"]["summary"][type]["minutes"] += round(item / 60)
+
+        sleep_dict["levels"]["data"].append(
+            {"dateTime": str(start_phases.isoformat()), "level": type, "seconds": item}
+        )
+
         if i != 0:
             start_phases += timedelta(seconds=arr_of_durations[i - 1])
             sleep_dict["levels"]["summary"]["wake"]["count"] += 1

@@ -89,12 +89,6 @@ class Fitbit_sense(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        if num_days_start < 0:
-            raise (ValueError("start date should be after the synthetic start date"))
-
-        if num_days_end < 0:
-            raise (ValueError("end date should be before the synthetic end date"))
-
         return data[num_days_start : -num_days_end + 1]
 
     def _get_real(self, data_type, params):
@@ -125,9 +119,10 @@ class Fitbit_sense(BaseDevice):
         self.hrv = syn_data["hrv"]
         self.distance_day = syn_data["distance_day"]
 
-    def _authenticate(self):
+    def _authenticate(self, client_id="", client_secret=""):
         # authenticate this device against API
         fitbit_application()
-        client_id = input("enter client id: ")
-        client_secret = input("enter client secret: ")
+        if client_id == "":
+            client_id = input("enter client id: ")
+            client_secret = input("enter client secret: ")
         self.user = fitbit_token(client_id, client_secret)

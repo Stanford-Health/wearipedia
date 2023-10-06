@@ -21,8 +21,10 @@ def get_daily_activity(date):
         formatted_date_str = f"{date_object.strftime('%Y-%m-%dT%H:%M:%S.%f')} -00:00"
         return formatted_date_str
 
+    random_number = random.randint(100, 999)
+
     daily_activity = {
-        "id": "fd54d467-4c71-450e-a3ce-7a3951f3d" + str(random.randint(100, 999)),
+        "id": f"fd54d467-4c71-450e-a3ce-7a3951f3d{random_number}",
         "class_5_min": "".join(str(random.randint(0, 9)) for _ in range(300)),
         "score": random.randint(50, 100),
         "active_calories": random.randint(300, 1500),
@@ -66,6 +68,8 @@ def get_daily_activity(date):
 def get_sleep(date):
     """Generate sleep data for a given date.
 
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type start_date: str
     :return: sleep data dictionary
     :rtype: dictionary
     """

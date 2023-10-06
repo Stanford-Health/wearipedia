@@ -27,8 +27,6 @@ class Fitbit_charge_4(BaseDevice):
     :type synthetic_start_date: str, optional
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type synthetic_end_date: str, optional
-    :param single_day: end date for real data data fetching, defaults to "2022-09-19"
-    :type single_day: str, optional
     """
 
     def __init__(
@@ -84,12 +82,6 @@ class Fitbit_charge_4(BaseDevice):
 
         num_days_start = delta1.days
         num_days_end = delta2.days
-
-        if num_days_start < 0:
-            raise (ValueError("start date should be after the synthetic start date"))
-
-        if num_days_end < 0:
-            raise (ValueError("end date should be before the synthetic end date"))
 
         return data[num_days_start : -num_days_end + 1]
 

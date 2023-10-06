@@ -81,12 +81,6 @@ class Oura_Ring_3(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        if num_days_start < 0:
-            raise (ValueError("start date should be after the synthetic start date"))
-
-        if num_days_end < 0:
-            raise (ValueError("end date should be before the synthetic end date"))
-
         return data[num_days_start : -num_days_end + 1]
 
     def _get_real(self, data_type, params):
@@ -112,7 +106,6 @@ class Oura_Ring_3(BaseDevice):
         self.readiness = syn_data["readiness"]
         self.heart_rate = syn_data["heart_rate"]
 
-    def _authenticate(self, email, password):
+    def _authenticate(self):
 
-        login(email, password)
         self.user = oura_token()
