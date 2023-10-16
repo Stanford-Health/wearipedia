@@ -21,7 +21,7 @@ def create_syn_data(start_date, end_date):
         - resting_hrv: Dictionary representing resting heart rate variability for every 10 seconds
         - spo2: Dictionary representing blood oxygen saturation for every 10 seconds
         - rest_cals: Dictionary representing resting calories burned each day
-        - work_cals: Dictionary representing work-related calories burned each day
+        - work_cals: Dictionary representing workout calories burned each day
         - active_cals: Dictionary representing active calories burned each day
         - step_cals: Dictionary representing calories burned from steps each day
         - total_cals: Dictionary representing total calories burned each day

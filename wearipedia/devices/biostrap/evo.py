@@ -80,7 +80,7 @@ class EVO(BaseDevice):
             return {
                 date: value
                 for date, value in data.items()
-                if start_date <= date <= end_date
+                if start_datetime <= date <= end_datetime
             }
 
         # For data types that are stored with a datetime string as a key in a tuple
