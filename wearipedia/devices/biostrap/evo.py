@@ -74,13 +74,12 @@ class EVO(BaseDevice):
             "active_cals",
             "step_cals",
             "total_cals",
-            "sleep_session",
             "sleep_detail",
         ]:
             return {
                 date: value
                 for date, value in data.items()
-                if start_datetime <= date <= end_datetime
+                if start_date <= date <= end_date
             }
 
         # For data types that are stored with a datetime string as a key in a tuple
@@ -91,6 +90,7 @@ class EVO(BaseDevice):
             "activities",
             "hrv",
             "resting_bpm",
+            "sleep_session",
             "resting_hrv",
         ]:
             return {
