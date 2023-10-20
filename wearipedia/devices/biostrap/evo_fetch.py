@@ -19,9 +19,8 @@ def fetch_real_data(access_token, start_date, end_date, data_type):
     :param end_date: The end date of the range for which data should be retrieved, in "YYYY-MM-DD" format.
     :type end_date: str
     :param data_type: The category of data to fetch. Must be one of the following:
-                      "activities", "bpm", "brpm", "hrv", "resting_bpm", "resting_hrv", "spo2",
-                      "rest_cals", "work_cals", "active_cals", "step_cals", "total_cals", "sleep_session",
-                      "sleep_detail", "steps", "distance".
+                      "activities", "bpm", "brpm", "hrv", "spo2", "rest_cals", "work_cals", "active_cals",
+                      "step_cals", "total_cals", "sleep_session", "sleep_detail", "steps", "distance".
     :type data_type: str
 
     :return: A dictionary containing the retrieved data. The format varies based on the data_type.
@@ -47,8 +46,6 @@ def fetch_real_data(access_token, start_date, end_date, data_type):
         "bpm",
         "brpm",
         "hrv",
-        "resting_bpm",
-        "resting_hrv",
         "spo2",
         "steps",
         "distance",

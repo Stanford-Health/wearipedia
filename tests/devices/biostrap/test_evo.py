@@ -8,8 +8,6 @@ data_formats = {
     "bpm": (int, float),
     "brpm": (int, float),
     "hrv": (int, float),
-    "resting_bpm": (int, float),
-    "resting_hrv": (int, float),
     "spo2": (int, float),
     "rest_cals": (int, float),
     "work_cals": (int, float),

@@ -17,8 +17,6 @@ def create_syn_data(start_date, end_date):
         - bpm: Dictionary representing beats per minute for every 10 seconds throughout the range
         - brpm: Dictionary representing breaths per minute based on bpm values
         - hrv: Dictionary representing heart rate variability for every 10 seconds throughout the range
-        - resting_bpm: Dictionary representing resting beats per minute for every 10 seconds
-        - resting_hrv: Dictionary representing resting heart rate variability for every 10 seconds
         - spo2: Dictionary representing blood oxygen saturation for every 10 seconds
         - rest_cals: Dictionary representing resting calories burned each day
         - work_cals: Dictionary representing workout calories burned each day
@@ -30,7 +28,7 @@ def create_syn_data(start_date, end_date):
         - steps: Dictionary representing steps taken every minute throughout the range
         - distance: Dictionary representing distance covered (based on steps) every minute throughout the range
 
-    :rtype: Tuple[Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict]
+    :rtype: Tuple[Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict]
     """
 
     # Convert the provided strings to datetime objects
@@ -44,8 +42,6 @@ def create_syn_data(start_date, end_date):
         bpm = {}
         brpm = {}
         hrv = {}
-        resting_bpm = {}
-        resting_hrv = {}
         spo2 = {}
 
         curr_date_obj = start_date_obj
@@ -77,14 +73,6 @@ def create_syn_data(start_date, end_date):
                     45 + 10 * math.sin(math.pi * time_index / 360)
                 ) + random.randint(-5, 5)
 
-                resting_bpm[key] = int(
-                    60 + 5 * math.sin(math.pi * time_index / 720)
-                ) + random.randint(-2, 2)
-
-                resting_hrv[key] = int(
-                    55 + 7 * math.sin(math.pi * time_index / 600)
-                ) + random.randint(-5, 5)
-
                 spo2[key] = random.randint(95, 100)
 
                 curr_time += timedelta(seconds=10)
@@ -92,7 +80,7 @@ def create_syn_data(start_date, end_date):
 
             curr_date_obj += timedelta(days=1)
 
-        return bpm, brpm, hrv, resting_bpm, resting_hrv, spo2
+        return bpm, brpm, hrv, spo2
 
     def synthetic_steps_distance_per_minute(bpm_dict):
         steps_dict = {}
@@ -228,9 +216,7 @@ def create_syn_data(start_date, end_date):
         }
 
     # Generate biometric, steps, and distance data
-    bpm, brpm, hrv, resting_bpm, resting_hrv, spo2 = synthetic_biometrics(
-        start_date_obj, end_date_obj
-    )
+    bpm, brpm, hrv, spo2 = synthetic_biometrics(start_date_obj, end_date_obj)
     steps, distance = synthetic_steps_distance_per_minute(bpm)
 
     # Generate daily calories based on steps and bpm
@@ -252,8 +238,6 @@ def create_syn_data(start_date, end_date):
         bpm,
         brpm,
         hrv,
-        resting_bpm,
-        resting_hrv,
         spo2,
         rest_cals,
         work_cals,

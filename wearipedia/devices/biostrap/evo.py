@@ -28,8 +28,6 @@ class EVO(BaseDevice):
                 "bpm",
                 "brpm",
                 "hrv",
-                "resting_bpm",
-                "resting_hrv",
                 "spo2",
                 "rest_cals",
                 "work_cals",
@@ -89,9 +87,7 @@ class EVO(BaseDevice):
             "spo2",
             "activities",
             "hrv",
-            "resting_bpm",
             "sleep_session",
-            "resting_hrv",
         ]:
             return {
                 key: value
@@ -118,8 +114,6 @@ class EVO(BaseDevice):
             self.bpm,
             self.brpm,
             self.hrv,
-            self.resting_bpm,
-            self.resting_hrv,
             self.spo2,
             self.rest_cals,
             self.work_cals,
