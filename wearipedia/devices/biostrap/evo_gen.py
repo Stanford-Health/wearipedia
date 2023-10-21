@@ -15,7 +15,7 @@ def create_syn_data(start_date, end_date):
     :return: A tuple consisting of:
         - activities: Dictionary containing details of a random synthetic activity
         - bpm: Dictionary representing beats per minute for every 10 seconds throughout the range
-        - brpm: Dictionary representing breaths per minute based on bpm values
+        - brpm: Dictionary representing breaths per minute based on bpm values for every minute throughout the range
         - hrv: Dictionary representing heart rate variability for every 10 seconds throughout the range
         - spo2: Dictionary representing blood oxygen saturation for every 10 seconds
         - rest_cals: Dictionary representing resting calories burned each day
@@ -64,10 +64,17 @@ def create_syn_data(start_date, end_date):
                 ) + random.randint(-5, 5)
                 bpm[key] = bpm_val
 
-                # Conditional brpm based on bpm
-                brpm[key] = (
-                    random.randint(12, 20) if bpm_val < 80 else random.randint(16, 24)
+                # Check if the total seconds since start_date_obj is a multiple of 60
+                total_seconds_since_start = int(
+                    (curr_time - start_date_obj).total_seconds()
                 )
+                if total_seconds_since_start % 60 == 0:
+                    # Conditional brpm based on bpm
+                    brpm[key] = (
+                        random.randint(12, 20)
+                        if bpm_val < 80
+                        else random.randint(16, 24)
+                    )
 
                 hrv[key] = int(
                     45 + 10 * math.sin(math.pi * time_index / 360)
