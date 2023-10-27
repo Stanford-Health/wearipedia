@@ -10,7 +10,8 @@ __all__ = ["create_syn_data"]
 def get_sleep(date):
     """Generate sleep data for a given date.
 
-    :param: date in a string format
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
     :return: sleep data dictionary
     :rtype: dictionary
     """
@@ -131,6 +132,8 @@ def get_sleep(date):
 def get_activity(date):
     """Generate activity data for a given date.
 
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
     :return: dictionaries of "steps", "minutesVeryActive", "minutesFairlyActive", "minutesLightlyActive", "distance", "minutesSedentary"
     :rtype: dictionary
     """

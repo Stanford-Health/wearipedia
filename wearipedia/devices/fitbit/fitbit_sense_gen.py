@@ -11,6 +11,9 @@ __all__ = ["create_syn_data"]
 def get_sleep(date):
     """Generate sleep data for a given date.
 
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
     :return: sleep data dictionary
     :rtype: dictionary
     """
@@ -133,6 +136,8 @@ def get_sleep(date):
 def get_activity(date):
     """Generate activity data for a given date.
 
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
     :return: dictionaries of "steps", "minutesVeryActive", "minutesFairlyActive", "minutesLightlyActive", "distance", "minutesSedentary"
     :rtype: dictionary
     """
@@ -172,6 +177,8 @@ def get_activity(date):
 def get_heart_rate(date):
     """Generate heart rate data for a given date.
 
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
     :return: dictionary of heart rate values and details
     :rtype: dictionary
     """
@@ -275,6 +282,8 @@ def get_heart_rate(date):
 def get_hrv(date):
     """Generate hrv for a given date.
 
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
     :return: dictionary of hrv details
     :rtype: dictionary
     """

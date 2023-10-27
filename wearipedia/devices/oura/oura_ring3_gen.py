@@ -11,7 +11,7 @@ def get_daily_activity(date):
     """Generate daily activity data for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :type date: str
     :return: daily activity data dictionary
     :rtype: dictionary
     """
@@ -69,7 +69,7 @@ def get_sleep(date):
     """Generate sleep data for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :type date: str
     :return: sleep data dictionary
     :rtype: dictionary
     """
@@ -177,7 +177,7 @@ def get_activity(date):
     """Generate activity data for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :type date: str
     :return: dictionary of activity data
     :rtype: dictionary
     """
@@ -230,7 +230,7 @@ def get_readiness(date):
     """Generate readiness data for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :type date: str
     :return: daily activity data dictionary
     :rtype: dictionary
     """
@@ -271,7 +271,7 @@ def get_ideal_bedtime(date):
     """Generate ideal bedtime data for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :type date: str
     :return: daily activity data dictionary
     :rtype: dictionary
     """
@@ -290,7 +290,13 @@ def get_ideal_bedtime(date):
 
 
 def get_heart_rate(date):
+    """Generate heart rate data for a given date.
 
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
+    :return: heart rate data dictionary
+    :rtype: dictionary
+    """
     date = datetime.strptime(date, "%Y-%m-%d")
 
     timestamp = date.timestamp()
@@ -371,6 +377,3 @@ def create_syn_data(start_date, end_date):
         full_dict["heart_rate"].extend(get_heart_rate(date))
 
     return full_dict
-
-
-print(get_heart_rate("2011-12-06"))

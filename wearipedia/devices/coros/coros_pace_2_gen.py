@@ -14,13 +14,7 @@ def get_steps(date):
     """Returns a an array of steps data
 
     :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
-    :rtype: dictionary
-    """
-
-    """Generate steps data for a given date.
-
-    :return: steps data dictionary
+    :type date: str
     :rtype: dictionary
     """
     date = datetime.strptime(date, "%Y-%m-%d")
@@ -64,8 +58,8 @@ def get_steps(date):
 def get_exercise(date_str):
     """Returns a an array of exercise data
 
-    :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :param date_str: the date as a string in the format "YYYY-MM-DD"
+    :type date_str: str
     :rtype: dictionary
     """
 
@@ -104,8 +98,8 @@ def get_exercise(date_str):
 def get_heart_rate(date_str):
     """Returns a an array of heart rate data
 
-    :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :param date_str: the date as a string in the format "YYYY-MM-DD"
+    :type date_str: str
     :rtype: dictionary
     """
 
@@ -161,8 +155,8 @@ def get_heart_rate(date_str):
 def get_sports(date_str):
     """Returns a an array of sports data
 
-    :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :param date_str: the date as a string in the format "YYYY-MM-DD"
+    :type date_str: str
     :rtype: dictionary
     """
 
@@ -235,7 +229,7 @@ def get_sleep(date):
     """Returns a an array of active sleep data
 
     :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :type date: str
     :rtype: dictionary
     """
 
@@ -286,7 +280,7 @@ def get_active_energy(date):
     """Returns a an array of active energy data
 
     :param date: the date as a string in the format "YYYY-MM-DD"
-    :type start_date: str
+    :type date: str
     :rtype: dictionary
     """
 
