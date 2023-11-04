@@ -1376,7 +1376,7 @@ def get_earned_badges_data(start_date, num_days):
     badge_names = ['Badge 1', 'Badge 2', 'Badge 3']
 
     for i in range(num_days):
-        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%m')
+        date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)).strftime('%Y-%m-%m')
         num_badges = random.randint(0, 3)  # Random number of badges earned for each day (0 to 3)
 
         for _ in range(num_badges):
@@ -1413,7 +1413,7 @@ def get_stress_data(start_date, num_days):
     stress_data = []
 
     for i in range(num_days):
-        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+        date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)).strftime('%Y-%m-%d')
 
         stress_entry = {
             'userProfilePK': 85412302,
@@ -1450,7 +1450,7 @@ def get_respiration_data(start_date, num_days):
     respiration_data = []
 
     for i in range(num_days):
-        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+        date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)).strftime('%Y-%m-%d')
 
         respiration_entry = {
             'userProfilePK': 85412302,
@@ -1496,7 +1496,7 @@ def get_spo2_data(start_date, num_days):
     spo2_data = []
 
     for i in range(num_days):
-        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+        date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)).strftime('%Y-%m-%d')
 
         spo2_entry = {
             'userProfilePK': 85412302,
@@ -1547,7 +1547,7 @@ def get_metrics_data(start_date, num_days):
     max_metrics_data = []
 
     for i in range(num_days):
-        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+        date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)).strftime('%Y-%m-%d')
 
         # Generate mock "max_metrics" data for each day
         max_metrics_entry = {
