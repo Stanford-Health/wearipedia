@@ -127,7 +127,7 @@ class Fenix7S(BaseDevice):
         start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
         end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
 
-        return data[start_idx:end_idx]
+        return data
 
     def _gen_synthetic(self):
         # generate random data according to seed
