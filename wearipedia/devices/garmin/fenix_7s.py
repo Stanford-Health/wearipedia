@@ -93,7 +93,6 @@ class Fenix7S(BaseDevice):
              "weigh_ins_daily",
              "hill_score",
              "endurance_score",
-             "virtual_challenges",
              "dates"],
             params,
             {
@@ -135,7 +134,39 @@ class Fenix7S(BaseDevice):
         seed_everything(self.init_params["seed"])
 
         # and based on start and end dates
-        self.dates, self.steps, self.hrs, self.brpms = create_syn_data(
+        (self.dates,
+         self.osteps,
+         self.ohrs,
+         self.obrpms,
+         self.hrv,
+         self.steps,
+         self.stats,
+         self.user_summary,
+         self.body_composition,
+         self.hr,
+         self.training_readiness,
+         self.blood_pressure,
+         self.floors,
+         self.training_status,
+         self.rhr,
+         self.hydration,
+         self.sleep,
+         self.earned_badges,
+         self.stress,
+         self.respiration,
+         self.spo2,
+         self.max_metrics,
+         self.personal_record,
+         self.activities,
+         self.device_settings,
+         self.active_goals,
+         self.future_goals,
+         self.past_goals,
+         self.weigh_ins,
+         self.weigh_ins_daily,
+         self.hill_score,
+         self.endurance_score
+         ) = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )

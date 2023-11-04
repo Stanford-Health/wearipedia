@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+import random
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -306,10 +307,20 @@ def get_brpms(start_date, num_days, synth_hrs):
 
     return synth_brpms
 
-from datetime import datetime, timedelta
-import random
+def get_hrv_data(start_date, num_days):
+    """Generate synthetic heart rate variability (HRV) data for a specified date range.
 
-def get_hrv(start_date, num_days):
+    This function generates synthetic HRV data for a given date range. Each day's data
+    is represented by a dictionary containing HRV readings, summary statistics, and
+    timestamps.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which to generate HRV data.
+    :type num_days: int
+    :return: List of dictionaries, each representing a day's HRV data.
+    :rtype: List[Dict]
+    """
     hrv_data = []
 
     for _ in range(num_days):
@@ -362,7 +373,21 @@ def get_hrv(start_date, num_days):
 
     return hrv_data
 
-def get_steps(start_date, num_days):
+def get_steps_data(start_date, num_days):
+    """Generate synthetic step count data for a given date range.
+
+    This function generates synthetic step count data for a specified number of days starting from
+    the provided start date. The generated data includes daily step summaries and detailed step
+    counts in 15-minute intervals for each day.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which to generate step count data.
+    :type num_days: int
+    :return: A list of dictionaries, where each dictionary represents step count data for a single day.
+        Each dictionary includes daily step totals, status, and detailed step counts in 15-minute intervals.
+    :rtype: List[Dict]
+    """
     steps_data = []
 
     for _ in range(num_days):
@@ -405,7 +430,223 @@ def get_steps(start_date, num_days):
 
     return steps_data
 
-def get_user_summary(start_date, num_days):
+def get_stats_data(start_date, num_days):
+    """Generate synthetic stats data for a specified date range.
+
+    This function generates synthetic stats data for a given date range. The generated data includes
+    various user-related metrics and information for each day within the specified range.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which to generate stats data.
+    :type num_days: int
+    :return: A list of dictionaries, where each dictionary represents user summary data for a single day.
+        Each dictionary contains various user-related metrics and information.
+    :rtype: List[Dict]
+    """
+    stats_data = []
+
+    for _ in range(num_days):
+        user_profile_id = random.randint(10000000, 99999999)
+        calendar_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
+        total_kilocalories = random.uniform(1500.0, 2500.0)
+        active_kilocalories = random.uniform(400.0, 800.0)
+        bmr_kilocalories = random.uniform(1000.0, 1500.0)
+        wellness_kilocalories = total_kilocalories
+        burned_kilocalories = None
+        consumed_kilocalories = None
+        remaining_kilocalories = total_kilocalories
+        total_steps = random.randint(3000, 10000)
+        net_calorie_goal = None
+        total_distance_meters = random.randint(2000, 6000)
+        wellness_distance_meters = total_distance_meters
+        wellness_active_kilocalories = active_kilocalories
+        net_remaining_kilocalories = active_kilocalories
+        user_daily_summary_id = user_profile_id
+        rule = {'typeId': 3, 'typeKey': 'subscribers'}
+        uuid = 'e933a2a5aa214d3088bec955ea84c9bf'
+        daily_step_goal = random.randint(1000, 5000)
+        wellness_start_time_gmt = f"{calendar_date}T07:00:00.0"
+        wellness_start_time_local = f"{calendar_date}T00:00:00.0"
+        wellness_end_time_gmt = f"{(datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=_ + 1)).strftime('%Y-%m-%d')}T07:00:00.0"
+        wellness_end_time_local = f"{(datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=_ + 1)).strftime('%Y-%m-%d')}T00:00:00.0"
+        duration_in_milliseconds = 86400000
+        wellness_description = None
+        highly_active_seconds = random.randint(500, 1500)
+        active_seconds = random.randint(4000, 7000)
+        sedentary_seconds = random.randint(30000, 60000)
+        sleeping_seconds = random.randint(20000, 40000)
+        includes_wellness_data = True
+        includes_activity_data = False
+        includes_calorie_consumed_data = False
+        privacy_protected = False
+        moderate_intensity_minutes = random.randint(0, 60)
+        vigorous_intensity_minutes = random.randint(0, 60)
+        floors_ascended_in_meters = random.uniform(0.0, 30.0)
+        floors_descended_in_meters = random.uniform(0.0, 20.0)
+        floors_ascended = random.uniform(0.0, 10.0)
+        floors_descended = random.uniform(0.0, 5.0)
+        intensity_minutes_goal = random.randint(100, 200)
+        user_floors_ascended_goal = random.randint(5, 15)
+        min_heart_rate = random.randint(50, 70)
+        max_heart_rate = random.randint(120, 150)
+        resting_heart_rate = random.randint(60, 80)
+        last_seven_days_avg_resting_heart_rate = resting_heart_rate
+        source = 'GARMIN'
+        average_stress_level = random.uniform(20.0, 60.0)
+        max_stress_level = random.uniform(70.0, 100.0)
+        stress_duration = random.randint(10000, 40000)
+        rest_stress_duration = random.randint(9000, 35000)
+        activity_stress_duration = random.randint(1000, 5000)
+        uncategorized_stress_duration = random.randint(500, 2000)
+        total_stress_duration = random.randint(10000, 40000)
+        low_stress_duration = random.randint(4000, 15000)
+        medium_stress_duration = random.randint(1000, 5000)
+        high_stress_duration = random.randint(500, 3000)
+        stress_percentage = random.uniform(10.0, 60.0)
+        rest_stress_percentage = random.uniform(10.0, 50.0)
+        activity_stress_percentage = random.uniform(5.0, 20.0)
+        uncategorized_stress_percentage = random.uniform(2.0, 15.0)
+        low_stress_percentage = random.uniform(5.0, 25.0)
+        medium_stress_percentage = random.uniform(2.0, 15.0)
+        high_stress_percentage = random.uniform(1.0, 10.0)
+        stress_qualifier = 'BALANCED'
+        measurable_awake_duration = random.randint(30000, 60000)
+        measurable_asleep_duration = random.randint(20000, 40000)
+        last_sync_timestamp_gmt = None
+        min_avg_heart_rate = random.randint(50, 70)
+        max_avg_heart_rate = random.randint(120, 150)
+        body_battery_charged_value = random.randint(30, 60)
+        body_battery_drained_value = random.randint(10, 40)
+        body_battery_highest_value = random.randint(40, 70)
+        body_battery_lowest_value = random.randint(0, 30)
+        body_battery_most_recent_value = random.randint(10, 40)
+        body_battery_during_sleep = None
+        body_battery_version = 2.0
+        abnormal_heart_rate_alerts_count = None
+        average_spo2 = None
+        lowest_spo2 = None
+        latest_spo2 = None
+        latest_spo2_reading_time_gmt = None
+        latest_spo2_reading_time_local = None
+        average_monitoring_environment_altitude = random.uniform(-200.0, 200.0)
+        resting_calories_from_activity = None
+        avg_waking_respiration_value = random.uniform(10.0, 20.0)
+        highest_respiration_value = random.uniform(15.0, 25.0)
+        lowest_respiration_value = random.uniform(5.0, 15.0)
+        latest_respiration_value = random.uniform(15.0, 25.0)
+        latest_respiration_time_gmt = wellness_end_time_gmt
+
+        stats_entry = {
+            'userProfileId': user_profile_id,
+            'totalKilocalories': total_kilocalories,
+            'activeKilocalories': active_kilocalories,
+            'bmrKilocalories': bmr_kilocalories,
+            'wellnessKilocalories': wellness_kilocalories,
+            'burnedKilocalories': burned_kilocalories,
+            'consumedKilocalories': consumed_kilocalories,
+            'remainingKilocalories': remaining_kilocalories,
+            'totalSteps': total_steps,
+            'netCalorieGoal': net_calorie_goal,
+            'totalDistanceMeters': total_distance_meters,
+            'wellnessDistanceMeters': wellness_distance_meters,
+            'wellnessActiveKilocalories': wellness_active_kilocalories,
+            'netRemainingKilocalories': net_remaining_kilocalories,
+            'userDailySummaryId': user_daily_summary_id,
+            'calendarDate': calendar_date,
+            'rule': rule,
+            'uuid': uuid,
+            'dailyStepGoal': daily_step_goal,
+            'wellnessStartTimeGmt': wellness_start_time_gmt,
+            'wellnessStartTimeLocal': wellness_start_time_local,
+            'wellnessEndTimeGmt': wellness_end_time_gmt,
+            'wellnessEndTimeLocal': wellness_end_time_local,
+            'durationInMilliseconds': duration_in_milliseconds,
+            'wellnessDescription': wellness_description,
+            'highlyActiveSeconds': highly_active_seconds,
+            'activeSeconds': active_seconds,
+            'sedentarySeconds': sedentary_seconds,
+            'sleepingSeconds': sleeping_seconds,
+            'includesWellnessData': includes_wellness_data,
+            'includesActivityData': includes_activity_data,
+            'includesCalorieConsumedData': includes_calorie_consumed_data,
+            'privacyProtected': privacy_protected,
+            'moderateIntensityMinutes': moderate_intensity_minutes,
+            'vigorousIntensityMinutes': vigorous_intensity_minutes,
+            'floorsAscendedInMeters': floors_ascended_in_meters,
+            'floorsDescendedInMeters': floors_descended_in_meters,
+            'floorsAscended': floors_ascended,
+            'floorsDescended': floors_descended,
+            'intensityMinutesGoal': intensity_minutes_goal,
+            'userFloorsAscendedGoal': user_floors_ascended_goal,
+            'minHeartRate': min_heart_rate,
+            'maxHeartRate': max_heart_rate,
+            'restingHeartRate': resting_heart_rate,
+            'lastSevenDaysAvgRestingHeartRate': last_seven_days_avg_resting_heart_rate,
+            'source': source,
+            'averageStressLevel': average_stress_level,
+            'maxStressLevel': max_stress_level,
+            'stressDuration': stress_duration,
+            'restStressDuration': rest_stress_duration,
+            'activityStressDuration': activity_stress_duration,
+            'uncategorizedStressDuration': uncategorized_stress_duration,
+            'totalStressDuration': total_stress_duration,
+            'lowStressDuration': low_stress_duration,
+            'mediumStressDuration': medium_stress_duration,
+            'highStressDuration': high_stress_duration,
+            'stressPercentage': stress_percentage,
+            'restStressPercentage': rest_stress_percentage,
+            'activityStressPercentage': activity_stress_percentage,
+            'uncategorizedStressPercentage': uncategorized_stress_percentage,
+            'lowStressPercentage': low_stress_percentage,
+            'mediumStressPercentage': medium_stress_percentage,
+            'highStressPercentage': high_stress_percentage,
+            'stressQualifier': stress_qualifier,
+            'measurableAwakeDuration': measurable_awake_duration,
+            'measurableAsleepDuration': measurable_asleep_duration,
+            'lastSyncTimestampGMT': last_sync_timestamp_gmt,
+            'minAvgHeartRate': min_avg_heart_rate,
+            'maxAvgHeartRate': max_avg_heart_rate,
+            'bodyBatteryChargedValue': body_battery_charged_value,
+            'bodyBatteryDrainedValue': body_battery_drained_value,
+            'bodyBatteryHighestValue': body_battery_highest_value,
+            'bodyBatteryLowestValue': body_battery_lowest_value,
+            'bodyBatteryMostRecentValue': body_battery_most_recent_value,
+            'bodyBatteryDuringSleep': body_battery_during_sleep,
+            'bodyBatteryVersion': body_battery_version,
+            'abnormalHeartRateAlertsCount': abnormal_heart_rate_alerts_count,
+            'averageSpo2': average_spo2,
+            'lowestSpo2': lowest_spo2,
+            'latestSpo2': latest_spo2,
+            'latestSpo2ReadingTimeGmt': latest_spo2_reading_time_gmt,
+            'latestSpo2ReadingTimeLocal': latest_spo2_reading_time_local,
+            'averageMonitoringEnvironmentAltitude': average_monitoring_environment_altitude,
+            'restingCaloriesFromActivity': resting_calories_from_activity,
+            'avgWakingRespirationValue': avg_waking_respiration_value,
+            'highestRespirationValue': highest_respiration_value,
+            'lowestRespirationValue': lowest_respiration_value,
+            'latestRespirationValue': latest_respiration_value,
+            'latestRespirationTimeGMT': latest_respiration_time_gmt
+        }
+
+        stats_data.append(stats_entry)
+
+    return stats_data
+
+def get_user_summary_data(start_date, num_days):
+    """Generate synthetic user summary data for a specified date range.
+
+    This function generates synthetic user summary data for a given date range. The generated data includes
+    various user-related metrics and information for each day within the specified range.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which to generate user summary data.
+    :type num_days: int
+    :return: A list of dictionaries, where each dictionary represents user summary data for a single day.
+        Each dictionary contains various user-related metrics and information.
+    :rtype: List[Dict]
+    """
     user_summary_data = []
 
     for _ in range(num_days):
@@ -595,7 +836,20 @@ def get_user_summary(start_date, num_days):
 
     return user_summary_data
 
-def get_body_composition(start_date, num_days):
+def get_body_composition_data(start_date, num_days):
+    """Generate synthetic body composition data for a specified date range.
+
+    This function generates synthetic body composition data for a given date range. The generated data includes
+    various body composition metrics such as weight, BMI, body fat percentage, and more.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which to generate body composition data.
+    :type num_days: int
+    :return: A dictionary containing body composition data for the specified date range, including weight, BMI,
+        body fat percentage, and other metrics.
+    :rtype: Dict
+    """
     body_composition_data = {
         'startDate': start_date,
         'endDate': (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=num_days - 1)).strftime("%Y-%m-%d"),
@@ -681,7 +935,20 @@ def get_body_composition(start_date, num_days):
     return body_composition_data
 
 
-def get_heart_rate(start_date, num_days):
+def get_heart_rate_data(start_date, num_days):
+    """Generate synthetic heart rate data for a specified date range.
+
+    This function generates synthetic heart rate data for a given date range, including various heart rate metrics
+    such as resting heart rate, maximum heart rate, minimum heart rate, and additional descriptors and values.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which to generate heart rate data.
+    :type num_days: int
+    :return: A list of dictionaries, each containing heart rate data for a specific day, including resting heart rate,
+        maximum and minimum heart rate, and additional heart rate descriptors and values.
+    :rtype: List[Dict]
+    """
     heart_rate_data = []
 
     for _ in range(num_days):
@@ -726,7 +993,21 @@ def get_heart_rate(start_date, num_days):
     return heart_rate_data
 
 
-def get_training_readiness(start_date, num_entries):
+def get_training_readiness_data(start_date, num_entries):
+    """Generate synthetic training readiness data for a specified date range.
+
+    This function generates synthetic training readiness data for a specified number of days, including various metrics
+    related to an individual's readiness for training or physical activity. The data includes factors such as sleep score,
+    recovery time, ACWR (Acute Chronic Workload Ratio), HRV (Heart Rate Variability), and additional feedback metrics.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_entries: The number of training readiness entries to generate.
+    :type num_entries: int
+    :return: A list of dictionaries, each containing training readiness data for a specific day, including metrics like
+        sleep score, recovery time, ACWR factor, HRV factor, and associated feedback.
+    :rtype: List[Dict]
+    """
     training_readiness_data = []
 
     for _ in range(num_entries):
@@ -807,7 +1088,24 @@ def get_training_readiness(start_date, num_entries):
 
     return training_readiness_data
 
-def get_blood_pressure(start_date, end_date, num_summaries):
+def get_blood_pressure_data(start_date, end_date, num_summaries):
+    """Generate synthetic blood pressure data for a specified date range.
+
+    This function generates synthetic blood pressure data, including systolic, diastolic, and heart rate measurements
+    for a specified date range. The generated data is structured as a dictionary.
+
+    :param start_date: The starting date for the blood pressure data.
+    :type start_date: str (in the format '%Y-%m-%d')
+
+    :param end_date: The ending date for the blood pressure data.
+    :type end_date: str (in the format '%Y-%m-%d')
+
+    :param num_summaries: The number of daily blood pressure summaries to generate within the date range.
+    :type num_summaries: int
+
+    :return: A dictionary containing synthetic blood pressure data for the specified date range.
+    :rtype: Dict
+    """
     blood_pressure_data = {
         'from': start_date,
         'until': end_date,
@@ -833,7 +1131,20 @@ def get_blood_pressure(start_date, end_date, num_summaries):
     return blood_pressure_data
 
 
-def get_floors(start_date, end_date):
+def get_floors_data(start_date, end_date):
+    """Generate synthetic floors climbed data for a specified date range.
+
+    This function generates synthetic data for the number of floors climbed for each day within the specified date range.
+    The data includes descriptors and floor values for each day, and the date range is determined by the start and end dates.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param end_date: The end date in the format 'YYYY-MM-DD'.
+    :type end_date: str
+    :return: A dictionary containing the start and end timestamps, a list of descriptors, and an array of floor values
+        for each day within the specified date range.
+    :rtype: Dict
+    """
     floors_data = {
         'startTimestampGMT': f'{start_date}T07:00:00.0',
         'endTimestampGMT': f'{end_date}T07:00:00.0',
@@ -862,7 +1173,20 @@ def get_floors(start_date, end_date):
 
     return floors_data
 
-def get_training_status(start_date, num_days):
+def get_training_status_data(start_date, num_days):
+    """Generate synthetic training status data for a specified date range.
+
+    This function generates synthetic training status data for a specified number of days starting from the provided
+    start date. Each day's data includes information about the user's training status, VO2 max, training load balance,
+    and heat/altitude acclimation. The generated data is stored in a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which training status data is generated.
+    :type num_days: int
+    :return: A list of dictionaries, each containing user-specific training status information for a single day.
+    :rtype: List[Dict]
+    """
     training_status_data = []
 
     for _ in range(num_days):
@@ -878,7 +1202,20 @@ def get_training_status(start_date, num_days):
 
     return training_status_data
 
-def get_resting_hr(start_date, end_date):
+def get_resting_hr_data(start_date, end_date):
+    """Generate synthetic resting heart rate data for a specified date range.
+
+    This function generates synthetic resting heart rate data for a specified date range, including the user's profile
+    ID, the start and end dates, and the resting heart rate values for each day within the range. The generated data is
+    structured as a dictionary.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param end_date: The end date in the format 'YYYY-MM-DD'.
+    :type end_date: str
+    :return: A dictionary containing user-specific resting heart rate data within the specified date range.
+    :rtype: Dict
+    """
     resting_hr_data = {
         'userProfileId': random.randint(10000000, 99999999),
         'statisticsStartDate': start_date,
@@ -905,7 +1242,20 @@ def get_resting_hr(start_date, end_date):
 
     return resting_hr_data
 
-def get_hydration(start_date, num_days):
+def get_hydration_data(start_date, num_days):
+    """Generate synthetic hydration data for a specified number of days.
+
+    This function generates synthetic hydration data for a specified number of days, including the user's ID,
+    the calendar date, hydration values, goals, daily averages, and additional hydration-related metrics. The generated
+    data is structured as a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which hydration data should be generated.
+    :type num_days: int
+    :return: A list of dictionaries containing user-specific hydration data for the specified number of days.
+    :rtype: List[Dict]
+    """
     hydration_data = []
 
     for _ in range(num_days):
@@ -933,7 +1283,19 @@ def get_hydration(start_date, num_days):
 
     return hydration_data
 
-def get_sleep(start_date, num_days):
+def get_sleep_data(start_date, num_days):
+    """Generate synthetic sleep data for a specified number of days.
+
+    This function generates synthetic sleep data for a specified number of days, including details such as sleep duration,
+    sleep stages (deep, light, REM), and sleep quality metrics. The generated data is structured as a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which sleep data should be generated.
+    :type num_days: int
+    :return: A list of dictionaries containing user-specific sleep data for the specified number of days.
+    :rtype: List[Dict]
+    """
     sleep_data = []
 
     for i in range(num_days):
@@ -995,7 +1357,19 @@ def get_sleep(start_date, num_days):
 
     return sleep_data
 
-def get_earned_badges(start_date, num_days):
+def get_earned_badges_data(start_date, num_days):
+    """Generate synthetic earned badges data for a specified number of days.
+
+    This function generates synthetic earned badges data for a specified number of days. It simulates users earning
+    badges in various categories with random names. The generated data is structured as a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which earned badges data should be generated.
+    :type num_days: int
+    :return: A list of dictionaries containing information about badges earned by users for the specified number of days.
+    :rtype: List[Dict]
+    """
     earned_badges_data = []
 
     badge_categories = ['Category A', 'Category B', 'Category C']
@@ -1023,7 +1397,19 @@ def get_earned_badges(start_date, num_days):
     return earned_badges_data
 
 
-def get_stress(start_date, num_days):
+def get_stress_data(start_date, num_days):
+    """Generate synthetic stress data for a specified number of days.
+
+    This function generates synthetic stress data for a specified number of days. It simulates stress levels of users
+    with random values. The generated data is structured as a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which stress data should be generated.
+    :type num_days: int
+    :return: A list of dictionaries containing information about stress levels for the specified number of days.
+    :rtype: List[Dict]
+    """
     stress_data = []
 
     for i in range(num_days):
@@ -1048,7 +1434,19 @@ def get_stress(start_date, num_days):
 
     return stress_data
 
-def get_respiration(start_date, num_days):
+def get_respiration_data(start_date, num_days):
+    """Generate synthetic respiration data for a specified number of days.
+
+    This function generates synthetic respiration data for a specified number of days. It simulates respiration values of users
+    with random values. The generated data is structured as a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which respiration data should be generated.
+    :type num_days: int
+    :return: A list of dictionaries containing information about respiration values for the specified number of days.
+    :rtype: List[Dict]
+    """
     respiration_data = []
 
     for i in range(num_days):
@@ -1082,7 +1480,19 @@ def get_respiration(start_date, num_days):
 
     return respiration_data
 
-def get_spo2(start_date, num_days):
+def get_spo2_data(start_date, num_days):
+    """Generate synthetic SpO2 (Oxygen Saturation) data for a specified number of days.
+
+    This function generates synthetic SpO2 data for a specified number of days. It simulates SpO2 values of users with random values.
+    The generated data is structured as a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which SpO2 data should be generated.
+    :type num_days: int
+    :return: A list of dictionaries containing information about SpO2 values for the specified number of days.
+    :rtype: List[Dict]
+    """
     spo2_data = []
 
     for i in range(num_days):
@@ -1121,7 +1531,19 @@ def get_spo2(start_date, num_days):
 
     return spo2_data
 
-def get_metrics(start_date, num_days):
+def get_metrics_data(start_date, num_days):
+    """Generate synthetic "max_metrics" data for a specified number of days.
+
+    This function generates synthetic "max_metrics" data for a specified number of days. It simulates various metrics like
+    vo2MaxPreciseValue and vo2MaxValue for users with random values. The generated data is structured as a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which "max_metrics" data should be generated.
+    :type num_days: int
+    :return: A list of dictionaries containing "max_metrics" data for the specified number of days.
+    :rtype: List[Dict]
+    """
     max_metrics_data = []
 
     for i in range(num_days):
@@ -1146,7 +1568,39 @@ def get_metrics(start_date, num_days):
 
     return max_metrics_data
 
-def get_personal_record(start_date, end_date, num_entries):
+def random_datetime(start_date, end_date):
+    """
+    Generate a random datetime within a specified date range.
+
+    This function generates a random datetime within the specified start and end dates.
+
+    :param start_date: The start date as a datetime object.
+    :type start_date: datetime.datetime
+    :param end_date: The end date as a datetime object.
+    :type end_date: datetime.datetime
+    :return: A random datetime between start_date (inclusive) and end_date (exclusive).
+    :rtype: datetime.datetime
+    """
+    start_timestamp = start_date.timestamp()
+    end_timestamp = end_date.timestamp()
+    random_timestamp = start_timestamp + random.random() * (end_timestamp - start_timestamp)
+    return datetime.fromtimestamp(random_timestamp)
+
+def get_personal_record_data(start_date, end_date, num_entries):
+    """Generate synthetic personal record (PR) data for a specified date range and number of entries.
+
+    This function generates synthetic personal record (PR) data for a specified date range and number of entries. Each PR
+    entry contains information about the type, value, and timestamps. The generated data is structured as a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param end_date: The end date in the format 'YYYY-MM-DD'.
+    :type end_date: str
+    :param num_entries: The number of PR entries to generate.
+    :type num_entries: int
+    :return: A list of dictionaries containing personal record (PR) data for the specified date range and number of entries.
+    :rtype: List[Dict]
+    """
     personal_record_data = []
 
     for _ in range(num_entries):
@@ -1184,7 +1638,20 @@ def get_personal_record(start_date, end_date, num_entries):
     return personal_record_data
 
 
-def get_activities(start_date, num_days):
+def get_activities_data(start_date, num_days):
+    """Generate synthetic activity data for a specified date range and number of days.
+
+    This function generates synthetic activity data for a specified date range and number of days. Each activity entry
+    includes details such as activity type, duration in minutes, calories burned, and timestamps. The generated data is
+    structured as a list of dictionaries.
+
+    :param start_date: The start date in the format 'YYYY-MM-DD'.
+    :type start_date: str
+    :param num_days: The number of days for which to generate activity data.
+    :type num_days: int
+    :return: A list of dictionaries containing synthetic activity data for the specified date range and number of days.
+    :rtype: List[Dict]
+    """
     activities_data = []
 
     for _ in range(num_days):
@@ -1221,11 +1688,23 @@ def get_activities(start_date, num_days):
 
     return activities_data
 
-def generate_device_settings_data():
+def get_device_settings_data(num_devices):
+    """Generate synthetic device settings data for the specified number of devices.
+
+    This function generates synthetic device settings data for the specified number of devices. Each device's settings
+    include various configuration options such as time format, units of measurement, activity tracking settings, alarm modes,
+    language preferences, and more. The generated data is structured as a list of dictionaries.
+
+    :param num_devices: The number of devices for which to generate settings data.
+    :type num_devices: int
+
+    :return: A list of dictionaries containing synthetic device settings data for the specified number of devices.
+    :rtype: List[Dict]
+    """
     device_settings = []
 
     # Generate random data for two devices
-    for _ in range(2):
+    for _ in range(num_devices):
         device_data = {
             'deviceId': random.randint(1000000000, 9999999999),
             'timeFormat': random.choice(['time_twelve_hr', 'time_twenty_four_hr']),
@@ -1419,7 +1898,22 @@ def generate_device_settings_data():
 
     return device_settings
 
-def get_active_goals(start_date, num_days):
+def get_active_goals_data(start_date, num_days):
+    """Generate synthetic active goals data for a range of days.
+
+    This function generates synthetic active goals data for a specified number of days, starting from the given `start_date`
+    and extending for `num_days` days. Active goals can include step goals, distance goals, calorie goals, or active minute goals.
+    The generated data is structured as a list of dictionaries.
+
+    :param start_date: The starting date for generating active goals.
+    :type start_date: datetime.date
+
+    :param num_days: The number of days for which active goals should be generated.
+    :type num_days: int
+
+    :return: A list of dictionaries containing synthetic active goals data for the specified date range.
+    :rtype: List[Dict]
+    """
     goal_types = ["step", "distance", "calories", "activeMinutes"]
     end_date = start_date + datetime.timedelta(days=num_days)
 
@@ -1437,7 +1931,22 @@ def get_active_goals(start_date, num_days):
 
     return active_goals
 
-def get_future_goals(start_date, num_days):
+def get_future_goals_data(start_date, num_days):
+    """Generate synthetic future goals data for a range of days.
+
+    This function generates synthetic future goals data for a specified number of days, starting from the given `start_date`
+    and extending for `num_days` days. Future goals can include step goals, distance goals, calorie goals, or active minute goals.
+    The generated data is structured as a list of dictionaries.
+
+    :param start_date: The starting date for generating future goals.
+    :type start_date: datetime.date
+
+    :param num_days: The number of days for which future goals should be generated.
+    :type num_days: int
+
+    :return: A list of dictionaries containing synthetic future goals data for the specified date range.
+    :rtype: List[Dict]
+    """
     goal_types = ["step", "distance", "calories", "activeMinutes"]
     end_date = start_date + datetime.timedelta(days=num_days)
 
@@ -1455,7 +1964,22 @@ def get_future_goals(start_date, num_days):
 
     return future_goals
 
-def get_past_goals(start_date, num_days):
+def get_past_goals_data(start_date, num_days):
+    """Generate synthetic past goals data for a range of days.
+
+    This function generates synthetic past goals data for a specified number of days, starting from the given `start_date`
+    and extending for `num_days` days. Past goals can include step goals, distance goals, calorie goals, or active minute goals.
+    The generated data is structured as a list of dictionaries.
+
+    :param start_date: The starting date for generating past goals.
+    :type start_date: datetime.date
+
+    :param num_days: The number of days for which past goals should be generated.
+    :type num_days: int
+
+    :return: A list of dictionaries containing synthetic past goals data for the specified date range.
+    :rtype: List[Dict]
+    """
     goal_types = ["step", "distance", "calories", "activeMinutes"]
     end_date = start_date + datetime.timedelta(days=num_days)
 
@@ -1474,7 +1998,21 @@ def get_past_goals(start_date, num_days):
     return past_goals
 
 
-def get_weigh_ins(start_date, num_days):
+def get_weigh_ins_data(start_date, num_days):
+    """Generate synthetic weigh-in data for a range of days.
+
+    This function generates synthetic weigh-in data, including daily weight summaries, total average values, and previous
+    and next date weight information for a specified range of days. The generated data is structured as a dictionary.
+
+    :param start_date: The starting date for generating weigh-in data.
+    :type start_date: datetime.date
+
+    :param num_days: The number of days for which weigh-in data should be generated.
+    :type num_days: int
+
+    :return: A dictionary containing synthetic weigh-in data for the specified date range.
+    :rtype: Dict
+    """
     end_date = start_date + datetime.timedelta(days=num_days)
 
     weigh_ins = {
@@ -1559,7 +2097,21 @@ def get_weigh_ins(start_date, num_days):
     return weigh_ins
 
 
-def get_weigh_ins_daily(start_date, num_days):
+def get_weigh_ins_daily_data(start_date, num_days):
+    """Generate synthetic daily weigh-in data for a specified date range.
+
+    This function generates synthetic daily weigh-in data, including daily weight summaries and total average values for a
+    specified date range. The generated data is structured as a dictionary.
+
+    :param start_date: The starting date for generating daily weigh-in data.
+    :type start_date: datetime.date
+
+    :param num_days: The number of days for which daily weigh-in data should be generated.
+    :type num_days: int
+
+    :return: A dictionary containing synthetic daily weigh-in data for the specified date range.
+    :rtype: Dict
+    """
     end_date = start_date + datetime.timedelta(days=num_days)
 
     weigh_ins_daily = {
@@ -1604,7 +2156,21 @@ def get_weigh_ins_daily(start_date, num_days):
 
     return weigh_ins_daily
 
-def generate_random_hill_score(start_date, end_date):
+def get_hill_score_data(start_date, end_date):
+    """Generate synthetic hill score data for a specified date range.
+
+    This function generates synthetic hill score data, including period average scores, maximum score, and a list of hill
+    score DTOs for a specified date range. The generated data is structured as a dictionary.
+
+    :param start_date: The starting date for the hill score data.
+    :type start_date: datetime.date
+
+    :param end_date: The ending date for the hill score data.
+    :type end_date: datetime.date
+
+    :return: A dictionary containing synthetic hill score data for the specified date range.
+    :rtype: Dict
+    """
     hill_score = {
         "userProfilePK": random.randint(80000000, 90000000),  # Generate a random user profile PK
         "startDate": start_date.strftime('%Y-%m-%d'),
@@ -1634,7 +2200,21 @@ def generate_random_hill_score(start_date, end_date):
 
     return hill_score
 
-def generate_random_endurance_score(start_date, end_date):
+def get_endurance_score_data(start_date, end_date):
+    """Generate synthetic endurance score data for a specified date range.
+
+    This function generates synthetic endurance score data, including average and maximum values, group data for each week,
+    and endurance contributor DTOs for each group. The generated data is structured as a dictionary.
+
+    :param start_date: The starting date for the endurance score data.
+    :type start_date: datetime.date
+
+    :param end_date: The ending date for the endurance score data.
+    :type end_date: datetime.date
+
+    :return: A dictionary containing synthetic endurance score data for the specified date range.
+    :rtype: Dict
+    """
     endurance_score = {
         "userProfilePK": random.randint(80000000, 90000000),  # Generate a random user profile PK
         "startDate": start_date.strftime('%Y-%m-%d'),
@@ -1766,6 +2346,36 @@ def create_syn_data(start_date, end_date):
     synth_hrs = get_hrs(start_date, num_days, synth_steps)
     synth_brpms = get_brpms(start_date, num_days, synth_hrs)
 
+    synth_hrv_data = get_hrv_data(start_date, num_days)
+    synth_steps_data = get_steps_data(start_date, num_days)
+    synth_stats_data = get_stats_data(start_date, num_days)
+    synth_user_summary_data = get_user_summary_data(start_date, num_days)
+    synth_body_composition_data = get_body_composition_data(start_date, num_days)
+    synth_heart_rate_data = get_heart_rate_data(start_date, num_days)
+    synth_training_readiness_data = get_training_readiness_data(start_date, num_days)
+    synth_blood_pressure_data = get_blood_pressure_data(start_date, end_date, num_days)
+    synth_floors_data = get_floors_data(start_date, end_date)
+    synth_training_status_data = get_training_status_data(start_date, num_days)
+    synth_resting_hr_data = get_resting_hr_data(start_date, end_date)
+    synth_hydration_data = get_hydration_data(start_date, num_days)
+    synth_sleep_data = get_sleep_data(start_date, num_days)
+    synth_earned_badges_data = get_earned_badges_data(start_date, num_days)
+    synth_stress_data = get_stress_data(start_date, num_days)
+    synth_respiration_data = get_respiration_data(start_date, num_days)
+    synth_spo2_data = get_spo2_data(start_date, num_days)
+    synth_metrics_data = get_metrics_data(start_date, num_days)
+    synth_personal_record_data = get_personal_record_data(start_date, end_date, num_days)
+    synth_activities_data = get_activities_data(start_date, num_days)
+    synth_device_settings_data = get_device_settings_data(num_days)
+    synth_active_goals_data = get_active_goals_data(start_date, num_days)
+    synth_future_goals_data = get_future_goals_data(start_date, num_days)
+    synth_past_goals_data = get_past_goals_data(start_date, num_days)
+    synth_weigh_ins_data = get_weigh_ins_data(start_date, num_days)
+    synth_weigh_ins_daily_data = get_weigh_ins_daily_data(start_date, num_days)
+    synth_hill_score_data = get_hill_score_data(start_date, end_date)
+    synth_endurance_score_data = get_endurance_score_data(start_date, end_date)
+
+
     # finally, we just iterate over the steps and
     # turn the start and end timestamps to strings
     for i, synth_steps_day in enumerate(synth_steps):
@@ -1782,4 +2392,35 @@ def create_syn_data(start_date, end_date):
         synth_dates, synth_steps, synth_hrs, synth_brpms
     )
 
-    return synth_dates, synth_steps, synth_hrs, synth_brpms
+    return (synth_dates,
+            synth_steps,
+            synth_hrs,
+            synth_brpms,
+            synth_hrv_data,
+            synth_steps_data,
+            synth_stats_data,
+            synth_user_summary_data,
+            synth_body_composition_data,
+            synth_heart_rate_data,
+            synth_training_readiness_data,
+            synth_blood_pressure_data,
+            synth_floors_data,
+            synth_training_status_data,
+            synth_resting_hr_data,
+            synth_hydration_data,
+            synth_sleep_data,
+            synth_earned_badges_data,
+            synth_stress_data,
+            synth_respiration_data,
+            synth_spo2_data,
+            synth_metrics_data,
+            synth_personal_record_data,
+            synth_activities_data,
+            synth_device_settings_data,
+            synth_active_goals_data,
+            synth_future_goals_data,
+            synth_past_goals_data,
+            synth_weigh_ins_data,
+            synth_weigh_ins_daily_data,
+            synth_hill_score_data,
+            synth_endurance_score_data)
