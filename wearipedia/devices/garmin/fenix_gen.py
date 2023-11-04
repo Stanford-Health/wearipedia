@@ -306,6 +306,1371 @@ def get_brpms(start_date, num_days, synth_hrs):
 
     return synth_brpms
 
+from datetime import datetime, timedelta
+import random
+
+def get_hrv(start_date, num_days):
+    hrv_data = []
+
+    for _ in range(num_days):
+        user_profile_pk = random.randint(10000000, 99999999)
+        calendar_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
+        weekly_avg = None
+        last_night_avg = random.randint(10, 40)
+        last_night_5min_high = random.randint(30, 60)
+        baseline = None
+        status = 'NONE'
+        feedback_phrase = 'ONBOARDING_1'
+        create_time_stamp = f"{calendar_date}T14:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.000"
+
+        start_timestamp_gmt = f"{calendar_date}T06:00:00.0"
+        end_timestamp_gmt = f"{calendar_date}T13:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
+        start_timestamp_local = f"{(datetime.strptime(start_date, '%Y-%m-%d') - timedelta(days=1)).strftime('%Y-%m-%d')}T23:00:00.0"
+        end_timestamp_local = f"{calendar_date}T06:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
+
+        sleep_start_timestamp_gmt = None
+        sleep_end_timestamp_gmt = None
+        sleep_start_timestamp_local = None
+        sleep_end_timestamp_local = None
+
+        hrv_reading = []
+
+        hrv_entry = {
+            'userProfilePk': user_profile_pk,
+            'hrvSummary': {
+                'calendarDate': calendar_date,
+                'weeklyAvg': weekly_avg,
+                'lastNightAvg': last_night_avg,
+                'lastNight5MinHigh': last_night_5min_high,
+                'baseline': baseline,
+                'status': status,
+                'feedbackPhrase': feedback_phrase,
+                'createTimeStamp': create_time_stamp
+            },
+            'hrvReadings': hrv_reading,
+            'startTimestampGMT': start_timestamp_gmt,
+            'endTimestampGMT': end_timestamp_gmt,
+            'startTimestampLocal': start_timestamp_local,
+            'endTimestampLocal': end_timestamp_local,
+            'sleepStartTimestampGMT': sleep_start_timestamp_gmt,
+            'sleepEndTimestampGMT': sleep_end_timestamp_gmt,
+            'sleepStartTimestampLocal': sleep_start_timestamp_local,
+            'sleepEndTimestampLocal': sleep_end_timestamp_local
+        }
+
+        hrv_data.append(hrv_entry)
+
+    return hrv_data
+
+def get_steps(start_date, num_days):
+    steps_data = []
+
+    for _ in range(num_days):
+        user_profile_pk = random.randint(10000000, 99999999)
+        calendar_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+        create_time_stamp = f"{calendar_date}T14:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.000"
+        start_timestamp_gmt = f"{calendar_date}T06:00:00.0"
+        end_timestamp_gmt = f"{calendar_date}T13:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
+        start_timestamp_local = f"{(datetime.datetime.strptime(start_date, '%Y-%m-%d') - datetime.timedelta(days=1)).strftime('%Y-%m-%d')}T23:00:00.0"
+        end_timestamp_local = f"{calendar_date}T06:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
+
+        steps_entry = {
+            'userProfilePk': user_profile_pk,
+            'stepsSummary': {
+                'calendarDate': calendar_date,
+                'dailyTotal': random.randint(1000, 15000),
+                'status': 'COMPLETED',
+                'createTimeStamp': create_time_stamp
+            },
+            'stepsDetails': [],
+            'startTimestampGMT': start_timestamp_gmt,
+            'endTimestampGMT': end_timestamp_gmt,
+            'startTimestampLocal': start_timestamp_local,
+            'endTimestampLocal': end_timestamp_local
+        }
+
+        # Generate step data for each interval within a day (e.g., 15-minute intervals)
+        interval_start = datetime.datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0")
+        for i in range(96):  # 24 hours * 60 minutes / 15 minutes
+            interval_end = interval_start + datetime.timedelta(minutes=15)
+            steps = random.randint(0, 200)
+            steps_entry['stepsDetails'].append({
+                'startTimestampGMT': interval_start.strftime("%Y-%m-%dT%H:%M:%S.0"),
+                'endTimestampGMT': interval_end.strftime("%Y-%m-%dT%H:%M:%S.0"),
+                'steps': steps,
+            })
+            interval_start = interval_end
+
+        steps_data.append(steps_entry)
+
+    return steps_data
+
+def get_user_summary(start_date, num_days):
+    user_summary_data = []
+
+    for _ in range(num_days):
+        user_profile_id = random.randint(10000000, 99999999)
+        calendar_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
+        total_kilocalories = random.uniform(1500.0, 2500.0)
+        active_kilocalories = random.uniform(400.0, 800.0)
+        bmr_kilocalories = random.uniform(1000.0, 1500.0)
+        wellness_kilocalories = total_kilocalories
+        burned_kilocalories = None
+        consumed_kilocalories = None
+        remaining_kilocalories = total_kilocalories
+        total_steps = random.randint(3000, 10000)
+        net_calorie_goal = None
+        total_distance_meters = random.randint(2000, 6000)
+        wellness_distance_meters = total_distance_meters
+        wellness_active_kilocalories = active_kilocalories
+        net_remaining_kilocalories = active_kilocalories
+        user_daily_summary_id = user_profile_id
+        rule = {'typeId': 3, 'typeKey': 'subscribers'}
+        uuid = 'e933a2a5aa214d3088bec955ea84c9bf'
+        daily_step_goal = random.randint(1000, 5000)
+        wellness_start_time_gmt = f"{calendar_date}T07:00:00.0"
+        wellness_start_time_local = f"{calendar_date}T00:00:00.0"
+        wellness_end_time_gmt = f"{(datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=_ + 1)).strftime('%Y-%m-%d')}T07:00:00.0"
+        wellness_end_time_local = f"{(datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=_ + 1)).strftime('%Y-%m-%d')}T00:00:00.0"
+        duration_in_milliseconds = 86400000
+        wellness_description = None
+        highly_active_seconds = random.randint(500, 1500)
+        active_seconds = random.randint(4000, 7000)
+        sedentary_seconds = random.randint(30000, 60000)
+        sleeping_seconds = random.randint(20000, 40000)
+        includes_wellness_data = True
+        includes_activity_data = False
+        includes_calorie_consumed_data = False
+        privacy_protected = False
+        moderate_intensity_minutes = random.randint(0, 60)
+        vigorous_intensity_minutes = random.randint(0, 60)
+        floors_ascended_in_meters = random.uniform(0.0, 30.0)
+        floors_descended_in_meters = random.uniform(0.0, 20.0)
+        floors_ascended = random.uniform(0.0, 10.0)
+        floors_descended = random.uniform(0.0, 5.0)
+        intensity_minutes_goal = random.randint(100, 200)
+        user_floors_ascended_goal = random.randint(5, 15)
+        min_heart_rate = random.randint(50, 70)
+        max_heart_rate = random.randint(120, 150)
+        resting_heart_rate = random.randint(60, 80)
+        last_seven_days_avg_resting_heart_rate = resting_heart_rate
+        source = 'GARMIN'
+        average_stress_level = random.uniform(20.0, 60.0)
+        max_stress_level = random.uniform(70.0, 100.0)
+        stress_duration = random.randint(10000, 40000)
+        rest_stress_duration = random.randint(9000, 35000)
+        activity_stress_duration = random.randint(1000, 5000)
+        uncategorized_stress_duration = random.randint(500, 2000)
+        total_stress_duration = random.randint(10000, 40000)
+        low_stress_duration = random.randint(4000, 15000)
+        medium_stress_duration = random.randint(1000, 5000)
+        high_stress_duration = random.randint(500, 3000)
+        stress_percentage = random.uniform(10.0, 60.0)
+        rest_stress_percentage = random.uniform(10.0, 50.0)
+        activity_stress_percentage = random.uniform(5.0, 20.0)
+        uncategorized_stress_percentage = random.uniform(2.0, 15.0)
+        low_stress_percentage = random.uniform(5.0, 25.0)
+        medium_stress_percentage = random.uniform(2.0, 15.0)
+        high_stress_percentage = random.uniform(1.0, 10.0)
+        stress_qualifier = 'BALANCED'
+        measurable_awake_duration = random.randint(30000, 60000)
+        measurable_asleep_duration = random.randint(20000, 40000)
+        last_sync_timestamp_gmt = None
+        min_avg_heart_rate = random.randint(50, 70)
+        max_avg_heart_rate = random.randint(120, 150)
+        body_battery_charged_value = random.randint(30, 60)
+        body_battery_drained_value = random.randint(10, 40)
+        body_battery_highest_value = random.randint(40, 70)
+        body_battery_lowest_value = random.randint(0, 30)
+        body_battery_most_recent_value = random.randint(10, 40)
+        body_battery_during_sleep = None
+        body_battery_version = 2.0
+        abnormal_heart_rate_alerts_count = None
+        average_spo2 = None
+        lowest_spo2 = None
+        latest_spo2 = None
+        latest_spo2_reading_time_gmt = None
+        latest_spo2_reading_time_local = None
+        average_monitoring_environment_altitude = random.uniform(-200.0, 200.0)
+        resting_calories_from_activity = None
+        avg_waking_respiration_value = random.uniform(10.0, 20.0)
+        highest_respiration_value = random.uniform(15.0, 25.0)
+        lowest_respiration_value = random.uniform(5.0, 15.0)
+        latest_respiration_value = random.uniform(15.0, 25.0)
+        latest_respiration_time_gmt = wellness_end_time_gmt
+
+        user_summary_entry = {
+            'userProfileId': user_profile_id,
+            'totalKilocalories': total_kilocalories,
+            'activeKilocalories': active_kilocalories,
+            'bmrKilocalories': bmr_kilocalories,
+            'wellnessKilocalories': wellness_kilocalories,
+            'burnedKilocalories': burned_kilocalories,
+            'consumedKilocalories': consumed_kilocalories,
+            'remainingKilocalories': remaining_kilocalories,
+            'totalSteps': total_steps,
+            'netCalorieGoal': net_calorie_goal,
+            'totalDistanceMeters': total_distance_meters,
+            'wellnessDistanceMeters': wellness_distance_meters,
+            'wellnessActiveKilocalories': wellness_active_kilocalories,
+            'netRemainingKilocalories': net_remaining_kilocalories,
+            'userDailySummaryId': user_daily_summary_id,
+            'calendarDate': calendar_date,
+            'rule': rule,
+            'uuid': uuid,
+            'dailyStepGoal': daily_step_goal,
+            'wellnessStartTimeGmt': wellness_start_time_gmt,
+            'wellnessStartTimeLocal': wellness_start_time_local,
+            'wellnessEndTimeGmt': wellness_end_time_gmt,
+            'wellnessEndTimeLocal': wellness_end_time_local,
+            'durationInMilliseconds': duration_in_milliseconds,
+            'wellnessDescription': wellness_description,
+            'highlyActiveSeconds': highly_active_seconds,
+            'activeSeconds': active_seconds,
+            'sedentarySeconds': sedentary_seconds,
+            'sleepingSeconds': sleeping_seconds,
+            'includesWellnessData': includes_wellness_data,
+            'includesActivityData': includes_activity_data,
+            'includesCalorieConsumedData': includes_calorie_consumed_data,
+            'privacyProtected': privacy_protected,
+            'moderateIntensityMinutes': moderate_intensity_minutes,
+            'vigorousIntensityMinutes': vigorous_intensity_minutes,
+            'floorsAscendedInMeters': floors_ascended_in_meters,
+            'floorsDescendedInMeters': floors_descended_in_meters,
+            'floorsAscended': floors_ascended,
+            'floorsDescended': floors_descended,
+            'intensityMinutesGoal': intensity_minutes_goal,
+            'userFloorsAscendedGoal': user_floors_ascended_goal,
+            'minHeartRate': min_heart_rate,
+            'maxHeartRate': max_heart_rate,
+            'restingHeartRate': resting_heart_rate,
+            'lastSevenDaysAvgRestingHeartRate': last_seven_days_avg_resting_heart_rate,
+            'source': source,
+            'averageStressLevel': average_stress_level,
+            'maxStressLevel': max_stress_level,
+            'stressDuration': stress_duration,
+            'restStressDuration': rest_stress_duration,
+            'activityStressDuration': activity_stress_duration,
+            'uncategorizedStressDuration': uncategorized_stress_duration,
+            'totalStressDuration': total_stress_duration,
+            'lowStressDuration': low_stress_duration,
+            'mediumStressDuration': medium_stress_duration,
+            'highStressDuration': high_stress_duration,
+            'stressPercentage': stress_percentage,
+            'restStressPercentage': rest_stress_percentage,
+            'activityStressPercentage': activity_stress_percentage,
+            'uncategorizedStressPercentage': uncategorized_stress_percentage,
+            'lowStressPercentage': low_stress_percentage,
+            'mediumStressPercentage': medium_stress_percentage,
+            'highStressPercentage': high_stress_percentage,
+            'stressQualifier': stress_qualifier,
+            'measurableAwakeDuration': measurable_awake_duration,
+            'measurableAsleepDuration': measurable_asleep_duration,
+            'lastSyncTimestampGMT': last_sync_timestamp_gmt,
+            'minAvgHeartRate': min_avg_heart_rate,
+            'maxAvgHeartRate': max_avg_heart_rate,
+            'bodyBatteryChargedValue': body_battery_charged_value,
+            'bodyBatteryDrainedValue': body_battery_drained_value,
+            'bodyBatteryHighestValue': body_battery_highest_value,
+            'bodyBatteryLowestValue': body_battery_lowest_value,
+            'bodyBatteryMostRecentValue': body_battery_most_recent_value,
+            'bodyBatteryDuringSleep': body_battery_during_sleep,
+            'bodyBatteryVersion': body_battery_version,
+            'abnormalHeartRateAlertsCount': abnormal_heart_rate_alerts_count,
+            'averageSpo2': average_spo2,
+            'lowestSpo2': lowest_spo2,
+            'latestSpo2': latest_spo2,
+            'latestSpo2ReadingTimeGmt': latest_spo2_reading_time_gmt,
+            'latestSpo2ReadingTimeLocal': latest_spo2_reading_time_local,
+            'averageMonitoringEnvironmentAltitude': average_monitoring_environment_altitude,
+            'restingCaloriesFromActivity': resting_calories_from_activity,
+            'avgWakingRespirationValue': avg_waking_respiration_value,
+            'highestRespirationValue': highest_respiration_value,
+            'lowestRespirationValue': lowest_respiration_value,
+            'latestRespirationValue': latest_respiration_value,
+            'latestRespirationTimeGMT': latest_respiration_time_gmt
+        }
+
+        user_summary_data.append(user_summary_entry)
+
+    return user_summary_data
+
+def get_body_composition(start_date, num_days):
+    body_composition_data = {
+        'startDate': start_date,
+        'endDate': (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=num_days - 1)).strftime("%Y-%m-%d"),
+        'dateWeightList': [],
+        'totalAverage': {
+            'from': datetime.strptime(start_date, "%Y-%m-%d").timestamp() * 1000,
+            'until': (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=num_days)).timestamp() * 1000,
+            'weight': [],
+            'bmi': [],
+            'bodyFat': [],
+            'bodyWater': [],
+            'boneMass': [],
+            'muscleMass': [],
+            'physiqueRating': [],
+            'visceralFat': [],
+            'metabolicAge': [],
+        }
+    }
+
+    for day in range(num_days):
+        date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=day)).strftime("%Y-%m-%d")
+
+        weight = random.uniform(50, 100)
+        bmi = random.uniform(18, 30)
+        body_fat = random.uniform(10, 25)
+        body_water = random.uniform(45, 65)
+        bone_mass = random.uniform(1, 3)
+        muscle_mass = random.uniform(20, 50)
+        physique_rating = random.randint(1, 5)
+        visceral_fat = random.uniform(1, 15)
+        metabolic_age = random.randint(18, 70)
+
+        body_composition_data['dateWeightList'].append({
+            'date': date,
+            'weight': weight
+        })
+
+        body_composition_data['totalAverage']['weight'].append({
+            'timestamp': datetime.strptime(date, "%Y-%m-%d").timestamp() * 1000,
+            'value': weight
+        })
+
+        body_composition_data['totalAverage']['bmi'].append({
+            'timestamp': datetime.strptime(date, "%Y-%m-%d").timestamp() * 1000,
+            'value': bmi
+        })
+
+        body_composition_data['totalAverage']['bodyFat'].append({
+            'timestamp': datetime.strptime(date, "%Y-%m-%d").timestamp() * 1000,
+            'value': body_fat
+        })
+
+        body_composition_data['totalAverage']['bodyWater'].append({
+            'timestamp': datetime.strptime(date, "%Y-%m-%d").timestamp() * 1000,
+            'value': body_water
+        })
+
+        body_composition_data['totalAverage']['boneMass'].append({
+            'timestamp': datetime.strptime(date, "%Y-%m-%d").timestamp() * 1000,
+            'value': bone_mass
+        })
+
+        body_composition_data['totalAverage']['muscleMass'].append({
+            'timestamp': datetime.strptime(date, "%Y-%m-%d").timestamp() * 1000,
+            'value': muscle_mass
+        })
+
+        body_composition_data['totalAverage']['physiqueRating'].append({
+            'timestamp': datetime.strptime(date, "%Y-%m-%d").timestamp() * 1000,
+            'value': physique_rating
+        })
+
+        body_composition_data['totalAverage']['visceralFat'].append({
+            'timestamp': datetime.strptime(date, "%Y-%m-%d").timestamp() * 1000,
+            'value': visceral_fat
+        })
+
+        body_composition_data['totalAverage']['metabolicAge'].append({
+            'timestamp': datetime.strptime(date, "%Y-%m-%d").timestamp() * 1000,
+            'value': metabolic_age
+        })
+
+    return body_composition_data
+
+
+def get_heart_rate(start_date, num_days):
+    heart_rate_data = []
+
+    for _ in range(num_days):
+        user_profile_pk = random.randint(10000000, 99999999)
+        calendar_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+        start_timestamp_gmt = f"{calendar_date}T07:00:00.0"
+        end_timestamp_gmt = (datetime.datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
+        start_timestamp_local = f"{calendar_date}T00:00:00.0"
+        end_timestamp_local = (datetime.datetime.strptime(start_timestamp_local, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
+
+        # Randomly generate resting heart rate within a reasonable range (e.g., 50-90)
+        resting_heart_rate = random.randint(50, 90)
+
+        # Generate max and min heart rates higher than resting heart rate
+        max_heart_rate = random.randint(resting_heart_rate + 5, 120)
+        min_heart_rate = random.randint(resting_heart_rate + 2, max_heart_rate - 1)
+
+        # Slightly vary last seven days' average resting heart rate
+        last_seven_days_avg = random.randint(resting_heart_rate - 2, resting_heart_rate + 2)
+
+        # Generate some sample heart rate descriptors and values for demonstration
+        heart_rate_descriptors = ['Descriptor1', 'Descriptor2', 'Descriptor3']
+        heart_rate_values = [70, 80, 90]
+
+        heart_rate_entry = {
+            'userProfilePK': user_profile_pk,
+            'calendarDate': calendar_date,
+            'startTimestampGMT': start_timestamp_gmt,
+            'endTimestampGMT': end_timestamp_gmt,
+            'startTimestampLocal': start_timestamp_local,
+            'endTimestampLocal': end_timestamp_local,
+            'maxHeartRate': max_heart_rate,
+            'minHeartRate': min_heart_rate,
+            'restingHeartRate': resting_heart_rate,
+            'lastSevenDaysAvgRestingHeartRate': last_seven_days_avg,
+            'heartRateValueDescriptors': heart_rate_descriptors,
+            'heartRateValues': heart_rate_values
+        }
+
+        heart_rate_data.append(heart_rate_entry)
+
+    return heart_rate_data
+
+
+def get_training_readiness(start_date, num_entries):
+    training_readiness_data = []
+
+    for _ in range(num_entries):
+        user_profile_pk = random.randint(10000000, 99999999)
+        calendar_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+
+        timestamp = f"{calendar_date}T{random.randint(0, 23):02d}:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
+        timestamp_local = (datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(hours=7)).strftime("%Y-%m-%dT%H:%M:%S.0")
+
+        deviceId = random.randint(1000000000, 9999999999)
+
+        # Randomly select a level from a list of possible levels
+        levels = ['LOW', 'MODERATE', 'HIGH', 'VERY_HIGH', 'MAXIMUM', 'NONE']
+        level = random.choice(levels)
+
+        # Set some consistent values for feedback
+        feedback_long = 'UNKNOWN'
+        feedback_short = 'UNKNOWN'
+
+        # Randomize sleep score, sleep score factor, and associated feedback
+        sleep_score = random.randint(50, 100)
+        sleep_score_factor_percent = random.randint(0, 100)
+        sleep_score_factor_feedback = level if sleep_score_factor_percent > 60 else 'NONE'
+
+        # Randomize recovery time, recovery time factor, and associated feedback
+        recovery_time = random.randint(1, 10)
+        recovery_time_factor_percent = random.randint(0, 100)
+        recovery_time_factor_feedback = level if recovery_time_factor_percent < 40 else 'NONE'
+
+        # Randomize ACWR (Acute Chronic Workload Ratio) factor and feedback
+        acwr_factor_percent = random.randint(0, 100)
+        acwr_factor_feedback = level if acwr_factor_percent > 60 else 'NONE'
+
+        # Randomize HRV (Heart Rate Variability) factor and feedback
+        hrv_factor_percent = random.randint(0, 100)
+        hrv_factor_feedback = level if hrv_factor_percent < 40 else 'NONE'
+
+        # Randomize HRV weekly average
+        hrv_weekly_average = random.randint(50, 100)
+
+        # Randomize sleep history factor and feedback
+        sleep_history_factor_percent = random.randint(0, 100)
+        sleep_history_factor_feedback = level if sleep_history_factor_percent < 40 else 'NONE'
+
+        # Set valid sleep to True
+        valid_sleep = True
+
+        # Set recovery time change phrase to None
+        recovery_time_change_phrase = None
+
+        entry = {
+            'userProfilePK': user_profile_pk,
+            'calendarDate': calendar_date,
+            'timestamp': timestamp,
+            'timestampLocal': timestamp_local,
+            'deviceId': deviceId,
+            'level': level,
+            'feedbackLong': feedback_long,
+            'feedbackShort': feedback_short,
+            'sleepScore': sleep_score,
+            'sleepScoreFactorPercent': sleep_score_factor_percent,
+            'sleepScoreFactorFeedback': sleep_score_factor_feedback,
+            'recoveryTime': recovery_time,
+            'recoveryTimeFactorPercent': recovery_time_factor_percent,
+            'recoveryTimeFactorFeedback': recovery_time_factor_feedback,
+            'acwrFactorPercent': acwr_factor_percent,
+            'acwrFactorFeedback': acwr_factor_feedback,
+            'hrvFactorPercent': hrv_factor_percent,
+            'hrvFactorFeedback': hrv_factor_feedback,
+            'hrvWeeklyAverage': hrv_weekly_average,
+            'sleepHistoryFactorPercent': sleep_history_factor_percent,
+            'sleepHistoryFactorFeedback': sleep_history_factor_feedback,
+            'validSleep': valid_sleep,
+            'recoveryTimeChangePhrase': recovery_time_change_phrase,
+        }
+
+        training_readiness_data.append(entry)
+
+    return training_readiness_data
+
+def get_blood_pressure(start_date, end_date, num_summaries):
+    blood_pressure_data = {
+        'from': start_date,
+        'until': end_date,
+        'measurementSummaries': [],
+        'categoryStats': None
+    }
+
+    for _ in range(num_summaries):
+        summary_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+        systolic = random.randint(90, 160)
+        diastolic = random.randint(60, 100)
+        heart_rate = random.randint(60, 100)
+
+        summary = {
+            'date': summary_date,
+            'systolic': systolic,
+            'diastolic': diastolic,
+            'heartRate': heart_rate
+        }
+
+        blood_pressure_data['measurementSummaries'].append(summary)
+
+    return blood_pressure_data
+
+
+def get_floors(start_date, end_date):
+    floors_data = {
+        'startTimestampGMT': f'{start_date}T07:00:00.0',
+        'endTimestampGMT': f'{end_date}T07:00:00.0',
+        'startTimestampLocal': f'{start_date}T00:00:00.0',
+        'endTimestampLocal': f'{end_date}T00:00:00.0',
+        'floorsValueDescriptorDTOList': [],
+        'floorValuesArray': []
+    }
+
+    current_date = datetime.strptime(start_date, "%Y-%m-%d")
+    while current_date <= datetime.strptime(end_date, "%Y-%m-%d"):
+        descriptor = {
+            'date': current_date.strftime('%Y-%m-%d'),
+            'descriptor': f'Descriptor for {current_date.strftime("%Y-%m-%d")}',
+        }
+
+        floor_value = {
+            'date': current_date.strftime('%Y-%m-%d'),
+            'value': random.randint(0, 10),
+        }
+
+        floors_data['floorsValueDescriptorDTOList'].append(descriptor)
+        floors_data['floorValuesArray'].append(floor_value)
+
+        current_date += timedelta(days=1)
+
+    return floors_data
+
+def get_training_status(start_date, num_days):
+    training_status_data = []
+
+    for _ in range(num_days):
+        calendar_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
+        entry = {
+            'userId': random.randint(10000000, 99999999),
+            'mostRecentVO2Max': None,
+            'mostRecentTrainingLoadBalance': None,
+            'mostRecentTrainingStatus': None,
+            'heatAltitudeAcclimationDTO': None
+        }
+        training_status_data.append(entry)
+
+    return training_status_data
+
+def get_resting_hr(start_date, end_date):
+    resting_hr_data = {
+        'userProfileId': random.randint(10000000, 99999999),
+        'statisticsStartDate': start_date,
+        'statisticsEndDate': end_date,
+        'allMetrics': {
+            'metricsMap': []
+        }
+    }
+
+    current_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+
+    while current_date <= end_date:
+        calendar_date = current_date.strftime('%Y-%m-%d')
+        value = random.uniform(60.0, 75.0)  # You can adjust the range for resting heart rate values
+        metric_entry = {
+            'value': value,
+            'calendarDate': calendar_date
+        }
+        resting_hr_data['allMetrics']['metricsMap'].append({
+            'WELLNESS_RESTING_HEART_RATE': [metric_entry]
+        })
+        current_date += timedelta(days=1)
+
+    return resting_hr_data
+
+def get_hydration(start_date, num_days):
+    hydration_data = []
+
+    for _ in range(num_days):
+        user_id = random.randint(10000000, 99999999)
+        calendar_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
+        value_in_ml = None  # You can randomize this value if needed
+        goal_in_ml = random.uniform(1800.0, 2500.0)  # Random goal between 1800 mL and 2500 mL
+        daily_average_in_ml = None  # You can randomize this value if needed
+        last_entry_timestamp_local = None
+        sweat_loss_in_ml = None  # You can randomize this value if needed
+        activity_intake_in_ml = None  # You can randomize this value if needed
+
+        hydration_entry = {
+            'userId': user_id,
+            'calendarDate': calendar_date,
+            'valueInML': value_in_ml,
+            'goalInML': goal_in_ml,
+            'dailyAverageinML': daily_average_in_ml,
+            'lastEntryTimestampLocal': last_entry_timestamp_local,
+            'sweatLossInML': sweat_loss_in_ml,
+            'activityIntakeInML': activity_intake_in_ml
+        }
+
+        hydration_data.append(hydration_entry)
+
+    return hydration_data
+
+def get_sleep(start_date, num_days):
+    sleep_data = []
+
+    for i in range(num_days):
+        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+        sleep_time_seconds = random.randint(18000, 32400)  # Random sleep time between 5 and 9 hours
+
+        sleep_entry = {
+            'dailySleepDTO': {
+                'id': random.randint(1000000000000, 9999999999999),
+                'userProfilePK': 85412302,
+                'calendarDate': date,
+                'sleepTimeSeconds': sleep_time_seconds,
+                'napTimeSeconds': 0,  # No naps
+                'sleepWindowConfirmed': True,
+                'sleepWindowConfirmationType': 'enhanced_confirmed_final',
+                'sleepStartTimestampGMT': 0,  # You can add the actual timestamps if needed
+                'sleepEndTimestampGMT': 0,
+                'sleepStartTimestampLocal': 0,
+                'sleepEndTimestampLocal': 0,
+                'autoSleepStartTimestampGMT': None,
+                'autoSleepEndTimestampGMT': None,
+                'sleepQualityTypePK': None,
+                'sleepResultTypePK': None,
+                'unmeasurableSleepSeconds': 0,
+                'deepSleepSeconds': random.randint(6000, 9000),  # Random deep sleep between 1.5 and 2.5 hours
+                'lightSleepSeconds': random.randint(12000, 20000),  # Random light sleep between 3 and 5 hours
+                'remSleepSeconds': random.randint(1200, 3600),  # Random REM sleep between 20 and 60 minutes
+                'awakeSleepSeconds': random.randint(1800, 4800),  # Random awake time between 30 minutes and 1 hour 20 minutes
+                'deviceRemCapable': True,
+                'retro': False,
+                'sleepFromDevice': True,
+                'averageRespirationValue': random.uniform(12.0, 23.0),  # Random respiration value between 12 and 23
+                'lowestRespirationValue': random.uniform(12.0, 23.0),
+                'highestRespirationValue': random.uniform(12.0, 23.0),
+                'awakeCount': random.randint(0, 4),  # Random awake count between 0 and 4
+                'avgSleepStress': random.uniform(0.0, 30.0),  # Random stress level between 0 and 30
+                'ageGroup': 'ADULT',
+                'sleepScoreFeedback': 'NEGATIVE_LONG_BUT_NOT_ENOUGH_REM',
+                'sleepScoreInsight': 'NONE',
+                'sleepScores': {
+                    'totalDuration': {'qualifierKey': 'GOOD', 'optimalStart': 28800.0, 'optimalEnd': 28800.0},
+                    'stress': {'qualifierKey': 'FAIR', 'optimalStart': 0.0, 'optimalEnd': 15.0},
+                    'awakeCount': {'qualifierKey': 'POOR', 'optimalStart': 0.0, 'optimalEnd': 1.0},
+                    'overall': {'value': random.randint(50, 90), 'qualifierKey': 'FAIR'},
+                    'remPercentage': {'value': random.randint(5, 30), 'qualifierKey': 'POOR', 'optimalStart': 21.0, 'optimalEnd': 31.0, 'idealStartInSeconds': random.randint(4000, 8000), 'idealEndInSeconds': random.randint(6000, 8000)},
+                    'restlessness': {'qualifierKey': 'FAIR', 'optimalStart': 0.0, 'optimalEnd': 5.0},
+                    'lightPercentage': {'value': random.randint(30, 70), 'qualifierKey': 'GOOD', 'optimalStart': 30.0, 'optimalEnd': 64.0, 'idealStartInSeconds': random.randint(6000, 16000), 'idealEndInSeconds': random.randint(12000, 22000)},
+                    'deepPercentage': {'value': random.randint(10, 40), 'qualifierKey': 'EXCELLENT', 'optimalStart': 16.0, 'optimalEnd': 33.0, 'idealStartInSeconds': random.randint(3000, 7000), 'idealEndInSeconds': random.randint(6000, 9000)},
+                },
+                'sleepVersion': 2,
+            },
+            'sleepMovement': None,
+            'remSleepData': True,
+            'sleepLevels': None,
+            'restingHeartRate': 63,
+        }
+
+        sleep_data.append(sleep_entry)  # Append the generated sleep data
+
+    return sleep_data
+
+def get_earned_badges(start_date, num_days):
+    earned_badges_data = []
+
+    badge_categories = ['Category A', 'Category B', 'Category C']
+    badge_names = ['Badge 1', 'Badge 2', 'Badge 3']
+
+    for i in range(num_days):
+        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%m')
+        num_badges = random.randint(0, 3)  # Random number of badges earned for each day (0 to 3)
+
+        for _ in range(num_badges):
+            badge_id = random.randint(1, 100)
+            badge_category = random.choice(badge_categories)
+            badge_name = random.choice(badge_names)
+            badge_earned_date = date
+
+            earned_badge_entry = {
+                'badgeId': badge_id,
+                'badgeCategory': badge_category,
+                'badgeName': badge_name,
+                'badgeEarnedDate': badge_earned_date,
+            }
+
+            earned_badges_data.append(earned_badge_entry)  # Append the generated earned badge data
+
+    return earned_badges_data
+
+
+def get_stress(start_date, num_days):
+    stress_data = []
+
+    for i in range(num_days):
+        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+
+        stress_entry = {
+            'userProfilePK': 85412302,
+            'calendarDate': date,
+            'startTimestampGMT': f'{date}T07:00:00.0',
+            'endTimestampGMT': f'{date}T07:00:00.0',
+            'startTimestampLocal': f'{date}T00:00:00.0',
+            'endTimestampLocal': f'{date}T00:00:00.0',
+            'maxStressLevel': random.randint(70, 100),  # Random stress level between 70 and 100
+            'avgStressLevel': random.randint(20, 50),  # Random average stress level between 20 and 50
+            'stressChartValueOffset': 1,
+            'stressChartYAxisOrigin': -1,
+            'stressValueDescriptorsDTOList': [],
+            'stressValuesArray': [],
+        }
+
+        stress_data.append(stress_entry)  # Append the generated stress data
+
+    return stress_data
+
+def get_respiration(start_date, num_days):
+    respiration_data = []
+
+    for i in range(num_days):
+        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+
+        respiration_entry = {
+            'userProfilePK': 85412302,
+            'calendarDate': date,
+            'startTimestampGMT': f'{date}T07:00:00.0',
+            'endTimestampGMT': f'{date}T07:00:00.0',
+            'startTimestampLocal': f'{date}T00:00:00.0',
+            'endTimestampLocal': f'{date}T00:00:00.0',
+            'sleepStartTimestampGMT': f'{date}T05:53:00.0',
+            'sleepEndTimestampGMT': f'{date}T13:48:00.0',
+            'sleepStartTimestampLocal': f'{date}T22:53:00.0',
+            'sleepEndTimestampLocal': f'{date}T06:48:00.0',
+            'tomorrowSleepStartTimestampGMT': f'{date}T05:39:00.0',
+            'tomorrowSleepEndTimestampGMT': f'{date}T14:16:00.0',
+            'tomorrowSleepStartTimestampLocal': f'{date}T22:39:00.0',
+            'tomorrowSleepEndTimestampLocal': f'{date}T07:16:00.0',
+            'lowestRespirationValue': random.uniform(10.0, 15.0),  # Random lowest respiration value between 10 and 15
+            'highestRespirationValue': random.uniform(20.0, 25.0),  # Random highest respiration value between 20 and 25
+            'avgWakingRespirationValue': random.uniform(12.0, 18.0),  # Random average waking respiration value between 12 and 18
+            'avgSleepRespirationValue': random.uniform(16.0, 22.0),  # Random average sleep respiration value between 16 and 22
+            'avgTomorrowSleepRespirationValue': random.uniform(16.0, 22.0),  # Random average respiration value for tomorrow's sleep
+            'respirationValueDescriptorsDTOList': [],
+            'respirationValuesArray': [],
+        }
+
+        respiration_data.append(respiration_entry)  # Append the generated respiration data
+
+    return respiration_data
+
+def get_spo2(start_date, num_days):
+    spo2_data = []
+
+    for i in range(num_days):
+        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+
+        spo2_entry = {
+            'userProfilePK': 85412302,
+            'calendarDate': date,
+            'startTimestampGMT': f'{date}T07:00:00.0',
+            'endTimestampGMT': f'{date}T07:00:00.0',
+            'startTimestampLocal': f'{date}T00:00:00.0',
+            'endTimestampLocal': f'{date}T00:00:00.0',
+            'sleepStartTimestampGMT': f'{date}T05:53:00.0',
+            'sleepEndTimestampGMT': f'{date}T13:48:00.0',
+            'sleepStartTimestampLocal': f'{date}T22:53:00.0',
+            'sleepEndTimestampLocal': f'{date}T06:48:00.0',
+            'tomorrowSleepStartTimestampGMT': f'{date}T05:39:00.0',
+            'tomorrowSleepEndTimestampGMT': f'{date}T14:16:00.0',
+            'tomorrowSleepStartTimestampLocal': f'{date}T22:39:00.0',
+            'tomorrowSleepEndTimestampLocal': f'{date}T07:16:00.0',
+            'averageSpO2': random.uniform(92, 99),  # Random average SpO2 value between 92 and 99
+            'lowestSpO2': random.uniform(88, 91),  # Random lowest SpO2 value between 88 and 91
+            'lastSevenDaysAvgSpO2': random.uniform(93, 97),  # Random average SpO2 for the last 7 days
+            'latestSpO2': random.uniform(90, 95),  # Random latest SpO2 value
+            'latestSpO2TimestampGMT': f'{date}T08:00:00.0',
+            'latestSpO2TimestampLocal': f'{date}T01:00:00.0',
+            'avgSleepSpO2': random.uniform(93, 97),  # Random average SpO2 during sleep
+            'avgTomorrowSleepSpO2': random.uniform(93, 97),  # Random average SpO2 for tomorrow's sleep
+            'spO2ValueDescriptorsDTOList': None,
+            'spO2SingleValues': None,
+            'continuousReadingDTOList': None,
+            'spO2HourlyAverages': None,
+        }
+
+        spo2_data.append(spo2_entry)  # Append the generated SpO2 data
+
+    return spo2_data
+
+def get_metrics(start_date, num_days):
+    max_metrics_data = []
+
+    for i in range(num_days):
+        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+
+        # Generate mock "max_metrics" data for each day
+        max_metrics_entry = {
+            'userId': 85412302,
+            'generic': {
+                'calendarDate': date,
+                'vo2MaxPreciseValue': round(random.uniform(35.0, 41.0), 1),  # Random vo2MaxPreciseValue
+                'vo2MaxValue': round(random.uniform(35.0, 41.0), 1),  # Random vo2MaxValue
+                'fitnessAge': None,
+                'fitnessAgeDescription': None,
+                'maxMetCategory': 0
+            },
+            'cycling': None,
+            'heatAltitudeAcclimation': None
+        }
+
+        max_metrics_data.append(max_metrics_entry)  # Append the generated "max_metrics" data
+
+    return max_metrics_data
+
+def get_personal_record(start_date, end_date, num_entries):
+    personal_record_data = []
+
+    for _ in range(num_entries):
+        entry = {
+            'id': random.randint(1000000000, 9999999999),
+            'typeId': random.randint(1, 16),
+            'activityId': 0,
+            'activityName': None,
+            'activityType': None,
+            'activityStartDateTimeInGMT': None,
+            'actStartDateTimeInGMTFormatted': None,
+            'activityStartDateTimeLocal': None,
+            'activityStartDateTimeLocalFormatted': None,
+            'value': round(random.uniform(10, 1000000), 2),
+            'prTypeLabelKey': None,
+            'poolLengthUnit': None,
+        }
+
+        entry['prStartTimeGmt'] = int(
+            random_datetime(start_date, end_date).timestamp() * 1000
+        )
+        entry['prStartTimeGmtFormatted'] = datetime.utcfromtimestamp(
+            entry['prStartTimeGmt'] / 1000
+        ).strftime('%Y-%m-%dT%H:%M:%S.0')
+
+        entry['prStartTimeLocal'] = int(
+            random_datetime(start_date, end_date).timestamp() * 1000
+        )
+        entry['prStartTimeLocalFormatted'] = datetime.fromtimestamp(
+            entry['prStartTimeLocal'] / 1000
+        ).strftime('%Y-%m-%dT%H:%M:%S.0')
+
+        personal_record_data.append(entry)
+
+    return personal_record_data
+
+
+def get_activities(start_date, num_days):
+    activities_data = []
+
+    for _ in range(num_days):
+        # Generate random activity type, duration, and calories burned
+        activity_type = random.choice(['Running', 'Cycling', 'Walking', 'Swimming', 'Yoga'])
+        duration_minutes = random.randint(15, 120)
+        calories_burned = random.uniform(100, 600)
+
+        # Create date based on the start_date and current day index
+        calendar_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+
+        # Generate random user_profile_pk
+        user_profile_pk = random.randint(10000000, 99999999)
+
+        # Generate random timestamps
+        start_timestamp_gmt = f"{calendar_date}T07:00:00.0"
+        end_timestamp_gmt = (datetime.datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
+        start_timestamp_local = f"{calendar_date}T00:00:00.0"
+        end_timestamp_local = (datetime.datetime.strptime(start_timestamp_local, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
+
+        activity_entry = {
+            'userProfilePK': user_profile_pk,
+            'calendarDate': calendar_date,
+            'startTimestampGMT': start_timestamp_gmt,
+            'endTimestampGMT': end_timestamp_gmt,
+            'startTimestampLocal': start_timestamp_local,
+            'endTimestampLocal': end_timestamp_local,
+            'activityType': activity_type,
+            'durationMinutes': duration_minutes,
+            'caloriesBurned': calories_burned
+        }
+
+        activities_data.append(activity_entry)
+
+    return activities_data
+
+def generate_device_settings_data():
+    device_settings = []
+
+    # Generate random data for two devices
+    for _ in range(2):
+        device_data = {
+            'deviceId': random.randint(1000000000, 9999999999),
+            'timeFormat': random.choice(['time_twelve_hr', 'time_twenty_four_hr']),
+            'dateFormat': 'date_month_day',
+            'measurementUnits': random.choice(['statute_us', 'metric']),
+            'allUnits': 'statute_us' if random.choice([True, False]) else 'metric',
+            'visibleScreens': None,
+            'enabledScreens': {},
+            'screenLists': None,
+            'isVivohubEnabled': None,
+            'alarms': [],
+            'supportedAlarmModes': ['ON', 'OFF', 'DAILY', 'WEEKDAYS', 'WEEKENDS', 'ONCE'],
+            'multipleAlarmEnabled': True,
+            'maxAlarm': random.randint(0, 10),
+            'activityTracking': {
+                'activityTrackingEnabled': True,
+                'moveAlertEnabled': True,
+                'moveBarEnabled': None,
+                'pulseOxSleepTrackingEnabled': random.choice([True, False]),
+                'spo2Threshold': None,
+                'lowSpo2AlertEnabled': None,
+                'highHrAlertEnabled': random.choice([True, False]),
+                'highHrAlertThreshold': random.randint(80, 130),
+                'pulseOxAcclimationEnabled': random.choice([True, False]),
+                'lowHrAlertEnabled': random.choice([True, False]),
+                'lowHrAlertThreshold': random.randint(30, 70),
+                'bloodEfficiencySleepTrackingEnabled': None,
+                'bloodEfficiencyAcclimationEnabled': None
+            },
+            'keyTonesEnabled': None,
+            'keyVibrationEnabled': None,
+            'alertTonesEnabled': None,
+            'userNoticeTonesEnabled': None,
+            'glonassEnabled': None,
+            'turnPromptEnabled': None,
+            'segmentPromptEnabled': None,
+            'supportedLanguages': [
+                {'id': i, 'name': 'lang_{i}'}
+                for i in range(40)
+            ],
+            'language': random.randint(0, 39),
+            'supportedAudioPromptDialects': [
+                'AR_AE', 'CS_CZ', 'DA_DK', 'DE_DE', 'EL_GR', 'EN_AU', 'EN_GB', 'EN_US', 'ES_ES',
+                'ES_MX', 'FI_FI', 'FR_CA', 'FR_FR', 'HE_IL', 'HR_HR', 'HU_HU', 'ID_ID', 'IT_IT',
+                'JA_JP', 'KO_KR', 'MS_MY', 'NL_NL', 'NO_NO', 'PL_PL', 'PT_BR', 'RO_RO', 'RU_RU',
+                'SK_SK', 'SV_SE', 'TH_TH', 'TR_TR', 'VI_VI', 'ZH_CN', 'ZH_TW'
+            ],
+            'defaultPage': None,
+            'displayOrientation': None,
+            'mountingSide': 'RIGHT',
+            'backlightMode': 'AUTO_BRIGHTNESS',
+            'backlightSetting': 'ON',
+            'customWheelSize': None,
+            'gestureMode': None,
+            'goalAnimation': 'NOT_IN_ACTIVITY',
+            'autoSyncStepsBeforeSync': 2000,
+            'autoSyncMinutesBeforeSync': 240,
+            'bandOrientation': None,
+            'screenOrientation': None,
+            'duringActivity': {
+                'screens': None,
+                'defaultScreen': None,
+                'smartNotificationsStatus': 'SHOW_ALL',
+                'smartNotificationsSound': None,
+                'phoneNotificationPrivacyMode': None
+            },
+            'phoneVibrationEnabled': None,
+            'connectIQ': {
+                'autoUpdate': True
+            },
+            'opticalHeartRateEnabled': True,
+            'autoUploadEnabled': True,
+            'bleConnectionAlertEnabled': None,
+            'phoneNotificationMode': None,
+            'lactateThresholdAutoDetectEnabled': None,
+            'wiFiAutoUploadEnabled': None,
+            'blueToothEnabled': None,
+            'smartNotificationsStatus': 'SHOW_ALL',
+            'smartNotificationsSound': None,
+            'dndEnabled': random.choice([True, False]),
+            'distanceUnit': None,
+            'paceSpeedUnit': None,
+            'elevationUnit': None,
+            'weightUnit': None,
+            'heightUnit': None,
+            'temperatureUnit': None,
+            'runningFormat': None,
+            'cyclingFormat': None,
+            'hikingFormat': None,
+            'strengthFormat': None,
+            'cardioFormat': None,
+            'xcSkiFormat': None,
+            'otherFormat': None,
+            'startOfWeek': 'SUNDAY',
+            'dataRecording': 'SMART',
+            'soundVibrationEnabled': None,
+            'soundInAppOnlyEnabled': None,
+            'backlightKeysAndAlertsEnabled': None,
+            'backlightWristTurnEnabled': None,
+            'backlightTimeout': 'MEDIUM',
+            'supportedBacklightTimeouts': None,
+            'screenTimeout': None,
+            'colorTheme': None,
+            'autoActivityDetect': {
+                'autoActivityDetectEnabled': True,
+                'autoActivityStartEnabled': False,
+                'runningEnabled': True,
+                'cyclingEnabled': True,
+                'swimmingEnabled': True,
+                'walkingEnabled': True,
+                'ellipticalEnabled': True,
+                'drivingEnabled': True
+            },
+            'sleep': None,
+            'screenMode': None,
+            'watchFace': None,
+            'watchFaceItemList': None,
+            'multipleSupportedWatchFace': {},
+            'supportedScreenModes': None,
+            'supportedWatchFaces': None,
+            'supportedWatchFaceColors': None,
+            'autoSyncFrequency': None,
+            'supportedBacklightSettings': ['AUTO_INTERACTION_ONLY', 'AUTO_INTERACTION_GESTURE', 'OFF'],
+            'supportedColorThemes': None,
+            'disableLastEnabledScreen': None,
+            'nickname': None,
+            'avatar': None,
+            'controlsMenuList': [
+                {'id': 'POWER_OFF', 'index': 0, 'required': True},
+                {'id': 'PAYMENTS', 'index': 1, 'required': None},
+                {'id': 'MUSIC_CONTROLS', 'index': 2, 'required': None},
+                {'id': 'FIND_MY_PHONE', 'index': 3, 'required': None},
+                {'id': 'SAVE_LOCATION', 'index': 4, 'required': None},
+                {'id': 'DO_NOT_DISTURB', 'index': 5, 'required': None},
+                {'id': 'BLUETOOTH', 'index': 6, 'required': None},
+                {'id': 'STOPWATCH', 'index': 7, 'required': None},
+                {'id': 'BRIGHTNESS', 'index': 8, 'required': None},
+                {'id': 'LOCK_DEVICE', 'index': 9, 'required': None},
+                {'id': 'SYNC', 'index': None, 'required': None},
+                {'id': 'SET_TIME', 'index': None, 'required': None},
+                {'id': 'ALARMS', 'index': None, 'required': None},
+                {'id': 'TIMER', 'index': None, 'required': None},
+                {'id': 'FLASHLIGHT', 'index': None, 'required': None}
+            ],
+            'customUserText': None,
+            'metricsFileTrueupEnabled': True,
+            'relaxRemindersEnabled': True,
+            'smartNotificationTimeout': 'MEDIUM',
+            'intensityMinutesCalcMethod': 'AUTO',
+            'moderateIntensityMinutesHrZone': 3,
+            'vigorousIntensityMinutesHrZone': 4,
+            'keepUserNamePrivate': None,
+            'audioPromptLapEnabled': False,
+            'audioPromptSpeedPaceEnabled': False,
+            'audioPromptSpeedPaceType': 'AVERAGE',
+            'audioPromptSpeedPaceFrequency': 'INVALID',
+            'audioPromptSpeedPaceDuration': 180,
+            'audioPromptHeartRateEnabled': False,
+            'audioPromptHeartRateType': 'HEART_RATE',
+            'audioPromptHeartRateFrequency': 'INVALID',
+            'audioPromptHeartRateDuration': 180,
+            'audioPromptDialectType': None,
+            'audioPromptActivityAlertsEnabled': False,
+            'audioPromptPowerEnabled': False,
+            'audioPromptPowerType': 'AVERAGE',
+            'audioPromptPowerFrequency': 'INVALID',
+            'audioPromptPowerDuration': 180,
+            'weightOnlyModeEnabled': None,
+            'phoneNotificationPrivacyMode': 'OFF',
+            'diveAlerts': None,
+            'liveEventSharingEnabled': None,
+            'liveTrackEnabled': None,
+            'liveEventSharingEndTimestamp': None,
+            'liveEventSharingMsgContents': None,
+            'liveEventSharingTargetDistance': None,
+            'liveEventSharingMsgTriggers': None,
+            'liveEventSharingTriggerDistance': None,
+            'liveEventSharingTriggerTime': None,
+            'dbDrivenDefaults': None,
+            'schoolMode': None,
+            'customMeasurementDate': None,
+            'customBodyFatPercent': None,
+            'customMuscleMass': None,
+            'customDeviceWeight': None,
+            'customDeviceBodyFatPercent': None,
+            'customDeviceMuscleMass': None,
+            'vivohubEnabled': None
+        }
+
+        device_settings.append(device_data)
+
+    return device_settings
+
+def get_active_goals(start_date, num_days):
+    goal_types = ["step", "distance", "calories", "activeMinutes"]
+    end_date = start_date + datetime.timedelta(days=num_days)
+
+    active_goals = []
+
+    while start_date <= end_date:
+        active_goal = {
+            "goalType": random.choice(goal_types),
+            "goalValue": random.randint(1000, 10000),  # You can adjust the range as needed
+            "startDate": start_date,
+            "endDate": start_date
+        }
+        active_goals.append(active_goal)
+        start_date += datetime.timedelta(days=1)
+
+    return active_goals
+
+def get_future_goals(start_date, num_days):
+    goal_types = ["step", "distance", "calories", "activeMinutes"]
+    end_date = start_date + datetime.timedelta(days=num_days)
+
+    future_goals = []
+
+    while start_date <= end_date:
+        future_goal = {
+            "goalType": random.choice(goal_types),
+            "goalValue": random.randint(1000, 10000),  # You can adjust the range as needed
+            "startDate": start_date,
+            "endDate": start_date
+        }
+        future_goals.append(future_goal)
+        start_date += datetime.timedelta(days=1)
+
+    return future_goals
+
+def get_past_goals(start_date, num_days):
+    goal_types = ["step", "distance", "calories", "activeMinutes"]
+    end_date = start_date + datetime.timedelta(days=num_days)
+
+    past_goals = []
+
+    while start_date <= end_date:
+        past_goal = {
+            "goalType": random.choice(goal_types),
+            "goalValue": random.randint(1000, 10000),  # You can adjust the range as needed
+            "startDate": start_date,
+            "endDate": start_date
+        }
+        past_goals.append(past_goal)
+        start_date += datetime.timedelta(days=1)
+
+    return past_goals
+
+
+def get_weigh_ins(start_date, num_days):
+    end_date = start_date + datetime.timedelta(days=num_days)
+
+    weigh_ins = {
+        "dailyWeightSummaries": [],
+        "totalAverage": {
+            "from": start_date,
+            "until": end_date,
+            "weight": None,
+            "bmi": None,
+            "bodyFat": None,
+            "bodyWater": None,
+            "boneMass": None,
+            "muscleMass": None,
+            "physiqueRating": None,
+            "visceralFat": None,
+            "metabolicAge": None,
+        },
+        "previousDateWeight": {
+            "samplePk": None,
+            "date": None,
+            "calendarDate": None,
+            "weight": None,
+            "bmi": None,
+            "bodyFat": None,
+            "bodyWater": None,
+            "boneMass": None,
+            "muscleMass": None,
+            "physiqueRating": None,
+            "visceralFat": None,
+            "metabolicAge": None,
+            "sourceType": None,
+            "timestampGMT": None,
+            "weightDelta": None,
+        },
+        "nextDateWeight": {
+            "samplePk": None,
+            "date": None,
+            "calendarDate": None,
+            "weight": None,
+            "bmi": None,
+            "bodyFat": None,
+            "bodyWater": None,
+            "boneMass": None,
+            "muscleMass": None,
+            "physiqueRating": None,
+            "visceralFat": None,
+            "metabolicAge": None,
+            "sourceType": None,
+            "timestampGMT": None,
+            "weightDelta": None,
+        },
+    }
+
+    # Generate random weigh-in data for the total average
+    weigh_ins["totalAverage"]["weight"] = round(random.uniform(60, 90), 2)
+    weigh_ins["totalAverage"]["bmi"] = round(random.uniform(18, 30), 2)
+    weigh_ins["totalAverage"]["bodyFat"] = round(random.uniform(10, 25), 2)
+    weigh_ins["totalAverage"]["bodyWater"] = round(random.uniform(45, 65), 2)
+    weigh_ins["totalAverage"]["boneMass"] = round(random.uniform(2, 5), 2)
+    weigh_ins["totalAverage"]["muscleMass"] = round(random.uniform(30, 60), 2)
+    weigh_ins["totalAverage"]["physiqueRating"] = random.choice(["Good", "Average", "Excellent"])
+    weigh_ins["totalAverage"]["visceralFat"] = round(random.uniform(5, 15), 2)
+    weigh_ins["totalAverage"]["metabolicAge"] = random.randint(20, 60)
+
+    # Generate random weigh-in data for the previous and next date weights
+    weigh_ins["previousDateWeight"]["date"] = start_date - datetime.timedelta(days=1)
+    weigh_ins["previousDateWeight"]["weight"] = round(weigh_ins["totalAverage"]["weight"] - random.uniform(0, 2), 2)
+    weigh_ins["nextDateWeight"]["date"] = end_date + datetime.timedelta(days=1)
+    weigh_ins["nextDateWeight"]["weight"] = round(weigh_ins["totalAverage"]["weight"] + random.uniform(0, 2), 2)
+
+    # Generate random daily weight summaries
+    current_date = start_date
+    while current_date <= end_date:
+        summary = {
+            "date": current_date,
+            "calendarDate": current_date,
+            "weight": round(random.uniform(weigh_ins["totalAverage"]["weight"] - 1, weigh_ins["totalAverage"]["weight"] + 1), 2),
+        }
+        weigh_ins["dailyWeightSummaries"].append(summary)
+        current_date += datetime.timedelta(days=1)
+
+    return weigh_ins
+
+
+def get_weigh_ins_daily(start_date, num_days):
+    end_date = start_date + datetime.timedelta(days=num_days)
+
+    weigh_ins_daily = {
+        "startDate": start_date.strftime('%Y-%m-%d'),
+        "endDate": end_date.strftime('%Y-%m-%d'),
+        "dateWeightList": [],
+        "totalAverage": {
+            "from": int(start_date.timestamp() * 1000),
+            "until": int(end_date.timestamp() * 1000),
+            "weight": None,
+            "bmi": None,
+            "bodyFat": None,
+            "bodyWater": None,
+            "boneMass": None,
+            "muscleMass": None,
+            "physiqueRating": None,
+            "visceralFat": None,
+            "metabolicAge": None,
+        },
+    }
+
+    # Generate random weigh-in data for the total average
+    weigh_ins_daily["totalAverage"]["weight"] = round(random.uniform(60, 90), 2)
+    weigh_ins_daily["totalAverage"]["bmi"] = round(random.uniform(18, 30), 2)
+    weigh_ins_daily["totalAverage"]["bodyFat"] = round(random.uniform(10, 25), 2)
+    weigh_ins_daily["totalAverage"]["bodyWater"] = round(random.uniform(45, 65), 2)
+    weigh_ins_daily["totalAverage"]["boneMass"] = round(random.uniform(2, 5), 2)
+    weigh_ins_daily["totalAverage"]["muscleMass"] = round(random.uniform(30, 60), 2)
+    weigh_ins_daily["totalAverage"]["physiqueRating"] = random.choice(["Good", "Average", "Excellent"])
+    weigh_ins_daily["totalAverage"]["visceralFat"] = round(random.uniform(5, 15), 2)
+    weigh_ins_daily["totalAverage"]["metabolicAge"] = random.randint(20, 60)
+
+    # Generate random daily weight summaries
+    current_date = start_date
+    while current_date <= end_date:
+        summary = {
+            "date": current_date.strftime('%Y-%m-%d'),
+            "weight": round(random.uniform(weigh_ins_daily["totalAverage"]["weight"] - 1, weigh_ins_daily["totalAverage"]["weight"] + 1), 2),
+        }
+        weigh_ins_daily["dateWeightList"].append(summary)
+        current_date += datetime.timedelta(days=1)
+
+    return weigh_ins_daily
+
+def generate_random_hill_score(start_date, end_date):
+    hill_score = {
+        "userProfilePK": random.randint(80000000, 90000000),  # Generate a random user profile PK
+        "startDate": start_date.strftime('%Y-%m-%d'),
+        "endDate": end_date.strftime('%Y-%m-%d'),
+        "periodAvgScore": {},
+        "maxScore": None,
+        "hillScoreDTOList": [],
+    }
+
+    # Generate random period average scores for each day in the date range
+    current_date = start_date
+    while current_date <= end_date:
+        formatted_date = current_date.strftime('%Y-%m-%d')
+        hill_score["periodAvgScore"][formatted_date] = round(random.uniform(0, 100), 2)
+        current_date += datetime.timedelta(days=1)
+
+    # Generate a random max score
+    hill_score["maxScore"] = round(random.uniform(100, 200), 2)
+
+    # Generate random hill score DTO list
+    for _ in range(random.randint(0, 5)):  # Random number of hill score DTOs
+        score_dto = {
+            "date": random.choice(list(hill_score["periodAvgScore"].keys())),
+            "score": round(random.uniform(0, 100), 2),
+        }
+        hill_score["hillScoreDTOList"].append(score_dto)
+
+    return hill_score
+
+def generate_random_endurance_score(start_date, end_date):
+    endurance_score = {
+        "userProfilePK": random.randint(80000000, 90000000),  # Generate a random user profile PK
+        "startDate": start_date.strftime('%Y-%m-%d'),
+        "endDate": end_date.strftime('%Y-%m-%d'),
+        "avg": None,
+        "max": None,
+        "groupMap": {},
+        "enduranceScoreDTO": None,
+    }
+
+    # Generate random average and max values
+    endurance_score["avg"] = round(random.uniform(0, 100), 2)
+    endurance_score["max"] = round(random.uniform(100, 200), 2)
+
+    # Generate random group data for each day in the date range
+    current_date = start_date
+    while current_date <= end_date:
+        formatted_date = current_date.strftime('%Y-%m-%d')
+        group_data = {
+            "groupAverage": round(random.uniform(0, 100), 2),
+            "groupMax": round(random.uniform(100, 200), 2),
+            "enduranceContributorDTOList": [],
+        }
+
+        # Generate random endurance contributor DTOs
+        for _ in range(random.randint(0, 5)):  # Random number of contributor DTOs
+            contributor_dto = {
+                "date": formatted_date,
+                "score": round(random.uniform(0, 100), 2),
+            }
+            group_data["enduranceContributorDTOList"].append(contributor_dto)
+
+        endurance_score["groupMap"][formatted_date] = group_data
+        current_date += datetime.timedelta(days=7)
+
+    return endurance_score
 
 def delete_stuff(dates, steps, hrs, brpms):
     """Delete stuff randomly, since we want to simulate missing data.
