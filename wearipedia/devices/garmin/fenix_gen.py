@@ -1299,7 +1299,7 @@ def get_sleep_data(start_date, num_days):
     sleep_data = []
 
     for i in range(num_days):
-        date = (start_date + timedelta(days=i)).strftime('%Y-%m-%d')
+        date = (datetime.strptime(start_date, "%Y-%m-%d")  + timedelta(days=i)).strftime('%Y-%m-%d')
         sleep_time_seconds = random.randint(18000, 32400)  # Random sleep time between 5 and 9 hours
 
         sleep_entry = {
