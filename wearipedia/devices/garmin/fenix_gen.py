@@ -1915,6 +1915,7 @@ def get_active_goals_data(start_date, num_days):
     :rtype: List[Dict]
     """
     goal_types = ["step", "distance", "calories", "activeMinutes"]
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
     end_date = start_date + timedelta(days=num_days)
 
     active_goals = []
@@ -1948,6 +1949,7 @@ def get_future_goals_data(start_date, num_days):
     :rtype: List[Dict]
     """
     goal_types = ["step", "distance", "calories", "activeMinutes"]
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
     end_date = start_date + timedelta(days=num_days)
 
     future_goals = []
@@ -1981,6 +1983,7 @@ def get_past_goals_data(start_date, num_days):
     :rtype: List[Dict]
     """
     goal_types = ["step", "distance", "calories", "activeMinutes"]
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
     end_date = start_date + timedelta(days=num_days)
 
     past_goals = []
@@ -2013,6 +2016,7 @@ def get_weigh_ins_data(start_date, num_days):
     :return: A dictionary containing synthetic weigh-in data for the specified date range.
     :rtype: Dict
     """
+    start_date= datetime.strptime(start_date, "%Y-%m-%d")
     end_date = start_date + timedelta(days=num_days)
 
     weigh_ins = {
@@ -2112,6 +2116,7 @@ def get_weigh_ins_daily_data(start_date, num_days):
     :return: A dictionary containing synthetic daily weigh-in data for the specified date range.
     :rtype: Dict
     """
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
     end_date = start_date + timedelta(days=num_days)
 
     weigh_ins_daily = {
@@ -2173,14 +2178,16 @@ def get_hill_score_data(start_date, end_date):
     """
     hill_score = {
         "userProfilePK": random.randint(80000000, 90000000),  # Generate a random user profile PK
-        "startDate": start_date.strftime('%Y-%m-%d'),
-        "endDate": end_date.strftime('%Y-%m-%d'),
+        "startDate": datetime.strptime(start_date, "%Y-%m-%d"),
+        "endDate": datetime.strptime(end_date, "%Y-%m-%d"),
         "periodAvgScore": {},
         "maxScore": None,
         "hillScoreDTOList": [],
     }
 
     # Generate random period average scores for each day in the date range
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
     current_date = start_date
     while current_date <= end_date:
         formatted_date = current_date.strftime('%Y-%m-%d')
@@ -2217,8 +2224,8 @@ def get_endurance_score_data(start_date, end_date):
     """
     endurance_score = {
         "userProfilePK": random.randint(80000000, 90000000),  # Generate a random user profile PK
-        "startDate": start_date.strftime('%Y-%m-%d'),
-        "endDate": end_date.strftime('%Y-%m-%d'),
+        "startDate": datetime.strptime(start_date, "%Y-%m-%d"),
+        "endDate": datetime.strptime(end_date, "%Y-%m-%d"),
         "avg": None,
         "max": None,
         "groupMap": {},
@@ -2230,6 +2237,8 @@ def get_endurance_score_data(start_date, end_date):
     endurance_score["max"] = round(random.uniform(100, 200), 2)
 
     # Generate random group data for each day in the date range
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
     current_date = start_date
     while current_date <= end_date:
         formatted_date = current_date.strftime('%Y-%m-%d')
