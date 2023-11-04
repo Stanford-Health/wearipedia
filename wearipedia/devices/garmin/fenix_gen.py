@@ -1581,8 +1581,8 @@ def random_datetime(start_date, end_date):
     :return: A random datetime between start_date (inclusive) and end_date (exclusive).
     :rtype: datetime.datetime
     """
-    start_timestamp = start_date.timestamp()
-    end_timestamp = end_date.timestamp()
+    start_timestamp = datetime.strptime(start_date, "%Y-%m-%d").timestamp()
+    end_timestamp = datetime.strptime(end_date, "%Y-%m-%d").timestamp()
     random_timestamp = start_timestamp + random.random() * (end_timestamp - start_timestamp)
     return datetime.fromtimestamp(random_timestamp)
 
