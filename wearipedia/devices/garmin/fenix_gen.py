@@ -392,11 +392,11 @@ def get_steps_data(start_date, num_days):
 
     for _ in range(num_days):
         user_profile_pk = random.randint(10000000, 99999999)
-        calendar_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+        calendar_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
         create_time_stamp = f"{calendar_date}T14:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.000"
         start_timestamp_gmt = f"{calendar_date}T06:00:00.0"
         end_timestamp_gmt = f"{calendar_date}T13:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
-        start_timestamp_local = f"{(datetime.datetime.strptime(start_date, '%Y-%m-%d') - datetime.timedelta(days=1)).strftime('%Y-%m-%d')}T23:00:00.0"
+        start_timestamp_local = f"{(datetime.strptime(start_date, '%Y-%m-%d') - timedelta(days=1)).strftime('%Y-%m-%d')}T23:00:00.0"
         end_timestamp_local = f"{calendar_date}T06:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
 
         steps_entry = {
@@ -415,9 +415,9 @@ def get_steps_data(start_date, num_days):
         }
 
         # Generate step data for each interval within a day (e.g., 15-minute intervals)
-        interval_start = datetime.datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0")
+        interval_start = datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0")
         for i in range(96):  # 24 hours * 60 minutes / 15 minutes
-            interval_end = interval_start + datetime.timedelta(minutes=15)
+            interval_end = interval_start + timedelta(minutes=15)
             steps = random.randint(0, 200)
             steps_entry['stepsDetails'].append({
                 'startTimestampGMT': interval_start.strftime("%Y-%m-%dT%H:%M:%S.0"),
@@ -953,11 +953,11 @@ def get_heart_rate_data(start_date, num_days):
 
     for _ in range(num_days):
         user_profile_pk = random.randint(10000000, 99999999)
-        calendar_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+        calendar_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
         start_timestamp_gmt = f"{calendar_date}T07:00:00.0"
-        end_timestamp_gmt = (datetime.datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
+        end_timestamp_gmt = (datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0") + timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
         start_timestamp_local = f"{calendar_date}T00:00:00.0"
-        end_timestamp_local = (datetime.datetime.strptime(start_timestamp_local, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
+        end_timestamp_local = (datetime.strptime(start_timestamp_local, "%Y-%m-%dT%H:%M:%S.0") + timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
 
         # Randomly generate resting heart rate within a reasonable range (e.g., 50-90)
         resting_heart_rate = random.randint(50, 90)
@@ -1012,10 +1012,10 @@ def get_training_readiness_data(start_date, num_entries):
 
     for _ in range(num_entries):
         user_profile_pk = random.randint(10000000, 99999999)
-        calendar_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+        calendar_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
 
         timestamp = f"{calendar_date}T{random.randint(0, 23):02d}:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
-        timestamp_local = (datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(hours=7)).strftime("%Y-%m-%dT%H:%M:%S.0")
+        timestamp_local = (datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.0") + timedelta(hours=7)).strftime("%Y-%m-%dT%H:%M:%S.0")
 
         deviceId = random.randint(1000000000, 9999999999)
 
@@ -1114,7 +1114,7 @@ def get_blood_pressure_data(start_date, end_date, num_summaries):
     }
 
     for _ in range(num_summaries):
-        summary_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+        summary_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
         systolic = random.randint(90, 160)
         diastolic = random.randint(60, 100)
         heart_rate = random.randint(60, 100)
@@ -1661,16 +1661,16 @@ def get_activities_data(start_date, num_days):
         calories_burned = random.uniform(100, 600)
 
         # Create date based on the start_date and current day index
-        calendar_date = (datetime.datetime.strptime(start_date, "%Y-%m-%d") + datetime.timedelta(days=_)).strftime('%Y-%m-%d')
+        calendar_date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)).strftime('%Y-%m-%d')
 
         # Generate random user_profile_pk
         user_profile_pk = random.randint(10000000, 99999999)
 
         # Generate random timestamps
         start_timestamp_gmt = f"{calendar_date}T07:00:00.0"
-        end_timestamp_gmt = (datetime.datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
+        end_timestamp_gmt = (datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0") + timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
         start_timestamp_local = f"{calendar_date}T00:00:00.0"
-        end_timestamp_local = (datetime.datetime.strptime(start_timestamp_local, "%Y-%m-%dT%H:%M:%S.0") + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
+        end_timestamp_local = (datetime.strptime(start_timestamp_local, "%Y-%m-%dT%H:%M:%S.0") + timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
 
         activity_entry = {
             'userProfilePK': user_profile_pk,
@@ -1915,7 +1915,7 @@ def get_active_goals_data(start_date, num_days):
     :rtype: List[Dict]
     """
     goal_types = ["step", "distance", "calories", "activeMinutes"]
-    end_date = start_date + datetime.timedelta(days=num_days)
+    end_date = start_date + timedelta(days=num_days)
 
     active_goals = []
 
@@ -1927,7 +1927,7 @@ def get_active_goals_data(start_date, num_days):
             "endDate": start_date
         }
         active_goals.append(active_goal)
-        start_date += datetime.timedelta(days=1)
+        start_date += timedelta(days=1)
 
     return active_goals
 
@@ -1948,7 +1948,7 @@ def get_future_goals_data(start_date, num_days):
     :rtype: List[Dict]
     """
     goal_types = ["step", "distance", "calories", "activeMinutes"]
-    end_date = start_date + datetime.timedelta(days=num_days)
+    end_date = start_date + timedelta(days=num_days)
 
     future_goals = []
 
@@ -1960,7 +1960,7 @@ def get_future_goals_data(start_date, num_days):
             "endDate": start_date
         }
         future_goals.append(future_goal)
-        start_date += datetime.timedelta(days=1)
+        start_date += timedelta(days=1)
 
     return future_goals
 
@@ -1981,7 +1981,7 @@ def get_past_goals_data(start_date, num_days):
     :rtype: List[Dict]
     """
     goal_types = ["step", "distance", "calories", "activeMinutes"]
-    end_date = start_date + datetime.timedelta(days=num_days)
+    end_date = start_date + timedelta(days=num_days)
 
     past_goals = []
 
@@ -1993,7 +1993,7 @@ def get_past_goals_data(start_date, num_days):
             "endDate": start_date
         }
         past_goals.append(past_goal)
-        start_date += datetime.timedelta(days=1)
+        start_date += timedelta(days=1)
 
     return past_goals
 
@@ -2013,7 +2013,7 @@ def get_weigh_ins_data(start_date, num_days):
     :return: A dictionary containing synthetic weigh-in data for the specified date range.
     :rtype: Dict
     """
-    end_date = start_date + datetime.timedelta(days=num_days)
+    end_date = start_date + timedelta(days=num_days)
 
     weigh_ins = {
         "dailyWeightSummaries": [],
@@ -2078,9 +2078,9 @@ def get_weigh_ins_data(start_date, num_days):
     weigh_ins["totalAverage"]["metabolicAge"] = random.randint(20, 60)
 
     # Generate random weigh-in data for the previous and next date weights
-    weigh_ins["previousDateWeight"]["date"] = start_date - datetime.timedelta(days=1)
+    weigh_ins["previousDateWeight"]["date"] = start_date - timedelta(days=1)
     weigh_ins["previousDateWeight"]["weight"] = round(weigh_ins["totalAverage"]["weight"] - random.uniform(0, 2), 2)
-    weigh_ins["nextDateWeight"]["date"] = end_date + datetime.timedelta(days=1)
+    weigh_ins["nextDateWeight"]["date"] = end_date + timedelta(days=1)
     weigh_ins["nextDateWeight"]["weight"] = round(weigh_ins["totalAverage"]["weight"] + random.uniform(0, 2), 2)
 
     # Generate random daily weight summaries
@@ -2092,7 +2092,7 @@ def get_weigh_ins_data(start_date, num_days):
             "weight": round(random.uniform(weigh_ins["totalAverage"]["weight"] - 1, weigh_ins["totalAverage"]["weight"] + 1), 2),
         }
         weigh_ins["dailyWeightSummaries"].append(summary)
-        current_date += datetime.timedelta(days=1)
+        current_date += timedelta(days=1)
 
     return weigh_ins
 
@@ -2112,7 +2112,7 @@ def get_weigh_ins_daily_data(start_date, num_days):
     :return: A dictionary containing synthetic daily weigh-in data for the specified date range.
     :rtype: Dict
     """
-    end_date = start_date + datetime.timedelta(days=num_days)
+    end_date = start_date + timedelta(days=num_days)
 
     weigh_ins_daily = {
         "startDate": start_date.strftime('%Y-%m-%d'),
@@ -2152,7 +2152,7 @@ def get_weigh_ins_daily_data(start_date, num_days):
             "weight": round(random.uniform(weigh_ins_daily["totalAverage"]["weight"] - 1, weigh_ins_daily["totalAverage"]["weight"] + 1), 2),
         }
         weigh_ins_daily["dateWeightList"].append(summary)
-        current_date += datetime.timedelta(days=1)
+        current_date += timedelta(days=1)
 
     return weigh_ins_daily
 
@@ -2185,7 +2185,7 @@ def get_hill_score_data(start_date, end_date):
     while current_date <= end_date:
         formatted_date = current_date.strftime('%Y-%m-%d')
         hill_score["periodAvgScore"][formatted_date] = round(random.uniform(0, 100), 2)
-        current_date += datetime.timedelta(days=1)
+        current_date += timedelta(days=1)
 
     # Generate a random max score
     hill_score["maxScore"] = round(random.uniform(100, 200), 2)
@@ -2248,7 +2248,7 @@ def get_endurance_score_data(start_date, end_date):
             group_data["enduranceContributorDTOList"].append(contributor_dto)
 
         endurance_score["groupMap"][formatted_date] = group_data
-        current_date += datetime.timedelta(days=7)
+        current_date += timedelta(days=7)
 
     return endurance_score
 
