@@ -8,3 +8,4 @@
 - Hetav Modi (hetav.1805@gmail.com)
 - Jack Hung (jjhung66@stanford.edu)
 - Saarth Shah (sashah@ucsd.edu)
+- Suvan Kumar (kumarsuvan0@gmail.com)
