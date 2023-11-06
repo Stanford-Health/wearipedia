@@ -73,6 +73,10 @@ def get_all_device_names():
         "polar/h10",
         "polar/verity_sense",
         "nutrisense/cgm",
+        "fitbit/fitbit_charge_4",
+        "fitbit/fitbit_sense",
+        "oura/oura_ring3",
+        "coros/coros_pace_2",
         "polar/vantage",
         "strava/strava",
         "underarmour/myfitnesspal",
@@ -133,6 +137,21 @@ _DEVICE_TO_AUTH_DICT = {
         "email": get_os("POLAR_EMAIL"),
         "password": get_os("POLAR_PASSWORD"),
     },
+    "fitbit/fitbit_charge_4": {
+        "client_id": get_os("FITBIT_CLIENT_ID"),
+        "client_secret": get_os("FITBIT_CLIENT_SECRET"),
+    },
+    "fitbit/fitbit_sense": {
+        "client_id": get_os("FITBIT_CLIENT_ID"),
+        "client_secret": get_os("FITBIT_CLIENT_SECRET"),
+    },
+    "oura/oura_ring3": {
+        "client_id": get_os("OURA_CLIENT_ID"),
+        "client_secret": get_os("OURA_CLIENT_SECRET"),
+    },
+    "coros/coros_pace_2": {
+        "client_id": get_os("COROS_CLIENT_ID"),
+        "client_secret": get_os("COROS_CLIENT_SECRET"),
     "polar/vantage": {
         "email": get_os("POLAR_EMAIL"),
         "password": get_os("POLAR_PASSWORD"),
