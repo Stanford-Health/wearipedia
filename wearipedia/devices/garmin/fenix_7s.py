@@ -26,7 +26,57 @@ class Fenix7S(BaseDevice):
 
     * `hrs`: a sibling list to `dates` that contains heart rate data for each day
 
-    * `brpms`: a sibling list to `dates` that contains breath rate data for each day
+    * `hr`: a sibling list to `dates` that contains heart rate data for each day
+
+    * `stats`: a sibling list to `dates` that contains general statistics data for each day
+
+    * `user_summary`: a sibling list to `dates` that contains user summary data for each day
+
+    * `body_composition`: a sibling list to `dates` that contains body composition data for each day
+
+    * `training_readiness`: a sibling list to `dates` that contains training readiness data for each day
+
+    * `blood_pressure`: a sibling list to `dates` that contains blood pressure data for each day
+
+    * `floors`: a dictionary containing floors data for the specified date range
+
+    * `training_status`: a sibling list to `dates` that contains training status data for each day
+
+    * `resting_hr`: a sibling list to `dates` that contains resting heart rate data for each day
+
+    * `hydration`: a sibling list to `dates` that contains hydration data for each day
+
+    * `sleep`: a sibling list to `dates` that contains sleep data for each day
+
+    * `earned_badges`: a sibling list to `dates` that contains earned badges data for each day
+
+    * `stress`: a sibling list to `dates` that contains stress data for each day
+
+    * `respiration`: a sibling list to `dates` that contains respiration data for each day
+
+    * `spo2`: a sibling list to `dates` that contains blood oxygen saturation data for each day
+
+    * `metrics`: a sibling list to `dates` that contains various metrics data for each day
+
+    * `personal_record`: a sibling list to `dates` that contains personal record data for each day
+
+    * `activities`: a sibling list to `dates` that contains activity data for each day
+
+    * `device_settings`: a dictionary containing device settings data
+
+    * `active_goals`: a sibling list to `dates` that contains active goals data for each day
+
+    * `future_goals`: a sibling list to `dates` that contains future goals data for each day
+
+    * `past_goals`: a sibling list to `dates` that contains past goals data for each day
+
+    * `weigh_ins`: a sibling list to `dates` that contains weigh-ins data for each day
+
+    * `weigh_ins_daily`: a sibling list to `dates` that contains daily weigh-ins data for each day
+
+    * `hill_score`: a dictionary containing hill score data for the specified date range
+
+    * `endurance_score`: a dictionary containing endurance score data for the specified date range
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -114,30 +164,12 @@ class Fenix7S(BaseDevice):
             params["start_date"], params["end_date"], data_type, self.api
         )
 
-    def _filter_synthetic(self, data, data_type, params):
-        # Here we just return the data we've already generated,
-        # but index into it based on the params. Specifically, we
-        # want to return the data between the start and end dates.
-
-        date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
-
-        # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
-
-        start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
-        end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
-
-        return data
-
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
 
         # and based on start and end dates
         (self.dates,
-         self.osteps,
-         self.ohrs,
-         self.obrpms,
          self.hrv,
          self.steps,
          self.stats,
