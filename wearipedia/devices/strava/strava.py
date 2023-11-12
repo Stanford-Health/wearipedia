@@ -98,7 +98,7 @@ class Strava(BaseDevice):
         }
 
     def _get_real(self, data_type, params):
-        if params['id']:
+        if 'id' in params:
             return fetch_real_data(
                 self, params["start_date"], params["end_date"], data_type, params["id"]
             )
