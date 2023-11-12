@@ -14,7 +14,7 @@ def dateConvert(date_string):
     return int(time.mktime(time.strptime(date_string, "%Y-%m-%d")))
 
 
-def fetch_real_data(self, start_date, end_date, data_type):
+def fetch_real_data(self, start_date, end_date, data_type, id = None):
     # URL to access all of participant's activities.
 
     stream_data = set(['heartrate'])
@@ -23,7 +23,7 @@ def fetch_real_data(self, start_date, end_date, data_type):
 
     if data_type in stream_data:
         # URL for the API request
-        activities_url = f"https://www.strava.com/api/v3/activities/8228598438/streams"
+        activities_url = f"https://www.strava.com/api/v3/activities/{id}/streams"
         # Header that sends the Access Token in the GET request
         headers = {"Authorization": "Bearer " + self.access_token}
         # Parameters for the GET request
