@@ -44,6 +44,8 @@ class Strava(BaseDevice):
 
     * `kilojoules`: a list that contains kilojoules for each run recorded
 
+    * `heartrate`: a list that contains heartrate for each run recorded
+
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -79,6 +81,7 @@ class Strava(BaseDevice):
                 "average_cadence",
                 "average_watts",
                 "kilojoules",
+                "heartrate"
             ],
             params,
             {
