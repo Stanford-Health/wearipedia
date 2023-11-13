@@ -152,6 +152,7 @@ _DEVICE_TO_AUTH_DICT = {
     "coros/coros_pace_2": {
         "client_id": get_os("COROS_CLIENT_ID"),
         "client_secret": get_os("COROS_CLIENT_SECRET"),
+    },
     "polar/vantage": {
         "email": get_os("POLAR_EMAIL"),
         "password": get_os("POLAR_PASSWORD"),

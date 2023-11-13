@@ -89,6 +89,7 @@ exclude = '''
     | dist
     | env
     | venv
+    | docs
 )/
 '''
 
