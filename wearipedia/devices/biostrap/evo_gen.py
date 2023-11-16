@@ -2,6 +2,8 @@ import math
 import random
 from datetime import datetime, timedelta
 
+import numpy as np
+
 
 def create_syn_data(start_date, end_date):
     """
@@ -37,7 +39,11 @@ def create_syn_data(start_date, end_date):
 
     TZ_OFFSET = -420
 
-    # Helper functions for biometric data generation
+    # Helper function to add Gaussian noise with a mean of 0 and a small standard deviation
+    def gaussian_noise():
+        return np.random.normal(0, 1)
+
+    # Modified synthetic biometrics generator function
     def synthetic_biometrics(start_date_obj, end_date_obj):
         bpm = {}
         brpm = {}
@@ -45,49 +51,108 @@ def create_syn_data(start_date, end_date):
         spo2 = {}
 
         curr_date_obj = start_date_obj
+        time_index = 0
 
-        # We add continuous and periodic fluctuations this time by using a sinusoidal function or a combination of sinusoidal functions, combined with random noise.
-        # This introduces some sort of temporal correlation.
-
-        time_index = (
-            0  # This will be used as a reference point for our sinusoidal function
-        )
+        # Store the last minute's average bpm to calculate brpm
+        last_minute_bpm = []
 
         while curr_date_obj <= end_date_obj:
             curr_time = curr_date_obj
             while curr_time < curr_date_obj + timedelta(days=1):
                 key = (curr_time.strftime("%Y-%m-%d %H:%M:%S"), TZ_OFFSET)
 
-                # Sinusoidal function for bpm
-                bpm_val = int(
-                    75 + 10 * math.sin(math.pi * time_index / 180)
-                ) + random.randint(-5, 5)
+                # Sinusoidal function for bpm with Gaussian noise
+                bpm_val = (
+                    int(60 + 15 * math.sin(math.pi * time_index / (180 * 5)))
+                    + gaussian_noise()
+                )
                 bpm[key] = bpm_val
 
-                # Check if the total seconds since start_date_obj is a multiple of 60
-                total_seconds_since_start = int(
-                    (curr_time - start_date_obj).total_seconds()
+                # Update last minute bpm values
+                last_minute_bpm.append(bpm_val)
+                if len(last_minute_bpm) > 6:  # More than a minute's worth of data
+                    last_minute_bpm.pop(0)
+
+                # Calculate brpm every 10 seconds but use the average bpm of the last minute
+                avg_last_minute_bpm = sum(last_minute_bpm) / len(last_minute_bpm)
+                brpm_val = (
+                    12 + (avg_last_minute_bpm - 60) / 5 + gaussian_noise()
+                )  # Basic linear relation with noise
+                brpm[key] = brpm_val
+
+                # Sinusoidal function for hrv with Gaussian noise
+                hrv_val = (
+                    int(30 + 15 * math.cos(math.pi * time_index / (360 * 5)))
+                    + gaussian_noise()
                 )
-                if total_seconds_since_start % 60 == 0:
-                    # Conditional brpm based on bpm
-                    brpm[key] = (
-                        random.randint(12, 20)
-                        if bpm_val < 80
-                        else random.randint(16, 24)
-                    )
+                hrv[key] = hrv_val
 
-                hrv[key] = int(
-                    45 + 10 * math.sin(math.pi * time_index / 360)
-                ) + random.randint(-5, 5)
-
-                spo2[key] = random.randint(95, 100)
+                # For spo2, simulate a small fluctuation around a high baseline
+                spo2_val = (
+                    98
+                    + 0.5 * math.sin(math.pi * time_index / (180 * 30))
+                    + gaussian_noise()
+                )
+                spo2[key] = spo2_val
 
                 curr_time += timedelta(seconds=10)
-                time_index += 10  # Increase our reference point
+                time_index += 10
 
             curr_date_obj += timedelta(days=1)
 
         return bpm, brpm, hrv, spo2
+
+    # # Helper functions for biometric data generation
+    # def synthetic_biometrics(start_date_obj, end_date_obj):
+    #     bpm = {}
+    #     brpm = {}
+    #     hrv = {}
+    #     spo2 = {}
+
+    #     curr_date_obj = start_date_obj
+
+    #     # We add continuous and periodic fluctuations this time by using a sinusoidal function or a combination of sinusoidal functions, combined with random noise.
+    #     # This introduces some sort of temporal correlation.
+
+    #     time_index = (
+    #         0  # This will be used as a reference point for our sinusoidal function
+    #     )
+
+    #     while curr_date_obj <= end_date_obj:
+    #         curr_time = curr_date_obj
+    #         while curr_time < curr_date_obj + timedelta(days=1):
+    #             key = (curr_time.strftime("%Y-%m-%d %H:%M:%S"), TZ_OFFSET)
+
+    #             # Sinusoidal function for bpm
+    #             bpm_val = int(
+    #                 75 + 10 * math.sin(math.pi * time_index / 180)
+    #             ) + random.randint(-5, 5)
+    #             bpm[key] = bpm_val
+
+    #             # Check if the total seconds since start_date_obj is a multiple of 60
+    #             total_seconds_since_start = int(
+    #                 (curr_time - start_date_obj).total_seconds()
+    #             )
+    #             if total_seconds_since_start % 60 == 0:
+    #                 # Conditional brpm based on bpm
+    #                 brpm[key] = (
+    #                     random.randint(12, 20)
+    #                     if bpm_val < 80
+    #                     else random.randint(16, 24)
+    #                 )
+
+    #             hrv[key] = int(
+    #                 45 + 10 * math.sin(math.pi * time_index / 360)
+    #             ) + random.randint(-5, 5)
+
+    #             spo2[key] = random.randint(95, 100)
+
+    #             curr_time += timedelta(seconds=10)
+    #             time_index += 10  # Increase our reference point
+
+    #         curr_date_obj += timedelta(days=1)
+
+    #     return bpm, brpm, hrv, spo2
 
     def synthetic_steps_distance_per_minute(bpm_dict):
         steps_dict = {}
