@@ -45,7 +45,7 @@ class Strava(BaseDevice):
 
     * `kilojoules`: a list that contains kilojoules for each run recorded
 
-    * `heartrate`: a list that contains heartrate for each run recorded
+    * `heartrate`: a list that contains heartrate for each run recorded (stream data)
 
 
     :param seed: random seed for synthetic data generation, defaults to 0
@@ -115,7 +115,7 @@ class Strava(BaseDevice):
         stream_data = set(['heartrate'])
 
         if data_type in stream_data:
-            return return_streams_syn(data_type)
+            return data
 
         def date_str_to_obj(x):
             return datetime.strptime(x, "%Y-%m-%d")
@@ -207,6 +207,7 @@ class Strava(BaseDevice):
             .to_dict("index")
             .values()
         )
+        self.heartrate = return_streams_syn('heartrate')
 
     def _authenticate(self, auth_creds):
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
