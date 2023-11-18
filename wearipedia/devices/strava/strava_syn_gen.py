@@ -88,6 +88,15 @@ def create_syn_data(start_date, end_date):
     # Generating random map summary polyline
     def map_summary_polyline_generator(x):
         return polyline.encode(x)
+    
+    def generate_synthetic_heart_rate_data(size=np.random.randint.randint(60,1800), min_hr=60, max_hr=160):
+        heart_rate_data = {'heartrate': {'data': [], 'series_type': 'time', 'original_size': size, 'resolution': 'high'},
+                        'time': {'data': list(range(size)), 'series_type': 'time', 'original_size': size, 'resolution': 'high'}}
+        
+        for _ in range(size):
+            heart_rate_data['heartrate']['data'].append(np.random.randint(min_hr, max_hr))
+
+        return [heart_rate_data]
 
     # Creating a dataframe to store all the generated data
     synthetic_df = pd.DataFrame(
@@ -146,6 +155,7 @@ def create_syn_data(start_date, end_date):
                 "average_cadence": avg_cadence_generator(d),
                 "average_watts": avg_watt_generator(d),
                 "kilojoules": kilo_joule_gen(distance),
+                "heartrate": generate_synthetic_heart_rate_data(size=distance)
             }
         )
         synthetic_df = pd.concat([synthetic_df, entry], ignore_index=True)
