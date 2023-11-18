@@ -32,7 +32,7 @@ def fetch_real_data(self, start_date, end_date, data_type, id = ''):
         headers = {"Authorization": "Bearer " + self.access_token}
         # Parameters for the GET request
         params = {
-            "keys": ["heartrate"],
+            "keys": [data_type],
             "key_by_type": True
         }
 

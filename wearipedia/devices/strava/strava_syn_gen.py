@@ -89,7 +89,7 @@ def create_syn_data(start_date, end_date):
     def map_summary_polyline_generator(x):
         return polyline.encode(x)
     
-    def generate_synthetic_heart_rate_data(size=np.random.randint.randint(60,1800), min_hr=60, max_hr=160):
+    def generate_synthetic_heart_rate_data(size=np.random.randint(60,1800), min_hr=60, max_hr=160):
         heart_rate_data = {'heartrate': {'data': [], 'series_type': 'time', 'original_size': size, 'resolution': 'high'},
                         'time': {'data': list(range(size)), 'series_type': 'time', 'original_size': size, 'resolution': 'high'}}
         
