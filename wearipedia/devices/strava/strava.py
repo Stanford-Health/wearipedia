@@ -45,7 +45,7 @@ class Strava(BaseDevice):
 
     * `kilojoules`: a list that contains kilojoules for each run recorded
 
-    * `heartrate`: a list that contains heartrate for each run recorded (stream data)
+    * `heartrate`: a list that contains heartrate for each run recorded (stream data). Use id to specify the specific activity.
 
 
     :param seed: random seed for synthetic data generation, defaults to 0
@@ -56,6 +56,8 @@ class Strava(BaseDevice):
     :type synthetic_end_date: str, optional
     :param use_cache: decide whether to cache the credentials, defaults to True
     :type use_cache: bool, optional
+    :param id : id of the activity, defaults to '', required for stream data
+    :type id: str, optional
     """
 
     def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
