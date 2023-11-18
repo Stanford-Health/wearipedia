@@ -22,6 +22,10 @@ def fetch_real_data(self, start_date, end_date, data_type, id = None):
     activites_url = "https://www.strava.com/api/v3/athlete/activities"
 
     if data_type in stream_data:
+        
+        if id is None:
+            raise ValueError("id must be provided for stream data")
+
         # URL for the API request
         activities_url = f"https://www.strava.com/api/v3/activities/{id}/streams"
         # Header that sends the Access Token in the GET request
