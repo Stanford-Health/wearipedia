@@ -14,7 +14,7 @@ def dateConvert(date_string):
     return int(time.mktime(time.strptime(date_string, "%Y-%m-%d")))
 
 
-def fetch_real_data(self, start_date, end_date, data_type, id = None):
+def fetch_real_data(self, start_date, end_date, data_type, id = ''):
     # URL to access all of participant's activities.
 
     stream_data = set(['heartrate'])
@@ -23,7 +23,7 @@ def fetch_real_data(self, start_date, end_date, data_type, id = None):
 
     if data_type in stream_data:
         
-        if id is None:
+        if id == '':
             raise ValueError("id must be provided for stream data")
 
         # URL for the API request
