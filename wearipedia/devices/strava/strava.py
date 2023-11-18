@@ -7,6 +7,7 @@ from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .strava_fetch import *
 from .strava_syn_gen import *
+from .strava_syn_gen_streams import *
 
 class_name = "Strava"
 
@@ -110,6 +111,11 @@ class Strava(BaseDevice):
         # Here we just return the data we've already generated,
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
+
+        stream_data = set(['heartrate'])
+
+        if data_type in stream_data:
+            return return_streams_syn(data_type)
 
         def date_str_to_obj(x):
             return datetime.strptime(x, "%Y-%m-%d")
