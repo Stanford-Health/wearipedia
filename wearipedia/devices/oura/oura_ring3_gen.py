@@ -329,10 +329,14 @@ def get_heart_rate(date):
                 random.randint(50, 70), bpm
             )  # Ensure heart rate doesn't go below 50 bpm
 
+        formatted_timestamp = (date + timedelta(minutes=i)).strftime(
+            "%Y-%m-%dT%H:%M:%S+00:00"
+        )
+
         heart_rate_entry = {
             "bpm": bpm,
             "source": status,
-            "timestamp": datetime.fromtimestamp(timestamp + i).strftime("%Y-%m-%d"),
+            "timestamp": formatted_timestamp,
         }
 
         heart_rate_data.append(heart_rate_entry)
