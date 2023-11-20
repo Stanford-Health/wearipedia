@@ -60,6 +60,8 @@ def get_all_device_names():
     """
 
     return [
+        "apple/healthkit",
+        "cronometer/cronometer",
         "whoop/whoop_4",
         "withings/scanwatch",
         "withings/bodyplus",
@@ -67,12 +69,17 @@ def get_all_device_names():
         "dreem/headband_2",
         "dexcom/pro_cgm",
         "garmin/fenix_7s",
+        "google/googlefit",
+        "polar/h10",
         "polar/verity_sense",
         "nutrisense/cgm",
         "fitbit/fitbit_charge_4",
         "fitbit/fitbit_sense",
         "oura/oura_ring3",
         "coros/coros_pace_2",
+        "polar/vantage",
+        "strava/strava",
+        "underarmour/myfitnesspal",
     ]
 
 
@@ -145,6 +152,9 @@ _DEVICE_TO_AUTH_DICT = {
     "coros/coros_pace_2": {
         "client_id": get_os("COROS_CLIENT_ID"),
         "client_secret": get_os("COROS_CLIENT_SECRET"),
+    "polar/vantage": {
+        "email": get_os("POLAR_EMAIL"),
+        "password": get_os("POLAR_PASSWORD"),
     },
 }
 
