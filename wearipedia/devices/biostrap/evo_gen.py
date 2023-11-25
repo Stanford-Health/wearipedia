@@ -39,18 +39,18 @@ def create_syn_data(start_date, end_date):
 
     TZ_OFFSET = -420
 
-    # Adjusted Gaussian noise functions for each biometric with smaller standard deviations
+    # Adjusted Gaussian noise functions for each biometric with more realistic standard deviations
     def gaussian_noise_bpm():
-        return np.random.normal(0, 1)
+        return np.random.normal(0, 0.5)  # Reduced standard deviation for less noise
 
     def gaussian_noise_brpm():
-        return np.random.normal(0, 0.5)
+        return np.random.normal(0, 1)  # Reduced standard deviation for less noise
 
     def gaussian_noise_hrv():
-        return np.random.normal(0, 2)
+        return np.random.normal(0, 1)  # Reduced standard deviation for less noise
 
     def gaussian_noise_spo2():
-        return np.random.normal(0, 0.1)
+        return np.random.normal(0, 0.05)  # Reduced standard deviation for minimal noise
 
     # Modified synthetic biometrics generator function with more realistic modifications
     def synthetic_biometrics(start_date_obj, end_date_obj):
@@ -70,9 +70,9 @@ def create_syn_data(start_date, end_date):
             while curr_time < curr_date_obj + timedelta(days=1):
                 key = (curr_time.strftime("%Y-%m-%d %H:%M:%S"), TZ_OFFSET)
 
-                # More realistic sinusoidal function for bpm with Gaussian noise
+                # Adjusted sinusoidal function for bpm with less amplitude and Gaussian noise
                 bpm_val = (
-                    int(60 + 10 * math.sin(2 * math.pi * time_index / 86400))
+                    int(60 + 5 * math.sin(2 * math.pi * time_index / 86400))
                     + gaussian_noise_bpm()
                 )
                 bpm[key] = bpm_val
@@ -82,24 +82,24 @@ def create_syn_data(start_date, end_date):
                 if len(last_minute_bpm) > 6:  # More than a minute's worth of data
                     last_minute_bpm.pop(0)
 
-                # More realistic brpm calculation with smoother transitions and noise
+                # Adjusted brpm calculation with less sensitivity to bpm
                 avg_last_minute_bpm = sum(last_minute_bpm) / len(last_minute_bpm)
-                brpm_val = 12 + (avg_last_minute_bpm - 60) / 5 + gaussian_noise_brpm()
+                brpm_val = 12 + (avg_last_minute_bpm - 60) / 10 + gaussian_noise_brpm()
                 brpm_val = max(
                     12, min(20, brpm_val)
                 )  # Clamp to normal resting respiration rate
                 brpm[key] = brpm_val
 
-                # More realistic hrv calculation with Gaussian noise
+                # Adjusted hrv calculation with less amplitude and Gaussian noise
                 hrv_val = (
-                    int(40 + 10 * math.cos(2 * math.pi * time_index / 86400))
+                    int(40 + 5 * math.cos(2 * math.pi * time_index / 86400))
                     + gaussian_noise_hrv()
                 )
                 hrv[key] = hrv_val
 
-                # Slightly variable spo2 with very minimal Gaussian noise
+                # Adjusted spo2 to have very minimal variability
                 spo2_val = (
-                    int(98 + 0.5 * math.sin(2 * math.pi * time_index / 86400))
+                    int(98 + 0.1 * math.sin(2 * math.pi * time_index / 86400))
                     + gaussian_noise_spo2()
                 )
                 spo2_val = max(95, min(100, spo2_val))  # Clamp to normal SpO2 levels
