@@ -106,6 +106,8 @@ class Oura_Ring_3(BaseDevice):
         self.readiness = syn_data["readiness"]
         self.heart_rate = syn_data["heart_rate"]
 
-    def _authenticate(self):
-
-        self.user = oura_token()
+    def _authenticate(self, token=""):
+        if token == "":
+            self.user = oura_token()
+        else:
+            self.user = token
