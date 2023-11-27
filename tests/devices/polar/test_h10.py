@@ -21,21 +21,55 @@ def test_h10(real):
 
     for start_date, end_date in zip(start_dates, end_dates):
         device = wearipedia.get_device(
-            "polar/verity_sense",
+            "polar/h10",
             start_date=np.datetime_as_string(start_date, unit="D"),
             end_date=np.datetime_as_string(end_date, unit="D"),
         )
 
         if real:
-            wearipedia._authenticate_device("polar/verity_sense", device)
+            wearipedia._authenticate_device("polar/h10", device)
 
-        data = device.get_data("sessions")
+        sessions = device.get_data("sessions")
+        rr = device.get_data("rr")
 
         # run tests for device
-        helper(data, start_date, end_date, real)
+        session_tests(sessions, start_date, end_date, real)
+        rr_tests(rr, start_date, end_date, real)
 
 
-def helper(data, start_synthetic, end_synthetic, real):
+def rr_tests(data, start_synthetic, end_synthetic, real):
+    if real:
+        for key in data.keys():
+            assert (
+                start_synthetic < np.datetime64(key) < end_synthetic
+            ), f"expected all data to be between start and end, but got {key}, which is not between {start_synthetic} and {end_synthetic}"
+
+    else:
+        # assert we have the right range of sessions
+        assert (
+            int(
+                (np.datetime64(list(data.keys())[0]) - start_synthetic)
+                / np.timedelta64(1, "D")
+            )
+            >= 0
+        ), f"Expected first entry to be after {start_synthetic}, but got {list(data.keys())[0]}"
+        assert (
+            int(
+                (np.datetime64(list(data.keys())[-1]) - end_synthetic)
+                / np.timedelta64(1, "D")
+            )
+            <= 0
+        ), f"Expected last entry to be before {end_synthetic} but got {list(data.keys())[-1]}"
+
+    # assert that the RR intervals are within reasonable range
+    for key in data.keys():
+        for rr in data[key]["rr"]:
+            assert (
+                200 <= rr <= 2500
+            ), f"RR interval should be between 200 and 2500, but received {rr}"
+
+
+def session_tests(data, start_synthetic, end_synthetic, real):
     if real:
         for key in data.keys():
             assert (
