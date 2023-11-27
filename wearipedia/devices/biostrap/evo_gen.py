@@ -200,6 +200,7 @@ def create_syn_data(start_date, end_date):
         activity_date = (start_date_obj + (end_date_obj - start_date_obj) / 2).strftime(
             "%Y-%m-%d"
         )  # choose a day in the middle of the range
+
         return {
             "activity_date": activity_date,
             "type": "Running",
@@ -213,6 +214,7 @@ def create_syn_data(start_date, end_date):
         }
 
     def synthetic_sleep_session(bpm_dict):
+        print(f"This is the {bpm_dict}")
         # Extracting nighttime bpm readings
         night_movements = {
             k: v
@@ -220,10 +222,8 @@ def create_syn_data(start_date, end_date):
             if 23 <= int(k[0].split(" ")[1].split(":")[0])
             or int(k[0].split(" ")[1].split(":")[0]) < 6
         }
-
         # Filter out readings where bpm indicates deep sleep (low bpm)
-        night_movements = {k: v for k, v in night_movements.items() if v > 70}
-
+        night_movements = {k: v for k, v in night_movements.items() if v > 65}
         return night_movements
 
     def synthetic_sleep_detail():

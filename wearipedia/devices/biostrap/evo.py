@@ -72,7 +72,6 @@ class EVO(BaseDevice):
             "active_cals",
             "step_cals",
             "total_cals",
-            "sleep_detail",
         ]:
             return {
                 date: value
@@ -85,9 +84,7 @@ class EVO(BaseDevice):
             "bpm",
             "brpm",
             "spo2",
-            "activities",
             "hrv",
-            "sleep_session",
         ]:
             return {
                 key: value
@@ -103,7 +100,8 @@ class EVO(BaseDevice):
                 if start_datetime <= datetime <= end_datetime
             }
 
-        return data
+        else:
+            return data
 
     def _gen_synthetic(self):
         # generate random data according to seed
