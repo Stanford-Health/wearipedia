@@ -111,4 +111,4 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     api_data["readiness"] = readiness["readiness"]
     api_data["ideal_bedtimes"] = ideal_bedtimes["ideal_bedtimes"]
 
-    return api_data
+    return api_data[data_type]
