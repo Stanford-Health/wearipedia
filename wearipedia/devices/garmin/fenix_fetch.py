@@ -16,9 +16,9 @@ def fetch_garmin_url(data_type):
         "steps": "/wellness-service/wellness/dailySummaryChart",
         "hr": "/wellness-service/wellness/dailyHeartRate",
         "training_readiness": "/metrics-service/metrics/trainingreadiness",
-        "body_battery": "/wellness-service/wellness/bodyBattery/reports/daily",
+        # "body_battery": "/wellness-service/wellness/bodyBattery/reports/daily",
         "blood_pressure": "/bloodpressure-service/bloodpressure/range",
-        "daily_steps": "/usersummary-service/stats/steps/daily",
+        # "daily_steps": "/usersummary-service/stats/steps/daily",
         "floors": "/wellness-service/wellness/floorsChartData/daily",
         "training_status": "/metrics-service/metrics/trainingstatus/aggregated",
         "rhr": "/userstats-service/wellness/daily",
@@ -30,15 +30,15 @@ def fetch_garmin_url(data_type):
         "max_metrics": "/metrics-service/metrics/maxmet/daily",
         "personal_record": "/personalrecord-service/personalrecord/prs",
         "earned_badges": "/badge-service/badge/earned",
-        "adhoc_challenges": "/adhocchallenge-service/adHocChallenge/historical",
-        "avail_badge_challenges": "/badgechallenge-service/badgeChallenge/available",
+        # "adhoc_challenges": "/adhocchallenge-service/adHocChallenge/historical",
+        # "avail_badge_challenges": "/badgechallenge-service/badgeChallenge/available",
         "activities": "/activitylist-service/activities/search/activities",
         "devices": "/device-service/deviceregistration/devices",
         "device_settings": "/device-service/deviceservice/device-info/settings",
         "active_goals": "/goal-service/goal/goals",
         "future_goals": "/goal-service/goal/goals",
         "past_goals": "/goal-service/goal/goals",
-        "alarms": "/device-service/deviceservice/device-info/settings",
+        # "alarms": "/device-service/deviceservice/device-info/settings",
         "hrv": "/hrv-service/hrv",
         "weigh_ins": "/weight-service/weight/range",
         "weigh_ins_daily": "/weight-service/weight/dayview",
@@ -50,6 +50,7 @@ def fetch_garmin_url(data_type):
         return url_dict[data_type]
     else:
         return None
+
 
 def fetch_real_data(start_date, end_date, data_type, api):
     """Main function for fetching real data from the Garmin Connect API.
@@ -74,7 +75,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
     ).days
 
     display_name = api.profile["displayName"]
-    full_name = api.profile['fullName']
+    full_name = api.profile["fullName"]
 
     if data_type == "stats":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
@@ -87,8 +88,6 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
         # ==================================
 
-
-
     elif data_type == "user_summary":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
         response = []
@@ -99,7 +98,6 @@ def fetch_real_data(start_date, end_date, data_type, api):
             response.append(api.connectapi(url, params=params))
 
         # ==================================
-
 
     elif data_type == "body_composition":
         url = f"{fetch_garmin_url(data_type)}/weight/dateRange"
@@ -117,7 +115,6 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
         # ==================================
 
-
     elif data_type == "hr":
         url = f"{fetch_garmin_url(data_type)}/{display_name}"
         response = []
@@ -129,7 +126,6 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
         # ==================================
 
-
     elif data_type == "training_readiness":
         response = []
         # ==================================
@@ -140,20 +136,19 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
         # ==================================
 
-
-    elif data_type == "body_battery":
-        url = fetch_garmin_url(data_type)
-        params = {"startDate": str(start_date), "endDate": str(end_date)}
-        response = api.connectapi(url, params=params)
+    # elif data_type == "body_battery":
+    #     url = fetch_garmin_url(data_type)
+    #     params = {"startDate": str(start_date), "endDate": str(end_date)}
+    #     response = api.connectapi(url, params=params)
 
     elif data_type == "blood_pressure":
         url = f"{fetch_garmin_url(data_type)}/{start_date}/{end_date}"
         params = {"includeAll": True}
         response = api.connectapi(url, params=params)
 
-    elif data_type == "daily_steps":
-        url = f"{fetch_garmin_url(data_type)}/{start_date}/{end_date}"
-        response = api.connectapi(url)
+    # elif data_type == "daily_steps":
+    #     url = f"{fetch_garmin_url(data_type)}/{start_date}/{end_date}"
+    #     response = api.connectapi(url)
 
     elif data_type == "floors":
         response = []
@@ -253,24 +248,24 @@ def fetch_real_data(start_date, end_date, data_type, api):
         url = fetch_garmin_url(data_type)
         response = api.connectapi(url)
 
-    elif data_type == "adhoc_challenges":
-        url = fetch_garmin_url(data_type)
-        params = {"start": str(1), "limit": str(100)}
-        response = api.connectapi(url, params=params)
+    # elif data_type == "adhoc_challenges":
+    #     url = fetch_garmin_url(data_type)
+    #     params = {"start": str(1), "limit": str(100)}
+    #     response = api.connectapi(url, params=params)
 
-    elif data_type == "avail_badge_challenges":
-        url = fetch_garmin_url(data_type)
-        params = {"start": str(1), "limit": str(100)}
-        response = api.connectapi(url, params=params)
+    # elif data_type == "avail_badge_challenges":
+    #     url = fetch_garmin_url(data_type)
+    #     params = {"start": str(1), "limit": str(100)}
+    #     response = api.connectapi(url, params=params)
 
     elif data_type == "activities":
         url = fetch_garmin_url(data_type)
         params = {"start": str(1), "limit": str(100)}
         response = api.connectapi(url, params=params)
 
-    elif data_type == "devices":
-        url = fetch_garmin_url(data_type)
-        response = api.connectapi(url)
+    # elif data_type == "devices":
+    #     url = fetch_garmin_url(data_type)
+    #     response = api.connectapi(url)
 
     elif data_type == "device_settings":
         response = []
@@ -280,7 +275,6 @@ def fetch_real_data(start_date, end_date, data_type, api):
             url = f"{fetch_garmin_url(data_type)}/{device_id}"
             device_settings = api.connectapi(url)
             response.append(device_settings)
-
 
     elif data_type == "active_goals":
         start = 1
@@ -354,18 +348,18 @@ def fetch_real_data(start_date, end_date, data_type, api):
                 break
         response = goals
 
-    elif data_type == "alarms":
+    # elif data_type == "alarms":
 
-        alarms=[]
-        devices = api.connectapi(fetch_garmin_url("devices"))
-        for device in devices:
-            device_id = device["deviceId"]
-            url = f"{fetch_garmin_url(data_type)}/{device_id}"
-            device_settings = api.connectapi(url)
-            device_alarms = device_settings["alarms"]
-            if device_alarms is not None:
-                alarms += device_alarms
-        response = alarms
+    #     alarms=[]
+    #     devices = api.connectapi(fetch_garmin_url("devices"))
+    #     for device in devices:
+    #         device_id = device["deviceId"]
+    #         url = f"{fetch_garmin_url(data_type)}/{device_id}"
+    #         device_settings = api.connectapi(url)
+    #         device_alarms = device_settings["alarms"]
+    #         if device_alarms is not None:
+    #             alarms += device_alarms
+    #     response = alarms
 
     elif data_type == "hrv":
         response = []
@@ -422,6 +416,5 @@ def fetch_real_data(start_date, end_date, data_type, api):
             datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
             for i in tqdm(range(num_days))
         ]
-
 
     return response

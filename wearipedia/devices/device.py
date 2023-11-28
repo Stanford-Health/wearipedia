@@ -154,11 +154,15 @@ class BaseDevice:
             return self._get_real(data_type, params)
         else:
             if self.synthetic_has_been_generated:
-                return getattr(self, data_type)
+                return self._filter_synthetic(
+                    getattr(self, data_type), data_type, params
+                )
             else:
                 self._gen_synthetic()
                 self._synthetic_has_been_generated = True
-                return getattr(self, data_type)
+                return self._filter_synthetic(
+                    getattr(self, data_type), data_type, params
+                )
 
     def _authenticate(self, auth_creds):
         """Authenticates the device. This is called by the authenticate() method.

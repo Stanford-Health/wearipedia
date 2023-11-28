@@ -1,8 +1,8 @@
 import os
 import pickle
 from datetime import datetime
-import garth
 
+import garth
 from garminconnect import Garmin
 
 from ...devices.device import BaseDevice
@@ -109,41 +109,37 @@ class Fenix7S(BaseDevice):
         }
 
         self._initialize_device_params(
-            ["stats",
-             "user_summary",
-             "body_composition",
-             "steps",
-             "hr",
-             "training_readiness",
-             "body_battery",
-             "blood_pressure",
-             "daily_steps",
-             "floors",
-             "training_status",
-             "rhr",
-             "hydration",
-             "sleep",
-             "stress",
-             "respiration",
-             "spo2",
-             "max_metrics",
-             "personal_record",
-             "earned_badges",
-             "adhoc_challenges",
-             "avail_badge_challenges",
-             "activities",
-             "devices",
-             "device_settings",
-             "active_goals",
-             "future_goals",
-             "past_goals",
-             "alarms",
-             "hrv",
-             "weigh_ins",
-             "weigh_ins_daily",
-             "hill_score",
-             "endurance_score",
-             "dates"],
+            [
+                "stats",
+                "user_summary",
+                "body_composition",
+                "steps",
+                "hr",
+                "training_readiness",
+                "blood_pressure",
+                "floors",
+                "training_status",
+                "rhr",
+                "hydration",
+                "sleep",
+                "stress",
+                "respiration",
+                "spo2",
+                "max_metrics",
+                "personal_record",
+                "earned_badges",
+                "activities",
+                "device_settings",
+                "active_goals",
+                "future_goals",
+                "past_goals",
+                "hrv",
+                "weigh_ins",
+                "weigh_ins_daily",
+                "hill_score",
+                "endurance_score",
+                "dates",
+            ],
             params,
             {
                 "seed": 0,
@@ -164,41 +160,56 @@ class Fenix7S(BaseDevice):
             params["start_date"], params["end_date"], data_type, self.api
         )
 
+    def _filter_synthetic(self, data, data_type, params):
+        # Here we just return the data we've already generated,
+        # but index into it based on the params. Specifically, we
+        # want to return the data between the start and end dates.
+
+        date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
+
+        # get the indices by subtracting against the start of the synthetic data
+        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
+
+        start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
+        end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
+
+        return data
+
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
-
         # and based on start and end dates
-        (self.dates,
-         self.hrv,
-         self.steps,
-         self.stats,
-         self.user_summary,
-         self.body_composition,
-         self.hr,
-         self.training_readiness,
-         self.blood_pressure,
-         self.floors,
-         self.training_status,
-         self.rhr,
-         self.hydration,
-         self.sleep,
-         self.earned_badges,
-         self.stress,
-         self.respiration,
-         self.spo2,
-         self.max_metrics,
-         self.personal_record,
-         self.activities,
-         self.device_settings,
-         self.active_goals,
-         self.future_goals,
-         self.past_goals,
-         self.weigh_ins,
-         self.weigh_ins_daily,
-         self.hill_score,
-         self.endurance_score
-         ) = create_syn_data(
+        (
+            self.dates,
+            self.hrv,
+            self.steps,
+            self.stats,
+            self.user_summary,
+            self.body_composition,
+            self.hr,
+            self.training_readiness,
+            self.blood_pressure,
+            self.floors,
+            self.training_status,
+            self.rhr,
+            self.hydration,
+            self.sleep,
+            self.earned_badges,
+            self.stress,
+            self.respiration,
+            self.spo2,
+            self.max_metrics,
+            self.personal_record,
+            self.activities,
+            self.device_settings,
+            self.active_goals,
+            self.future_goals,
+            self.past_goals,
+            self.weigh_ins,
+            self.weigh_ins_daily,
+            self.hill_score,
+            self.endurance_score,
+        ) = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
