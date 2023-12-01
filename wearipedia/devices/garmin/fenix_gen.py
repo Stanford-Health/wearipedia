@@ -390,7 +390,7 @@ def get_user_summary_data(start_date, num_days):
         daily_step_goal = random.randint(1000, 5000)
         wellness_start_time_gmt = f"{calendar_date}T07:00:00.0"
         wellness_start_time_local = f"{calendar_date}T00:00:00.0"
-        wellness_end_time_gmt = f"{(datetime.strptime(start_date, 'Y-%m-%d') + timedelta(days=_ + 1)).strftime('%Y-%m-%d')}T07:00:00.0"
+        wellness_end_time_gmt = f"{(datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=_ + 1)).strftime('%Y-%m-%d')}T07:00:00.0"
         wellness_end_time_local = f"{(datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=_ + 1)).strftime('%Y-%m-%d')}T00:00:00.0"
         duration_in_milliseconds = 86400000
         wellness_description = None
