@@ -84,7 +84,7 @@ class Strava(BaseDevice):
                 "average_cadence",
                 "average_watts",
                 "kilojoules",
-                "heartrate"
+                "heartrate",
             ],
             params,
             {
@@ -101,7 +101,7 @@ class Strava(BaseDevice):
         }
 
     def _get_real(self, data_type, params):
-        if 'id' in params:
+        if "id" in params:
             return fetch_real_data(
                 self, params["start_date"], params["end_date"], data_type, params["id"]
             )
@@ -114,7 +114,7 @@ class Strava(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        stream_data = set(['heartrate'])
+        stream_data = set(["heartrate"])
 
         if data_type in stream_data:
             return data
@@ -209,7 +209,7 @@ class Strava(BaseDevice):
             .to_dict("index")
             .values()
         )
-        self.heartrate = return_streams_syn('heartrate')
+        self.heartrate = return_streams_syn("heartrate")
 
     def _authenticate(self, auth_creds):
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)

@@ -145,7 +145,7 @@ def create_syn_data(start_date, end_date):
                 "elev_low": elev_low_generator(d),
                 "average_cadence": avg_cadence_generator(d),
                 "average_watts": avg_watt_generator(d),
-                "kilojoules": kilo_joule_gen(distance)
+                "kilojoules": kilo_joule_gen(distance),
             }
         )
         synthetic_df = pd.concat([synthetic_df, entry], ignore_index=True)
