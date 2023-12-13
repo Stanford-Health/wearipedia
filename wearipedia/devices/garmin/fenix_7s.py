@@ -179,40 +179,40 @@ class Fenix7S(BaseDevice):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
         # and based on start and end dates
-        (
-            self.dates,
-            self.hrv,
-            self.steps,
-            self.stats,
-            self.user_summary,
-            self.body_composition,
-            self.hr,
-            self.training_readiness,
-            self.blood_pressure,
-            self.floors,
-            self.training_status,
-            self.rhr,
-            self.hydration,
-            self.sleep,
-            self.earned_badges,
-            self.stress,
-            self.respiration,
-            self.spo2,
-            self.max_metrics,
-            self.personal_record,
-            self.activities,
-            self.device_settings,
-            self.active_goals,
-            self.future_goals,
-            self.past_goals,
-            self.weigh_ins,
-            self.weigh_ins_daily,
-            self.hill_score,
-            self.endurance_score,
-        ) = create_syn_data(
+
+        synth_data = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
+        self.dates = synth_data["dates"]
+        self.hrv = synth_data["hrv"]
+        self.steps = synth_data["steps"]
+        self.stats = synth_data["stats"]
+        self.user_summary = synth_data["user_summary"]
+        self.body_composition = synth_data["body_composition"]
+        self.hr = synth_data["hr"]
+        self.training_readiness = synth_data["training_readiness"]
+        self.blood_pressure = synth_data["blood_pressure"]
+        self.floors = synth_data["floors"]
+        self.training_status = synth_data["training_status"]
+        self.rhr = synth_data["rhr"]
+        self.hydration = synth_data["hydration"]
+        self.sleep = synth_data["sleep"]
+        self.earned_badges = synth_data["earned_badges"]
+        self.stress = synth_data["stress"]
+        self.respiration = synth_data["respiration"]
+        self.spo2 = synth_data["spo2"]
+        self.max_metrics = synth_data["max_metrics"]
+        self.personal_record = synth_data["personal_record"]
+        self.activities = synth_data["activities"]
+        self.device_settings = synth_data["device_settings"]
+        self.active_goals = synth_data["active_goals"]
+        self.future_goals = synth_data["future_goals"]
+        self.past_goals = synth_data["past_goals"]
+        self.weigh_ins = synth_data["weigh_ins"]
+        self.weigh_ins_daily = synth_data["weigh_ins_daily"]
+        self.hill_score = synth_data["hill_score"]
+        self.endurance_score = synth_data["endurance_score"]
 
     def _authenticate(self, auth_creds):
         # check if we have cached credentials

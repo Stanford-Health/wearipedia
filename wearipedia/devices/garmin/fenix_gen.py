@@ -2164,14 +2164,14 @@ def get_endurance_score_data(start_date, end_date):
 
 def create_syn_data(start_date, end_date):
     """
-    Returns a tuple of synthetic health and activity data for a specified date range.
+    Returns a dictionary of synthetic health and activity data for a specified date range.
     :param start_date: the start date (inclusive) as a string in the format "YYYY-MM-DD"
     :type start_date: str
     :param end_date: the end date (inclusive) as a string in the format "YYYY-MM-DD"
     :type end_date: str
-    :return: A tuple containing synthetic data for various health and activity metrics, each
+    :return: A dictionary containing synthetic data for various health and activity metrics, each
         element is a list or dictionary representing data for a specific day.
-    :rtype: Tuple
+    :rtype: Dict
     """
 
     num_days = (
@@ -2179,71 +2179,44 @@ def create_syn_data(start_date, end_date):
         - datetime.strptime(start_date, "%Y-%m-%d")
     ).days
 
-    # first get the dates as datetime objects
-    synth_dates = [
+    synth_data = {}
+
+    synth_data["dates"] = [
         datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
         for i in range(num_days)
     ]
 
-    synth_hrv_data = get_hrv_data(start_date, num_days)
-    synth_steps_data = get_steps_data(start_date, num_days)
-    synth_stats_data = get_stats_data(start_date, num_days)
-    synth_user_summary_data = get_user_summary_data(start_date, num_days)
-    synth_body_composition_data = get_body_composition_data(start_date, num_days)
-    synth_heart_rate_data = get_heart_rate_data(start_date, num_days)
-    synth_training_readiness_data = get_training_readiness_data(start_date, num_days)
-    synth_blood_pressure_data = get_blood_pressure_data(start_date, end_date, num_days)
-    synth_floors_data = get_floors_data(start_date, end_date)
-    synth_training_status_data = get_training_status_data(start_date, num_days)
-    synth_resting_hr_data = get_resting_hr_data(start_date, end_date)
-    synth_hydration_data = get_hydration_data(start_date, num_days)
-    synth_sleep_data = get_sleep_data(start_date, num_days)
-    synth_earned_badges_data = get_earned_badges_data(start_date, num_days)
-    synth_stress_data = get_stress_data(start_date, num_days)
-    synth_respiration_data = get_respiration_data(start_date, num_days)
-    synth_spo2_data = get_spo2_data(start_date, num_days)
-    synth_metrics_data = get_metrics_data(start_date, num_days)
-    synth_personal_record_data = get_personal_record_data(
+    synth_data["hrv"] = get_hrv_data(start_date, num_days)
+    synth_data["steps"] = get_steps_data(start_date, num_days)
+    synth_data["stats"] = get_stats_data(start_date, num_days)
+    synth_data["user_summary"] = get_user_summary_data(start_date, num_days)
+    synth_data["body_composition"] = get_body_composition_data(start_date, num_days)
+    synth_data["hr"] = get_heart_rate_data(start_date, num_days)
+    synth_data["training_readiness"] = get_training_readiness_data(start_date, num_days)
+    synth_data["blood_pressure"] = get_blood_pressure_data(
         start_date, end_date, num_days
     )
-    synth_activities_data = get_activities_data(start_date, num_days)
-    synth_device_settings_data = get_device_settings_data(num_days)
-    synth_active_goals_data = get_active_goals_data(start_date, num_days)
-    synth_future_goals_data = get_future_goals_data(start_date, num_days)
-    synth_past_goals_data = get_past_goals_data(start_date, num_days)
-    synth_weigh_ins_data = get_weigh_ins_data(start_date, num_days)
-    synth_weigh_ins_daily_data = get_weigh_ins_daily_data(start_date, num_days)
-    synth_hill_score_data = get_hill_score_data(start_date, end_date)
-    synth_endurance_score_data = get_endurance_score_data(start_date, end_date)
-
-    return (
-        synth_dates,
-        synth_hrv_data,
-        synth_steps_data,
-        synth_stats_data,
-        synth_user_summary_data,
-        synth_body_composition_data,
-        synth_heart_rate_data,
-        synth_training_readiness_data,
-        synth_blood_pressure_data,
-        synth_floors_data,
-        synth_training_status_data,
-        synth_resting_hr_data,
-        synth_hydration_data,
-        synth_sleep_data,
-        synth_earned_badges_data,
-        synth_stress_data,
-        synth_respiration_data,
-        synth_spo2_data,
-        synth_metrics_data,
-        synth_personal_record_data,
-        synth_activities_data,
-        synth_device_settings_data,
-        synth_active_goals_data,
-        synth_future_goals_data,
-        synth_past_goals_data,
-        synth_weigh_ins_data,
-        synth_weigh_ins_daily_data,
-        synth_hill_score_data,
-        synth_endurance_score_data,
+    synth_data["floors"] = get_floors_data(start_date, end_date)
+    synth_data["training_status"] = get_training_status_data(start_date, num_days)
+    synth_data["rhr"] = get_resting_hr_data(start_date, end_date)
+    synth_data["hydration"] = get_hydration_data(start_date, num_days)
+    synth_data["sleep"] = get_sleep_data(start_date, num_days)
+    synth_data["earned_badges"] = get_earned_badges_data(start_date, num_days)
+    synth_data["stress"] = get_stress_data(start_date, num_days)
+    synth_data["respiration"] = get_respiration_data(start_date, num_days)
+    synth_data["spo2"] = get_spo2_data(start_date, num_days)
+    synth_data["max_metrics"] = get_metrics_data(start_date, num_days)
+    synth_data["personal_record"] = get_personal_record_data(
+        start_date, end_date, num_days
     )
+    synth_data["activities"] = get_activities_data(start_date, num_days)
+    synth_data["device_settings"] = get_device_settings_data(num_days)
+    synth_data["active_goals"] = get_active_goals_data(start_date, num_days)
+    synth_data["future_goals"] = get_future_goals_data(start_date, num_days)
+    synth_data["past_goals"] = get_past_goals_data(start_date, num_days)
+    synth_data["weigh_ins"] = get_weigh_ins_data(start_date, num_days)
+    synth_data["weigh_ins_daily"] = get_weigh_ins_daily_data(start_date, num_days)
+    synth_data["hill_score"] = get_hill_score_data(start_date, end_date)
+    synth_data["endurance_score"] = get_endurance_score_data(start_date, end_date)
+
+    return synth_data
