@@ -27,18 +27,17 @@ def fetch_real_data(self, start_date, end_date, data_type, id=""):
     """
     Fetches real data from the Strava API based on the provided parameters.
 
-    Args:
-        self (Strava): The Strava object.
-        start_date (str): The start date for the data fetch in the format "YYYY-MM-DD".
-        end_date (str): The end date for the data fetch in the format "YYYY-MM-DD".
-        data_type (str): The type of data to fetch. If the data type is in the stream data set, an id must be provided.
-        id (str, optional): The id of the activity to fetch stream data for. Defaults to ''.
+    :param start_date: The start date for the data generation in the format "YYYY-MM-DD".
+    :type start_date: str
+    :param end_date: The end date for the data generation in the format "YYYY-MM-DD".
+    :type end_date: str
+    :param data_type: The type of data to fetch, one of "distance", "moving_time", "elapsed_time", "total_elevation_gain", "average_speed", "map_summary_polyline", "heartrate".
+    :type data_type: str
+    :param id: The id of the activity to fetch data for.
+    :type id: int, optional
 
-    Raises:
-        ValueError: If the data type is in the stream data set and no id is provided.
-
-    Returns:
-        list: A list of dictionaries containing the fetched data. If no data is fetched, returns an empty list.
+    :return: The data fetched from the API according to the inputs.
+    :rtype: list
     """
     # URL to access all of participant's activities.
 
