@@ -14,11 +14,11 @@ def dateConvert(date_string):
     """
     Converts a date string into a timestamp.
 
-    Args:
-        date_string (str): The date string in the format "YYYY-MM-DD".
+    :param date_string: The date string in the format "YYYY-MM-DD".
+    :type date_string: str
 
-    Returns:
-        int: The timestamp corresponding to the input date string.
+    :return timestamp: The timestamp corresponding to the input date string.
+    :rtype: int
     """
     return int(time.mktime(time.strptime(date_string, "%Y-%m-%d")))
 
