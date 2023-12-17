@@ -63,6 +63,7 @@ def create_syn_data(start_date, end_date):
 
         # Initial values for random walk
         bpm_current = 60
+        brpm_current = 12
         hrv_current = 40
         spo2_current = 98
 
@@ -84,12 +85,13 @@ def create_syn_data(start_date, end_date):
                 if len(last_minute_bpm) > 6:  # More than a minute's worth of data
                     last_minute_bpm.pop(0)
 
-                # Calculation for brpm remains the same
+                # Calculate average bpm over the last minute
                 avg_last_minute_bpm = sum(last_minute_bpm) / len(last_minute_bpm)
-                brpm_val = 12 + (avg_last_minute_bpm - 60) / 10 + gaussian_noise_brpm()
-                brpm_val = max(
-                    12, min(20, brpm_val)
-                )  # Clamp to normal resting respiration rate
+
+                # Random walk for brpm, influenced by average bpm
+                brpm_adjustment = (avg_last_minute_bpm - 60) / 10
+                brpm_current += brpm_adjustment + gaussian_noise_brpm()
+                brpm_val = max(12, min(20, int(brpm_current)))  # Clamping brpm values
                 brpm[key] = brpm_val
 
                 # Random walk for hrv
@@ -109,66 +111,6 @@ def create_syn_data(start_date, end_date):
             curr_date_obj += timedelta(days=1)
 
         return bpm, brpm, hrv, spo2
-
-    # # Modified synthetic biometrics generator function with more realistic modifications
-    # def synthetic_biometrics(start_date_obj, end_date_obj):
-    #     bpm = {}
-    #     brpm = {}
-    #     hrv = {}
-    #     spo2 = {}
-
-    #     curr_date_obj = start_date_obj
-    #     time_index = 0
-
-    #     # Store the last minute's average bpm to calculate brpm
-    #     last_minute_bpm = []
-
-    #     while curr_date_obj <= end_date_obj:
-    #         curr_time = curr_date_obj
-    #         while curr_time < curr_date_obj + timedelta(days=1):
-    #             key = (curr_time.strftime("%Y-%m-%d %H:%M:%S"), TZ_OFFSET)
-
-    #             # Adjusted sinusoidal function for bpm with less amplitude and Gaussian noise
-    #             bpm_val = (
-    #                 int(60 + 5 * math.sin(2 * math.pi * time_index / 86400))
-    #                 + gaussian_noise_bpm()
-    #             )
-    #             bpm[key] = bpm_val
-
-    #             # Update last minute bpm values
-    #             last_minute_bpm.append(bpm_val)
-    #             if len(last_minute_bpm) > 6:  # More than a minute's worth of data
-    #                 last_minute_bpm.pop(0)
-
-    #             # Adjusted brpm calculation with less sensitivity to bpm
-    #             avg_last_minute_bpm = sum(last_minute_bpm) / len(last_minute_bpm)
-    #             brpm_val = 12 + (avg_last_minute_bpm - 60) / 10 + gaussian_noise_brpm()
-    #             brpm_val = max(
-    #                 12, min(20, brpm_val)
-    #             )  # Clamp to normal resting respiration rate
-    #             brpm[key] = brpm_val
-
-    #             # Adjusted hrv calculation with less amplitude and Gaussian noise
-    #             hrv_val = (
-    #                 int(40 + 5 * math.cos(2 * math.pi * time_index / 86400))
-    #                 + gaussian_noise_hrv()
-    #             )
-    #             hrv[key] = hrv_val
-
-    #             # Adjusted spo2 to have very minimal variability
-    #             spo2_val = (
-    #                 int(98 + 0.1 * math.sin(2 * math.pi * time_index / 86400))
-    #                 + gaussian_noise_spo2()
-    #             )
-    #             spo2_val = max(95, min(100, spo2_val))  # Clamp to normal SpO2 levels
-    #             spo2[key] = spo2_val
-
-    #             curr_time += timedelta(seconds=10)
-    #             time_index += 10
-
-    #         curr_date_obj += timedelta(days=1)
-
-    #     return bpm, brpm, hrv, spo2
 
     def synthetic_steps_distance_per_minute(bpm_dict):
         steps_dict = {}
