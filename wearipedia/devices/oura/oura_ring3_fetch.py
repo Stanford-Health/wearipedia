@@ -49,70 +49,66 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         params = {start_date_col: start_date, end_date_col: end_date}
         return requests.request(call, url=url, headers=headers, params=params).json()
 
-    # # heart_rate
-    # heart_rate = call_api_version_2(
-    #     url="https://api.ouraring.com/v2/usercollection/heartrate",
-    #     start_date_col="start_datetime",
-    #     end_date_col="end_datetime",
-    #     start_date=start_date + "T00:00:00-23:59",
-    #     end_date=end_date + "T00:00:00-23:59",
-    # )
+    # heart_rate
+    heart_rate = call_api_version_2(
+        url="https://api.ouraring.com/v2/usercollection/heartrate",
+        start_date_col="start_datetime",
+        end_date_col="end_datetime",
+        start_date=start_date + "T00:00:00-23:59",
+        end_date=end_date + "T00:00:00-23:59",
+    )
 
-    # # personal_info
-    # personal_info = call_api_version_2(
-    #     url="https://api.ouraring.com/v2/usercollection/personal_info"
-    # )
+    # personal_info
+    personal_info = call_api_version_2(
+        url="https://api.ouraring.com/v2/usercollection/personal_info"
+    )
 
-    # # sessions
-    # sessions = call_api_version_2(
-    #     url="https://api.ouraring.com/v2/usercollection/sessions"
-    # )
+    # sessions
+    sessions = call_api_version_2(
+        url="https://api.ouraring.com/v2/usercollection/sessions"
+    )
 
-    # # tag
-    # tag = call_api_version_2(url="https://api.ouraring.com/v2/usercollection/tag")
+    # tag
+    tag = call_api_version_2(url="https://api.ouraring.com/v2/usercollection/tag")
 
-    # # workout
-    # workout = call_api_version_2(
-    #     url="https://api.ouraring.com/v2/usercollection/workout"
-    # )
+    # workout
+    workout = call_api_version_2(
+        url="https://api.ouraring.com/v2/usercollection/workout"
+    )
 
-    # # daily_activity
-    # daily_activity = call_api_version_2(
-    #     url="https://api.ouraring.com/v2/usercollection/daily_activity"
-    # )
+    # daily_activity
+    daily_activity = call_api_version_2(
+        url="https://api.ouraring.com/v2/usercollection/daily_activity"
+    )
 
     # sleep
     sleep = call_api_version_1(url="https://api.ouraring.com/v1/sleep")
-    return sleep
-    # # activity
-    # activity = call_api_version_1(url="https://api.ouraring.com/v1/activity")
 
-    # # readiness
-    # readiness = call_api_version_1(url="https://api.ouraring.com/v1/readiness")
+    # activity
+    activity = call_api_version_1(url="https://api.ouraring.com/v1/activity")
 
-    # # ideal_bedtimes
-    # ideal_bedtimes = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
+    # readiness
+    readiness = call_api_version_1(url="https://api.ouraring.com/v1/readiness")
 
-    # # aggregate data for version 2 endpoints
-    # api_data = dict()
-    # api_data["personal_info"] = [personal_info]
-    # api_data["sessions"] = (
-    #     sessions["detail"] if sessions["detail"] != "Not Found" else [{}]
-    # )
-    # api_data["tag"] = tag["data"] if tag["data"] else [{}]
-    # api_data["workout"] = workout["data"] if workout["data"] else [{}]
-    # api_data["daily_activity"] = (
-    #     daily_activity["data"] if daily_activity["data"] else [{}]
-    # )
+    # ideal_bedtimes
+    ideal_bedtimes = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
 
-    # # aggregate data for version 1 (in addition to VERSION 2)
-    # api_data["sleep"] = sleep["sleep"]
-    # api_data["activity"] = activity["activity"]
-    # api_data["readiness"] = readiness["readiness"]
-    # api_data["ideal_bedtimes"] = ideal_bedtimes["ideal_bedtimes"]
+    # aggregate data for version 2 endpoints
+    api_data = dict()
+    api_data["personal_info"] = [personal_info]
+    api_data["sessions"] = (
+        sessions["detail"] if sessions["detail"] != "Not Found" else [{}]
+    )
+    api_data["tag"] = tag["data"] if tag["data"] else [{}]
+    api_data["workout"] = workout["data"] if workout["data"] else [{}]
+    api_data["daily_activity"] = (
+        daily_activity["data"] if daily_activity["data"] else [{}]
+    )
 
-    # return api_data[data_type]
+    # aggregate data for version 1 (in addition to VERSION 2)
+    api_data["sleep"] = sleep["sleep"]
+    api_data["activity"] = activity["activity"]
+    api_data["readiness"] = readiness["readiness"]
+    api_data["ideal_bedtimes"] = ideal_bedtimes["ideal_bedtimes"]
 
-
-# x = fetch_real_data("ideal_bedtimes","7EVGQT26Y5Z4CWZE2UIJJA4FZINOKL4K","2022-03-20","2022-04-01")
-# print(x)
+    return api_data[data_type]
