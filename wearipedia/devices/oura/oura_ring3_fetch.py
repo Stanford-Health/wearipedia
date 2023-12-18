@@ -90,8 +90,8 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     # readiness
     readiness = call_api_version_1(url="https://api.ouraring.com/v1/readiness")
 
-    # ideal_bedtimes
-    ideal_bedtimes = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
+    # ideal_bedtime
+    ideal_bedtime = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
 
     # aggregate data for version 2 endpoints
     api_data = dict()
@@ -109,6 +109,6 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     api_data["sleep"] = sleep["sleep"]
     api_data["activity"] = activity["activity"]
     api_data["readiness"] = readiness["readiness"]
-    api_data["ideal_bedtimes"] = ideal_bedtimes["ideal_bedtimes"]
+    api_data["ideal_bedtime"] = ideal_bedtime["ideal_bedtime"]
 
     return api_data[data_type]
