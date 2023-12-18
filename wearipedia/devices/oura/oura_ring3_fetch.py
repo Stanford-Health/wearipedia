@@ -109,6 +109,6 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     api_data["sleep"] = sleep["sleep"]
     api_data["activity"] = activity["activity"]
     api_data["readiness"] = readiness["readiness"]
-    api_data["ideal_bedtime"] = ideal_bedtime["ideal_bedtime"]
+    api_data["ideal_bedtime"] = ideal_bedtime["ideal_bedtimes"]
 
     return api_data[data_type]
