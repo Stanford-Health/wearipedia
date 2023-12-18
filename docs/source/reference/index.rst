@@ -69,3 +69,19 @@ Devices
 .. autoclass:: wearipedia.devices.polar.PolarVantage
     :members:
     :show-inheritance:
+
+.. autoclass:: wearipedia.devices.coros.Coros_pace_2
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.oura.Oura_Ring_3
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.fitbit.Fitbit_charge_4
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.fitbit.Fitbit_sense
+    :members:
+    :show-inheritance:
