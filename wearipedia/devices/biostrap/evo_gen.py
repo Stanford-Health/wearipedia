@@ -63,9 +63,13 @@ def create_syn_data(start_date, end_date):
 
         # Initial values for random walk
         bpm_current = 60
-        brpm_current = 12
+        brpm_current = 16
         hrv_current = 40
         spo2_current = 98
+
+        # Dynamic clamping bounds for brpm
+        brpm_lower_bound = 12
+        brpm_upper_bound = 25
 
         # Store the last minute's average bpm to calculate brpm
         last_minute_bpm = []
@@ -89,9 +93,14 @@ def create_syn_data(start_date, end_date):
                 avg_last_minute_bpm = sum(last_minute_bpm) / len(last_minute_bpm)
 
                 # Random walk for brpm, influenced by average bpm
-                brpm_adjustment = (avg_last_minute_bpm - 60) / 10
+                brpm_adjustment = (avg_last_minute_bpm - 60) / 5
                 brpm_current += brpm_adjustment + gaussian_noise_brpm()
-                brpm_val = max(12, min(20, int(brpm_current)))  # Clamping brpm values
+                # Apply soft clamping
+                if brpm_current < brpm_lower_bound:
+                    brpm_current = (brpm_current + brpm_lower_bound) / 2
+                elif brpm_current > brpm_upper_bound:
+                    brpm_current = (brpm_current + brpm_upper_bound) / 2
+                brpm_val = int(brpm_current)
                 brpm[key] = brpm_val
 
                 # Random walk for hrv
