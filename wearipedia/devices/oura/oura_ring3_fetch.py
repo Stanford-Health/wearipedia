@@ -58,57 +58,66 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         end_date=end_date + "T00:00:00-23:59",
     )
 
-    # personal_info
-    personal_info = call_api_version_2(
-        url="https://api.ouraring.com/v2/usercollection/personal_info"
-    )
+    # # personal_info
+    # personal_info = call_api_version_2(
+    #     url="https://api.ouraring.com/v2/usercollection/personal_info"
+    # )
 
-    # sessions
-    sessions = call_api_version_2(
-        url="https://api.ouraring.com/v2/usercollection/sessions"
-    )
+    # # sessions
+    # sessions = call_api_version_2(
+    #     url="https://api.ouraring.com/v2/usercollection/sessions"
+    # )
 
-    # tag
-    tag = call_api_version_2(url="https://api.ouraring.com/v2/usercollection/tag")
+    # # tag
+    # tag = call_api_version_2(url="https://api.ouraring.com/v2/usercollection/tag")
 
-    # workout
-    workout = call_api_version_2(
-        url="https://api.ouraring.com/v2/usercollection/workout"
-    )
+    # # workout
+    # workout = call_api_version_2(
+    #     url="https://api.ouraring.com/v2/usercollection/workout"
+    # )
 
-    # daily_activity
-    daily_activity = call_api_version_2(
-        url="https://api.ouraring.com/v2/usercollection/daily_activity"
-    )
+    if data_type == "daily_activity":
+        # daily_activity
+        daily_activity = call_api_version_2(
+            url="https://api.ouraring.com/v2/usercollection/daily_activity"
+        )
+        return daily_activity
 
-    # sleep
-    sleep = call_api_version_1(url="https://api.ouraring.com/v1/sleep")
+    elif data_type == "sleep":
 
-    # activity
-    activity = call_api_version_1(url="https://api.ouraring.com/v1/activity")
+        # sleep
+        sleep = call_api_version_1(url="https://api.ouraring.com/v1/sleep")
+        return sleep
 
-    # readiness
-    readiness = call_api_version_1(url="https://api.ouraring.com/v1/readiness")
+    elif data_type == "activity":
+        # activity
+        activity = call_api_version_1(url="https://api.ouraring.com/v1/activity")
+        return activity
 
-    # ideal_bedtimes
-    ideal_bedtimes = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
+    elif data_type == "readiness":
+        # readiness
+        readiness = call_api_version_1(url="https://api.ouraring.com/v1/readiness")
+        return readiness
 
-    # aggregate data for version 2 endpoints
-    api_data = dict()
-    api_data["personal_info"] = [personal_info]
-    api_data["sessions"] = (
-        sessions["detail"] if sessions["detail"] != "Not Found" else [{}]
-    )
-    api_data["tag"] = tag["data"] if tag["data"] else [{}]
-    api_data["workout"] = workout["data"] if workout["data"] else [{}]
-    api_data["daily_activity"] = (
-        daily_activity["data"] if daily_activity["data"] else [{}]
-    )
+    elif data_type == "ideal_bedtimes":
+        # ideal_bedtimes
+        ideal_bedtimes = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
+        return ideal_bedtimes
 
-    # aggregate data for version 1 (in addition to VERSION 2)
-    api_data["sleep"] = sleep["sleep"]
-    api_data["activity"] = activity["activity"]
-    api_data["readiness"] = readiness["readiness"]
-    api_data["ideal_bedtimes"] = ideal_bedtimes["ideal_bedtimes"]
+    # # aggregate data for version 2 endpoints
+    # api_data = dict()
+    # # api_data["personal_info"] = [personal_info]
+    # # api_data["sessions"] = (
+    # #     sessions["detail"] if sessions["detail"] != "Not Found" else [{}]
+    # # )
+    # # api_data["tag"] = tag["data"] if tag["data"] else [{}]
+    # # api_data["workout"] = workout["data"] if workout["data"] else [{}]
+    # api_data["daily_activity"] = (
+    #     daily_activity["data"] if daily_activity["data"] else [{}]
+    # )
 
-    return api_data[data_type]
+    # # aggregate data for version 1 (in addition to VERSION 2)
+    # api_data["sleep"] = sleep["sleep"]
+    # api_data["activity"] = activity["activity"]
+    # api_data["readiness"] = readiness["readiness"]
+    # api_data["ideal_bedtimes"] = ideal_bedtimes["ideal_bedtimes"]
