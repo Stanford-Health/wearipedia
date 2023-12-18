@@ -79,7 +79,7 @@ def get_all_device_names():
         "coros/coros_pace_2",
         "polar/vantage",
         "strava/strava",
-        "underarmour/myfitnesspal",
+        "myfitnesspal/myfitnesspal",
     ]
 
 

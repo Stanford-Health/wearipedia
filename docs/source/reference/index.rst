@@ -50,6 +50,26 @@ Devices
     :members:
     :show-inheritance:
 
+.. autoclass:: wearipedia.devices.cromometer.Cronometer
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.myfitnesspal.MyFitnessPal
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.google.GoogleFitness
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.strava.Strava
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.polar.PolarVantage
+    :members:
+    :show-inheritance:
+
 .. autoclass:: wearipedia.devices.coros.Coros_pace_2
     :members:
     :show-inheritance:

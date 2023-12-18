@@ -5,9 +5,9 @@ from .dreem import *
 from .fitbit import *
 from .garmin import *
 from .google import *
+from .myfitnesspal import *
 from .oura import *
 from .polar import *
 from .strava import *
-from .underarmour import *
 from .whoop import *
 from .withings import *

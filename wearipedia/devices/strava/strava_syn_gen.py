@@ -6,6 +6,16 @@ import polyline
 
 
 def create_syn_data(start_date, end_date):
+    """
+    This function generates synthetic data for Strava.
+
+    :param start_date: The start date for the data generation in the format "YYYY-MM-DD".
+    :type start_date: str
+    :param end_date: The end date for the data generation in the format "YYYY-MM-DD".
+    :type end_date: str
+    :return: A dataframe containing the generated data.
+    :rtype: pandas.DataFrame
+    """
 
     # Generating list of dates between start and end date
     dates = pd.date_range(start_date, end_date)

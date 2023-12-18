@@ -46,7 +46,7 @@ def create_syn_data(start_date, end_date):
     # Loading data from our json file
     data = json.load(open(path, "r"))
 
-    # wearipedia/devices/underarmour/myfitnesspal_syn_data.json
+    # wearipedia/devices/myfitnesspal/myfitnesspal_syn_data.json
 
     # Scraped a list of all exercises from MyFitnessPal and used GPT3 to seperate them into strength and cardio exercises
     exercises_cardio = data["exercises_cardio"]

@@ -7,6 +7,7 @@ from ...devices.device import BaseDevice
 from ...utils import seed_everything
 from .strava_fetch import *
 from .strava_syn_gen import *
+from .strava_syn_gen_streams import *
 
 class_name = "Strava"
 
@@ -44,6 +45,8 @@ class Strava(BaseDevice):
 
     * `kilojoules`: a list that contains kilojoules for each run recorded
 
+    * `heartrate`: a list that contains heartrate for each run recorded (stream data). Use id to specify the specific activity.
+
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -53,6 +56,8 @@ class Strava(BaseDevice):
     :type synthetic_end_date: str, optional
     :param use_cache: decide whether to cache the credentials, defaults to True
     :type use_cache: bool, optional
+    :param id : id of the activity, defaults to '', required for stream data
+    :type id: str, optional
     """
 
     def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
@@ -79,6 +84,7 @@ class Strava(BaseDevice):
                 "average_cadence",
                 "average_watts",
                 "kilojoules",
+                "heartrate",
             ],
             params,
             {
@@ -95,6 +101,10 @@ class Strava(BaseDevice):
         }
 
     def _get_real(self, data_type, params):
+        if "id" in params:
+            return fetch_real_data(
+                self, params["start_date"], params["end_date"], data_type, params["id"]
+            )
         return fetch_real_data(
             self, params["start_date"], params["end_date"], data_type
         )
@@ -103,6 +113,11 @@ class Strava(BaseDevice):
         # Here we just return the data we've already generated,
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
+
+        stream_data = set(["heartrate"])
+
+        if data_type in stream_data:
+            return data
 
         def date_str_to_obj(x):
             return datetime.strptime(x, "%Y-%m-%d")
@@ -194,6 +209,7 @@ class Strava(BaseDevice):
             .to_dict("index")
             .values()
         )
+        self.heartrate = return_streams_syn("heartrate")
 
     def _authenticate(self, auth_creds):
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
