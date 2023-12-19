@@ -88,8 +88,8 @@ class Oura_Ring_3(BaseDevice):
         data = fetch_real_data(
             data_type,
             self.user,
-            start_date=self.init_params["start_date"],
-            end_date=self.init_params["end_date"],
+            start_date=params["start_date"],
+            end_date=params["end_date"],
         )
         return data
 

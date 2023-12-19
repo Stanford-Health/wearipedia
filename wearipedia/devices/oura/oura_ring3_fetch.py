@@ -90,11 +90,12 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     # readiness
     readiness = call_api_version_1(url="https://api.ouraring.com/v1/readiness")
 
-    # ideal_bedtimes
-    ideal_bedtimes = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
+    # ideal_bedtime
+    ideal_bedtime = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
 
     # aggregate data for version 2 endpoints
     api_data = dict()
+    api_data["heart_rate"] = heart_rate["data"]
     api_data["personal_info"] = [personal_info]
     api_data["sessions"] = (
         sessions["detail"] if sessions["detail"] != "Not Found" else [{}]
@@ -109,6 +110,6 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     api_data["sleep"] = sleep["sleep"]
     api_data["activity"] = activity["activity"]
     api_data["readiness"] = readiness["readiness"]
-    api_data["ideal_bedtimes"] = ideal_bedtimes["ideal_bedtimes"]
+    api_data["ideal_bedtime"] = ideal_bedtime["ideal_bedtimes"]
 
-    return api_data
+    return api_data[data_type]
