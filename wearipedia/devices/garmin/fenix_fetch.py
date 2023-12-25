@@ -7,20 +7,55 @@ from tqdm import tqdm
 __all__ = ["fetch_real_data"]
 
 
-def fetch_day_data(date, array, api_func, lock):
-    date_str = datetime.strftime(date, "%Y-%m-%d")
+def fetch_garmin_url(data_type):
+    """Fetches the Garmin Connect API endpoint URL corresponding to a given data type.
 
-    # this does not need to be in a critical section, since
-    # requests don't really share state
-    elem = api_func(date_str)
+    This function takes a data type as input and retrieves the associated API endpoint URL from a predefined dictionary.
+    If the provided data type is found in the dictionary keys, it returns the respective endpoint URL.
+    If the data type is not found, it returns None.
 
-    # critical section, ensuring each index in each array
-    # matches up. with the "lock" context manager,
-    # we ensure that only one thread can access the
-    # critical section (e.g. adding an element to the array)
-    # at a time
-    with lock:
-        array.append(elem)
+    :param data_type: A string representing the type of data for which the API endpoint URL is requested.
+    :type data_type: str
+    :return: The Garmin Connect API endpoint URL for the given data type, or None if not found.
+    :rtype: Union[str, None]
+    """
+
+    url_dict = {
+        "stats": "/usersummary-service/usersummary/daily",
+        "user_summary": "/usersummary-service/usersummary/daily",
+        "body_composition": "/weight-service",
+        "steps": "/wellness-service/wellness/dailySummaryChart",
+        "hr": "/wellness-service/wellness/dailyHeartRate",
+        "training_readiness": "/metrics-service/metrics/trainingreadiness",
+        "blood_pressure": "/bloodpressure-service/bloodpressure/range",
+        "floors": "/wellness-service/wellness/floorsChartData/daily",
+        "training_status": "/metrics-service/metrics/trainingstatus/aggregated",
+        "rhr": "/userstats-service/wellness/daily",
+        "hydration": "/usersummary-service/usersummary/hydration/daily",
+        "sleep": "/wellness-service/wellness/dailySleepData",
+        "stress": "/wellness-service/wellness/dailyStress",
+        "respiration": "/wellness-service/wellness/daily/respiration",
+        "spo2": "/wellness-service/wellness/daily/spo2",
+        "max_metrics": "/metrics-service/metrics/maxmet/daily",
+        "personal_record": "/personalrecord-service/personalrecord/prs",
+        "earned_badges": "/badge-service/badge/earned",
+        "activities": "/activitylist-service/activities/search/activities",
+        "devices": "/device-service/deviceregistration/devices",
+        "device_settings": "/device-service/deviceservice/device-info/settings",
+        "active_goals": "/goal-service/goal/goals",
+        "future_goals": "/goal-service/goal/goals",
+        "past_goals": "/goal-service/goal/goals",
+        "hrv": "/hrv-service/hrv",
+        "weigh_ins": "/weight-service/weight/range",
+        "weigh_ins_daily": "/weight-service/weight/dayview",
+        "hill_score": "/metrics-service/metrics/hillscore",
+        "endurance_score": "/metrics-service/metrics/endurancescore",
+        "virtual_challenges": "/badgechallenge-service/virtualChallenge/inProgress",
+    }
+    if data_type in url_dict.keys():
+        return url_dict[data_type]
+    else:
+        return None
 
 
 def fetch_real_data(start_date, end_date, data_type, api):
@@ -44,46 +79,235 @@ def fetch_real_data(start_date, end_date, data_type, api):
         datetime.strptime(end_date, "%Y-%m-%d")
         - datetime.strptime(start_date, "%Y-%m-%d")
     ).days
+    display_name = api.profile["displayName"]
 
-    lock = Lock()
+    # Group 1: Daily Data Types
+    first_data_types = ["stats", "user_summary"]
+    if data_type in first_data_types:
+        url = f"{fetch_garmin_url(data_type)}/{display_name}"
+        response = []
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            params = {"calendarDate": str(new_date.date())}
+            response.append(api.connectapi(url, params=params))
+        return response
 
-    if data_type == "steps":
-        api_func = api.get_steps_data
-    elif data_type == "hrs":
-        api_func = api.get_heart_rates
-    elif data_type == "brpms":
-        api_func = api.get_respiration_data
-    elif data_type == "dates":
-        # no API interaction here
-        return [
-            datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
-            for i in tqdm(range(num_days))
-        ]
+    # Group 2: Daily Data Types
+    second_data_types = ["steps", "hr"]
+    if data_type in second_data_types:
+        url = f"{fetch_garmin_url(data_type)}/{display_name}"
+        response = []
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            params = {"date": str(new_date.date())}
+            response.append(api.connectapi(url, params=params))
+        return response
 
-    arr = []
+    # Group 3: Daily Data Types
+    third_data_types = [
+        "floors",
+        "stress",
+        "respiration",
+        "spo2",
+        "hydration",
+        "hrv",
+        "training_status",
+        "training_readiness",
+    ]
+    if data_type in third_data_types:
+        response = []
+        for i in tqdm(range(num_days)):
+            new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+            url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
+            response.append(api.connectapi(url))
+        return response
 
-    # create a thread per each day, and assign it
-    # to fetch the data for that day
-    print("configuring threads...")
-    threads = []
+    # Group 4: Single Fetch Data Types
+    single_fetch_types = [
+        "body_composition",
+        "blood_pressure",
+        "rhr",
+        "personal_record",
+        "earned_badges",
+        "device_settings",
+        "weigh_ins",
+        "hill_score",
+        "endurance_score",
+        "virtual_challenges",
+        "weigh_ins_daily",
+        "activities",
+    ]
+    if data_type in single_fetch_types:
+        response = None
+        if data_type == "body_composition":
+            url = f"{fetch_garmin_url(data_type)}/weight/dateRange"
+            params = {"startDate": str(start_date), "endDate": str(end_date)}
+            response = api.connectapi(url, params=params)
+        elif data_type == "blood_pressure":
+            url = f"{fetch_garmin_url(data_type)}/{start_date}/{end_date}"
+            params = {"includeAll": True}
+            response = api.connectapi(url, params=params)
+        elif data_type == "rhr":
+            url = f"{fetch_garmin_url(data_type)}/{display_name}"
+            params = {
+                "fromDate": str(start_date),
+                "untilDate": str(end_date),
+                "metricId": 60,
+            }
+            response = api.connectapi(url, params=params)
+        elif data_type == "personal_record":
+            url = f"{fetch_garmin_url(data_type)}/{display_name}"
+            response = api.connectapi(url)
+        elif data_type == "earned_badges":
+            url = fetch_garmin_url(data_type)
+            response = api.connectapi(url)
+        elif data_type == "device_settings":
+            response = []
+            devices = api.connectapi(fetch_garmin_url("devices"))
+            for device in devices:
+                device_id = device["deviceId"]
+                url = f"{fetch_garmin_url(data_type)}/{device_id}"
+                device_settings = api.connectapi(url)
+                response.append(device_settings)
+        elif data_type == "weigh_ins":
+            url = f"{fetch_garmin_url(data_type)}/{start_date}/{end_date}"
+            params = {"includeAll": True}
+            response = api.connectapi(url, params=params)
+        elif data_type == "weigh_ins_daily":
+            response = []
+            for i in tqdm(range(num_days)):
+                new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+                url = f"{fetch_garmin_url(data_type)}/{new_date.date()}"
+                params = {"includeAll": True}
+                response.append(api.connectapi(url, params=params))
+        elif data_type == "hill_score":
+            url = f"{fetch_garmin_url(data_type)}/stats"
+            params = {
+                "startDate": str(start_date),
+                "endDate": str(end_date),
+                "aggregation": "daily",
+            }
+            response = api.connectapi(url, params=params)
+        elif data_type == "endurance_score":
+            url = f"{fetch_garmin_url(data_type)}/stats"
+            params = {
+                "startDate": str(start_date),
+                "endDate": str(end_date),
+                "aggregation": "weekly",
+            }
+            response = api.connectapi(url, params=params)
+        elif data_type == "virtual_challenges":
+            url = fetch_garmin_url(data_type)
+            params = {"start": str(start_date), "limit": str(end_date)}
+            response = api.connectapi(url, params=params)
+        elif data_type == "activities":
+            url = fetch_garmin_url(data_type)
+            params = {"start": str(1), "limit": str(100)}
+            response = api.connectapi(url, params=params)
 
-    for i in tqdm(range(num_days)):
-        new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+        return response
 
-        new_thread = Thread(target=fetch_day_data, args=(new_date, arr, api_func, lock))
+    # Group 5: List Fetch Data Types
+    list_fetch_types = [
+        "dates",
+        "sleep",
+        "max_metrics",
+        "active_goals",
+        "future_goals",
+        "past_goals",
+    ]
+    if data_type in list_fetch_types:
+        response = []
+        if data_type == "sleep":
+            url = f"{fetch_garmin_url(data_type)}/{display_name}"
+            response = []
+            for i in tqdm(range(num_days)):
+                new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+                params = {"date": str(new_date.date()), "nonSleepBufferMinutes": 60}
+                response.append(api.connectapi(url, params=params))
+        elif data_type == "max_metrics":
+            response = []
+            for i in tqdm(range(num_days)):
+                new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+                url = (
+                    f"{fetch_garmin_url(data_type)}/{new_date.date()}/{new_date.date()}"
+                )
+                response.append(api.connectapi(url))
+        elif data_type == "active_goals":
+            start = 1
+            limit = 30
+            status = "active"
 
-        threads.append(new_thread)
+            goals = []
+            url = fetch_garmin_url(data_type)
+            params = {
+                "status": status,
+                "start": str(start),
+                "limit": str(limit),
+                "sortOrder": "asc",
+            }
 
-    # start threads
-    for thread in threads:
-        thread.start()
+            while True:
+                params["start"] = str(start)
+                goals_json = api.connectapi(url, params=params)
+                if goals_json:
+                    goals.extend(goals_json)
+                    start = start + limit
+                else:
+                    break
+            response = goals
+        elif data_type == "future_goals":
+            start = 1
+            limit = 30
+            status = "future"
 
-    # wait for all threads to terminate
-    print("Main thread waiting for child threads...")
-    for thread in tqdm(threads):
-        thread.join()
+            goals = []
+            url = fetch_garmin_url(data_type)
+            params = {
+                "status": status,
+                "start": str(start),
+                "limit": str(limit),
+                "sortOrder": "asc",
+            }
 
-    # report the number of items in the list
-    print("\ndone")
+            while True:
+                params["start"] = str(start)
+                goals_json = api.connectapi(url, params=params)
+                if goals_json:
+                    goals.extend(goals_json)
+                    start = start + limit
+                else:
+                    break
+            response = goals
+        elif data_type == "past_goals":
+            start = 1
+            limit = 30
+            status = "past"
 
-    return arr
+            goals = []
+            url = fetch_garmin_url(data_type)
+            params = {
+                "status": status,
+                "start": str(start),
+                "limit": str(limit),
+                "sortOrder": "asc",
+            }
+
+            while True:
+                params["start"] = str(start)
+                goals_json = api.connectapi(url, params=params)
+                if goals_json:
+                    goals.extend(goals_json)
+                    start = start + limit
+                else:
+                    break
+            response = goals
+        elif data_type == "dates":
+            return [
+                datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+                for i in tqdm(range(num_days))
+            ]
+
+        return response
+
+    return None
