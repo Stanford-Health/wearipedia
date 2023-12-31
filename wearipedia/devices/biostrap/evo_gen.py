@@ -41,7 +41,7 @@ def create_syn_data(start_date, end_date):
 
     # Adjusted Gaussian noise functions for each biometric with more realistic standard deviations
     def gaussian_noise_bpm():
-        return np.random.normal(0, 0.5)  # Reduced standard deviation for less noise
+        return np.random.normal(0, 2)  # Reduced standard deviation for less noise
 
     def gaussian_noise_brpm():
         return np.random.normal(0, 0.5)  # Reduced standard deviation for less noise
@@ -62,15 +62,21 @@ def create_syn_data(start_date, end_date):
         time_index = 0
 
         # Initial values for random walk
-        bpm_current = 60
+        bpm_current = 45
         brpm_current = 16
         hrv_current = 40
         spo2_current = 98
 
-        # Target mean and bounds for brpm
+        # Target means and bounds
+        target_mean_bpm = 70
         target_mean_brpm = 16
-        brpm_lower_bound = 12
-        brpm_upper_bound = 20
+        target_mean_hrv = 50
+        target_mean_spo2 = 98
+
+        bpm_lower_bound, bpm_upper_bound = 40, 120
+        brpm_lower_bound, brpm_upper_bound = 12, 20
+        hrv_lower_bound, hrv_upper_bound = 20, 100
+        spo2_lower_bound, spo2_upper_bound = 95, 100
 
         # Store the last minute's average bpm to calculate brpm
         last_minute_bpm = []
@@ -80,44 +86,34 @@ def create_syn_data(start_date, end_date):
             while curr_time < curr_date_obj + timedelta(days=1):
                 key = (curr_time.strftime("%Y-%m-%d %H:%M:%S"), TZ_OFFSET)
 
-                # Random walk for bpm
-                bpm_current += gaussian_noise_bpm()
-                bpm_val = max(40, min(120, int(bpm_current)))  # Clamping bpm values
-                bpm[key] = bpm_val
+                # Update bpm, hrv, and spo2 every 10 seconds
+                bpm_mean_reversion = (
+                    target_mean_bpm - bpm_current
+                ) * 0.01  # Changed from 0.1
+                bpm_current += bpm_mean_reversion + gaussian_noise_bpm()
+                bpm_current = max(bpm_lower_bound, min(bpm_upper_bound, bpm_current))
+                bpm[key] = int(bpm_current)
 
-                # Update last minute bpm values for brpm calculation
-                last_minute_bpm.append(bpm_val)
-                if len(last_minute_bpm) > 6:  # More than a minute's worth of data
-                    last_minute_bpm.pop(0)
+                hrv_mean_reversion = (target_mean_hrv - hrv_current) * 0.1
+                hrv_current += hrv_mean_reversion + gaussian_noise_hrv()
+                hrv_current = max(hrv_lower_bound, min(hrv_upper_bound, hrv_current))
+                hrv[key] = int(hrv_current)
 
-                # Calculate average bpm over the last minute
-                avg_last_minute_bpm = sum(last_minute_bpm) / len(last_minute_bpm)
-
-                # Random walk for brpm, influenced by average bpm
-                brpm_adjustment = (avg_last_minute_bpm - 60) / 5
-                brpm_current += brpm_adjustment + gaussian_noise_brpm()
-
-                # Mean-reverting mechanism for brpm
-                brpm_mean_reversion = (target_mean_brpm - brpm_current) * 0.1
-                brpm_current += brpm_mean_reversion
-
-                # Clamping brpm values within the bounds
-                brpm_current = max(
-                    brpm_lower_bound, min(brpm_upper_bound, brpm_current)
+                spo2_mean_reversion = (target_mean_spo2 - spo2_current) * 0.1
+                spo2_current += spo2_mean_reversion + gaussian_noise_spo2()
+                spo2_current = max(
+                    spo2_lower_bound, min(spo2_upper_bound, spo2_current)
                 )
+                spo2[key] = int(spo2_current)
 
-                brpm_val = int(brpm_current)
-                brpm[key] = brpm_val
-
-                # Random walk for hrv
-                hrv_current += gaussian_noise_hrv()
-                hrv_val = max(20, min(100, int(hrv_current)))  # Clamping hrv values
-                hrv[key] = hrv_val
-
-                # Random walk for spo2
-                spo2_current += gaussian_noise_spo2()
-                spo2_val = max(95, min(100, int(spo2_current)))  # Clamping spo2 values
-                spo2[key] = spo2_val
+                # Update brpm every minute
+                if time_index % 60 == 0:
+                    brpm_mean_reversion = (target_mean_brpm - brpm_current) * 0.1
+                    brpm_current += brpm_mean_reversion + gaussian_noise_brpm()
+                    brpm_current = max(
+                        brpm_lower_bound, min(brpm_upper_bound, brpm_current)
+                    )
+                    brpm[key] = int(brpm_current)
 
                 # Increment time and index
                 curr_time += timedelta(seconds=10)
