@@ -141,7 +141,14 @@ class EVO(BaseDevice):
             "redirect_uri": redirect_uri,
         }
         authorization_url = f"https://auth.biostrap.com/authorize?{urlencode(params)}"
-        webbrowser.open(authorization_url)
+
+        # Instruct the user to open the URL in their browser ()
+        print(
+            f"Please go to the following URL and authorize access: {authorization_url}"
+        )
+        print(
+            "If a page cannot be displayed, please make sure you are logged into the Biostrap account in your browser."
+        )
 
         # Get the authorization response URL from the command line (the method Jack and I talked about didn't work)
         authorization_response = input("Enter the full callback URL: ")
