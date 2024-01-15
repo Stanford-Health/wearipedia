@@ -24,7 +24,7 @@ def test_myfitnesspal(real):
     for start_date, end_date in zip(start_dates, end_dates):
 
         device = wearipedia.get_device(
-            "underarmour/myfitnesspal",
+            "myfitnesspal/myfitnesspal",
             start_date=np.datetime_as_string(start_date, unit="D"),
             end_date=np.datetime_as_string(end_date, unit="D"),
         )
@@ -37,7 +37,7 @@ def test_myfitnesspal(real):
         }
 
         if real:
-            wearipedia._authenticate_device("underarmour/myfitnesspal", device)
+            wearipedia._authenticate_device("myfitnesspal/myfitnesspal", device)
 
         goals = device.get_data("goals", params=params)
         daily_summary = device.get_data("daily_summary", params=params)

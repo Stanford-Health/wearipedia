@@ -64,7 +64,7 @@ def gen_continuous(start_date, end_date):
             item = {
                 "x": dToStr(x),
                 "y": y,
-                "interpolated": True,
+                "interpolated": False,
                 "__typename": "TimePair",
             }
             continuous.append(item)

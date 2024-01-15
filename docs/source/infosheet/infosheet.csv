@@ -5,3 +5,12 @@ Dexcom,Pro CGM,`dexcom/pro_cgm`,OAuth 2.0,yes,link
 Withings,Body+,`withings/bodyplus`,OAuth 2.0,yes,link
 Withings,ScanWatch,`withings/scanwatch`,OAuth 2.0,yes,link
 Polar,Verity Sense,`polar/verity_sense`,only email and password,yes,link
+Cronometer, Cronometer App, 'cromometer/Cronometer', only email and password,yes,link
+MyFitnessPal, MyFitnessPal App, 'myfitnesspal/myfitnesspal', browser cookies,yes,link
+Google, Fitness, 'google/googlefit', authorization_code,yes,link
+Strava, Strava App, 'strava/strava', client_id client_secret and refresh_token,yes, link
+Polar,Vantage V2,`polar/vantage`,only email and password,yes,link
+Oura,Ring 3,`oura/oura_ring3`,OAuth 2.0,yes,link
+Fitbit,Sense,`fitbit/fitbit_sense`,OAuth 2.0,yes,link
+Fitbit,Charge 4,`fitbit/fitbit_charge_4`,OAuth 2.0,yes,link
+Coros,Pace 2,`coros/coros_pace_2`,only email and password,yes,link

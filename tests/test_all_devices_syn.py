@@ -9,6 +9,10 @@ MAX_DEVICE_TEST_TIME = 15
 
 
 def test_all_devices():
+    # that they're called the correct number of times.
+    # This is essentially checking that the child class has re-implemented
+    # the methods correctly.
+
     pbar = tqdm(wearipedia.get_all_device_names())
 
     for device_name in pbar:
@@ -30,10 +34,6 @@ def test_all_devices():
             len(device.init_params) > 0
         ), f"{device_name} has no init params, should have at least a random seed"
 
-        # It's a bit ugly, but we mock all the relevant methods and check
-        # that they're called the correct number of times.
-        # This is essentially checking that the child class has re-implemented
-        # the methods correctly.
         with mock.patch.object(
             device.__class__, "_filter_synthetic", wraps=device._filter_synthetic
         ) as mock_get_synthetic, mock.patch.object(

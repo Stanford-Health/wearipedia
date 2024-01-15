@@ -49,3 +49,39 @@ Devices
 .. autoclass:: wearipedia.devices.withings.ScanWatch
     :members:
     :show-inheritance:
+
+.. autoclass:: wearipedia.devices.cromometer.Cronometer
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.myfitnesspal.MyFitnessPal
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.google.GoogleFitness
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.strava.Strava
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.polar.PolarVantage
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.coros.Coros_pace_2
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.oura.Oura_Ring_3
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.fitbit.Fitbit_charge_4
+    :members:
+    :show-inheritance:
+
+.. autoclass:: wearipedia.devices.fitbit.Fitbit_sense
+    :members:
+    :show-inheritance:

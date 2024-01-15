@@ -18,26 +18,27 @@ def gen_data(seed, start_date, end_date):
     :return: a dictionary with keys the training session dates and values a dictionary with keys heart_rates, calories, and minutes
     :rtype: Dict[str: Dict[str: list, str: int, str: int]]
     """
-    np.random.seed(seed)
     sessions = np.datetime64(end_date) - np.datetime64(start_date)
     durations = (45, 60)  # minutes
 
     def gen_session(result, index):
+        local_rng = np.random.RandomState(seed + index)
+
         # simulate skip day
-        if np.random.uniform(low=0, high=1, size=(1,))[0] > 0.8:
+        if local_rng.uniform(low=0, high=1, size=(1,))[0] > 0.8:
             return
 
         # day that you workout
         day = np.datetime64(start_date) + np.timedelta64(index, "D")
         duration = int(
-            np.random.uniform(low=durations[0], high=durations[1], size=(1,))[0]
+            local_rng.uniform(low=durations[0], high=durations[1], size=(1,))[0]
         )
         hrate = []
-        start_rate = np.random.uniform(low=70, high=110, size=(1,))[0]
+        start_rate = local_rng.uniform(low=70, high=110, size=(1,))[0]
 
         for _ in range(duration * 60):
             hrate.append(start_rate)
-            added = np.random.normal(scale=1) + 0.01 * (160 / start_rate)
+            added = local_rng.normal(scale=1) + 0.01 * (160 / start_rate)
             if start_rate < 50:
                 added = abs(added)
             elif start_rate > 190:
@@ -48,7 +49,7 @@ def gen_data(seed, start_date, end_date):
             hrate
         )
         result[pd.to_datetime(day).strftime("%Y-%m-%d")]["calories"] = int(
-            np.random.uniform(low=200, high=500, size=(1,))[0]
+            local_rng.uniform(low=200, high=500, size=(1,))[0]
         )
         result[pd.to_datetime(day).strftime("%Y-%m-%d")]["minutes"] = duration
 
