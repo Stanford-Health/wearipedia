@@ -46,7 +46,6 @@ fbm = "^0.3.0"
 beautifulsoup4 = "^4.12.2"
 myfitnesspal = "^2.0.1"
 polyline = "^2.0.0"
-jupyter = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "^1.7.1"
