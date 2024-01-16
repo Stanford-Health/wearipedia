@@ -7,7 +7,7 @@ import wearipedia
 
 
 @pytest.mark.parametrize("real", [True, False])
-def test_withings_scanwatch_synthetic(real):
+def test_whoop_4_synthetic(real):
     start_dates = [datetime(2009, 11, 15), datetime(2021, 4, 1), datetime(2022, 6, 10)]
     end_dates = [datetime(2010, 2, 1), datetime(2021, 6, 20), datetime(2022, 8, 25)]
 
