@@ -1,4 +1,5 @@
 from .apple import *
+from .biostrap import *
 from .cronometer import *
 from .dexcom import *
 from .dreem import *
