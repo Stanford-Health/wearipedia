@@ -86,10 +86,10 @@ def check_collection(collection_type: str, collection: pd.DataFrame):
 
         # Check start, end, created_at, and updated_at relationships if they are not NaT
         if (
-            not start.isna()
-            and not end.isna()
-            and not created_at.isna()
-            and not updated_at.isna()
+            not pd.isnull(start)
+            and not pd.isnull(end)
+            and not pd.isnull(created_at)
+            and not pd.isnull(updated_at)
         ):
             assert start < end, f"Start is not earlier than end: {start}, {end}"
             assert (
