@@ -1,21 +1,13 @@
-# perform additional test specific to Whoop 4 device
+from datetime import datetime
 
-from datetime import datetime, timedelta
-
+import pandas as pd
 import pytest
-from dateutil import parser
 
 import wearipedia
 
 
-def check_keys(d, expected_keys):
-    assert (
-        list(d.keys()) == expected_keys
-    ), f"Expected keys to be {expected_keys}, but got {d.keys()}"
-
-
 @pytest.mark.parametrize("real", [True, False])
-def test_whoop_4_synthetic(real):
+def test_withings_scanwatch_synthetic(real):
     start_dates = [datetime(2009, 11, 15), datetime(2021, 4, 1), datetime(2022, 6, 10)]
     end_dates = [datetime(2010, 2, 1), datetime(2021, 6, 20), datetime(2022, 8, 25)]
 
@@ -33,120 +25,92 @@ def test_whoop_4_synthetic(real):
         helper_test(device, start_date, end_date, real)
 
 
+def check_collection(collection_type: str, collection: pd.DataFrame):
+
+    if collection_type == "sleeps":
+        assert set(collection.columns) == {
+            "id",
+            "user_id",
+            "created_at",
+            "updated_at",
+            "start",
+            "end",
+            "timezone_offset",
+            "nap",
+            "score_state",
+            "score",
+        }, f"Sleeps data is not correct: {collection}"
+    elif collection_type == "workouts":
+        assert set(collection.columns) == {
+            "id",
+            "user_id",
+            "created_at",
+            "updated_at",
+            "start",
+            "end",
+            "timezone_offset",
+            "sport_id",
+            "score_state",
+            "score",
+        }, f"Cycles data is not correct: {collection}"
+    elif collection_type == "cycles":
+        assert set(collection.columns) == {
+            "id",
+            "user_id",
+            "created_at",
+            "updated_at",
+            "start",
+            "end",
+            "timezone_offset",
+            "score_state",
+            "score",
+        }, f"Cycles data is not correct: {collection}"
+
+    # checking that id is >=0
+    for id in collection["id"]:
+        assert id >= 0, f"ID is not in range: {id}"
+
+    # checking start, end, created_at, and updated_at relationships
+
+    for _, row in collection.iterrows():
+        start_str = row["start"]
+        end_str = row["end"]
+        created_at_str = row["created_at"]
+        updated_at_str = row["updated_at"]
+
+        # Convert strings to datetime objects
+        start = pd.to_datetime(start_str, errors="coerce")
+        end = pd.to_datetime(end_str, errors="coerce")
+        created_at = pd.to_datetime(created_at_str, errors="coerce")
+        updated_at = pd.to_datetime(updated_at_str, errors="coerce")
+
+        # Check start, end, created_at, and updated_at relationships if they are not NaT
+        if (
+            not start.isna()
+            and not end.isna()
+            and not created_at.isna()
+            and not updated_at.isna()
+        ):
+            assert start < end, f"Start is not earlier than end: {start}, {end}"
+            assert (
+                end < created_at
+            ), f"End is not earlier than created_at: {end}, {created_at}"
+            assert (
+                created_at < updated_at
+            ), f"Created_at is not earlier than updated_at: {created_at}, {updated_at}"
+
+
 def helper_test(device, start_synthetic, end_synthetic, real):
 
-    if real:
-        # whoop limits to 192 hour intervals of difference
-        end_synthetic = start_synthetic + timedelta(days=7)
+    cycles = device.get_data("cycles")
+    workouts = device.get_data("workouts")
+    sleeps = device.get_data("sleeps")
 
-    cycles = device.get_data(
-        "cycles",
-        params={
-            "start": datetime.strftime(start_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
-            "end": datetime.strftime(end_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
-        },
-    )
-    hr = device.get_data(
-        "hr",
-        params={
-            "start": datetime.strftime(start_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
-            "end": datetime.strftime(end_synthetic, "%Y-%m-%dT%H:%M:%S.%fZ"),
-        },
-    )
+    if len(sleeps) != 0 or not real:
+        check_collection("sleeps", sleeps)
 
-    assert (
-        cycles["total_count"]
-        == len(cycles["records"])
-        <= (end_synthetic - start_synthetic).days
-    ), (
-        f"Expected all data to be the same length and to match or undercut the number of days between"
-        f" {start_synthetic} and {end_synthetic}, but got {len(cycles)}"
-    )
+    if len(workouts) != 0 or not real:
+        check_collection("workouts", workouts)
 
-    # first make sure that the cycles dates are correct and consecutive
-    get_day = lambda cycle: parser.parse(cycle["cycle"]["days"].split("'")[1])
-
-    for cycle_1, cycle_2 in zip(cycles["records"][:-1], cycles["records"][1:]):
-
-        c1, c2 = get_day(cycle_1), get_day(cycle_2)
-
-        assert (
-            c1 - c2
-        ).days >= 1, f"Cycle dates are not consecutive: {cycle_1}, {cycle_2}"
-
-    if len(cycles["records"]) > 0:
-        first_record = cycles["records"][-1]
-        assert (
-            get_day(first_record) == start_synthetic
-        ), f"First date is not correct: {get_day(first_record)}"
-
-    # Now we make sure that the data in each dataframe (cycles, health_metrics, sleeps, and hr) is correct
-    # checking for cycles data
-
-    check_keys(cycles, ["total_count", "offset", "records"])
-
-    for record in cycles["records"]:
-        check_keys(record, ["cycle", "sleeps", "recovery", "workouts", "v2_activities"])
-        check_keys(
-            record["cycle"],
-            [
-                "id",
-                "created_at",
-                "updated_at",
-                "scaled_strain",
-                "during",
-                "user_id",
-                "sleep_need",
-                "predicted_end",
-                "timezone_offset",
-                "days",
-                "intensity_score",
-                "data_state",
-                "day_strain",
-                "day_kilojoules",
-                "day_avg_heart_rate",
-                "day_max_heart_rate",
-            ],
-        )
-        assert type(record["sleeps"]) == type(
-            []
-        ), f"expected sleeps to be a list, but got {type(record['sleeps'])}"
-        check_keys(
-            record["recovery"],
-            [
-                "during",
-                "id",
-                "created_at",
-                "updated_at",
-                "date",
-                "user_id",
-                "sleep_id",
-                "survey_response_id",
-                "cycle_id",
-                "responded",
-                "recovery_score",
-                "resting_heart_rate",
-                "hrv_rmssd",
-                "state",
-                "calibrating",
-                "prob_covid",
-                "hr_baseline",
-                "skin_temp_celsius",
-                "spo2",
-                "algo_version",
-                "rhr_component",
-                "hrv_component",
-                "history_size",
-                "from_sws",
-                "recovery_rate",
-                "is_normal",
-            ],
-        )
-        assert type(record["workouts"]) == type(
-            []
-        ), f"expected workouts to be a list, but got {type(record['workouts'])}"
-        assert type(record["v2_activities"]) == type(
-            []
-        ), f"expected v2_activities to be a list, but got {type(record['v2_activities'])}"
-
-    # TODO: check more stuff
+    if len(cycles) != 0 or not real:
+        check_collection("cycles", cycles)
