@@ -73,6 +73,7 @@ def whoop_authenticate(client_id: str, client_secret: str) -> tuple:
         access_token, refresh_token = response.json().get(
             "access_token"
         ), response.json().get("refresh_token")
+        print("Authentication succeeded.")
 
     else:
         print("Error:", response.json().get("error"))
