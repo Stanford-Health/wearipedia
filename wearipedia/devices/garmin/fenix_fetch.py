@@ -328,8 +328,10 @@ def fetch_real_data(start_date, end_date, data_type, api):
                 params = {"startDate": str(new_date), "endDate": str(new_date)}
                 response.append(api.connectapi(url, params=params))
         elif data_type == "stats_and_body_aggregated":
-            stats_url = f"{fetch_garmin_url("stats")}/{display_name}"
-            body_url = f"{fetch_garmin_url("body_composition")}/{display_name}/weight/dateRange"
+            stats_data_type = "stats"
+            body_data_type = "body_composition"
+            stats_url = f"{fetch_garmin_url(stats_data_type)}/{display_name}"
+            body_url = f"{fetch_garmin_url(body_data_type)}/{display_name}/weight/dateRange"
             for i in tqdm(range(num_days)):
                 new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
 
