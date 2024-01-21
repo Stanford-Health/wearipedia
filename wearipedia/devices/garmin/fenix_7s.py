@@ -135,6 +135,7 @@ class Fenix7S(BaseDevice):
                 "adhoc_challenges",
                 "available_badges",
                 "available_badge_challenges",
+                "badge_challenges",
                 "activities",
                 "device_settings",
                 "active_goals",
