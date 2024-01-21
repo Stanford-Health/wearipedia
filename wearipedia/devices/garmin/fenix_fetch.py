@@ -141,6 +141,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "available_badges",
         "available_badge_challenges",
         "badge_challenges",
+        "non_completed_badge_challenges"
         "device_settings",
         "weigh_ins",
         "hill_score",
