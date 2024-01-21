@@ -245,12 +245,12 @@ def fetch_real_data(start_date, end_date, data_type, api):
             params = {
             "startDate": str(start_date),
             "endDate": str(end_date),
-            "start": str(1),
+            "start": str(0),
             "limit": str(100),
             "activityType": "",
             }
             response = api.connectapi(url, params=params)
-
+            print(response)
         return response
 
     # Group 5: List Fetch Data Types
