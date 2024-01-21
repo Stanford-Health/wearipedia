@@ -313,7 +313,8 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
     # Group 6 - Aggregated Data Types
     aggregated_fetch_types = [
-        "body_composition_aggregated"
+        "body_composition_aggregated",
+        "stats_and_body_aggregated",
     ]
 
     if data_type in aggregated_fetch_types:
@@ -326,6 +327,18 @@ def fetch_real_data(start_date, end_date, data_type, api):
                 url = f"{fetch_garmin_url(data_type)}/weight/dateRange"
                 params = {"startDate": str(new_date), "endDate": str(new_date)}
                 response.append(api.connectapi(url, params=params))
+        elif data_type == "stats_and_body_aggregated":
+            stats_url = f"{fetch_garmin_url("stats")}/{display_name}"
+            body_url = f"{fetch_garmin_url("body_composition")}/{display_name}/weight/dateRange"
+            for i in tqdm(range(num_days)):
+                new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+
+                body_params = {"startDate": str(new_date), "endDate": str(new_date)}
+                body_response = api.connectapi(body_url, params=body_params)
+
+                stats_params = {"calendarDate": str(new_date.date())}
+                stats_response = api.connectapi(stats_url, params=stats_params)
+                response.append({stats_response, body_response["totalAverage"]})
 
 
         return response
