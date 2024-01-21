@@ -100,46 +100,24 @@ def get_steps_data(start_date, num_days):
     steps_data = []
 
     for _ in range(num_days):
-        user_profile_pk = random.randint(10000000, 99999999)
         calendar_date = (
             datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=_)
         ).strftime("%Y-%m-%d")
-        create_time_stamp = f"{calendar_date}T14:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.000"
         start_timestamp_gmt = f"{calendar_date}T06:00:00.0"
-        end_timestamp_gmt = f"{calendar_date}T13:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
-        start_timestamp_local = f"{(datetime.strptime(start_date, '%Y-%m-%d') - timedelta(days=1)).strftime('%Y-%m-%d')}T23:00:00.0"
-        end_timestamp_local = f"{calendar_date}T06:{random.randint(0, 59):02d}:{random.randint(0, 59):02d}.0"
 
-        steps_entry = {
-            "userProfilePk": user_profile_pk,
-            "stepsSummary": {
-                "calendarDate": calendar_date,
-                "dailyTotal": random.randint(1000, 15000),
-                "status": "COMPLETED",
-                "createTimeStamp": create_time_stamp,
-            },
-            "stepsDetails": [],
-            "startTimestampGMT": start_timestamp_gmt,
-            "endTimestampGMT": end_timestamp_gmt,
-            "startTimestampLocal": start_timestamp_local,
-            "endTimestampLocal": end_timestamp_local,
-        }
-
-        # Generate step data for each interval within a day (e.g., 15-minute intervals)
-        interval_start = datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0")
+        steps_day = []
         for i in range(96):  # 24 hours * 60 minutes / 15 minutes
+            steps_entry = {}
+            interval_start = datetime.strptime(start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0")
             interval_end = interval_start + timedelta(minutes=15)
-            steps = random.randint(0, 200)
-            steps_entry["stepsDetails"].append(
-                {
-                    "startTimestampGMT": interval_start.strftime("%Y-%m-%dT%H:%M:%S.0"),
-                    "endTimestampGMT": interval_end.strftime("%Y-%m-%dT%H:%M:%S.0"),
-                    "steps": steps,
-                }
-            )
-            interval_start = interval_end
-
-        steps_data.append(steps_entry)
+            steps_entry["startGMT"] = interval_start.strftime("%Y-%m-%dT%H:%M:%S.0")
+            steps_entry["endGMT"] = interval_end.strftime("%Y-%m-%dT%H:%M:%S.0")
+            steps_entry["steps"] = random.randint(0, 200)
+            steps_entry["pushes"] = 0
+            steps_entry["primaryActivityLevel"] = random.choice(["active", "sedentary", "sleeping", "none"])
+            steps_entry["activityLevelConstant"] = random.choice([True, False])
+            steps_day.append(steps_entry)
+        steps_data.append(steps_day)
 
     return steps_data
 
