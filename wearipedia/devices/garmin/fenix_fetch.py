@@ -234,7 +234,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
             response = api.connectapi(url, params=params)
         elif data_type == "activities":
             url = fetch_garmin_url(data_type)
-            params = {"start": str(1), "limit": str(100)}
+            params = {"start": str(0), "limit": str(100)}
             response = api.connectapi(url, params=params)
 
         return response
