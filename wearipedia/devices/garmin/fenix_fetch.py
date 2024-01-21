@@ -42,6 +42,7 @@ def fetch_garmin_url(data_type):
         "max_metrics": "/metrics-service/metrics/maxmet/daily",
         "personal_record": "/personalrecord-service/personalrecord/prs",
         "earned_badges": "/badge-service/badge/earned",
+        "adhoc_challenges": "/adhocchallenge-service/adHocChallenge/historical",
         "activities": "/activitylist-service/activities/search/activities",
         "devices": "/device-service/deviceregistration/devices",
         "device_settings": "/device-service/deviceservice/device-info/settings",
@@ -132,6 +133,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "rhr",
         "personal_record",
         "earned_badges",
+        "adhoc_challenges",
         "device_settings",
         "weigh_ins",
         "hill_score",
@@ -164,6 +166,10 @@ def fetch_real_data(start_date, end_date, data_type, api):
         elif data_type == "earned_badges":
             url = fetch_garmin_url(data_type)
             response = api.connectapi(url)
+        elif data_type == "adhoc_challenges":
+            url = f"{fetch_garmin_url(data_type)}"
+            params = {"start": str(1), "limit": str(100)}
+            response = api.connectapi(url, params=params)
         elif data_type == "device_settings":
             response = []
             devices = api.connectapi(fetch_garmin_url("devices"))
