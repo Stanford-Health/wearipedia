@@ -27,6 +27,7 @@ def fetch_garmin_url(data_type):
         "body_composition_aggregated": "/weight-service",
         "steps": "/wellness-service/wellness/dailySummaryChart",
         "daily_steps": "/usersummary-service/stats/steps/daily",
+        "body_battery": "/wellness-service/wellness/bodyBattery/reports/daily",
         "hr": "/wellness-service/wellness/dailyHeartRate",
         "training_readiness": "/metrics-service/metrics/trainingreadiness",
         "blood_pressure": "/bloodpressure-service/bloodpressure/range",
@@ -322,6 +323,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
     aggregated_fetch_types = [
         "body_composition_aggregated",
         "stats_and_body_aggregated",
+        "body_battery"
     ]
 
     if data_type in aggregated_fetch_types:
@@ -348,7 +350,12 @@ def fetch_real_data(start_date, end_date, data_type, api):
                 stats_response = api.connectapi(stats_url, params=stats_params)
                 comb_response = {"stats": stats_response, "body_composition": body_response["totalAverage"]}
                 response.append(comb_response)
-
+        elif data_type == "body_battery":
+            for i in tqdm(range(num_days)):
+                new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+                url = f"{fetch_garmin_url(data_type)}"
+                params = {"startDate": str(new_date), "endDate": str(new_date)}
+                response.append(api.connectapi(url, params=params))
 
         return response
 
