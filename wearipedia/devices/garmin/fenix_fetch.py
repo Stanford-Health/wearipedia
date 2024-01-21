@@ -26,6 +26,7 @@ def fetch_garmin_url(data_type):
         "body_composition": "/weight-service",
         "body_composition_aggregated": "/weight-service",
         "steps": "/wellness-service/wellness/dailySummaryChart",
+        "daily_steps": "/usersummary-service/stats/steps/daily",
         "hr": "/wellness-service/wellness/dailyHeartRate",
         "training_readiness": "/metrics-service/metrics/trainingreadiness",
         "blood_pressure": "/bloodpressure-service/bloodpressure/range",
@@ -216,18 +217,24 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "active_goals",
         "future_goals",
         "past_goals",
+        "daily_steps",
     ]
     if data_type in list_fetch_types:
         response = []
         if data_type == "sleep":
             url = f"{fetch_garmin_url(data_type)}/{display_name}"
-            response = []
             for i in tqdm(range(num_days)):
                 new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
                 params = {"date": str(new_date.date()), "nonSleepBufferMinutes": 60}
                 response.append(api.connectapi(url, params=params))
         elif data_type == "max_metrics":
-            response = []
+            for i in tqdm(range(num_days)):
+                new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+                url = (
+                    f"{fetch_garmin_url(data_type)}/{new_date.date()}/{new_date.date()}"
+                )
+                response.append(api.connectapi(url))
+        elif data_type == "daily_steps":
             for i in tqdm(range(num_days)):
                 new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
                 url = (
