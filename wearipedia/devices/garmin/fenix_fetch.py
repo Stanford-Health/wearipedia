@@ -46,6 +46,7 @@ def fetch_garmin_url(data_type):
         "available_badges": "/badgechallenge-service/badgeChallenge/available",
         "available_badge_challenges": "/badgechallenge-service/badgeChallenge/available",
         "badge_challenges": "/badgechallenge-service/badgeChallenge/completed",
+        "non_completed_badge_challenges": "/badgechallenge-service/badgeChallenge/non-completed",
         "activities": "/activitylist-service/activities/search/activities",
         "devices": "/device-service/deviceregistration/devices",
         "device_settings": "/device-service/deviceservice/device-info/settings",
@@ -185,6 +186,10 @@ def fetch_real_data(start_date, end_date, data_type, api):
             params = {"start": str(1), "limit": str(100)}
             response = api.connectapi(url, params=params)
         elif data_type == "badge_challenges":
+            url = f"{fetch_garmin_url(data_type)}"
+            params = {"start": str(1), "limit": str(100)}
+            response = api.connectapi(url, params=params)
+        elif data_type == "non_completed_badge_challenges":
             url = f"{fetch_garmin_url(data_type)}"
             params = {"start": str(1), "limit": str(100)}
             response = api.connectapi(url, params=params)
