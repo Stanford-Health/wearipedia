@@ -320,7 +320,6 @@ def fetch_real_data(start_date, end_date, data_type, api):
     if data_type in aggregated_fetch_types:
         response = []
         if data_type == "body_composition_aggregated":
-            url = f"{fetch_garmin_url(data_type)}/{display_name}"
             # response = []
             for i in tqdm(range(num_days)):
                 new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
@@ -331,7 +330,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
             stats_data_type = "stats"
             body_data_type = "body_composition"
             stats_url = f"{fetch_garmin_url(stats_data_type)}/{display_name}"
-            body_url = f"{fetch_garmin_url(body_data_type)}/{display_name}/weight/dateRange"
+            body_url = f"{fetch_garmin_url(body_data_type)}/weight/dateRange"
             for i in tqdm(range(num_days)):
                 new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
 
