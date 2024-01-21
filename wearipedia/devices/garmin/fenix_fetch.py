@@ -335,7 +335,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
             for i in tqdm(range(num_days)):
                 new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
 
-                body_params = {"startDate": str(new_date.date()), "endDate": str(new_date.date())}
+                body_params = {"startDate": str(new_date), "endDate": str(new_date)}
                 body_response = api.connectapi(body_url, params=body_params)
 
                 stats_params = {"calendarDate": str(new_date.date())}
