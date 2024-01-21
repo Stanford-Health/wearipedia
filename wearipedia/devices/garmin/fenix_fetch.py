@@ -24,6 +24,7 @@ def fetch_garmin_url(data_type):
         "stats": "/usersummary-service/usersummary/daily",
         "user_summary": "/usersummary-service/usersummary/daily",
         "body_composition": "/weight-service",
+        "body_composition_aggregated": "/weight-service",
         "steps": "/wellness-service/wellness/dailySummaryChart",
         "hr": "/wellness-service/wellness/dailyHeartRate",
         "training_readiness": "/metrics-service/metrics/trainingreadiness",
