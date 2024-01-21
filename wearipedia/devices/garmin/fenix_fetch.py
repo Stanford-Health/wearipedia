@@ -220,13 +220,13 @@ def fetch_real_data(start_date, end_date, data_type, api):
         response = []
         if data_type == "sleep":
             url = f"{fetch_garmin_url(data_type)}/{display_name}"
-            response = []
+            # response = []
             for i in tqdm(range(num_days)):
                 new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
                 params = {"date": str(new_date.date()), "nonSleepBufferMinutes": 60}
                 response.append(api.connectapi(url, params=params))
         elif data_type == "max_metrics":
-            response = []
+            # response = []
             for i in tqdm(range(num_days)):
                 new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
                 url = (
@@ -309,5 +309,26 @@ def fetch_real_data(start_date, end_date, data_type, api):
             ]
 
         return response
+
+    # Group 6 - Aggregated Data Types
+    aggregated_fetch_types = [
+        "body_composition_aggregated"
+    ]
+
+    if data_type in aggregated_fetch_types:
+        response = []
+        if data_type == "body_composition_aggregated":
+            url = f"{fetch_garmin_url(data_type)}/{display_name}"
+            # response = []
+            for i in tqdm(range(num_days)):
+                new_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)
+                url = f"{fetch_garmin_url(data_type)}/weight/dateRange"
+                params = {"startDate": str(new_date), "endDate": str(new_date)}
+                response.append(api.connectapi(url, params=params))
+
+
+
+
+
 
     return None
