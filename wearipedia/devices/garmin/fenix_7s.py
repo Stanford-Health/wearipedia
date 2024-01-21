@@ -133,6 +133,7 @@ class Fenix7S(BaseDevice):
                 "personal_record",
                 "earned_badges",
                 "adhoc_challenges",
+                "available_badges",
                 "activities",
                 "device_settings",
                 "active_goals",
