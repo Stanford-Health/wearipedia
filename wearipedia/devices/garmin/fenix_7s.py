@@ -113,7 +113,7 @@ class Fenix7S(BaseDevice):
                 "stats",
                 "user_summary",
                 "body_composition",
-                "body_composition_aggregated"
+                "body_composition_aggregated",
                 "steps",
                 "hr",
                 "training_readiness",
