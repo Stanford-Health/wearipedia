@@ -339,7 +339,8 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
                 stats_params = {"calendarDate": str(new_date.date())}
                 stats_response = api.connectapi(stats_url, params=stats_params)
-                response.append({stats_response, body_response["totalAverage"]})
+                comb_response = {stats_response, body_response["totalAverage"]}
+                response.append(comb_response)
 
 
         return response
