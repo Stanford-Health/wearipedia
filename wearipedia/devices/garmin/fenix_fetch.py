@@ -247,6 +247,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
             "endDate": str(end_date),
             "start": str(1),
             "limit": str(100),
+            "activityType": "",
             }
             response = api.connectapi(url, params=params)
 
