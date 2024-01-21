@@ -139,6 +139,8 @@ class Fenix7S(BaseDevice):
                 "non_completed_badge_challenges",
                 "activities",
                 "activities_date",
+                "devices",
+                "device_last_used",
                 "device_settings",
                 "active_goals",
                 "future_goals",

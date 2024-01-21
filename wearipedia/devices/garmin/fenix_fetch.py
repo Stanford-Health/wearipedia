@@ -49,6 +49,7 @@ def fetch_garmin_url(data_type):
         "non_completed_badge_challenges": "/badgechallenge-service/badgeChallenge/non-completed",
         "activities": "/activitylist-service/activities/search/activities",
         "devices": "/device-service/deviceregistration/devices",
+        "device_last_used": "/device-service/deviceservice",
         "device_settings": "/device-service/deviceservice/device-info/settings",
         "active_goals": "/goal-service/goal/goals",
         "future_goals": "/goal-service/goal/goals",
@@ -142,6 +143,8 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "available_badge_challenges",
         "badge_challenges",
         "non_completed_badge_challenges",
+        "devices",
+        "device_last_used",
         "device_settings",
         "weigh_ins",
         "hill_score",
@@ -175,6 +178,12 @@ def fetch_real_data(start_date, end_date, data_type, api):
             response = api.connectapi(url)
         elif data_type == "earned_badges":
             url = fetch_garmin_url(data_type)
+            response = api.connectapi(url)
+        elif data_type == "devices":
+            url = fetch_garmin_url(data_type)
+            response = api.connectapi(url)
+        elif data_type == "device_last_used":
+            url = f"{fetch_garmin_url(data_type)}/mylastused"
             response = api.connectapi(url)
         elif data_type == "adhoc_challenges":
             url = f"{fetch_garmin_url(data_type)}"
