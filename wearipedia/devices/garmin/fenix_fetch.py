@@ -149,6 +149,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "virtual_challenges",
         "weigh_ins_daily",
         "activities",
+        "activities_date",
     ]
 
     if data_type in single_fetch_types:
@@ -238,6 +239,15 @@ def fetch_real_data(start_date, end_date, data_type, api):
         elif data_type == "activities":
             url = fetch_garmin_url(data_type)
             params = {"start": str(0), "limit": str(100)}
+            response = api.connectapi(url, params=params)
+        elif data_type == "activities_date":
+            url = fetch_garmin_url("activities")
+            params = {
+            "startDate": str(startdate),
+            "endDate": str(enddate),
+            "start": str(start),
+            "limit": str(limit),
+            }
             response = api.connectapi(url, params=params)
 
         return response
