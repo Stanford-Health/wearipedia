@@ -132,6 +132,7 @@ class Fenix7S(BaseDevice):
                 "max_metrics",
                 "personal_record",
                 "earned_badges",
+                "adhoc_challenges",
                 "activities",
                 "device_settings",
                 "active_goals",
