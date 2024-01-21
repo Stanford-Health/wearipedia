@@ -194,6 +194,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
             url = f"{fetch_garmin_url(data_type)}"
             params = {"start": str(1), "limit": str(100)}
             response = api.connectapi(url, params=params)
+            print(response)
         elif data_type == "device_settings":
             response = []
             devices = api.connectapi(fetch_garmin_url("devices"))
