@@ -142,6 +142,7 @@ class Fenix7S(BaseDevice):
                 "devices",
                 "device_last_used",
                 "device_settings",
+                "device_alarms",
                 "active_goals",
                 "future_goals",
                 "past_goals",

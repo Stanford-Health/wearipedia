@@ -146,6 +146,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "devices",
         "device_last_used",
         "device_settings",
+        "device_alarms",
         "weigh_ins",
         "hill_score",
         "endurance_score",
@@ -214,6 +215,17 @@ def fetch_real_data(start_date, end_date, data_type, api):
                 url = f"{fetch_garmin_url(data_type)}/{device_id}"
                 device_settings = api.connectapi(url)
                 response.append(device_settings)
+        elif data_type == "device_alarms":
+            alarms = []
+            devices = api.connectapi(fetch_garmin_url("devices"))
+            for device in devices:
+                settings_data_type = "device_settings"
+                device_id = device["device_id"]
+                device_settings = api.connectapi(f"{fetch_garmin_url(settings_data_type)}/{device_id}")
+                device_alarms = device_settings["alarms"]
+                if device_alarms is not None:
+                    alarms += device_alarms
+            return alarms
         elif data_type == "weigh_ins":
             url = f"{fetch_garmin_url(data_type)}/{start_date}/{end_date}"
             params = {"includeAll": True}
