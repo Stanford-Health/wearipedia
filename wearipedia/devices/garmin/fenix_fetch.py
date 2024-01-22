@@ -61,7 +61,8 @@ def fetch_garmin_url(data_type):
         "weigh_ins_daily": "/weight-service/weight/dayview",
         "hill_score": "/metrics-service/metrics/hillscore",
         "endurance_score": "/metrics-service/metrics/endurancescore",
-        "virtual_challenges": "/badgechallenge-service/virtualChallenge/inProgress",
+        "inprogress_virtual_challenges": "/badgechallenge-service/virtualChallenge/inProgress",
+        "race_prediction": "/metrics-service/metrics/racepredictions/latest",
     }
     if data_type in url_dict.keys():
         return url_dict[data_type]
@@ -154,7 +155,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "weigh_ins",
         "hill_score",
         "endurance_score",
-        "virtual_challenges",
+        "inprogress_virtual_challenges",
         "weigh_ins_daily",
         "activities",
         "activities_date",
@@ -180,6 +181,9 @@ def fetch_real_data(start_date, end_date, data_type, api):
             }
             response = api.connectapi(url, params=params)
         elif data_type == "personal_record":
+            url = f"{fetch_garmin_url(data_type)}/{display_name}"
+            response = api.connectapi(url)
+        elif data_type == "race_prediction":
             url = f"{fetch_garmin_url(data_type)}/{display_name}"
             response = api.connectapi(url)
         elif data_type == "earned_badges":

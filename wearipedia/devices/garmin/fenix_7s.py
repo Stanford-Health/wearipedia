@@ -129,6 +129,7 @@ class Fenix7S(BaseDevice):
                 "stress",
                 "day_stress_aggregated",
                 "respiration",
+                "race_prediction",
                 "spo2",
                 "max_metrics",
                 "personal_record",
@@ -154,6 +155,7 @@ class Fenix7S(BaseDevice):
                 "hill_score",
                 "endurance_score",
                 "dates",
+                "inprogress_virtual_challenges",
             ],
             params,
             {
