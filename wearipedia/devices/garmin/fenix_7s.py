@@ -127,6 +127,7 @@ class Fenix7S(BaseDevice):
                 "hydration",
                 "sleep",
                 "stress",
+                "day_stress_aggregated",
                 "respiration",
                 "spo2",
                 "max_metrics",

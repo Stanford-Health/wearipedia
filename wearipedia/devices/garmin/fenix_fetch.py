@@ -37,6 +37,7 @@ def fetch_garmin_url(data_type):
         "hydration": "/usersummary-service/usersummary/hydration/daily",
         "sleep": "/wellness-service/wellness/dailySleepData",
         "stress": "/wellness-service/wellness/dailyStress",
+        "day_stress_aggregated": "/wellness-service/wellness/dailyStress",
         "respiration": "/wellness-service/wellness/daily/respiration",
         "spo2": "/wellness-service/wellness/daily/spo2",
         "max_metrics": "/metrics-service/metrics/maxmet/daily",
@@ -124,6 +125,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "training_status",
         "training_readiness",
         "activities_fordate_aggregated",
+        "day_stress_aggregated",
     ]
     if data_type in third_data_types:
         response = []
@@ -156,6 +158,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "weigh_ins_daily",
         "activities",
         "activities_date",
+
     ]
 
     if data_type in single_fetch_types:
