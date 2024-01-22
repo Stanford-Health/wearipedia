@@ -220,7 +220,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
             devices = api.connectapi(fetch_garmin_url("devices"))
             for device in devices:
                 settings_data_type = "device_settings"
-                device_id = device["device_id"]
+                device_id = device["deviceId"]
                 device_settings = api.connectapi(f"{fetch_garmin_url(settings_data_type)}/{device_id}")
                 device_alarms = device_settings["alarms"]
                 if device_alarms is not None:
