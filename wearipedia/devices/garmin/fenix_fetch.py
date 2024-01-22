@@ -48,6 +48,7 @@ def fetch_garmin_url(data_type):
         "badge_challenges": "/badgechallenge-service/badgeChallenge/completed",
         "non_completed_badge_challenges": "/badgechallenge-service/badgeChallenge/non-completed",
         "activities": "/activitylist-service/activities/search/activities",
+        "activities_fordate_aggregated": "/mobile-gateway/heartRate/forDate",
         "devices": "/device-service/deviceregistration/devices",
         "device_last_used": "/device-service/deviceservice",
         "device_settings": "/device-service/deviceservice/device-info/settings",
@@ -122,6 +123,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "hrv",
         "training_status",
         "training_readiness",
+        "activities_fordate_aggregated",
     ]
     if data_type in third_data_types:
         response = []
