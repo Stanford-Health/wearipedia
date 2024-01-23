@@ -61,25 +61,26 @@ def gen_continuous(start_date, end_date, seed=0):
         local_rng = np.random.RandomState(seed + index)
         cdata = []
 
-        # simulate skip day
-        if local_rng.uniform(low=0, high=1, size=(1,))[0] > 0.8:
-            return
-
-        y = local_rng.uniform(low=60, high=150, size=(1,))[0]
+        y = local_rng.uniform(low=110, high=150, size=(1,))[0]
 
         for i in range(96):  # 15 minute segments in a day
+            # simulate lack of adherence
+            interpolated = False
+            if local_rng.uniform(low=0, high=1, size=(1,))[0] > 0.85:
+                interpolated = True
+
             x = t + i * timedelta(minutes=15)
             item = {
                 "x": dToStr(x),
                 "y": y,
-                "interpolated": False,
+                "interpolated": interpolated,
                 "__typename": "TimePair",
             }
             cdata.append(item)
             X.append(x)
             Y.append(y)
 
-            added = local_rng.normal(scale=1) + 0.01 * (160 / y)
+            added = local_rng.normal(scale=1) * 10 + 0.01 * (160 / y)
             if y < 50:
                 added = abs(added)
             elif y > 190:
@@ -90,7 +91,7 @@ def gen_continuous(start_date, end_date, seed=0):
 
     threads = []
     result = defaultdict(dict)
-    for j in range(len(datelist)):
+    for j in tqdm(range(len(datelist))):
         t = datelist[j]
         new_thread = Thread(target=gen_glucose, args=(t, j, seed))
         threads.append(new_thread)
