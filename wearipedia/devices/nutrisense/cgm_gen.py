@@ -66,7 +66,7 @@ def gen_continuous(start_date, end_date, seed=0):
         for i in range(96):  # 15 minute segments in a day
             # simulate lack of adherence
             interpolated = False
-            if local_rng.uniform(low=0, high=1, size=(1,))[0] > 0.85:
+            if local_rng.uniform(low=0, high=1, size=(1,))[0] > 0.95:
                 interpolated = True
 
             x = t + i * timedelta(minutes=15)
