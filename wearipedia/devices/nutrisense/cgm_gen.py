@@ -1,25 +1,29 @@
+from collections import defaultdict
 from datetime import datetime, timedelta
+from threading import Thread
 
 import numpy as np
 import pandas as pd
-from fbm import fbm
 from numpy.random import randint
 from scipy.stats import tstd
+from tqdm import tqdm
 
 
-def gen_data(start_date, end_date):
+def gen_data(start_date, end_date, seed=0):
     """Main function for generating synthetic data for nutrisense cgm.
 
     :param start_date: the start date represented as a string in the format "YYYY-MM-DD"
     :type start_date: str
     :param end_date: the end date represented as a string in the format "YYYY-MM-DD"
     :type end_date: str
+    :param seed: the seed for the random number generator, defaults to 0
+    :type seed: int, optional
     :return: the data generated according to the inputs
     :rtype: tuple(dict, list[dict], dict, dict)
     """
 
     scores = gen_scores()
-    continuous, Y = gen_continuous(start_date, end_date)
+    continuous, Y = gen_continuous(start_date, end_date, seed)
     summary = gen_summary(Y)
     stat = {
         "today": gen_stats(Y),
@@ -28,7 +32,7 @@ def gen_data(start_date, end_date):
     return (scores, continuous, summary, stat)
 
 
-def gen_continuous(start_date, end_date):
+def gen_continuous(start_date, end_date, seed=0):
     """Generate the continuous data. Other data generating functions depend on results
     from this function.
 
@@ -36,6 +40,8 @@ def gen_continuous(start_date, end_date):
     :type start_date: str
     :param end_date: the end date represented as a string in the format "YYYY-MM-DD"
     :type end_date: str
+    :param seed: the seed for the random number generator, defaults to 0
+    :type seed: int, optional
     :return: the data generated according to the inputs
     :rtype: tuple(list[dict], list[float])
     """
@@ -48,28 +54,58 @@ def gen_continuous(start_date, end_date):
 
     datelist = pd.date_range(start, periods=n).tolist()
 
-    continuous = []
-
-    fbm_sample = fbm(n=n * 96, hurst=0.40, length=0.5, method="daviesharte")
-    fbm_sample = (abs(fbm_sample * 70) + 70).round(1)
-
     X = []
     Y = []
 
-    for j in range(len(datelist)):
-        t = datelist[j]
+    def gen_glucose(t, index, seed=0):
+        local_rng = np.random.RandomState(seed + index)
+        cdata = []
+
+        # simulate skip day
+        if local_rng.uniform(low=0, high=1, size=(1,))[0] > 0.8:
+            return
+
+        y = local_rng.uniform(low=60, high=150, size=(1,))[0]
+
         for i in range(96):  # 15 minute segments in a day
             x = t + i * timedelta(minutes=15)
-            y = fbm_sample[j * 96 + i]
             item = {
                 "x": dToStr(x),
                 "y": y,
                 "interpolated": False,
                 "__typename": "TimePair",
             }
-            continuous.append(item)
+            cdata.append(item)
             X.append(x)
             Y.append(y)
+
+            added = local_rng.normal(scale=1) + 0.01 * (160 / y)
+            if y < 50:
+                added = abs(added)
+            elif y > 190:
+                added = -1 * abs(added)
+            y += added
+
+        result[index] = cdata
+
+    threads = []
+    result = defaultdict(dict)
+    for j in range(len(datelist)):
+        t = datelist[j]
+        new_thread = Thread(target=gen_glucose, args=(t, j, seed))
+        threads.append(new_thread)
+
+    # start threads
+    for thread in threads:
+        thread.start()
+
+    # wait for all threads to terminate
+    for thread in tqdm(threads):
+        thread.join()
+
+    continuous = []
+    for k in sorted(result.keys()):
+        continuous += result[k]
 
     return (continuous, Y)
 
