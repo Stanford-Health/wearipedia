@@ -92,6 +92,7 @@ class cgm(BaseDevice):
         self.scores, self.continuous, self.summary, self.statistics = gen_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
+            self.init_params["seed"],
         )
 
     def _authenticate(self, auth_creds):
