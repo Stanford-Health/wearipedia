@@ -263,7 +263,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
                 "aggregation": "weekly",
             }
             response = api.connectapi(url, params=params)
-        elif data_type == "in_progress_virtual_challenges":
+        elif data_type == "inprogress_virtual_challenges":
             url = fetch_garmin_url(data_type)
             params = {"start": str(start_date), "limit": str(end_date)}
             response = api.connectapi(url, params=params)
@@ -281,7 +281,6 @@ def fetch_real_data(start_date, end_date, data_type, api):
             "activityType": "",
             }
             response = api.connectapi(url, params=params)
-            print(response)
         return response
 
     # Group 5: List Fetch Data Types
