@@ -113,23 +113,6 @@ workout_id = {
 }
 workout_keys = list(workout_id.keys())
 
-# def format_datetime(time_str: Optional[str]) -> Optional[str]:
-#     """ Formats the datetime into "%Y-%m-%d %H:%M:%S Z"
-
-#     Args:
-#         time_str (str): datetime in the format "%Y-%m-%dT%H:%M:%S.%fZ".
-
-#     Returns:
-#         str or None: datetime in the desired format ("%Y-%m-%d %H:%M:%S Z").
-#     """
-#     if time_str is not None:
-#         dt_object = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S.%fZ")
-#         formatted_str = dt_object.strftime("%Y-%m-%d %H:%M:%S Z")
-#     else:
-#         formatted_str = None
-
-#     return formatted_str
-
 
 # Fetch profile
 def fetch_profile(access_token: str) -> pd.DataFrame:
@@ -244,8 +227,6 @@ def fetch_collection(
             query = "https://api.prod.whoop.com/developer/v1/activity/workout?limit=20&"
         elif collection_type == "Sleep":
             query = "https://api.prod.whoop.com/developer/v1/activity/sleep?limit=20&"
-        elif collection_type == "Recovery":
-            query = "https://api.prod.whoop.com/developer/v1/recovery?limit=20&"
         else:
             raise ValueError(
                 'type of collection must either be "Cycle", "Workout", or "Sleep".'
@@ -272,74 +253,6 @@ def fetch_collection(
         # Process the output
         out = response.json()
         out_next_token, out_records_list = out["next_token"], out["records"]
-
-        # if collection_type == "Cycle":
-        #     for record in out_records_list:
-        #         if record['score'] is not None:
-        #             record['strain'] = record['score']['strain']
-        #             record['kilojoule'] = record['score']['kilojoule']
-        #             record['average_heart_rate'] = record['score']['average_heart_rate']
-        #             record['max_heart_rate'] = record['score']['max_heart_rate']
-
-        #     record_dict = {key: [d[key] for d in out_records_list] for key in out_records_list[0]}
-        #     new_start = []
-        #     new_end = []
-        #     for i in range(len(record_dict['score_state'])):
-        #         record_dict['score_state'][i] = "Yes" if (record_dict['score_state'][i] == "SCORED") else "No"
-        #         new_start.append(format_datetime(record_dict['start'][i]))
-        #         new_end.append(format_datetime(record_dict['end'][i]))
-
-        #     record_dict['start'] = new_start
-        #     record_dict['end'] = new_end
-
-        # elif collection_type == "Workout":
-        #     for record in out_records_list:
-        #         if record['score'] is not None:
-        #             record['strain'] = record['score']['strain']
-        #             record['kilojoule'] = record['score']['kilojoule']
-        #             record['average_heart_rate'] = record['score']['average_heart_rate']
-        #             record['max_heart_rate'] = record['score']['max_heart_rate']
-        #             record['percent_recorded'] = record['score']['percent_recorded']
-        #             record['distance_meter'] = record['score']['distance_meter']
-        #             record['altitude_gain_meter'] = record['score']['altitude_gain_meter']
-        #             record['altitude_change_meter'] = record['score']['altitude_change_meter']
-
-        #     record_dict = {key: [d[key] for d in out_records_list] for key in out_records_list[0]}
-
-        #     new_start = []
-        #     new_end = []
-        #     for i in range(len(record_dict["sport_id"])):
-        #         record_dict["sport_id"][i] = workout_id[record_dict["sport_id"][i]]
-        #         record_dict['score_state'][i] = "Yes" if (record_dict['score_state'][i] == "SCORED") else "No"
-        #         new_start.append(format_datetime(record_dict['start'][i]))
-        #         new_end.append(format_datetime(record_dict['end'][i]))
-
-        #     record_dict['start'] = new_start
-        #     record_dict['end'] = new_end
-
-        # elif collection_type == "Sleep":
-        # for record in out_records_list:
-        #     if record['score'] is not None:
-        #         record['respiratory_rate'] = record['score']['respiratory_rate']
-        #         record['sleep_performance_percentage'] = record['score']['sleep_performance_percentage']
-        #         record['sleep_consistency_percentage'] = record['score']['sleep_consistency_percentage']
-        #         record['sleep_efficiency_percentage'] = record['score']['sleep_efficiency_percentage']
-        #         del record['score']['stage_summary'], record['score']['sleep_needed']
-
-        # record_dict = {key: [d[key] for d in out_records_list] for key in out_records_list[0]}
-        # new_start = []
-        # new_end = []
-        # for i in range(len(record_dict['score_state'])):
-        #     record_dict['score_state'][i] = "Yes" if (record_dict['score_state'][i] == "SCORED") else "No"
-        #     new_start.append(format_datetime(record_dict['start'][i]))
-        #     new_end.append(format_datetime(record_dict['end'][i]))
-
-        # record_dict['start'] = new_start
-        # record_dict['end'] = new_end
-
-        # record_dict['score_available'] = record_dict['score_state']
-        # record_dict['cycle_id'] = record_dict['id']
-        # del record_dict['created_at'], record_dict['updated_at'], record_dict['score'], record_dict['score_state'], record_dict['id'], record_dict['user_id']
 
         record_dict = {
             key: [d[key] for d in out_records_list] for key in out_records_list[0]
@@ -394,19 +307,6 @@ def fetch_sleep_collection(
     """Fetches sleep collection data from the WHOOP API."""
     return fetch_collection(
         collection_type="Sleep",
-        access_token=access_token,
-        start_date=start_date,
-        end_date=end_date,
-    )
-
-
-# Fetch recovery collection
-def fetch_recovery_collection(
-    access_token: str, start_date: Optional[str] = None, end_date: Optional[str] = None
-) -> pd.DataFrame:
-    """Fetches recovery collection data from the WHOOP API."""
-    return fetch_collection(
-        collection_type="Recovery",
         access_token=access_token,
         start_date=start_date,
         end_date=end_date,

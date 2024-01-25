@@ -285,17 +285,17 @@ def create_synthetic_cycle_collection_df(
 
     prob_distribution = [0.7, 0.1, 0.15, 0.05]
     ranges = [(10, 13.9), (0, 9.9), (14, 17.9), (18, 21)]
-    strain = get_strain(prob_distribution, ranges)
 
-    if 10 <= strain <= 13.9:
-        average_heart_rate = int(np.random.uniform(64, 69))
-    elif 0 <= strain <= 9.9:
-        average_heart_rate = int(np.random.uniform(69, 75))
-    elif 14 <= strain <= 17.9:
-        average_heart_rate = int(np.random.uniform(75, 78))
-    else:
-        average_heart_rate = int(np.random.uniform(78, 79))
     for i in range(num_days):
+        strain = get_strain(prob_distribution, ranges)
+        if 0 <= strain <= 9.9:
+            average_heart_rate = int(np.random.uniform(64, 69))
+        elif 10 <= strain <= 13.9:
+            average_heart_rate = int(np.random.uniform(69, 75))
+        elif 14 <= strain <= 17.9:
+            average_heart_rate = int(np.random.uniform(75, 78))
+        else:
+            average_heart_rate = int(np.random.uniform(78, 79))
         scores = {
             "strain": strain,
             "kilojoule": np.round(np.random.uniform(6000, 9000), 3),
