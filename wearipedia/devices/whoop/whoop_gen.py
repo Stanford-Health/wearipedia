@@ -282,11 +282,24 @@ def create_synthetic_cycle_collection_df(
     syn_collection["timezone_offset"] = "-08:00"
     syn_collection["score_state"] = "SCORED"
     syn_collection["score"] = [{} for _ in range(num_days)]
+
+    prob_distribution = [0.7, 0.1, 0.15, 0.05]
+    ranges = [(10, 13.9), (0, 9.9), (14, 17.9), (18, 21)]
+    strain = get_strain(prob_distribution, ranges)
+
+    if 10 <= strain <= 13.9:
+        average_heart_rate = int(np.random.uniform(64, 69))
+    elif 0 <= strain <= 9.9:
+        average_heart_rate = int(np.random.uniform(69, 75))
+    elif 14 <= strain <= 17.9:
+        average_heart_rate = int(np.random.uniform(75, 78))
+    else:
+        average_heart_rate = int(np.random.uniform(78, 79))
     for i in range(num_days):
         scores = {
-            "strain": np.round(np.random.uniform(3, 13), 7),
+            "strain": strain,
             "kilojoule": np.round(np.random.uniform(6000, 9000), 3),
-            "average_heart_rate": int(np.random.uniform(50, 100)),
+            "average_heart_rate": average_heart_rate,
             "max_heart_rate": int(np.random.uniform(150, 180)),
         }
         syn_collection.at[i, "score"] = scores.copy()
@@ -376,6 +389,7 @@ def create_synthetic_workout_collection_df(
     syn_collection["sport_id"] = random.choices(workout_keys, k=num_days)
     syn_collection["score_state"] = "SCORED"
     syn_collection["score"] = [{} for _ in range(num_days)]
+
     for i in range(num_days):
         scores = {
             "strain": np.round(np.random.uniform(3, 13), 4),
@@ -476,10 +490,10 @@ def create_synthetic_sleep_collection_df(
     syn_collection["nap"] = [False] * num_days
     syn_collection["score_state"] = "SCORED"
     syn_collection["score"] = [{} for _ in range(num_days)]
+
     for i in range(num_days):
         # Initialize scores for the day
-        total_sleep_time = int(np.random.normal(2.88e7, 1.08e7))
-
+        total_sleep_time = int(np.random.normal(2.88e7, 3.6e6))
         light_sleep_proportion = np.random.normal(0.55, 0.05)
         slow_wave_sleep_proportion = np.random.normal(0.22, 0.05)
         rem_sleep_proportion = np.random.normal(0.23, 0.05)
@@ -496,12 +510,6 @@ def create_synthetic_sleep_collection_df(
         slow_wave_sleep_proportion /= total_proportion
         rem_sleep_proportion /= total_proportion
         awake_proportion /= total_proportion
-
-        a_value = 1.11e-8
-        x_value_1 = 2.88e7
-        target_y_1 = 0.90
-
-        b_value_1 = target_y_1 - (a_value * x_value_1)
 
         scores = {
             "stage_summary": {
@@ -521,13 +529,13 @@ def create_synthetic_sleep_collection_df(
                 "disturbance_count": int(np.random.normal(5, 2)),
             },
             "sleep_needed": {
-                "baseline_milli": int(np.random.normal(25000000, 5000000)),
+                "baseline_milli": int(np.random.normal(25000000, 500000)),
                 "need_from_sleep_debt_milli": int(np.random.uniform(0, 500000)),
                 "need_from_recent_strain_milli": int(np.random.uniform(0, 500000)),
                 "need_from_recent_nap_milli": int(np.random.uniform(-50000, 0)),
             },
             "respiratory_rate": np.round(np.random.normal(15, 2), 2),
-            "sleep_performance_percentage": spp(total_sleep_time),
+            "sleep_performance_percentage": int(spp(total_sleep_time)),
             "sleep_consistency_percentage": int(np.random.normal(90, 5)),
             "sleep_efficiency_percentage": np.round(np.random.normal(90, 5), 2),
         }
@@ -541,4 +549,25 @@ def create_synthetic_sleep_collection_df(
 def spp(x):
     a = (90 - 78) / (2.88e7 - 1.80e7)
     b = 78 - a * 1.80e7
-    return min(100, a * x + b)
+    y = a * x + b + int(np.random.uniform(-3.5, 3.5))
+    return min(100, y)
+
+
+# Define the probability distribution
+
+prob_distribution = [0.7, 0.1, 0.15, 0.05]
+
+
+# Define the ranges for each probability distribution
+
+ranges = [(10, 13.9), (0, 9.9), (14, 17.9), (18, 21)]
+
+
+def get_strain(prob_distribution, ranges):
+    """
+    Function to get the strain value based on the probability distribution.
+    """
+    random_value = np.random.choice(len(prob_distribution), p=prob_distribution)
+    return np.round(
+        np.random.uniform(ranges[random_value][0], ranges[random_value][1]), 7
+    )
