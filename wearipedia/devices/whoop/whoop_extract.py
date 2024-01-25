@@ -244,6 +244,8 @@ def fetch_collection(
             query = "https://api.prod.whoop.com/developer/v1/activity/workout?limit=20&"
         elif collection_type == "Sleep":
             query = "https://api.prod.whoop.com/developer/v1/activity/sleep?limit=20&"
+        elif collection_type == "Recovery":
+            query = "https://api.prod.whoop.com/developer/v1/recovery?limit=20&"
         else:
             raise ValueError(
                 'type of collection must either be "Cycle", "Workout", or "Sleep".'
@@ -392,6 +394,19 @@ def fetch_sleep_collection(
     """Fetches sleep collection data from the WHOOP API."""
     return fetch_collection(
         collection_type="Sleep",
+        access_token=access_token,
+        start_date=start_date,
+        end_date=end_date,
+    )
+
+
+# Fetch recovery collection
+def fetch_recovery_collection(
+    access_token: str, start_date: Optional[str] = None, end_date: Optional[str] = None
+) -> pd.DataFrame:
+    """Fetches recovery collection data from the WHOOP API."""
+    return fetch_collection(
+        collection_type="Recovery",
         access_token=access_token,
         start_date=start_date,
         end_date=end_date,
