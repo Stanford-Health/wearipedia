@@ -478,7 +478,7 @@ def create_synthetic_sleep_collection_df(
     syn_collection["score"] = [{} for _ in range(num_days)]
     for i in range(num_days):
         # Initialize scores for the day
-        total_sleep_time = int(np.random.normal(36000000, 1800000))
+        total_sleep_time = int(np.random.normal(36000000, 18000))
 
         light_sleep_proportion = np.random.normal(0.55, 0.05)
         slow_wave_sleep_proportion = np.random.normal(0.22, 0.05)
