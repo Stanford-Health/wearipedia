@@ -527,9 +527,7 @@ def create_synthetic_sleep_collection_df(
                 "need_from_recent_nap_milli": int(np.random.uniform(-50000, 0)),
             },
             "respiratory_rate": np.round(np.random.normal(15, 2), 2),
-            "sleep_performance_percentage": np.max(
-                1, total_sleep_time * a_value + b_value_1 + np.random.uniform(-3, 3)
-            ),
+            "sleep_performance_percentage": spp(total_sleep_time),
             "sleep_consistency_percentage": int(np.random.normal(90, 5)),
             "sleep_efficiency_percentage": np.round(np.random.normal(90, 5), 2),
         }
@@ -538,3 +536,9 @@ def create_synthetic_sleep_collection_df(
         syn_collection.at[i, "score"] = scores
 
     return syn_collection
+
+
+def spp(x):
+    a = (90 - 78) / (2.88e7 - 1.80e7)
+    b = 78 - a * 1.80e7
+    return min(100, a * x + b)
