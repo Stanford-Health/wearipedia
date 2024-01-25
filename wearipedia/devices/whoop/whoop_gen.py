@@ -478,7 +478,7 @@ def create_synthetic_sleep_collection_df(
     syn_collection["score"] = [{} for _ in range(num_days)]
     for i in range(num_days):
         # Initialize scores for the day
-        total_sleep_time = int(np.random.normal(36000000, 18000))
+        total_sleep_time = int(np.random.normal(2.88e7, 1.08e7))
 
         light_sleep_proportion = np.random.normal(0.55, 0.05)
         slow_wave_sleep_proportion = np.random.normal(0.22, 0.05)
@@ -521,7 +521,8 @@ def create_synthetic_sleep_collection_df(
                 "need_from_recent_nap_milli": int(np.random.uniform(-50000, 0)),
             },
             "respiratory_rate": np.round(np.random.normal(15, 2), 2),
-            "sleep_performance_percentage": int(np.random.normal(95, 3)),
+            "sleep_performance_percentage": 1
+            / (1 + np.exp(-(total_sleep_time - 2.88e7))),
             "sleep_consistency_percentage": int(np.random.normal(90, 5)),
             "sleep_efficiency_percentage": np.round(np.random.normal(90, 5), 2),
         }
