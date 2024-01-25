@@ -22,6 +22,8 @@ class Whoop4(BaseDevice):
 
     * `workouts`: a DataFrame of all workouts
 
+    * `recoveries`: a DataFrame of all recoveries
+
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
     :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
@@ -67,6 +69,10 @@ class Whoop4(BaseDevice):
             )
         elif data_type == "workouts":
             return fetch_workout_collection(
+                self.access_token, params["start"], params["end"]
+            )
+        elif data_type == "recoveries":
+            return fetch_recovery_collection(
                 self.access_token, params["start"], params["end"]
             )
 
