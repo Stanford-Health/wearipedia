@@ -43,7 +43,7 @@ class Whoop4(BaseDevice):
         }
 
         self._initialize_device_params(
-            ["cycles", "sleeps", "workouts"],
+            ["cycles", "sleeps", "workouts", "recoveries"],
             params,
             {
                 "seed": 0,
