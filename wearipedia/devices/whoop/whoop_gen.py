@@ -497,6 +497,12 @@ def create_synthetic_sleep_collection_df(
         rem_sleep_proportion /= total_proportion
         awake_proportion /= total_proportion
 
+        a_value = 1.11e-8
+        x_value_1 = 2.88e7
+        target_y_1 = 0.90
+
+        b_value_1 = target_y_1 - (a_value * x_value_1)
+
         scores = {
             "stage_summary": {
                 "total_in_bed_time_milli": total_sleep_time,
@@ -521,8 +527,9 @@ def create_synthetic_sleep_collection_df(
                 "need_from_recent_nap_milli": int(np.random.uniform(-50000, 0)),
             },
             "respiratory_rate": np.round(np.random.normal(15, 2), 2),
-            "sleep_performance_percentage": 1
-            / (1 + np.exp(-(total_sleep_time - 2.88e7))),
+            "sleep_performance_percentage": np.max(
+                1, total_sleep_time * a_value + b_value_1 + np.random.uniform(-3, 3)
+            ),
             "sleep_consistency_percentage": int(np.random.normal(90, 5)),
             "sleep_efficiency_percentage": np.round(np.random.normal(90, 5), 2),
         }
