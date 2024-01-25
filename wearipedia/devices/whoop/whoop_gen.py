@@ -477,40 +477,56 @@ def create_synthetic_sleep_collection_df(
     syn_collection["score_state"] = "SCORED"
     syn_collection["score"] = [{} for _ in range(num_days)]
     for i in range(num_days):
+        # Initialize scores for the day
+        total_sleep_time = int(np.random.normal(36000000, 1800000))
+
+        light_sleep_proportion = np.random.normal(0.55, 0.05)
+        slow_wave_sleep_proportion = np.random.normal(0.22, 0.05)
+        rem_sleep_proportion = np.random.normal(0.23, 0.05)
+        awake_proportion = np.random.normal(0.07, 0.01)
+
+        # Normalize proportions to ensure they sum to 1
+        total_proportion = (
+            light_sleep_proportion
+            + slow_wave_sleep_proportion
+            + rem_sleep_proportion
+            + awake_proportion
+        )
+        light_sleep_proportion /= total_proportion
+        slow_wave_sleep_proportion /= total_proportion
+        rem_sleep_proportion /= total_proportion
+        awake_proportion /= total_proportion
+
         scores = {
-            "score": {
-                "stage_summary": {
-                    "total_in_bed_time_milli": int(
-                        np.random.uniform(20000000, 40000000)
-                    ),
-                    "total_awake_time_milli": int(np.random.uniform(1000000, 2000000)),
-                    "total_no_data_time_milli": 0,
-                    "total_light_sleep_time_milli": int(
-                        np.random.uniform(10000000, 20000000)
-                    ),
-                    "total_slow_wave_sleep_time_milli": int(
-                        np.random.uniform(5000000, 10000000)
-                    ),
-                    "total_rem_sleep_time_milli": int(
-                        np.random.uniform(5000000, 10000000)
-                    ),
-                    "sleep_cycle_count": int(np.random.uniform(1, 5)),
-                    "disturbance_count": int(np.random.uniform(0, 20)),
-                },
-                "sleep_needed": {
-                    "baseline_milli": int(np.random.uniform(20000000, 30000000)),
-                    "need_from_sleep_debt_milli": int(
-                        np.random.uniform(-500000, 500000)
-                    ),
-                    "need_from_recent_strain_milli": int(np.random.uniform(0, 500000)),
-                    "need_from_recent_nap_milli": int(np.random.uniform(-50000, 50000)),
-                },
-                "respiratory_rate": np.round(np.random.uniform(10, 20), 2),
-                "sleep_performance_percentage": int(np.random.uniform(90, 100)),
-                "sleep_consistency_percentage": int(np.random.uniform(80, 100)),
-                "sleep_efficiency_percentage": np.round(np.random.uniform(80, 100), 2),
-            }
+            "stage_summary": {
+                "total_in_bed_time_milli": total_sleep_time,
+                "total_awake_time_milli": int(total_sleep_time * awake_proportion),
+                "total_no_data_time_milli": 0,
+                "total_light_sleep_time_milli": int(
+                    total_sleep_time * light_sleep_proportion
+                ),
+                "total_slow_wave_sleep_time_milli": int(
+                    total_sleep_time * slow_wave_sleep_proportion
+                ),
+                "total_rem_sleep_time_milli": int(
+                    total_sleep_time * rem_sleep_proportion
+                ),
+                "sleep_cycle_count": int(np.random.normal(3, 0.5)),
+                "disturbance_count": int(np.random.normal(5, 2)),
+            },
+            "sleep_needed": {
+                "baseline_milli": int(np.random.normal(25000000, 5000000)),
+                "need_from_sleep_debt_milli": int(np.random.uniform(0, 500000)),
+                "need_from_recent_strain_milli": int(np.random.uniform(0, 500000)),
+                "need_from_recent_nap_milli": int(np.random.uniform(-50000, 0)),
+            },
+            "respiratory_rate": np.round(np.random.normal(15, 2), 2),
+            "sleep_performance_percentage": int(np.random.normal(95, 3)),
+            "sleep_consistency_percentage": int(np.random.normal(90, 5)),
+            "sleep_efficiency_percentage": np.round(np.random.normal(90, 5), 2),
         }
-        syn_collection.at[i, "score"] = scores.copy()
+
+        # Set the scores for the day
+        syn_collection.at[i, "score"] = scores
 
     return syn_collection
