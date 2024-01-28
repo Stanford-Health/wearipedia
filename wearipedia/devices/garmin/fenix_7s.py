@@ -85,7 +85,6 @@ class Fenix7S(BaseDevice):
         synthetic_end_date="2022-06-17",
         use_cache=True,
     ):
-
         # use_cache just means that we'll use the cached credentials
         # as opposed to re-authenticating every time (the API tends to
         # rate-limit a lot, see this GitHub issue:
@@ -232,10 +231,11 @@ class Fenix7S(BaseDevice):
         self.available_badges = synth_data["available_badges"]
         self.available_badge_challenges = synth_data["available_badge_challenges"]
         self.badge_challenges = synth_data["badge_challenges"]
-        self.non_completed_badge_challenges = synth_data["non_completed_badge_challenges"]
+        self.non_completed_badge_challenges = synth_data[
+            "non_completed_badge_challenges"
+        ]
         self.race_prediction = synth_data["race_prediction"]
         self.inprogress_virtual_challenges = synth_data["inprogress_virtual_challenges"]
-
 
     def _authenticate(self, auth_creds):
         # check if we have cached credentials

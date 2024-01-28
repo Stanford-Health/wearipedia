@@ -160,7 +160,6 @@ def fetch_real_data(start_date, end_date, data_type, api):
         "activities",
         "activities_date",
         "race_prediction",
-
     ]
 
     if data_type in single_fetch_types:
@@ -231,7 +230,9 @@ def fetch_real_data(start_date, end_date, data_type, api):
             for device in devices:
                 settings_data_type = "device_settings"
                 device_id = device["deviceId"]
-                device_settings = api.connectapi(f"{fetch_garmin_url(settings_data_type)}/{device_id}")
+                device_settings = api.connectapi(
+                    f"{fetch_garmin_url(settings_data_type)}/{device_id}"
+                )
                 device_alarms = device_settings["alarms"]
                 if device_alarms is not None:
                     alarms += device_alarms
@@ -274,11 +275,11 @@ def fetch_real_data(start_date, end_date, data_type, api):
         elif data_type == "activities_date":
             url = fetch_garmin_url("activities")
             params = {
-            "startDate": str(start_date),
-            "endDate": str(end_date),
-            "start": str(0),
-            "limit": str(100),
-            "activityType": "",
+                "startDate": str(start_date),
+                "endDate": str(end_date),
+                "start": str(0),
+                "limit": str(100),
+                "activityType": "",
             }
             response = api.connectapi(url, params=params)
         return response
@@ -396,7 +397,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
     aggregated_fetch_types = [
         "body_composition_aggregated",
         "stats_and_body_aggregated",
-        "body_battery"
+        "body_battery",
     ]
 
     if data_type in aggregated_fetch_types:
@@ -421,7 +422,10 @@ def fetch_real_data(start_date, end_date, data_type, api):
 
                 stats_params = {"calendarDate": str(new_date.date())}
                 stats_response = api.connectapi(stats_url, params=stats_params)
-                comb_response = {"stats": stats_response, "body_composition": body_response["totalAverage"]}
+                comb_response = {
+                    "stats": stats_response,
+                    "body_composition": body_response["totalAverage"],
+                }
                 response.append(comb_response)
         elif data_type == "body_battery":
             for i in tqdm(range(num_days)):
@@ -431,7 +435,5 @@ def fetch_real_data(start_date, end_date, data_type, api):
                 response.append(api.connectapi(url, params=params))
 
         return response
-
-
 
     return None
