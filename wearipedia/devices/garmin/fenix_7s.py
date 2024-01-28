@@ -21,62 +21,52 @@ class Fenix7S(BaseDevice):
     Available datatypes for this device are:
 
     * `dates`: a list of consecutive dates
-
-    * `steps`: a sibling list to `dates` that contains step data for each day
-
-    * `hrs`: a sibling list to `dates` that contains heart rate data for each day
-
-    * `hr`: a sibling list to `dates` that contains heart rate data for each day
-
     * `stats`: a sibling list to `dates` that contains general statistics data for each day
-
-    * `user_summary`: a sibling list to `dates` that contains user summary data for each day
-
     * `body_composition`: a sibling list to `dates` that contains body composition data for each day
-
+    * `body_composition_aggregated`: a sibling list to `dates` that contains aggregated body composition data for each day
+    * `stats_and_body_aggregated`: a sibling list to `dates` that contains aggregated statistics and body composition data for each day
+    * `steps`: a sibling list to `dates` that contains step data for each day
+    * `daily_steps`: a sibling list to `dates` that contains daily step data for each day
+    * `body_battery`: a sibling list to `dates` that contains body battery data for each day
+    * `hr`: a sibling list to `dates` that contains heart rate data for each day
     * `training_readiness`: a sibling list to `dates` that contains training readiness data for each day
-
     * `blood_pressure`: a sibling list to `dates` that contains blood pressure data for each day
-
-    * `floors`: a dictionary containing floors data for the specified date range
-
+    * `floors`: a sibling list to `dates` that contains floors data for each day
     * `training_status`: a sibling list to `dates` that contains training status data for each day
-
-    * `resting_hr`: a sibling list to `dates` that contains resting heart rate data for each day
-
+    * `rhr`: a sibling list to `dates` that contains resting heart rate data for each day
     * `hydration`: a sibling list to `dates` that contains hydration data for each day
-
     * `sleep`: a sibling list to `dates` that contains sleep data for each day
-
-    * `earned_badges`: a sibling list to `dates` that contains earned badges data for each day
-
     * `stress`: a sibling list to `dates` that contains stress data for each day
-
+    * `day_stress_aggregated`: a sibling list to `dates` that contains day stress aggregated data for each day
     * `respiration`: a sibling list to `dates` that contains respiration data for each day
-
+    * `race_prediction`: a sibling list to `dates` that contains race prediction data for each day
     * `spo2`: a sibling list to `dates` that contains blood oxygen saturation data for each day
-
-    * `metrics`: a sibling list to `dates` that contains various metrics data for each day
-
+    * `max_metrics`: a sibling list to `dates` that contains maximum metrics data for each day
     * `personal_record`: a sibling list to `dates` that contains personal record data for each day
-
+    * `earned_badges`: a sibling list to `dates` that contains earned badges data for each day
+    * `adhoc_challenges`: a sibling list to `dates` that contains adhoc challenges data for each day
+    * `available_badges`: a sibling list to `dates` that contains available badges data for each day
+    * `available_badge_challenges`: a sibling list to `dates` that contains available badge challenges data for each day
+    * `badge_challenges`: a sibling list to `dates` that contains badge challenges data for each day
+    * `non_completed_badge_challenges`: a sibling list to `dates` that contains non-completed badge challenges data for each day
     * `activities`: a sibling list to `dates` that contains activity data for each day
-
-    * `device_settings`: a dictionary containing device settings data
-
+    * `activities_date`: a sibling list to `dates` that contains activity date data for each day
+    * `activities_fordate_aggregated`: a sibling list to `dates` that contains activities for date aggregated data for each day
+    * `devices`: a sibling list to `dates` that contains device data for each day
+    * `device_last_used`: a sibling list to `dates` that contains device last used data for each day
+    * `device_settings`: a sibling list to `dates` that contains device settings data for each day
+    * `device_alarms`: a sibling list to `dates` that contains device alarms data for each day
     * `active_goals`: a sibling list to `dates` that contains active goals data for each day
-
     * `future_goals`: a sibling list to `dates` that contains future goals data for each day
-
     * `past_goals`: a sibling list to `dates` that contains past goals data for each day
-
+    * `hrv`: a sibling list to `dates` that contains heart rate variability data for each day
     * `weigh_ins`: a sibling list to `dates` that contains weigh-ins data for each day
-
     * `weigh_ins_daily`: a sibling list to `dates` that contains daily weigh-ins data for each day
+    * `hill_score`: a sibling list to `dates` that contains hill score data for each day
+    * `endurance_score`: a sibling list to `dates` that contains endurance score data for each day
+    * `inprogress_virtual_challenges`: a sibling list to `dates` that contains in-progress virtual challenges data for each day
 
-    * `hill_score`: a dictionary containing hill score data for the specified date range
 
-    * `endurance_score`: a dictionary containing endurance score data for the specified date range
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -111,7 +101,6 @@ class Fenix7S(BaseDevice):
         self._initialize_device_params(
             [
                 "stats",
-                "user_summary",
                 "body_composition",
                 "body_composition_aggregated",
                 "stats_and_body_aggregated",
@@ -204,10 +193,13 @@ class Fenix7S(BaseDevice):
         self.dates = synth_data["dates"]
         self.hrv = synth_data["hrv"]
         self.steps = synth_data["steps"]
+        self.daily_steps = synth_data["daily_steps"]
         self.stats = synth_data["stats"]
-        self.user_summary = synth_data["user_summary"]
         self.body_composition = synth_data["body_composition"]
+        self.body_composition_aggregated = synth_data["body_composition_aggregated"]
+        self.stats_and_body_aggregated = synth_data["stats_and_body_aggregated"]
         self.hr = synth_data["hr"]
+        self.body_battery = synth_data["body_battery"]
         self.training_readiness = synth_data["training_readiness"]
         self.blood_pressure = synth_data["blood_pressure"]
         self.floors = synth_data["floors"]
@@ -217,12 +209,18 @@ class Fenix7S(BaseDevice):
         self.sleep = synth_data["sleep"]
         self.earned_badges = synth_data["earned_badges"]
         self.stress = synth_data["stress"]
+        self.day_stress_aggregated = synth_data["day_stress_aggregated"]
         self.respiration = synth_data["respiration"]
         self.spo2 = synth_data["spo2"]
         self.max_metrics = synth_data["max_metrics"]
         self.personal_record = synth_data["personal_record"]
         self.activities = synth_data["activities"]
+        self.activities_date = synth_data["activities_date"]
+        self.activities_fordate_aggregated = synth_data["activities_fordate_aggregated"]
+        self.devices = synth_data["devices"]
+        self.device_last_used = synth_data["device_last_used"]
         self.device_settings = synth_data["device_settings"]
+        self.device_alarms = synth_data["device_alarms"]
         self.active_goals = synth_data["active_goals"]
         self.future_goals = synth_data["future_goals"]
         self.past_goals = synth_data["past_goals"]
@@ -230,6 +228,14 @@ class Fenix7S(BaseDevice):
         self.weigh_ins_daily = synth_data["weigh_ins_daily"]
         self.hill_score = synth_data["hill_score"]
         self.endurance_score = synth_data["endurance_score"]
+        self.adhoc_challenges = synth_data["adhoc_challenges"]
+        self.available_badges = synth_data["available_badges"]
+        self.available_badge_challenges = synth_data["available_badge_challenges"]
+        self.badge_challenges = synth_data["badge_challenges"]
+        self.non_completed_badge_challenges = synth_data["non_completed_badge_challenges"]
+        self.race_prediction = synth_data["race_prediction"]
+        self.inprogress_virtual_challenges = synth_data["inprogress_virtual_challenges"]
+
 
     def _authenticate(self, auth_creds):
         # check if we have cached credentials
