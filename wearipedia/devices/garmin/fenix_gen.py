@@ -2368,7 +2368,7 @@ def get_hill_score_data(start_date, end_date):
 
     hill_score_data = {
         "userProfilePK": random.randint(10000000, 99999999),
-        "startDate": datetime.strptime(start_date, "%Y-%m-%d"),
+        "startDate": start_date,
         "endDate": end_date,
         "periodAvgScore": {},
         "maxScore": None,
@@ -2391,7 +2391,7 @@ def get_endurance_score_data(start_date, end_date):
     :return: A dictionary containing synthetic endurance score data for the specified date range.
     :rtype: Dict
     """
-    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    calendar_date = datetime.strptime(start_date, "%Y-%m-%d")
 
     endurance_score_data = {
         "userProfilePK": random.randint(10000000, 99999999),
@@ -2400,13 +2400,13 @@ def get_endurance_score_data(start_date, end_date):
         "avg": None,
         "max": None,
         "groupMap": {
-            start_date
+            calendar_date
             + timedelta(days=random.randint(0, 7)): {
                 "groupAverage": None,
                 "groupMax": None,
                 "enduranceContributorDTOList": [],
             },
-            start_date
+            calendar_date
             + timedelta(days=random.randint(15, 30)): {
                 "groupAverage": None,
                 "groupMax": None,
@@ -2444,7 +2444,7 @@ def get_available_badges_data(start_date, num_days):
         end_date = start_date + timedelta(days=random.randint(1, 30))
 
         badge_id = random.randint(1000, 2000)
-        badge_uuid = str("NA").upper()
+        badge_uuid = "NA".upper()
         challenge_name = f"Challenge {badge_id}"
 
         available_badges_entry = {
@@ -2508,7 +2508,7 @@ def get_available_badge_challenges_data(start_date, num_days):
         update_date = create_date + timedelta(days=random.randint(1, 5))
 
         badge_id = random.randint(1000, 2000)
-        badge_uuid = str("NA").upper()
+        badge_uuid = "NA".upper()
         challenge_name = f"Challenge {badge_id}"
 
         available_badge_challenges_entry = {
@@ -2822,11 +2822,11 @@ def create_syn_data(start_date, end_date):
         "weigh_ins_daily": get_weigh_ins_daily_data(start_date, num_days),
         "hill_score": get_hill_score_data(
             start_date,
-            datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=num_days - 1),
+            end_date,
         ),
         "endurance_score": get_endurance_score_data(
             start_date,
-            datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=num_days - 1),
+            end_date,
         ),
         "adhoc_challenges": get_adhoc_challenges_data(start_date, num_days),
         "available_badges": get_available_badges_data(start_date, num_days),

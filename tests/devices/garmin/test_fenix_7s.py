@@ -1764,12 +1764,12 @@ def test_fenix_7s(real):
     assert isinstance(
         hill_score_data["userProfilePK"], int
     ), "userProfilePK should be an integer"
-    assert isinstance(
-        hill_score_data["startDate"], datetime
-    ), "startDate should be a datetime object"
-    assert isinstance(
-        hill_score_data["endDate"], datetime
-    ), "endDate should be a datetime object"
+    assert datetime.strptime(
+        hill_score_data["startDate"], "%Y-%m-%d"
+    ), "startDate should be in the correct format"
+    assert datetime.strptime(
+        hill_score_data["endDate"], "%Y-%m-%d"
+    ), "endDate should be in the correct format"
     assert (
         hill_score_data["startDate"] <= hill_score_data["endDate"]
     ), "startDate should be before or equal to endDate"
@@ -1803,12 +1803,12 @@ def test_fenix_7s(real):
     assert isinstance(
         endurance_score_data["userProfilePK"], int
     ), "userProfilePK should be an integer"
-    assert isinstance(
-        endurance_score_data["startDate"], datetime
-    ), "startDate should be a datetime object"
-    assert isinstance(
-        endurance_score_data["endDate"], datetime
-    ), "endDate should be a datetime object"
+    assert datetime.strptime(
+        endurance_score_data["startDate"], "%Y-%m-%d"
+    ), "startDate should be in the correct format"
+    assert datetime.strptime(
+        endurance_score_data["endDate"], "%Y-%m-%d"
+    ), "endDate should be in the correct format"
     assert (
         endurance_score_data["startDate"] <= endurance_score_data["endDate"]
     ), "startDate should be before or equal to endDate"
