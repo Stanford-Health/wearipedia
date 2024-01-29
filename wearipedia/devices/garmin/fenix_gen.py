@@ -112,7 +112,7 @@ def get_steps_data(start_date, num_days):
         for i in range(96):  # 24 hours * 60 minutes / 15 minutes
             interval_start = datetime.strptime(
                 start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0"
-            )
+            ) + timedelta(minutes=15 * i)
             interval_end = interval_start + timedelta(minutes=15)
             steps_entry = {
                 "startGMT": interval_start.strftime("%Y-%m-%dT%H:%M:%S.0"),
