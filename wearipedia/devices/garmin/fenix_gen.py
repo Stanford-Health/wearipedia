@@ -2392,7 +2392,8 @@ def get_endurance_score_data(start_date, end_date):
     :rtype: Dict
     """
     calendar_date = datetime.strptime(start_date, "%Y-%m-%d")
-
+    random_date1 = calendar_date + timedelta(days=random.randint(0, 7))
+    random_date2 = calendar_date + timedelta(days=random.randint(15, 30))
     endurance_score_data = {
         "userProfilePK": random.randint(10000000, 99999999),
         "startDate": start_date,
@@ -2400,14 +2401,12 @@ def get_endurance_score_data(start_date, end_date):
         "avg": None,
         "max": None,
         "groupMap": {
-            calendar_date
-            + timedelta(days=random.randint(0, 7)): {
+            datetime.strftime(random_date1, "%Y-%m-%d"): {
                 "groupAverage": None,
                 "groupMax": None,
                 "enduranceContributorDTOList": [],
             },
-            calendar_date
-            + timedelta(days=random.randint(15, 30)): {
+            datetime.strftime(random_date2, "%Y-%m-%d"): {
                 "groupAverage": None,
                 "groupMax": None,
                 "enduranceContributorDTOList": [],
