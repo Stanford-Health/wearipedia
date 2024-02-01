@@ -60,6 +60,7 @@ class Oura_Ring_3(BaseDevice):
 
     def _default_params(self):
         params = {
+            "seed": 0,
             "start_date": "2022-04-24",
             "end_date": "2022-04-28",
         }
@@ -96,6 +97,7 @@ class Oura_Ring_3(BaseDevice):
     def _gen_synthetic(self):
 
         syn_data = create_syn_data(
+            self.init_params["seed"],
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
