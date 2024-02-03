@@ -382,8 +382,3 @@ def create_syn_data(seed, start_date, end_date):
         full_dict["heart_rate"].extend(get_heart_rate(date))
 
     return full_dict
-
-
-x = create_syn_data(122, "2022-12-12", "2022-12-13")
-
-print(x)
