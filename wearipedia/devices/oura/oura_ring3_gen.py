@@ -95,7 +95,7 @@ def get_sleep(date):
     light = total - rem - deep - awake
     midpoint_time = np.random.randint(int(duration * 0.4), int(duration * 0.6))
     efficiency = np.random.randint(80, 100)
-    restless = np.random.randint(0, 10)
+    restless = np.random.randint(20, 90)
     onset_latency = np.random.randint(600, 1800)
     got_up_count = 0
     wake_up_count = np.random.randint(0, 10)
