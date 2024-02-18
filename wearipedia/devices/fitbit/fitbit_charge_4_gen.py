@@ -1,4 +1,5 @@
 import collections
+import random
 from datetime import datetime, timedelta
 from random import choice, randrange
 
@@ -16,11 +17,11 @@ def get_sleep(date):
     :rtype: dictionary
     """
 
-    duration = np.random.randint(14400, 36000)
+    duration = random.randint(14400, 36000)
 
-    awake = np.random.randint(2, 9)
-    afterwake = np.random.randint(0, 200) / 100
-    tofall = np.random.randint(0, 200) / 100
+    awake = random.randint(2, 9)
+    afterwake = random.randint(0, 200) / 100
+    tofall = random.randint(0, 200) / 100
 
     percents = (100 - awake - afterwake - tofall, awake, afterwake, tofall)
     start = datetime.strptime(f"{date} 9:00 PM", "%Y-%m-%d %I:%M %p")
@@ -29,7 +30,7 @@ def get_sleep(date):
     # generate random date
     delta = end - start
     int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
-    random_second = randrange(int_delta)
+    random_second = random.randrange(int_delta)
 
     start_time = start + timedelta(seconds=random_second)
     end_time = start_time + timedelta(seconds=duration)
@@ -37,11 +38,11 @@ def get_sleep(date):
     sleep_dict = {
         "dateOfSleep": date,
         "duration": duration * 1000,
-        "efficiency": np.random.randint(90, 99),
+        "efficiency": random.randint(90, 99),
         "endTime": str(end_time.isoformat()),
         "infoCode": 0,
         "isMainSleep": True,
-        "logId": np.random.randint(0, 1000000000),
+        "logId": random.randint(0, 1000000000),
         "logType": "auto_detected",
         "minutesAfterWakeup": round(duration / 60 * percents[2] / 100),
         "minutesAsleep": round(duration / 60 * percents[0] / 100),
@@ -72,7 +73,7 @@ def get_sleep(date):
     def split_the_duration(duration):
         saver_of_duration = duration
         while duration > 1:
-            n = np.random.randint(1, round(saver_of_duration / 12))
+            n = random.randint(1, round(saver_of_duration / 12))
             if duration - n >= 0:
                 yield n
             else:
@@ -104,7 +105,7 @@ def get_sleep(date):
         if i != 0:
             start_phases += timedelta(seconds=arr_of_durations[i - 1])
 
-        type = choice(["deep", "rem", "light"])
+        type = random.choice(["deep", "rem", "light"])
 
         sleep_dict["levels"]["summary"][type]["count"] += 1
         sleep_dict["levels"]["summary"][type]["minutes"] += round(item / 60)
@@ -118,7 +119,7 @@ def get_sleep(date):
         # generate random date
         delta = end_time - start_time
         int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
-        random_second = randrange(int_delta)
+        random_second = random.randrange(int_delta)
         randtime = start_time + timedelta(seconds=random_second)
         start_time = start_time + timedelta(seconds=arr_of_durations[i - 1])
 
@@ -138,9 +139,9 @@ def get_activity(date):
     :rtype: dictionary
     """
 
-    very_active = np.random.randint(0, 240)
-    fairly_active = np.random.randint(0, 240)
-    lightly_active = np.random.randint(0, 240)
+    very_active = random.randint(0, 240)
+    fairly_active = random.randint(0, 240)
+    lightly_active = random.randint(0, 240)
 
     steps = {
         "dateTime": date,
@@ -168,7 +169,7 @@ def get_activity(date):
     )
 
 
-def create_syn_data(start_date, end_date):
+def create_syn_data(seed, start_date, end_date):
     """Returns a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary"
 
     :param start_date: the start date (inclusive) as a string in the format "YYYY-MM-DD"
@@ -178,6 +179,8 @@ def create_syn_data(start_date, end_date):
     :return: a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary"
     :rtype: defaultdict
     """
+
+    random.seed(seed)
 
     num_days = (
         datetime.strptime(end_date, "%Y-%m-%d")

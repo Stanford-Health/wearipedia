@@ -1,5 +1,4 @@
 import collections
-import random
 from datetime import datetime, timedelta
 
 import numpy as np

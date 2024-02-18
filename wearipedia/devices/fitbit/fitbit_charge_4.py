@@ -141,6 +141,7 @@ class Fitbit_charge_4(BaseDevice):
     def _gen_synthetic(self):
 
         syn_data = create_syn_data(
+            self.init_params["seed"],
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )

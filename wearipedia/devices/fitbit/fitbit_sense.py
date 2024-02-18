@@ -68,6 +68,7 @@ class Fitbit_sense(BaseDevice):
 
     def _default_params(self):
         params = {
+            "seed": 0,
             "start_date": "2022-06-30",
             "end_date": "2023-01-01",
         }
@@ -157,6 +158,7 @@ class Fitbit_sense(BaseDevice):
     def _gen_synthetic(self):
 
         syn_data = create_syn_data(
+            self.init_params["seed"],
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )

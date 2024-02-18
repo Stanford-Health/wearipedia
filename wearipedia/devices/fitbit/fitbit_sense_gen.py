@@ -18,11 +18,11 @@ def get_sleep(date):
     :rtype: dictionary
     """
 
-    duration = np.random.randint(14400, 36000)
+    duration = random.randint(14400, 36000)
 
-    awake = np.random.randint(2, 9)
-    afterwake = np.random.randint(0, 200) / 100
-    tofall = np.random.randint(0, 200) / 100
+    awake = random.randint(2, 9)
+    afterwake = random.randint(0, 200) / 100
+    tofall = random.randint(0, 200) / 100
 
     percents = (100 - awake - afterwake - tofall, awake, afterwake, tofall)
     start = datetime.strptime(date + " 9:00 PM", "%Y-%m-%d %I:%M %p")
@@ -39,11 +39,11 @@ def get_sleep(date):
     sleep_dict = {
         "dateOfSleep": date,
         "duration": duration * 1000,
-        "efficiency": np.random.randint(90, 99),
+        "efficiency": random.randint(90, 99),
         "endTime": str(end_time.isoformat()),
         "infoCode": 0,
         "isMainSleep": True,
-        "logId": np.random.randint(0, 1000000000),
+        "logId": random.randint(0, 1000000000),
         "logType": "auto_detected",
         "minutesAfterWakeup": round(duration / 60 * percents[2] / 100),
         "minutesAsleep": round(duration / 60 * percents[0] / 100),
@@ -74,7 +74,7 @@ def get_sleep(date):
     def split_the_duration(duration):
         saver_of_duration = duration
         while duration > 1:
-            n = np.random.randint(1, round(saver_of_duration / 12))
+            n = random.randint(1, round(saver_of_duration / 12))
             if duration - n >= 0:
                 yield n
             else:
@@ -142,9 +142,9 @@ def get_activity(date):
     :rtype: dictionary
     """
 
-    very_active = np.random.randint(0, 240)
-    fairly_active = np.random.randint(0, 240)
-    lightly_active = np.random.randint(0, 240)
+    very_active = random.randint(0, 240)
+    fairly_active = random.randint(0, 240)
+    lightly_active = random.randint(0, 240)
 
     minutes_in_a_day = 1440
 
@@ -293,8 +293,8 @@ def get_hrv(date):
                 "hrv": [
                     {
                         "value": {
-                            "dailyRmssd": np.random.randint(13, 48),
-                            "deepRmssd": np.random.randint(13, 48),
+                            "dailyRmssd": random.randint(13, 48),
+                            "deepRmssd": random.randint(13, 48),
                         },
                         "dateTime": date,
                     }
@@ -338,7 +338,7 @@ def get_distance_day(date):
         if max_distance[0] == 0:
             val = 0
         else:
-            val = np.random.randint(1, 1000) / 10000
+            val = random.randint(1, 1000) / 10000
 
         distance_day["distance_day"][0]["activities-distance-intraday"][
             "dataset"
@@ -351,7 +351,7 @@ def get_distance_day(date):
     return distance_day
 
 
-def create_syn_data(start_date, end_date):
+def create_syn_data(seed, start_date, end_date):
     """Returns a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary", "heart_rate_day", "hrv", "distance_day"
 
     :param start_date: the start date (inclusive) as a string in the format "YYYY-MM-DD"
@@ -361,6 +361,8 @@ def create_syn_data(start_date, end_date):
     :return: a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary", "heart_rate_day", "hrv", "distance_day"
     :rtype: defaultdict
     """
+
+    random.seed(seed)
 
     num_days = (
         datetime.strptime(end_date, "%Y-%m-%d")
