@@ -3,8 +3,8 @@ from datetime import datetime, time, timedelta
 from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
 from .fitbit_authenticate import *
-from .fitbit_sense_fetch import *
-from .fitbit_sense_gen import *
+from .fitbit_charge4_fetch import *
+from .fitbit_charge_4_gen import *
 
 class_name = "Fitbit_charge_4"
 
