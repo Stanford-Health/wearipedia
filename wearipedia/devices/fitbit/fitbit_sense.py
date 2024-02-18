@@ -68,7 +68,7 @@ class Fitbit_sense(BaseDevice):
 
     def _default_params(self):
         params = {
-            "start_date": "2022-08-30",
+            "start_date": "2022-06-30",
             "end_date": "2023-01-01",
         }
 
