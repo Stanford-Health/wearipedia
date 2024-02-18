@@ -71,20 +71,62 @@ class Fitbit_charge_4(BaseDevice):
 
     def _filter_synthetic(self, data, data_type, params):
 
-        # date_format = "%Y-%m-%d"
-        # date1 = datetime.strptime(self.init_params["synthetic_start_date"], date_format)
-        # date2 = datetime.strptime(params["start_date"], date_format)
+        date_format = "%Y-%m-%d"
+        date1 = datetime.strptime(self.init_params["synthetic_start_date"], date_format)
+        date2 = datetime.strptime(params["start_date"], date_format)
 
-        # date3 = datetime.strptime(self.init_params["synthetic_end_date"], date_format)
-        # date4 = datetime.strptime(params["end_date"], date_format)
+        date3 = datetime.strptime(self.init_params["synthetic_end_date"], date_format)
+        date4 = datetime.strptime(params["end_date"], date_format)
 
-        # delta1 = date2 - date1
-        # delta2 = date3 - date4
+        delta1 = date2 - date1
+        delta2 = date3 - date4
 
-        # num_days_start = delta1.days
-        # num_days_end = delta2.days
+        num_days_start = delta1.days
+        num_days_end = delta2.days
 
-        return data
+        if data_type == "sleep":
+            intermediary = data[0]["sleep"][num_days_start : -num_days_end + 1]
+            return [{"sleep": intermediary}]
+
+        if data_type == "steps":
+            intermediary = data[0]["activities-steps"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-steps": intermediary}]
+
+        if data_type == "sleep":
+            intermediary = data[0]["sleep"][num_days_start : -num_days_end + 1]
+            return [{"steps": intermediary}]
+
+        if data_type == "minutesVeryActive":
+            intermediary = data[0]["activities-minutesVeryActive"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesVeryActive": intermediary}]
+
+        if data_type == "minutesLightlyActive":
+            intermediary = data[0]["activities-minutesLightlyActive"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesLightlyActive": intermediary}]
+
+        if data_type == "minutesFairlyActive":
+            intermediary = data[0]["activities-minutesFairlyActive"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesFairlyActive": intermediary}]
+
+        if data_type == "distance":
+            intermediary = data[0]["activities-distance"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-distance": intermediary}]
+
+        if data_type == "minutesSedentary":
+            intermediary = data[0]["activities-minutesSedentary"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesSedentary": intermediary}]
 
     def _get_real(self, data_type, params):
 
