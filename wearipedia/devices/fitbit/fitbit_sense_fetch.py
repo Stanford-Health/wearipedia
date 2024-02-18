@@ -24,7 +24,6 @@ def fetch_real_data(data_type, access_token, start_date, end_date, single_date):
     :return: the data fetched from the API according to the inputs
     :rtype: List
     """
-    single_date = start_date
     categories = {
         "sleep": {
             "url": f"https://api.fitbit.com/1.2/user/-/sleep/date/{start_date}/{end_date}.json"
