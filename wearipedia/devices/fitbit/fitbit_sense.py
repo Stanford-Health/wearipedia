@@ -61,8 +61,8 @@ class Fitbit_sense(BaseDevice):
             params,
             {
                 "seed": 0,
-                "synthetic_start_date": "2022-03-01",
-                "synthetic_end_date": "2022-06-17",
+                "synthetic_start_date": "2022-06-30",
+                "synthetic_end_date": "2023-01-01",
             },
         )
 
