@@ -119,10 +119,9 @@ class Fitbit_sense(BaseDevice):
         self.hrv = syn_data["hrv"]
         self.distance_day = syn_data["distance_day"]
 
-    def _authenticate(self, client_id="", client_secret=""):
+    def _authenticate(self, token=""):
         # authenticate this device against API
-        fitbit_application()
-        if client_id == "":
-            client_id = input("enter client id: ")
-            client_secret = input("enter client secret: ")
-        self.user = fitbit_token(client_id, client_secret)
+        if token == "":
+            self.user = fitbit_token()
+        else:
+            self.user = token
