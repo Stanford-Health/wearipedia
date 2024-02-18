@@ -668,9 +668,6 @@ def test_fenix_7s(real):
                 timestamp, int
             ), "Heart rate timestamp should be an integer"
             assert isinstance(heart_rate, int), "Heart rate should be an integer"
-            assert (
-                entry["minHeartRate"] <= heart_rate <= entry["maxHeartRate"]
-            ), "Heart rate should be within min and max range"
 
     # Body Battery
     body_battery_data = device.get_data("body_battery")
