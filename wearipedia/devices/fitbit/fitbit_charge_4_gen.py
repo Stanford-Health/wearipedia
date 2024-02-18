@@ -207,4 +207,40 @@ def create_syn_data(start_date, end_date):
         full_dict["distance"].append(activity[4])
         full_dict["minutesSedentary"].append(activity[5])
 
+    # encapsulate to match original data shape
+    data = []
+    for ele in full_dict["sleep"]:
+        data.append(ele)
+    full_dict["sleep"] = [{"sleep": data}]
+
+    data = []
+    for ele in full_dict["steps"]:
+        data.append(ele)
+    full_dict["steps"] = [{"activities-steps": data}]
+
+    data = []
+    for ele in full_dict["minutesVeryActive"]:
+        data.append(ele)
+    full_dict["minutesVeryActive"] = [{"activities-minutesVeryActive": data}]
+
+    data = []
+    for ele in full_dict["minutesFairlyActive"]:
+        data.append(ele)
+    full_dict["minutesFairlyActive"] = [{"activities-minutesFairlyActive": data}]
+
+    data = []
+    for ele in full_dict["minutesLightlyActive"]:
+        data.append(ele)
+    full_dict["minutesLightlyActive"] = [{"activities-minutesLightlyActive": data}]
+
+    data = []
+    for ele in full_dict["distance"]:
+        data.append(ele)
+    full_dict["distance"] = [{"activities-distance": data}]
+
+    data = []
+    for ele in full_dict["minutesSedentary"]:
+        data.append(ele)
+    full_dict["minutesSedentary"] = [{"activities-minutesSedentary": data}]
+
     return full_dict
