@@ -89,7 +89,59 @@ class Fitbit_sense(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        return data[num_days_start : -num_days_end + 1]
+        if data_type == "sleep":
+            intermediary = data[0]["sleep"][num_days_start : -num_days_end + 1]
+            return [{"sleep": intermediary}]
+
+        if data_type == "steps":
+            intermediary = data[0]["activities-steps"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-steps": intermediary}]
+
+        if data_type == "sleep":
+            intermediary = data[0]["sleep"][num_days_start : -num_days_end + 1]
+            return [{"steps": intermediary}]
+
+        if data_type == "minutesVeryActive":
+            intermediary = data[0]["activities-minutesVeryActive"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesVeryActive": intermediary}]
+
+        if data_type == "minutesLightlyActive":
+            intermediary = data[0]["activities-minutesLightlyActive"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesLightlyActive": intermediary}]
+
+        if data_type == "minutesFairlyActive":
+            intermediary = data[0]["activities-minutesFairlyActive"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesFairlyActive": intermediary}]
+
+        if data_type == "distance":
+            intermediary = data[0]["activities-distance"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-distance": intermediary}]
+
+        if data_type == "minutesSedentary":
+            intermediary = data[0]["activities-minutesSedentary"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesSedentary": intermediary}]
+
+        if data_type == "hrv":
+            intermediary = data[0]["hrv"][num_days_start : -num_days_end + 1]
+            return [{"hrv": intermediary}]
+
+        if data_type == "distance_day":
+            return data
+
+        if data_type == "heart_rate_day":
+            return data
 
     def _get_real(self, data_type, params):
 

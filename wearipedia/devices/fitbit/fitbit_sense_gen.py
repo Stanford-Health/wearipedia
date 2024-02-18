@@ -389,8 +389,52 @@ def create_syn_data(start_date, end_date):
         full_dict["minutesLightlyActive"].append(activity[3])
         full_dict["distance"].append(activity[4])
         full_dict["minutesSedentary"].append(activity[5])
-        full_dict["heart_rate"].append(get_heart_rate(date))
+        full_dict["heart_rate_day"].append(get_heart_rate(date))
         full_dict["hrv"].append(get_hrv(date))
         full_dict["distance_day"].append(get_distance_day(date))
+
+    # encapsulate to match original data shape
+    data = []
+    for ele in full_dict["sleep"]:
+        data.append(ele)
+    full_dict["sleep"] = [{"sleep": data}]
+
+    data = []
+    for ele in full_dict["steps"]:
+        data.append(ele)
+    full_dict["steps"] = [{"activities-steps": data}]
+
+    data = []
+    for ele in full_dict["minutesVeryActive"]:
+        data.append(ele)
+    full_dict["minutesVeryActive"] = [{"activities-minutesVeryActive": data}]
+
+    data = []
+    for ele in full_dict["minutesFairlyActive"]:
+        data.append(ele)
+    full_dict["minutesFairlyActive"] = [{"activities-minutesFairlyActive": data}]
+
+    data = []
+    for ele in full_dict["minutesLightlyActive"]:
+        data.append(ele)
+    full_dict["minutesLightlyActive"] = [{"activities-minutesLightlyActive": data}]
+
+    data = []
+    for ele in full_dict["distance"]:
+        data.append(ele)
+    full_dict["distance"] = [{"activities-distance": data}]
+
+    data = []
+    for ele in full_dict["minutesSedentary"]:
+        data.append(ele)
+    full_dict["minutesSedentary"] = [{"activities-minutesSedentary": data}]
+
+    data = []
+    for ele in full_dict["hrv"]:
+        data.append(ele)
+    full_dict["hrv"] = [{"hrv": data}]
+
+    full_dict["distance_day"] = full_dict["distance_day"][0]["distance_day"]
+    full_dict["heart_rate_day"] = full_dict["heart_rate_day"][0]["heart_rate_day"]
 
     return full_dict
