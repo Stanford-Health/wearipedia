@@ -98,6 +98,7 @@ class Fitbit_sense(BaseDevice):
             self.user,
             start_date=params["start_date"],
             end_date=params["end_date"],
+            single_date=params["single_date"],
         )
         return data
 
