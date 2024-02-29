@@ -441,7 +441,6 @@ def create_synthetic_sleep_collection_df(
     end_list = []  # List of "end" dates
     curr_datetime = start_datetime
     while True:
-        # start_str = curr_datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
         # Create random datetime for the activity
         random_start = curr_datetime
         random_start = random_start.replace(
