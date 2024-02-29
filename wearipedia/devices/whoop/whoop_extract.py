@@ -266,9 +266,7 @@ def fetch_collection(
             break
 
         next_token = out_next_token
-    #     print("Next page:")
 
-    # print("----------------------------")
     result_df = pd.concat(dfs, ignore_index=True)
 
     return result_df
