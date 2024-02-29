@@ -546,6 +546,11 @@ def create_synthetic_sleep_collection_df(
 
 
 def spp(x):
+    """
+    Generates a sleep performance percentage based on a linear relation with total sleep time.
+    :param x: total sleep time in miliseconds
+    :type x: int
+    """
     a = (90 - 78) / (2.88e7 - 1.80e7)
     b = 78 - a * 1.80e7
     y = a * x + b + int(np.random.uniform(-3.5, 3.5))
