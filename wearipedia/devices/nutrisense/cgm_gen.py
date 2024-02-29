@@ -27,7 +27,7 @@ def gen_data(start_date, end_date, seed=0):
     summary = gen_summary(Y)
     stat = {
         "today": gen_stats(Y),
-        "average": gen_stats(Y, weekly=True, seed=seed),
+        "average": gen_stats(Y, weekly=True),
     }
     return (scores, continuous, summary, stat)
 
