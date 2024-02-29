@@ -87,7 +87,7 @@ def fetch_collection(
     if start_date is not None:  # Check if start_date is given
         # Format dates as required
         if short_pattern.match(start_date):
-            start_date = start_date + "T00:00:00.000Z"
+            start_date = f"{start_date}T00:00:00.000Z"
         elif long_pattern.match(start_date):
             pass
         else:
@@ -98,7 +98,7 @@ def fetch_collection(
     if end_date is not None:  # Check if end_date is given
         # Format dates as required
         if short_pattern.match(end_date):
-            end_date = end_date + "T00:00:00.000Z"
+            end_date = f"{end_date}T00:00:00.000Z"
         elif long_pattern.match(end_date):
             pass
         else:
