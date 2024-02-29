@@ -56,16 +56,25 @@ class Whoop4(BaseDevice):
 
     def _get_real(self, data_type, params):
         if data_type == "cycles":
-            return fetch_cycle_collection(
-                self.access_token, params["start"], params["end"]
+            return fetch_collection(
+                collection_type="Cycle",
+                access_token=self.access_token,
+                start_date=params["start"],
+                end_date=params["end"]
             )
         elif data_type == "sleeps":
-            return fetch_sleep_collection(
-                self.access_token, params["start"], params["end"]
+            return fetch_collection(
+                collection_type="Sleep",
+                access_token=self.access_token,
+                start_date=params["start"],
+                end_date=params["end"]
             )
         elif data_type == "workouts":
-            return fetch_workout_collection(
-                self.access_token, params["start"], params["end"]
+            return fetch_collection(
+                collection_type="Workout",
+                access_token=self.access_token,
+                start_date=params["start"],
+                end_date=params["end"]
             )
 
     def _filter_synthetic(self, data, data_type, params):
