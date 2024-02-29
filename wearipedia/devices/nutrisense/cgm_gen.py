@@ -81,9 +81,9 @@ def gen_continuous(start_date, end_date, seed=0):
             Y.append(y)
 
             added = local_rng.normal(scale=1) * 10 + 0.01 * (160 / y)
-            if y < 95:
+            if y < 80:
                 added = abs(added)
-            elif y > 120:
+            elif y > 130:
                 added = -1 * abs(added)
             y += added
 
@@ -149,7 +149,7 @@ def gen_scores():
     return score
 
 
-def gen_stats(Y, weekly=False, seed=0):
+def gen_stats(Y, weekly=False):
     """Generate random scores for the daily statistics
 
     :param Y: the synthetic sensor data
