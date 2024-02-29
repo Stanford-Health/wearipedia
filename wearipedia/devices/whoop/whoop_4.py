@@ -72,18 +72,9 @@ class Whoop4(BaseDevice):
 
     def _filter_synthetic(self, data, data_type, params):
 
-        if data_type == "cycles":
-            key = "start"
-            target_start = params["start"]
-            target_end = params["end"]
-        elif data_type == "sleeps":
-            key = "start"
-            target_start = params["start"]
-            target_end = params["end"]
-        elif data_type == "workouts":
-            key = "start"
-            target_start = params["start"]
-            target_end = params["end"]
+        key = "start"
+        target_start = params["start"]
+        target_end = params["end"]
 
         start_idx = bin_search(np.array(data[key]), target_start)
         end_idx = bin_search(np.array(data[key]), target_end)
