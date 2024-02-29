@@ -557,20 +557,25 @@ def spp(x):
     return min(100, y)
 
 
-# Define the probability distribution
 
-prob_distribution = [0.7, 0.1, 0.15, 0.05]
-
-
-# Define the ranges for each probability distribution
-
-ranges = [(10, 13.9), (0, 9.9), (14, 17.9), (18, 21)]
 
 
 def get_strain(prob_distribution, ranges):
     """
-    Function to get the strain value based on the probability distribution.
+    Generates a strain value based on the provided probability distribution and ranges.
+
+    :param prob_distribution: Probability distribution of the strain values.
+    :type prob_distribution: list[float]
+    :param ranges: Ranges for each probability distribution.
+    :type ranges: list[tuple(float, float)]
+
+    :return: Random strain value.
+    :rtype: float
     """
+    # Define the probability distribution
+    prob_distribution = [0.7, 0.1, 0.15, 0.05]
+    # Define the ranges for each probability distribution
+    ranges = [(10, 13.9), (0, 9.9), (14, 17.9), (18, 21)]
     random_value = np.random.choice(len(prob_distribution), p=prob_distribution)
     return np.round(
         np.random.uniform(ranges[random_value][0], ranges[random_value][1]), 7
