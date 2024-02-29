@@ -81,9 +81,9 @@ def gen_continuous(start_date, end_date, seed=0):
             Y.append(y)
 
             added = local_rng.normal(scale=1) * 10 + 0.01 * (160 / y)
-            if y < 80:
+            if y < 75:
                 added = abs(added)
-            elif y > 130:
+            elif y > 135:
                 added = -1 * abs(added)
             y += added
 
@@ -188,8 +188,8 @@ def gen_stats(Y, weekly=False):
         "healthyRange": first,
         "range": second,
         "timeWithinRange": timeWithinRange,
-        "min": max(70, low),
-        "max": min(140, high),
+        "min": low,
+        "max": high,
         "mean": avg,
         "median": median,
         "standardDeviation": std,
