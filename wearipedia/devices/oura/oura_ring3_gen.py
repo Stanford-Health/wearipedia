@@ -190,11 +190,11 @@ def get_activity(date):
     steps = np.random.randint(8000, 15000)
     daily_movement = np.random.randint(7000, 12000)
 
-    non_wear = np.random.randint(0, 120)
-    rest = np.random.randint(400, 600)
+    non_wear = np.random.randint(0, 120) * 60
+    rest = np.random.randint(400, 600) * 60
     inactive = np.random.randint(500, 800)
     low = np.random.randint(200, 400)
-    medium = np.random.randint(50, 150)
+    medium = np.random.randint(50, 150) * 60
     high = np.random.randint(0, 20)
     inactivity_alerts = np.random.randint(0, 3)
     average_met = round(np.random.uniform(1.0, 1.8), 2)
