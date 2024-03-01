@@ -80,7 +80,9 @@ def gen_continuous(start_date, end_date, seed=0):
             X.append(x)
             Y.append(y)
 
-            added = local_rng.normal(scale=1) * 10 + 0.01 * (160 / y)
+            added = sorted([-1.1, local_rng.normal(scale=1), 1.1])[1] * 10 + 0.01 * (
+                160 / y
+            )
             if y < 75:
                 added = abs(added)
             elif y > 135:
