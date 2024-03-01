@@ -162,17 +162,7 @@ def gen_stats(Y, weekly=False):
     :rtype: dict
     """
 
-    # if weekly, statistics not based on synthetic data Y, generate randomly
     if weekly:
-        low = randint(70, 110)
-        high = randint(low, 140)
-        median = randint(low, high)
-        std = randint(0, 10)
-        q1 = randint(low, median)
-        q3 = randint(median, high)
-        timeWithinRange = randint(0, 100)
-        avg = randint(low, high)
-    else:
         low, high = min(Y), max(Y)
         median = np.median(Y)
         std = tstd(Y)
@@ -182,6 +172,15 @@ def gen_stats(Y, weekly=False):
         condition = greater & less
         timeWithinRange = float(len(np.extract(condition, Y)))
         avg = np.average(Y)
+    else:
+        low = randint(min(Y), 110)
+        high = randint(low, max(Y))
+        median = randint(low, high)
+        std = randint(0, 10)
+        q1 = randint(low, median)
+        q3 = randint(median, high)
+        timeWithinRange = randint(0, 100)
+        avg = randint(low, high)
 
     first = {"min": 70.0, "max": 140.0, "__typename": "Range"}
     second = {"min": low, "max": high, "__typename": "Range"}
