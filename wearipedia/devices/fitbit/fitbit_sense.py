@@ -35,8 +35,8 @@ class Fitbit_sense(BaseDevice):
     def __init__(
         self,
         seed=0,
-        synthetic_start_date="2022-03-01",
-        synthetic_end_date="2022-06-17",
+        synthetic_start_date="2022-06-30",
+        synthetic_end_date="2023-01-01",
     ):
 
         params = {
@@ -61,15 +61,16 @@ class Fitbit_sense(BaseDevice):
             params,
             {
                 "seed": 0,
-                "synthetic_start_date": "2022-03-01",
-                "synthetic_end_date": "2022-06-17",
+                "synthetic_start_date": "2022-06-30",
+                "synthetic_end_date": "2023-01-01",
             },
         )
 
     def _default_params(self):
         params = {
-            "start_date": "2022-04-24",
-            "end_date": "2022-04-28",
+            "seed": 0,
+            "start_date": "2022-06-30",
+            "end_date": "2023-01-01",
         }
 
         return params
@@ -89,21 +90,75 @@ class Fitbit_sense(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        return data[num_days_start : -num_days_end + 1]
+        if data_type == "sleep":
+            intermediary = data[0]["sleep"][num_days_start : -num_days_end + 1]
+            return [{"sleep": intermediary}]
+
+        if data_type == "steps":
+            intermediary = data[0]["activities-steps"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-steps": intermediary}]
+
+        if data_type == "sleep":
+            intermediary = data[0]["sleep"][num_days_start : -num_days_end + 1]
+            return [{"steps": intermediary}]
+
+        if data_type == "minutesVeryActive":
+            intermediary = data[0]["activities-minutesVeryActive"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesVeryActive": intermediary}]
+
+        if data_type == "minutesLightlyActive":
+            intermediary = data[0]["activities-minutesLightlyActive"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesLightlyActive": intermediary}]
+
+        if data_type == "minutesFairlyActive":
+            intermediary = data[0]["activities-minutesFairlyActive"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesFairlyActive": intermediary}]
+
+        if data_type == "distance":
+            intermediary = data[0]["activities-distance"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-distance": intermediary}]
+
+        if data_type == "minutesSedentary":
+            intermediary = data[0]["activities-minutesSedentary"][
+                num_days_start : -num_days_end + 1
+            ]
+            return [{"activities-minutesSedentary": intermediary}]
+
+        if data_type == "hrv":
+            intermediary = data[0]["hrv"][num_days_start : -num_days_end + 1]
+            return [{"hrv": intermediary}]
+
+        if data_type == "distance_day":
+            return data
+
+        if data_type == "heart_rate_day":
+            return data
 
     def _get_real(self, data_type, params):
 
         data = fetch_real_data(
             data_type,
             self.user,
-            start_date=self.init_params["start_date"],
-            end_date=self.init_params["end_date"],
+            start_date=params["start_date"],
+            end_date=params["end_date"],
+            single_date=params["single_date"],
         )
         return data
 
     def _gen_synthetic(self):
 
         syn_data = create_syn_data(
+            self.init_params["seed"],
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
@@ -119,10 +174,9 @@ class Fitbit_sense(BaseDevice):
         self.hrv = syn_data["hrv"]
         self.distance_day = syn_data["distance_day"]
 
-    def _authenticate(self, client_id="", client_secret=""):
+    def _authenticate(self, token=""):
         # authenticate this device against API
-        fitbit_application()
-        if client_id == "":
-            client_id = input("enter client id: ")
-            client_secret = input("enter client secret: ")
-        self.user = fitbit_token(client_id, client_secret)
+        if token == "":
+            self.user = fitbit_token()
+        else:
+            self.user = token
