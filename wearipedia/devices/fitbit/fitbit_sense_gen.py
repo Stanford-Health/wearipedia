@@ -331,21 +331,18 @@ def get_distance_day(date):
     minutes_in_a_day = 1440
 
     for i in range(minutes_in_a_day):
-        if (
-            the_time.hour >= 6 and the_time.hour < 22
-        ):  # Only consider daytime (6 am to 10 pm)
-            distance = [0, 0.1]
-            weights = [0.6, 0.3]
-            max_distance = choices(distance, weights)
-            if max_distance[0] == 0:
-                val = 0
-            else:
-                val = random.randint(1, 1000) / 10000
 
-            distance_day["distance_day"][0]["activities-distance-intraday"][
-                "dataset"
-            ].append({"time": the_time.strftime("%H:%M:%S"), "value": val})
+        distance = [0, 0.1]
+        weights = [0.6, 0.3]
+        max_distance = choices(distance, weights)
+        if max_distance[0] == 0:
+            val = 0
+        else:
+            val = random.randint(1, 1000) / 10000
 
+        distance_day["distance_day"][0]["activities-distance-intraday"][
+            "dataset"
+        ].append({"time": the_time.strftime("%H:%M:%S"), "value": val})
         newtime = (
             datetime.combine(datetime.today(), the_time) + timedelta(seconds=60)
         ).time()
@@ -443,6 +440,3 @@ def create_syn_data(seed, start_date, end_date):
     full_dict["heart_rate_day"] = full_dict["heart_rate_day"][0]["heart_rate_day"]
 
     return full_dict
-
-
-print(create_syn_data(100, "2022-02-02", "2022-02-03"))
