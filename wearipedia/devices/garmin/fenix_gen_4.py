@@ -1,10 +1,6 @@
 import random
 from datetime import datetime, timedelta
 
-import numpy as np
-import pandas as pd
-from tqdm import tqdm
-
 
 def get_sleep_data(start_date, num_days):
     """Generate synthetic sleep data for a specified date range.

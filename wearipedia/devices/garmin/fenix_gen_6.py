@@ -1,10 +1,6 @@
 import random
 from datetime import datetime, timedelta
 
-import numpy as np
-import pandas as pd
-from tqdm import tqdm
-
 
 def get_device_settings_data(num_devices):
     """Generate synthetic device settings data for the specified number of devices.
