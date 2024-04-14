@@ -18,8 +18,10 @@ def test_withings_bodyplus(real):
             synthetic_start_date=datetime.strftime(start_date, "%Y-%m-%d"),
         )
 
+        """
         if real:
             wearipedia._authenticate_device("withings/bodyplus", device)
+        """
 
         # calling tests for each pair of start dates
         helper_test(device, start_date, real)

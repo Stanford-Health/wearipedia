@@ -17,10 +17,10 @@ def test_fitbit_sense(real):
             synthetic_start_date=datetime.strftime(start_date, "%Y-%m-%d"),
             synthetic_end_date=datetime.strftime(end_date, "%Y-%m-%d"),
         )
-
+        """
         if real:
             wearipedia._authenticate_device("fitbit/fitbit_sense", device)
-
+        """
         helper_test(device, start_date, end_date, real)
 
 

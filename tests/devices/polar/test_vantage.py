@@ -35,8 +35,10 @@ def test_vantage(real):
             "training_id": "7472390363",
         }
 
+        """
         if real:
             wearipedia._authenticate_device("polar/vantage", device)
+        """
 
         sleep = device.get_data("sleep", params=params)
         training_history = device.get_data("training_history", params=params)

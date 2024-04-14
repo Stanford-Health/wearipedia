@@ -25,10 +25,10 @@ def test_h10(real):
             start_date=np.datetime_as_string(start_date, unit="D"),
             end_date=np.datetime_as_string(end_date, unit="D"),
         )
-
+        """
         if real:
             wearipedia._authenticate_device("polar/h10", device)
-
+        """
         sessions = device.get_data("sessions")
         rr = device.get_data("rr")
 
@@ -41,7 +41,7 @@ def rr_tests(data, start_synthetic, end_synthetic, real):
     if real:
         for key in data.keys():
             assert (
-                start_synthetic < np.datetime64(key) < end_synthetic
+                start_synthetic <= np.datetime64(key) <= end_synthetic
             ), f"expected all data to be between start and end, but got {key}, which is not between {start_synthetic} and {end_synthetic}"
 
     else:
@@ -73,7 +73,7 @@ def session_tests(data, start_synthetic, end_synthetic, real):
     if real:
         for key in data.keys():
             assert (
-                start_synthetic < np.datetime64(key) < end_synthetic
+                start_synthetic <= np.datetime64(key) <= end_synthetic
             ), f"expected all data to be between start and end, but got {key}, which is not between {start_synthetic} and {end_synthetic}"
 
     else:

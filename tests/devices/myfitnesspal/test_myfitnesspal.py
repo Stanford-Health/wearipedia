@@ -36,8 +36,10 @@ def test_myfitnesspal(real):
             "training_id": "7472390363",
         }
 
+        """
         if real:
             wearipedia._authenticate_device("myfitnesspal/myfitnesspal", device)
+        """
 
         goals = device.get_data("goals", params=params)
         daily_summary = device.get_data("daily_summary", params=params)

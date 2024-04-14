@@ -20,9 +20,10 @@ def test_fenix_7s(real):
         synthetic_end_date=datetime.strftime(end_synthetic, "%Y-%m-%d"),
     )
 
+    """
     if real:
         wearipedia._authenticate_device("garmin/fenix_7s", device)
-
+    """
     dates = device.get_data("dates")
     steps = device.get_data("steps")
     hrs = device.get_data("hrs")

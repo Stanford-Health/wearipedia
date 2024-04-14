@@ -18,9 +18,10 @@ def test_fitbit_charge_4_synthetic(real):
             synthetic_end_date=datetime.strftime(end_date, "%Y-%m-%d"),
         )
 
+        """
         if real:
             wearipedia._authenticate_device("fitbit/fitbit_charge_4", device)
-
+        """
         helper_test(device, start_date, end_date, real)
 
 

@@ -31,10 +31,10 @@ def test_cronometer(real):
         )
 
         params = {"start_date": str(start_date), "end_date": str(end_date)}
-
+        """
         if real:
             wearipedia._authenticate_device("cronometer/cronometer", device)
-
+        """
         dailySummary = device.get_data("dailySummary", params=params)
         servings = device.get_data("servings", params=params)
         exercises = device.get_data("exercises", params=params)

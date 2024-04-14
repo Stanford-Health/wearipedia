@@ -17,10 +17,10 @@ def test_coros_pace_2_synthetic(real):
             synthetic_start_date=datetime.strftime(start_date, "%Y-%m-%d"),
             synthetic_end_date=datetime.strftime(end_date, "%Y-%m-%d"),
         )
-
+        """
         if real:
             wearipedia._authenticate_device("coros/coros_pace_2", device)
-
+        """
         helper_test(device, start_date, end_date, real)
 
 

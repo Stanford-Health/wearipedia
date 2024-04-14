@@ -18,8 +18,10 @@ def test_oura_ring3_synthetic(real):
             synthetic_end_date=datetime.strftime(end_date, "%Y-%m-%d"),
         )
 
+        """
         if real:
             wearipedia._authenticate_device("oura/oura_ring3", device)
+        """
 
         helper_test(device, start_date, end_date, real)
 
