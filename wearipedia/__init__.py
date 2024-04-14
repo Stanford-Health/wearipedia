@@ -108,57 +108,87 @@ def get_os(key):
 
 # this is only for testing purposes
 _DEVICE_TO_AUTH_DICT = {
-    "garmin/fenix_7s": {
-        "email": get_os("GARMIN_FENIX_7S_EMAIL"),
-        "password": get_os("GARMIN_FENIX_7S_PASSWORD"),
-    },
     "whoop/whoop_4": {
         "email": get_os("WHOOP_4_EMAIL"),
         "password": get_os("WHOOP_4_PASSWORD"),
-    },
-    "withings/bodyplus": {
-        "refresh_token_env_var": "WITHINGS_REFRESH_TOKEN",
-        "client_id": get_os("WITHINGS_CLIENT_ID"),
-        "client_secret": get_os("WITHINGS_CLIENT_SECRET"),
-        "refresh_token": get_os("WITHINGS_REFRESH_TOKEN"),
-    },
-    "withings/scanwatch": {
-        "refresh_token_env_var": "WITHINGS_REFRESH_TOKEN",
-        "client_id": get_os("WITHINGS_CLIENT_ID"),
-        "client_secret": get_os("WITHINGS_CLIENT_SECRET"),
-        "refresh_token": get_os("WITHINGS_REFRESH_TOKEN"),
-    },
-    "dexcom/pro_cgm": {
-        "refresh_token_env_var": "DEXCOM_REFRESH_TOKEN",
-        "client_id": get_os("DEXCOM_CLIENT_ID"),
-        "client_secret": get_os("DEXCOM_CLIENT_SECRET"),
-        "refresh_token": get_os("DEXCOM_REFRESH_TOKEN"),
     },
     "polar/verity_sense": {
         "email": get_os("POLAR_EMAIL"),
         "password": get_os("POLAR_PASSWORD"),
     },
-    "fitbit/fitbit_charge_4": {
-        "client_id": get_os("FITBIT_CLIENT_ID"),
-        "client_secret": get_os("FITBIT_CLIENT_SECRET"),
-    },
-    "fitbit/fitbit_sense": {
-        "client_id": get_os("FITBIT_CLIENT_ID"),
-        "client_secret": get_os("FITBIT_CLIENT_SECRET"),
-    },
-    "oura/oura_ring3": {
-        "client_id": get_os("OURA_CLIENT_ID"),
-        "client_secret": get_os("OURA_CLIENT_SECRET"),
-    },
-    "coros/coros_pace_2": {
-        "client_id": get_os("COROS_CLIENT_ID"),
-        "client_secret": get_os("COROS_CLIENT_SECRET"),
-    },
-    "polar/vantage": {
+}
+
+# devices requiring more complicated auth flows/do not have credentials not auto-tested in this release
+""" 
+"polar/vantage": {
         "email": get_os("POLAR_EMAIL"),
         "password": get_os("POLAR_PASSWORD"),
-    },
-}
+},
+"garmin/fenix_7s": {
+        "email": get_os("GARMIN_FENIX_7S_EMAIL"),
+        "password": get_os("GARMIN_FENIX_7S_PASSWORD"),
+},
+"biostrap/evo": {
+        "email": get_os("BIOSTRAP_EMAIL"),
+        "password": get_os("BIOSTRAP_PASSWORD"),
+},
+"polar/h10": {
+        "email": get_os("POLAR_EMAIL"),
+        "password": get_os("POLAR_PASSWORD"),
+        "elite_hrv_email": get_os("ELITE_HRV_EMAIL"),
+        "elite_hrv_password": get_os("ELITE_HRV_PASSWORD"),
+},
+"coros/coros_pace_2": {
+        "client_id": get_os("COROS_CLIENT_ID"),
+        "client_secret": get_os("COROS_CLIENT_SECRET"),
+},
+"fitbit/fitbit_charge_4": {
+    "client_id": get_os("FITBIT_CLIENT_ID"),
+    "client_secret": get_os("FITBIT_CLIENT_SECRET"),
+},
+"fitbit/fitbit_sense": {
+    "client_id": get_os("FITBIT_CLIENT_ID"),
+    "client_secret": get_os("FITBIT_CLIENT_SECRET"),
+},
+"withings/bodyplus": {
+    "refresh_token_env_var": "WITHINGS_REFRESH_TOKEN",
+    "client_id": get_os("WITHINGS_CLIENT_ID"),
+    "client_secret": get_os("WITHINGS_CLIENT_SECRET"),
+    "refresh_token": get_os("WITHINGS_REFRESH_TOKEN"),
+},
+"withings/scanwatch": {
+    "refresh_token_env_var": "WITHINGS_REFRESH_TOKEN",
+    "client_id": get_os("WITHINGS_CLIENT_ID"),
+    "client_secret": get_os("WITHINGS_CLIENT_SECRET"),
+    "refresh_token": get_os("WITHINGS_REFRESH_TOKEN"),
+},
+"dexcom/pro_cgm": {
+    "refresh_token_env_var": "DEXCOM_REFRESH_TOKEN",
+    "client_id": get_os("DEXCOM_CLIENT_ID"),
+    "client_secret": get_os("DEXCOM_CLIENT_SECRET"),
+    "refresh_token": get_os("DEXCOM_REFRESH_TOKEN"),
+},
+"oura/oura_ring3": {
+    "client_id": get_os("OURA_CLIENT_ID"),
+    "client_secret": get_os("OURA_CLIENT_SECRET"),
+},
+"strava/strava": {
+    "client_id": get_os("STRAVA_CLIENT_ID"),
+    "client_secret": get_os("STRAVA_CLIENT_SECRET"),
+},
+"myfitnesspal/myfitnesspal": {
+    "email": get_os("MYFITNESSPAL_EMAIL"),
+    "password": get_os("MYFITNESSPAL_PASSWORD"),
+},
+"google/googlefit": {
+    "client_id": get_os("GOOGLE_CLIENT_ID"),
+    "client_secret": get_os("GOOGLE_CLIENT_SECRET"),
+},
+"nutrisense/cgm": {
+    "email": get_os("NUTRISENSE_EMAIL"),
+    "password": get_os("NUTRISENSE_PASSWORD"),
+},
+"""
 
 _REFRESH_TOKEN_STORE = "/tmp/refresh_tokens.json"
 

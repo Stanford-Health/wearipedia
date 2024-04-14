@@ -20,8 +20,10 @@ def test_withings_scanwatch_synthetic(real):
             synthetic_end_date=datetime.strftime(end_date, "%Y-%m-%d"),
         )
 
+        """
         if real:
             wearipedia._authenticate_device("withings/scanwatch", device)
+        """
 
         # calling tests for each pair of start and end dates
         helper_test(device, start_date, end_date, real)

@@ -29,9 +29,10 @@ def test_evo(real):
         start_date=datetime.strftime(start_synthetic, "%Y-%m-%d"),
         end_date=datetime.strftime(end_synthetic, "%Y-%m-%d"),
     )
+    """
     if real:
         wearipedia._authenticate_device("evo", device)
-
+    """
     for data_type, data_format in data_formats.items():
         data = device.get_data(data_type)
 
