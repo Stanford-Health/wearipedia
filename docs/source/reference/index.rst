@@ -46,7 +46,7 @@ Devices
     :members:
     :show-inheritance:
 
-.. deprecated:: 1.0
+.. deprecated:: 0.1.0
     Authentication and real data retrieval is deprecated for this device as a result of an internal change to the company's API.
 
 .. autoclass:: wearipedia.devices.whoop.Whoop4
