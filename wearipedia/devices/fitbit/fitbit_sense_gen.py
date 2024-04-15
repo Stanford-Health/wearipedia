@@ -442,6 +442,3 @@ def create_syn_data(seed, start_date, end_date):
     full_dict["heart_rate_day"] = full_dict["heart_rate_day"][0]["heart_rate_day"]
 
     return full_dict
-
-
-print(get_distance_day("2022-02-02"))

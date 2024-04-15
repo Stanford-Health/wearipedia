@@ -136,7 +136,7 @@ def get_activity(date):
     :param date: the date as a string in the format "YYYY-MM-DD"
     :type date: str
     :return: dictionaries of "steps", "minutesVeryActive", "minutesFairlyActive", "minutesLightlyActive", "distance", "minutesSedentary"
-    :rtype: dictionary
+    :rtype: tuple(dictionary)
     """
 
     very_active = random.randint(0, 240)
@@ -170,13 +170,13 @@ def get_activity(date):
 
 
 def create_syn_data(seed, start_date, end_date):
-    """Returns a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary"
+    """Returns a defaultdict of "activity data", "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary"
 
     :param start_date: the start date (inclusive) as a string in the format "YYYY-MM-DD"
     :type start_date: str
     :param end_date: the end date (inclusive) as a string in the format "YYYY-MM-DD"
     :type end_date: str
-    :return: a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary"
+    :return: a defaultdict of "activity data", "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary"
     :rtype: defaultdict
     """
 
