@@ -84,49 +84,20 @@ class Fitbit_charge_4(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        if data_type == "sleep":
-            intermediary = data[0]["sleep"][num_days_start : -num_days_end + 1]
-            return [{"sleep": intermediary}]
+        key_map = {
+            "sleep": "sleep",
+            "steps": "activities-steps",
+            "minutesVeryActive": "activities-minutesVeryActive",
+            "minutesLightlyActive": "activities-minutesLightlyActive",
+            "minutesFairlyActive": "activities-minutesFairlyActive",
+            "distance": "activities-distance",
+            "minutesSedentary": "activities-minutesSedentary",
+        }
 
-        if data_type == "steps":
-            intermediary = data[0]["activities-steps"][
-                num_days_start : -num_days_end + 1
-            ]
-            return [{"activities-steps": intermediary}]
-
-        if data_type == "sleep":
-            intermediary = data[0]["sleep"][num_days_start : -num_days_end + 1]
-            return [{"steps": intermediary}]
-
-        if data_type == "minutesVeryActive":
-            intermediary = data[0]["activities-minutesVeryActive"][
-                num_days_start : -num_days_end + 1
-            ]
-            return [{"activities-minutesVeryActive": intermediary}]
-
-        if data_type == "minutesLightlyActive":
-            intermediary = data[0]["activities-minutesLightlyActive"][
-                num_days_start : -num_days_end + 1
-            ]
-            return [{"activities-minutesLightlyActive": intermediary}]
-
-        if data_type == "minutesFairlyActive":
-            intermediary = data[0]["activities-minutesFairlyActive"][
-                num_days_start : -num_days_end + 1
-            ]
-            return [{"activities-minutesFairlyActive": intermediary}]
-
-        if data_type == "distance":
-            intermediary = data[0]["activities-distance"][
-                num_days_start : -num_days_end + 1
-            ]
-            return [{"activities-distance": intermediary}]
-
-        if data_type == "minutesSedentary":
-            intermediary = data[0]["activities-minutesSedentary"][
-                num_days_start : -num_days_end + 1
-            ]
-            return [{"activities-minutesSedentary": intermediary}]
+        if data_type in key_map:
+            key = key_map[data_type]
+            intermediary = data[0][key][num_days_start : -num_days_end + 1]
+            return [{key: intermediary}]
 
     def _get_real(self, data_type, params):
 

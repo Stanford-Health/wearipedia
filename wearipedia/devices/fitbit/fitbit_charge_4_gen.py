@@ -216,34 +216,19 @@ def create_syn_data(seed, start_date, end_date):
         data.append(ele)
     full_dict["sleep"] = [{"sleep": data}]
 
-    data = []
-    for ele in full_dict["steps"]:
-        data.append(ele)
-    full_dict["steps"] = [{"activities-steps": data}]
+    keys_to_update = [
+        "steps",
+        "minutesVeryActive",
+        "minutesFairlyActive",
+        "minutesLightlyActive",
+        "distance",
+        "minutesSedentary",
+    ]
 
-    data = []
-    for ele in full_dict["minutesVeryActive"]:
-        data.append(ele)
-    full_dict["minutesVeryActive"] = [{"activities-minutesVeryActive": data}]
-
-    data = []
-    for ele in full_dict["minutesFairlyActive"]:
-        data.append(ele)
-    full_dict["minutesFairlyActive"] = [{"activities-minutesFairlyActive": data}]
-
-    data = []
-    for ele in full_dict["minutesLightlyActive"]:
-        data.append(ele)
-    full_dict["minutesLightlyActive"] = [{"activities-minutesLightlyActive": data}]
-
-    data = []
-    for ele in full_dict["distance"]:
-        data.append(ele)
-    full_dict["distance"] = [{"activities-distance": data}]
-
-    data = []
-    for ele in full_dict["minutesSedentary"]:
-        data.append(ele)
-    full_dict["minutesSedentary"] = [{"activities-minutesSedentary": data}]
+    for key in keys_to_update:
+        data = []
+        for ele in full_dict[key]:
+            data.append(ele)
+        full_dict[key] = [{f"activities-{key}": data}]
 
     return full_dict
