@@ -22,7 +22,11 @@ This page contains all notebooks for our devices, in a readable format!
 
 `MyFitnessPal <my_fitness_pal.ipynb>`_
 
+`Nutrisense CGM <nutrisense_cgm.ipynb>`_
+
 `Oura Ring Gen 3 <oura_ring_gen_3.ipynb>`_
+
+`Polar H10 <polar_h10.ipynb>`_
 
 `Polar Vantage <polar_vantage.ipynb>`_
 
