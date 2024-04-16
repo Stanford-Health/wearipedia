@@ -3,8 +3,8 @@ from datetime import datetime, time, timedelta
 from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
 from .fitbit_authenticate import *
-from .fitbit_sense_fetch import *
-from .fitbit_sense_gen import *
+from .fitbit_charge4_fetch import *
+from .fitbit_charge_4_gen import *
 
 class_name = "Fitbit_charge_4"
 
@@ -32,8 +32,8 @@ class Fitbit_charge_4(BaseDevice):
     def __init__(
         self,
         seed=0,
-        synthetic_start_date="2022-03-01",
-        synthetic_end_date="2022-06-17",
+        synthetic_start_date="2022-12-01",
+        synthetic_end_date="2023-01-01",
     ):
 
         params = {
@@ -62,6 +62,7 @@ class Fitbit_charge_4(BaseDevice):
 
     def _default_params(self):
         params = {
+            "seed": 0,
             "start_date": "2022-04-24",
             "end_date": "2022-04-28",
         }
@@ -83,21 +84,35 @@ class Fitbit_charge_4(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        return data[num_days_start : -num_days_end + 1]
+        key_map = {
+            "sleep": "sleep",
+            "steps": "activities-steps",
+            "minutesVeryActive": "activities-minutesVeryActive",
+            "minutesLightlyActive": "activities-minutesLightlyActive",
+            "minutesFairlyActive": "activities-minutesFairlyActive",
+            "distance": "activities-distance",
+            "minutesSedentary": "activities-minutesSedentary",
+        }
+
+        if data_type in key_map:
+            key = key_map[data_type]
+            intermediary = data[0][key][num_days_start : -num_days_end + 1]
+            return [{key: intermediary}]
 
     def _get_real(self, data_type, params):
 
         data = fetch_real_data(
             data_type,
             self.user,
-            start_date=self.init_params["start_date"],
-            end_date=self.init_params["end_date"],
+            start_date=params["start_date"],
+            end_date=params["end_date"],
         )
         return data
 
     def _gen_synthetic(self):
 
         syn_data = create_syn_data(
+            self.init_params["seed"],
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
@@ -109,8 +124,9 @@ class Fitbit_charge_4(BaseDevice):
         self.distance = syn_data["distance"]
         self.minutesSedentary = syn_data["minutesSedentary"]
 
-    def _authenticate(self, client_id):
+    def _authenticate(self, token=""):
         # authenticate this device against API
-        fitbit_application()
-        client_secret = input("enter client secret: ")
-        self.user = fitbit_token(client_id, client_secret)
+        if token == "":
+            self.user = fitbit_token()
+        else:
+            self.user = token
