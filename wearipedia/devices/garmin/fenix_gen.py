@@ -43,6 +43,6 @@ def create_syn_data(start_date, end_date):
         "spo2": get_spo2_data(start_date, num_days),
     }
 
-    # synth_data["hr"] = get_heart_rate_data(start_date, num_days, synth_data["steps"])
+    synth_data["hr"] = get_heart_rate_data(start_date, num_days, synth_data["steps"])
 
     return synth_data
