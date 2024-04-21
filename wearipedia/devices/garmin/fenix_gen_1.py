@@ -105,7 +105,7 @@ def get_steps_data(start_date, num_days):
                 start_timestamp_gmt, "%Y-%m-%dT%H:%M:%S.0"
             ) + timedelta(minutes=15 * i)
             interval_end = interval_start + timedelta(minutes=15)
-            steps = int(np.random.normal(100, 20))
+            steps = int(np.random.normal(90, 30))
             steps_entry = {
                 "startGMT": interval_start.strftime("%Y-%m-%dT%H:%M:%S.0"),
                 "endGMT": interval_end.strftime("%Y-%m-%dT%H:%M:%S.0"),
@@ -180,8 +180,8 @@ def get_heart_rate_data(start_date, num_days, steps_data):
                     <= step_timestamps + 15 * 60,
                 )
             )[0][0]
-            step_val_avg = steps_arrdict_day[step_idx]["steps"]
-            heart_rate = int(step_val_avg * 0.03 + 80 + np.random.randn())
+            step_val_avg = steps_arrdict_day[step_idx]["steps"] + np.random.randn() * 3
+            heart_rate = int(step_val_avg * 0.03 + 75 + np.random.randn() * 3)
             timestamp = int(
                 start_datetime.timestamp() * 1000
             )  # Convert to milliseconds
