@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from .fenix_gen_1 import *
 from .fenix_gen_2 import *
 from .fenix_gen_3 import *
-from .fenix_gen_4 import *
 
 __all__ = ["create_syn_data"]
 
