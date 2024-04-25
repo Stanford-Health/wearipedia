@@ -180,8 +180,8 @@ def get_heart_rate_data(start_date, num_days, steps_data):
                     <= step_timestamps + 15 * 60,
                 )
             )[0][0]
-            step_val_avg = steps_arrdict_day[step_idx]["steps"] + np.random.randn() * 3
-            heart_rate = int(step_val_avg * 0.03 + 75 + np.random.randn() * 3)
+            step_val_avg = steps_arrdict_day[step_idx]["steps"]
+            heart_rate = int(step_val_avg + 0.03 + 75 + np.random.randn() * 20)
             timestamp = int(
                 start_datetime.timestamp() * 1000
             )  # Convert to milliseconds
