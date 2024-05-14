@@ -3,14 +3,14 @@ from ..device import BaseDevice
 from .qualtrics_fetch import *
 from .qualtrics_gen import *
 
+from QualtricsAPI.Setup import Credentials
+
 class_name = "Qualtrics"
 
 class Qualtrics(BaseDevice):
-    def __init__(self, seed=0, token="M4EoyhFeA6s6YpT5BB3ETS4K1fniU1f4Y7TZddkl", data_center="stanforduniversity", survey="SV_6FDXhJO8mupUnuC"):
+    def __init__(self, seed=0, survey="SV_6FDXhJO8mupUnuC"):
         params = {
             "seed": seed,
-            "token": str(token),
-            "data_center": str(data_center),
             "survey": str(survey),
         }
 
@@ -21,36 +21,30 @@ class Qualtrics(BaseDevice):
             params,
             {
                 "seed": 0,
-                "token": "M4EoyhFeA6s6YpT5BB3ETS4K1fniU1f4Y7TZddkl",
-                "data_center": "stanforduniversity",
-                "survey": "SV_6FDXhJO8mupUnuC",
+                "synthetic_survey": "your_survey_id_here",
             },
         )
 
     def _default_params(self):
         return {
-            "token": self.init_params["synthetic_token"],
-            "data_center": self.init_params["synthetic_data_center"],
             "survey": self.init_params["synthetic_survey"],
         }
 
-    def _get_real(self, params):
+    def _get_real(self, data_type, params):
         return fetch_real_data(
-            params["token"], params["data_center"], params["survey"]
+            params["survey"]
         )
 
-    def _filter_synthetic(self, data, params):
+    def _filter_synthetic(self, data, data_type, params):
         return data
 
     def _gen_synthetic(self):
         seed_everything(self.init_params["seed"])
-        (
-            self.responses,
-        ) = create_syn_data(
-            self.init_params["synthetic_token"],
-            self.init_params["synthetic_data_center"],
+        self.responses = create_syn_data(
             self.init_params["synthetic_survey"],
         )
 
-    def _authenticate(self):
-        pass
+    def _authenticate(self, auth_creds):
+        token = auth_creds["token"]
+        data_center = auth_creds["data_center"]
+        Credentials().qualtrics_api_credentials(token=token, data_center=data_center)
