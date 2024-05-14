@@ -51,6 +51,7 @@ fastapi = "0.101"
 typing-extensions = "4.5.0"
 kaleido = "0.2.1"
 lida = "^0.0.11"
+qualtricsapi = "^0.6.1"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "^1.7.1"

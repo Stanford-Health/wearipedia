@@ -1,1 +1,1 @@
-from .myfitnesspal import *
+from .qualtrics import *

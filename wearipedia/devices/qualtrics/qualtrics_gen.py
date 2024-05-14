@@ -1,210 +1,291 @@
-import json
-import os
+import math
+import random
+from datetime import datetime, timedelta
 
 import numpy as np
-import pandas as pd
 
 
 def create_syn_data(start_date, end_date):
+    """
+    Generates synthetic data collected by Biostrap between a given start and end date.
 
-    # Create a list of dates between start_date and end_date
-    dates = pd.date_range(start_date, end_date, freq="D")
+    :param start_date: Start date (inclusive) as a string in the format "YYYY-MM-DD"
+    :type start_date: str
+    :param end_date: End date (inclusive) as a string in the format "YYYY-MM-DD"
+    :type end_date: str
 
-    # Create empty lists to store data
-    goals = []
-    daily_summary = []
-    strength_exercises = []
-    cardio_exercises = []
-    breakfast = []
-    lunch = []
-    dinner = []
-    snacks = []
+    :return: A tuple consisting of:
+        - activities: Dictionary containing details of a random synthetic activity
+        - bpm: Dictionary representing beats per minute for every 10 seconds throughout the range
+        - brpm: Dictionary representing breaths per minute based on bpm values for every minute throughout the range
+        - hrv: Dictionary representing heart rate variability for every 10 seconds throughout the range
+        - spo2: Dictionary representing blood oxygen saturation for every 10 seconds
+        - rest_cals: Dictionary representing resting calories burned each day
+        - work_cals: Dictionary representing workout calories burned each day
+        - active_cals: Dictionary representing active calories burned each day
+        - step_cals: Dictionary representing calories burned from steps each day
+        - total_cals: Dictionary representing total calories burned each day
+        - sleep_session: Dictionary representing moments of movement during typical sleeping hours
+        - sleep_detail: Dictionary representing details of a synthetic sleep session
+        - steps: Dictionary representing steps taken every minute throughout the range
+        - distance: Dictionary representing distance covered (based on steps) every minute throughout the range
 
-    # Functions to generate synthetic data
-    def syn_calories(x):
-        return np.round(np.random.normal(2500, 200), 1)
+    :rtype: Tuple[Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict, Dict]
+    """
 
-    def syn_carbs(x):
-        return np.round(np.random.normal(250, 75), 1)
+    # Convert the provided strings to datetime objects
+    start_date_obj = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date_obj = datetime.strptime(end_date, "%Y-%m-%d")
 
-    def syn_fat(x):
-        return np.round(np.random.normal(75, 25), 1)
+    TZ_OFFSET = -420
 
-    def syn_protein(x):
-        return np.round(max(0.0, np.random.normal(100, 33)), 1)
+    # Adjusted Gaussian noise functions for each biometric with more realistic standard deviations
+    def gaussian_noise_bpm():
+        return np.random.normal(0, 2)  # Reduced standard deviation for less noise
 
-    def syn_sodium(x):
-        return np.round(np.random.normal(2300, 500), 1)
+    def gaussian_noise_brpm():
+        return np.random.normal(0, 0.5)  # Reduced standard deviation for less noise
 
-    def syn_sugar(x):
-        return np.round(np.random.normal(75, 25), 1)
+    def gaussian_noise_hrv():
+        return np.random.normal(0, 1)  # Reduced standard deviation for less noise
 
-    path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "myfitnesspal_syn_data.json")
+    def gaussian_noise_spo2():
+        return np.random.normal(0, 0.05)  # Reduced standard deviation for minimal noise
+
+    def synthetic_biometrics(start_date_obj, end_date_obj):
+        bpm = {}
+        brpm = {}
+        hrv = {}
+        spo2 = {}
+
+        curr_date_obj = start_date_obj
+        time_index = 0
+
+        # Initial values for random walk
+        bpm_current = 45
+        brpm_current = 16
+        hrv_current = 40
+        spo2_current = 98
+
+        # Target means and bounds
+        target_mean_bpm = 70
+        target_mean_brpm = 16
+        target_mean_hrv = 50
+        target_mean_spo2 = 98
+
+        bpm_lower_bound, bpm_upper_bound = 40, 120
+        brpm_lower_bound, brpm_upper_bound = 12, 20
+        hrv_lower_bound, hrv_upper_bound = 20, 100
+        spo2_lower_bound, spo2_upper_bound = 95, 100
+
+        # Store the last minute's average bpm to calculate brpm
+        last_minute_bpm = []
+
+        while curr_date_obj <= end_date_obj:
+            curr_time = curr_date_obj
+            while curr_time < curr_date_obj + timedelta(days=1):
+                key = (curr_time.strftime("%Y-%m-%d %H:%M:%S"), TZ_OFFSET)
+
+                # Update bpm, hrv, and spo2 every 10 seconds
+                bpm_mean_reversion = (
+                    target_mean_bpm - bpm_current
+                ) * 0.01  # Changed from 0.1
+                bpm_current += bpm_mean_reversion + gaussian_noise_bpm()
+                bpm_current = max(bpm_lower_bound, min(bpm_upper_bound, bpm_current))
+                bpm[key] = int(bpm_current)
+
+                hrv_mean_reversion = (target_mean_hrv - hrv_current) * 0.1
+                hrv_current += hrv_mean_reversion + gaussian_noise_hrv()
+                hrv_current = max(hrv_lower_bound, min(hrv_upper_bound, hrv_current))
+                hrv[key] = int(hrv_current)
+
+                spo2_mean_reversion = (target_mean_spo2 - spo2_current) * 0.1
+                spo2_current += spo2_mean_reversion + gaussian_noise_spo2()
+                spo2_current = max(
+                    spo2_lower_bound, min(spo2_upper_bound, spo2_current)
+                )
+                spo2[key] = int(spo2_current)
+
+                # Update brpm every minute
+                if time_index % 60 == 0:
+                    brpm_mean_reversion = (target_mean_brpm - brpm_current) * 0.1
+                    brpm_current += brpm_mean_reversion + gaussian_noise_brpm()
+                    brpm_current = max(
+                        brpm_lower_bound, min(brpm_upper_bound, brpm_current)
+                    )
+                    brpm[key] = int(brpm_current)
+
+                # Increment time and index
+                curr_time += timedelta(seconds=10)
+                time_index += 10
+
+            curr_date_obj += timedelta(days=1)
+
+        return bpm, brpm, hrv, spo2
+
+    def synthetic_steps_distance_per_minute(bpm_dict):
+        steps_dict = {}
+        distance_dict = {}
+
+        # For each minute, we'll check the BPM to determine steps
+        for key, bpm_value in bpm_dict.items():
+            dt, _ = key
+
+            # Extracting hour to check for sleeping hours
+            curr_hour = int(dt.split(" ")[1].split(":")[0])
+
+            if dt.endswith("00"):  # Checking if it's on a per-minute mark
+                if 23 <= curr_hour or curr_hour < 6:  # typical sleeping hours
+                    steps = random.choice(
+                        [0, 0, 0, 0, 1, 2]
+                    )  # Mostly zero, but sometimes a small number indicating tossing/turning in sleep
+                elif bpm_value < 60:
+                    steps = random.randint(0, 20)  # Relatively calm/resting
+                elif bpm_value < 80:
+                    steps = random.randint(20, 40)  # Maybe just light walking
+                else:
+                    steps = random.randint(40, 120)  # Active movement or jogging
+
+                distance = steps * random.uniform(0.7, 0.8)
+                date_str = dt.split()[0]
+                time_str = dt.split()[1]
+
+                steps_dict[f"{date_str} {time_str}"] = steps
+                distance_dict[f"{date_str} {time_str}"] = distance
+
+        return steps_dict, distance_dict
+
+    def synthetic_daily_calories(bpm_dict, steps_dict):
+        rest_cals_dict = {}
+        work_cals_dict = {}
+        active_cals_dict = {}
+        step_cals_dict = {}
+        total_cals_dict = {}
+
+        daily_bpm_averages = {}
+
+        # Precompute average BPM per day
+        for (dt, _), v in bpm_dict.items():
+            date_str = dt.split(" ")[0]
+            daily_bpm_averages.setdefault(date_str, []).append(v)
+
+        # Compute average BPM for each day
+        for date_str, bpm_vals in daily_bpm_averages.items():
+            avg_bpm = sum(bpm_vals) / len(bpm_vals)
+            daily_bpm_averages[date_str] = avg_bpm
+
+        # Calculate calories based on the precomputed average BPMs
+        for date_str, avg_bpm in daily_bpm_averages.items():
+            if avg_bpm < 60:
+                active_cals = random.randint(50, 100)  # relatively inactive
+            elif avg_bpm < 80:
+                active_cals = random.randint(100, 200)  # moderately active
+            else:
+                active_cals = random.randint(200, 300)  # very active
+
+            steps_val = sum(
+                [val for dt, val in steps_dict.items() if dt.startswith(date_str)]
+            )
+
+            rest_cals_dict[date_str] = random.randint(1000, 1300)
+            work_cals_dict[date_str] = random.randint(300, 600)
+            step_cals_dict[date_str] = steps_val * 0.05
+            active_cals_dict[date_str] = active_cals
+            total_cals_dict[date_str] = (
+                rest_cals_dict[date_str]
+                + work_cals_dict[date_str]
+                + step_cals_dict[date_str]
+                + active_cals_dict[date_str]
+            )
+
+        return (
+            rest_cals_dict,
+            work_cals_dict,
+            active_cals_dict,
+            step_cals_dict,
+            total_cals_dict,
+        )
+
+    def synthetic_activity():
+        # A sample workout
+        activity_date = (start_date_obj + (end_date_obj - start_date_obj) / 2).strftime(
+            "%Y-%m-%d"
+        )  # choose a day in the middle of the range
+
+        return {
+            "activity_date": activity_date,
+            "type": "Running",
+            "duration": timedelta(minutes=random.randint(20, 60)),
+            "distance": random.uniform(3, 10),
+            "calories_burned": random.randint(200, 500),
+            "avg_bpm": random.randint(80, 150),
+            "peak_bpm": random.randint(150, 180),
+            "steps_taken": random.randint(3000, 10000),
+            "intensity": random.choice(["light", "moderate", "high"]),
+        }
+
+    def synthetic_sleep_session(bpm_dict):
+        # Extracting nighttime bpm readings
+        night_movements = {
+            k: v
+            for k, v in bpm_dict.items()
+            if 23 <= int(k[0].split(" ")[1].split(":")[0])
+            or int(k[0].split(" ")[1].split(":")[0]) < 6
+        }
+        # Filter out readings where bpm indicates deep sleep (low bpm)
+        night_movements = {k: v for k, v in night_movements.items() if v > 65}
+        return night_movements
+
+    def synthetic_sleep_detail():
+        sleep_date = (start_date_obj + (end_date_obj - start_date_obj) / 2).strftime(
+            "%Y-%m-%d"
+        )
+        total_sleep_duration = 8  # Assuming 8 hours sleep
+
+        light_sleep = random.uniform(0.4, 0.6) * total_sleep_duration
+        deep_sleep = random.uniform(0.2, 0.3) * total_sleep_duration
+        rem_sleep = total_sleep_duration - (light_sleep + deep_sleep)
+
+        return {
+            "sleep_date": sleep_date,
+            "light_sleep": light_sleep,
+            "deep_sleep": deep_sleep,
+            "rem_sleep": rem_sleep,
+            "awake_time": random.uniform(0.1, 0.3),
+            "times_awoken": random.randint(1, 5),
+        }
+
+    # Generate biometric, steps, and distance data
+    bpm, brpm, hrv, spo2 = synthetic_biometrics(start_date_obj, end_date_obj)
+    steps, distance = synthetic_steps_distance_per_minute(bpm)
+
+    # Generate daily calories based on steps and bpm
+    rest_cals, work_cals, active_cals, step_cals, total_cals = synthetic_daily_calories(
+        bpm, steps
     )
 
-    # Loading data from our json file
-    data = json.load(open(path, "r"))
+    # Generate activity data
+    activities = synthetic_activity()
 
-    # wearipedia/devices/myfitnesspal/myfitnesspal_syn_data.json
+    # Generate sleep session data
+    sleep_session = synthetic_sleep_session(bpm)
 
-    # Scraped a list of all exercises from MyFitnessPal and used GPT3 to seperate them into strength and cardio exercises
-    exercises_cardio = data["exercises_cardio"]
-    # List of exercises that are strength exercises scraped from myfitnesspal.com
-    exercises_strength = data["exercises_strength"]
-
-    # List of top 15 breakfast foods from the USDA
-    breakfast_foods = data["breakfast_foods"]
-
-    # List of top 15 lunch foods from the USDA
-    lunch_foods = data["lunch_foods"]
-    # List of top 15 dinner foods from the USDA
-    dinner_foods = data["dinner_foods"]
-    # List of top 15 snack foods from the USDA
-    snack_foods = data["snack_foods"]
-
-    def create_food_item(item_name, food_item):
-        return [
-            {"day": pd.Timestamp(day)},
-            {
-                "name": item_name,
-                "nutrition_information": {
-                    "calories": float(food_item["calories"]),
-                    "carbohydrates": float(food_item["carbohydrates"]),
-                    "fat": float(food_item["fat"]),
-                    "protein": float(food_item["protein"]),
-                    "sodium": float(food_item["sodium"]),
-                    "sugar": float(food_item["sugar"]),
-                },
-                "totals": {
-                    "calories": float(food_item["calories"]),
-                    "carbohydrates": float(food_item["carbohydrates"]),
-                    "fat": float(food_item["fat"]),
-                    "protein": float(food_item["protein"]),
-                    "sodium": float(food_item["sodium"]),
-                    "sugar": float(food_item["sugar"]),
-                },
-            },
-        ]
-
-    for day in dates:
-
-        # Creating a randomly generated summary of the day's food goal
-        goals.append(
-            {
-                "calories": syn_calories(day),
-                "carbohydrates": syn_carbs(day),
-                "fat": syn_fat(day),
-                "protein": syn_protein(day),
-                "sodium": syn_sodium(day),
-                "sugar": syn_sugar(day),
-                "date": pd.Timestamp(day),
-            }
-        )
-
-        # Creating a randomly generated summary of the day's food intake
-        daily_summary.append(
-            {
-                "calories": syn_calories(day),
-                "carbohydrates": syn_carbs(day),
-                "fat": syn_fat(day),
-                "protein": syn_protein(day),
-                "sodium": syn_sodium(day),
-                "sugar": syn_sugar(day),
-                "date": pd.Timestamp(day),
-            }
-        )
-
-        # Creating a randomly generated list of cardio exercises for the day
-        cardio = [{"day": pd.Timestamp(day)}]
-
-        # We will randomly select between 1 and 3 cardio exercises
-        cardio_count = np.random.randint(1, 3)
-
-        # We will randomly select between 1 and 3 cardio exercises
-        random_exercises = np.random.choice(
-            exercises_cardio, cardio_count, replace=False
-        )
-
-        # Adding each exercise to the list of cardio exercises for that day
-        for exercise in random_exercises:
-            minutes = np.random.randint(10, 60)
-            syn_exercise = {
-                "name": exercise,
-                "nutrition_information": {
-                    "minutes": minutes,
-                    "calories burned": minutes * max(2, np.random.uniform(3, 5)),
-                },
-            }
-
-            # Adding the exercise to the list of cardio exercises for that day
-            cardio.append(syn_exercise)
-
-        # Adding the list of cardio exercises for that day to the list of all cardio exercises
-        cardio_exercises.append(cardio)
-
-        # Creating a randomly generated list of strength exercises for the day
-        strength = []
-
-        # Adding the date to the list of strength exercises for that day
-        strength.append({"date": pd.Timestamp(day)})
-
-        # We will randomly select between 1 and 10 strength exercises
-        exercise_count = np.random.randint(1, 10)
-
-        # We will randomly select between 1 and 10 strength exercises
-        random_exercises = np.random.choice(
-            exercises_strength, exercise_count, replace=False
-        )
-
-        # Adding each exercise to the list of strength exercises for that day
-        for exercise in random_exercises:
-            syn_exercise = {
-                "name": exercise,
-                "nutrition_information": {
-                    "sets": float(np.random.randint(2, 5)),
-                    "reps/set": float(np.round(np.random.uniform(10, 2))),
-                    "weight/set": float(np.random.randint(5, 100)),
-                },
-            }
-            strength.append(syn_exercise)
-        strength_exercises.append(strength)
-
-        # Creating a randomly generated list of breakfast foods for the day
-        breakfast_item_name = np.random.choice(list(breakfast_foods.keys()))
-        breakfast_item = breakfast_foods[breakfast_item_name]
-
-        # Adding the breakfast food to the list of breakfast foods for that day
-        breakfast.append(create_food_item(breakfast_item_name, breakfast_item))
-
-        # Creating a randomly generated list of lunch foods for the day
-        lunch_item_name = np.random.choice(list(lunch_foods.keys()))
-        lunch_item = lunch_foods[lunch_item_name]
-
-        # Adding the lunch food to the list of lunch foods for that day
-        lunch.append(create_food_item(lunch_item_name, lunch_item))
-
-        # Creating a randomly generated list of dinner foods for the day
-        dinner_item_name = np.random.choice(list(dinner_foods.keys()))
-        dinner_item = dinner_foods[dinner_item_name]
-
-        # Adding the dinner food to the list of dinner foods for that day
-        dinner.append(create_food_item(dinner_item_name, dinner_item))
-
-        # Creating a randomly generated list of snack foods for the day
-        snack_item_name = np.random.choice(list(snack_foods.keys()))
-        snack_item = snack_foods[snack_item_name]
-
-        # Adding the snack food to the list of snack foods for that day
-        snacks.append(create_food_item(snack_item_name, snack_item))
+    # Generate sleep detail data
+    sleep_detail = synthetic_sleep_detail()
 
     return (
-        goals,
-        daily_summary,
-        cardio_exercises,
-        strength_exercises,
-        breakfast,
-        lunch,
-        dinner,
-        snacks,
+        activities,
+        bpm,
+        brpm,
+        hrv,
+        spo2,
+        rest_cals,
+        work_cals,
+        active_cals,
+        step_cals,
+        total_cals,
+        sleep_session,
+        sleep_detail,
+        steps,
+        distance,
     )
