@@ -74,6 +74,7 @@ def get_all_device_names():
         "polar/verity_sense",
         "nutrisense/cgm",
         "fitbit/fitbit_charge_4",
+        "fitbit/fitbit_charge_6",
         "fitbit/fitbit_sense",
         "oura/oura_ring3",
         "coros/coros_pace_2",
@@ -138,6 +139,10 @@ _DEVICE_TO_AUTH_DICT = {
         "password": get_os("POLAR_PASSWORD"),
     },
     "fitbit/fitbit_charge_4": {
+        "client_id": get_os("FITBIT_CLIENT_ID"),
+        "client_secret": get_os("FITBIT_CLIENT_SECRET"),
+    },
+    "fitbit/fitbit_charge_6": {
         "client_id": get_os("FITBIT_CLIENT_ID"),
         "client_secret": get_os("FITBIT_CLIENT_SECRET"),
     },
