@@ -84,7 +84,7 @@ def fitbit_token(client_id, client_secret):
         + "activity%20sleep%20heartrate%20social"
     )
     variables["prompt"] = "none"
-    variables["redirect_uri"] = "https://127.0.0.1/8080"
+    variables["redirect_uri"] = "https://127.0.0.1:8080/"
     variables["grant_type"] = "authorization_code"
     variables["authorization"] = base64.urlsafe_b64encode(
         bytes(variables["client_id"] + ":" + variables["client_secret"], "utf-8")

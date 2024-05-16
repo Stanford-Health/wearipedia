@@ -15,7 +15,7 @@ from .devices import *
 
 
 def get_last_updated():
-    last_updated = "may 16 12:18"
+    last_updated = "may 16 12:30"
     return last_updated
 
 
