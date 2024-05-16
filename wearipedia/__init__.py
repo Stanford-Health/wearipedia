@@ -14,6 +14,11 @@ from .constants import *
 from .devices import *
 
 
+def get_last_updated():
+    last_updated = "may 16 11:08"
+    return last_updated
+
+
 def get_device(device_name, **kwargs):
     """Get a device object by name. This is the main entry point for the library.
 

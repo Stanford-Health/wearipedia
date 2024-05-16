@@ -71,7 +71,8 @@ def fitbit_token(client_id, client_secret):
     # user specified
     variables["client_id"] = client_id
     variables["client_secret"] = client_secret
-    variables["expires_in"] = "31536000"  # expiry of token in seconds
+    variables["expires_in"] = "120"  # expiry of token in seconds
+    # 31536000
 
     # constants or one-time generated
     variables["code_verifier"] = code_verifier
