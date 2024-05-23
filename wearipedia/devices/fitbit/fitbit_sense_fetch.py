@@ -54,17 +54,23 @@ def fetch_real_data(data_type, access_token, start_date, end_date=None):
         "distance_day": {
             "url": f"https://api.fitbit.com/1/user/-/activities/distance/date/{single_date}/1d.json"
         },
-        # "breath_rate": {
-        #     "url": f"https://api.fitbit.com/1/user/-/br/date/{start_date}/{end_date}/all.json"
-        # },
-        "active_zone_minute": {
+        "intraday_breath_rate": {
+            "url": f"https://api.fitbit.com/1/user/-/br/date/{start_date}/{end_date}/all.json"
+        },
+        "intraday_active_zone_minute": {
             "url": f"https://api.fitbit.com/1/user/-/activities/active-zone-minutes/date/{single_date}/1d/1min.json"
         },
-        "activity": {
+        "intraday_activity": {
             "url": f"https://api.fitbit.com/1/user/-/activities/steps/date/{single_date}/1d/1min.json"
         },
-        "heart_rate": {
-            "url": f"https://api.fitbit.com/1/user/-/activities/heart/date/{single_date}/1d/1min.json"
+        "intraday_heart_rate": {
+            "url": f"https://api.fitbit.com/1/user/-/activities/heart/date/{single_date}/1d/1sec.json"
+        },
+        "intraday_hrv": {
+            "url": f"https://api.fitbit.com/1/user/-/hrv/date/{single_date}/all.json"
+        },
+        "intraday_spo2": {
+            "url": f"https://api.fitbit.com/1/user/-/spo2/date/{single_date}/all.json"
         },
     }
 

@@ -38,7 +38,12 @@ class Fitbit_charge_6(BaseDevice):
 
         self._initialize_device_params(
             [
-                "breath_rate",
+                "intraday_breath_rate",
+                "intraday_active_zone_minute",
+                "intraday_activity",
+                "intraday_heart_rate",
+                "intraday_hrv",
+                "intraday_spo2",
             ],
             params,
             {
@@ -88,14 +93,15 @@ class Fitbit_charge_6(BaseDevice):
         syn_data = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
+            intraday=True,
         )
-        # self.sleep = syn_data["sleep"]
-        # self.steps = syn_data["steps"]
-        # self.minutesVeryActive = syn_data["minutesVeryActive"]
-        # self.minutesFairlyActive = syn_data["minutesFairlyActive"]
-        # self.minutesLightlyActive = syn_data["minutesLightlyActive"]
-        # self.distance = syn_data["distance"]
-        # self.minutesSedentary = syn_data["minutesSedentary"]
+
+        self.intraday_breath_rate = syn_data["intraday_breath_rate"]
+        self.intraday_active_zone_minute = syn_data["intraday_active_zone_minute"]
+        self.intraday_activity = syn_data["intraday_activity"]
+        self.intraday_heart_rate = syn_data["heart_rate"]
+        self.intraday_hrv = syn_data["intraday_hrv"]
+        self.intraday_spo2 = syn_data["intraday_spo2"]
 
     def _authenticate(self, auth_creds):
         # authenticate this device against API

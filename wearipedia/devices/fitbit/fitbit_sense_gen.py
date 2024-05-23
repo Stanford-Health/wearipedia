@@ -174,11 +174,13 @@ def get_activity(date):
     )
 
 
-def get_heart_rate(date):
+def get_heart_rate(date, intraday=False):
     """Generate heart rate data for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
     :type date: str
+    :param intraday: whether the heart rate is reported per second
+    :type intraday: bool
     :return: dictionary of heart rate values and details
     :rtype: dictionary
     """
@@ -235,12 +237,14 @@ def get_heart_rate(date):
     }
 
     the_time = time(hour=0, minute=0, second=0)
-
-    minutes_in_a_day = 1440
+    if not intraday:
+        iterations_in_a_day = 1440
+    else:
+        iterations_in_a_day = 1440 * 60
 
     bpm = random.randint(50, 120)
 
-    for i in range(minutes_in_a_day):
+    for i in range(iterations_in_a_day):
         hour = the_time.hour
 
         # Determine which heart rate zone based on the hour
@@ -271,12 +275,135 @@ def get_heart_rate(date):
         ].append({"time": the_time.strftime("%H:%M:%S"), "value": bpm})
 
         # Update the time for the next iteration
+        if not intraday:
+            time_interval = 60
+        else:
+            time_interval = 1
+        newtime = (
+            datetime.combine(datetime.today(), the_time)
+            + timedelta(seconds=time_interval)
+        ).time()
+        the_time = newtime
+
+    return heart_rate_data
+
+
+def get_intraday_azm(date, hr):
+    """Generate hrv for a given date.
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
+    :param hr: heart rate data collected per second on the same date as date
+    :type hr: dict
+    :return: dictionary of intraday active zone minute details
+    :rtype: dictionary
+    """
+    azm = {
+        "activities-active-zone-minutes-intraday": [{"dateTime": date, "minutes": []}]
+    }
+
+    the_time = time(hour=0, minute=0, second=0)
+
+    minutes_in_a_day = 1440
+
+    for i in range(minutes_in_a_day):
+        mean_hr_in_minute = (
+            sum(
+                hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"][i][
+                    "value"
+                ]
+                for i in range(i * 60, (i + 1) * 60)
+            )
+            / 60
+        )
+        if mean_hr_in_minute > 111:
+            minute_info = {
+                "minute": the_time.strftime("%H:%M:%S"),
+                "value": {"peakActiveZoneMinutes": 1, "activeZoneMinutes": 1},
+            }
+        elif mean_hr_in_minute > 98:
+            minute_info = {
+                "minute": the_time.strftime("%H:%M:%S"),
+                "value": {"cardioActiveZoneMinutes": 1, "activeZoneMinutes": 1},
+            }
+        elif mean_hr_in_minute > 87:
+            minute_info = {
+                "minute": the_time.strftime("%H:%M:%S"),
+                "value": {"fatBurnActiveZoneMinutes": 1, "activeZoneMinutes": 1},
+            }
+        else:
+            minute_info = {
+                "minute": the_time.strftime("%H:%M:%S"),
+                "value": {"activeZoneMinutes": 0},
+            }
+
+        azm["activities-active-zone-minutes-intraday"][0]["minutes"].append(minute_info)
         newtime = (
             datetime.combine(datetime.today(), the_time) + timedelta(seconds=60)
         ).time()
         the_time = newtime
 
-    return heart_rate_data
+    return azm
+
+
+def get_intraday_activity(date):
+    """Generate intraday activity for a given date.
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
+    :return: dictionary of intraday activity details
+    :rtype: dictionary
+    """
+    intraday_activity = {
+        "activities-steps": [{"dateTime": date, "value": "0"}],
+        "activities-steps-intraday": {
+            "dataset": [],
+            "datasetInterval": 1,
+            "datasetType": "minute",
+        },
+    }
+    the_time = time(hour=0, minute=0, second=0)
+
+    minutes_in_a_day = 1440
+
+    for i in range(minutes_in_a_day):
+        minute_info = {"time": the_time.strftime("%H:%M:%S"), "value": 0}
+
+        intraday_activity["activities-steps-intraday"]["dataset"].append(minute_info)
+        newtime = (
+            datetime.combine(datetime.today(), the_time) + timedelta(seconds=60)
+        ).time()
+        the_time = newtime
+
+    return intraday_activity
+
+
+def get_intraday_breath_rate(date):
+    """Generate breath rate during sleep for a given date.
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
+    :return: dictionary of breath rate during sleep details
+    :rtype: dictionary
+    """
+    br = {
+        "br": [
+            {
+                "value": {
+                    "deepSleepSummary": {"breathingRate": random.uniform(14, 18)},
+                    "remSleepSummary": {
+                        "breathingRate": random.uniform(12, 16)
+                        if random.random() < 0.8
+                        else -1.0
+                    },
+                    "fullSleepSummary": {"breathingRate": random.uniform(14, 18)},
+                    "lightSleepSummary": {"breathingRate": random.uniform(14, 18)},
+                },
+                "dateTime": date,
+            }
+        ]
+    }
+    return br
 
 
 def get_hrv(date):
@@ -304,6 +431,72 @@ def get_hrv(date):
     }
 
     return hrv
+
+
+def get_intraday_hrv(date):
+    """Generate intraday hrv for a given date.
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
+    :return: dictionary of intraday hrv details
+    :rtype: dictionary
+    """
+    hrv = {"hrv": [{"minutes": [], "dateTime": date}]}
+
+    the_time = datetime.time(hour=0, minute=0, second=0)
+
+    for _ in range(480):
+        if (
+            datetime.time(21, 0) <= the_time <= datetime.time(23, 59)
+            or datetime.time(0, 0) <= the_time <= datetime.time(7, 59)
+            or datetime.time(8, 0) <= the_time <= datetime.time(10, 59)
+        ):
+            minute_info = {
+                "minute": f"{date}T{the_time.strftime('%H:%M:%S')}.000",
+                "value": {
+                    "rmssd": round(random.uniform(20, 80), 3),
+                    "coverage": round(random.uniform(0.9, 0.99), 3),
+                    "hf": round(random.uniform(100, 1500), 3),
+                    "lf": round(random.uniform(200, 2000), 3),
+                },
+            }
+
+            hrv["hrv"][0]["minutes"].append(minute_info)
+
+        newtime = (
+            datetime.datetime.combine(datetime.date.today(), the_time)
+            + datetime.timedelta(minutes=1)
+        ).time()
+        the_time = newtime
+
+    return hrv
+
+
+def get_intraday_spo2(date):
+    """Generate intraday SpO2 data for a given date.
+
+    :param date: the date as a string in the format "YYYY-MM-DD"
+    :type date: str
+    :return: dictionary of intraday SpO2 data details
+    :rtype: dictionary
+    """
+
+    spo2_data = {"dateTime": date, "minutes": []}
+
+    the_time = datetime.datetime.strptime(date, "%Y-%m-%d").replace(
+        hour=0, minute=0, second=0
+    )
+
+    for _ in range(1440):
+        spo2_value = round(random.uniform(90, 100), 1)
+
+        spo2_data["minutes"].append(
+            {"value": spo2_value, "minute": the_time.strftime("%Y-%m-%dT%H:%M:%S")}
+        )
+
+        the_time += datetime.timedelta(minutes=1)
+
+    return spo2_data
 
 
 def get_distance_day(date):
@@ -351,7 +544,7 @@ def get_distance_day(date):
     return distance_day
 
 
-def create_syn_data(start_date, end_date):
+def create_syn_data(start_date, end_date, intraday=False):
     """Returns a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary", "heart_rate_day", "hrv", "distance_day"
 
     :param start_date: the start date (inclusive) as a string in the format "YYYY-MM-DD"
@@ -389,8 +582,16 @@ def create_syn_data(start_date, end_date):
         full_dict["minutesLightlyActive"].append(activity[3])
         full_dict["distance"].append(activity[4])
         full_dict["minutesSedentary"].append(activity[5])
-        full_dict["heart_rate"].append(get_heart_rate(date))
+        full_dict["heart_rate"].append(get_heart_rate(date, intraday=True))
         full_dict["hrv"].append(get_hrv(date))
         full_dict["distance_day"].append(get_distance_day(date))
+
+        full_dict["intraday_spo2"].append(get_intraday_spo2(date))
+        full_dict["intraday_hrv"].append(get_intraday_hrv(date))
+        full_dict["intraday_activity"].append(get_intraday_activity(date))
+        full_dict["intraday_active_zone_minute"].append(
+            get_intraday_azm(date, full_dict["heart_rate"])
+        )
+        full_dict["intraday_breath_rate"].append(get_intraday_breath_rate(date))
 
     return full_dict

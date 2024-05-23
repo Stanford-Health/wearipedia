@@ -81,7 +81,8 @@ def fitbit_token(client_id, client_secret):
     variables["response_type"] = "token"  # code
     variables["scope"] = (
         "weight%20location%20settings%20profile%20nutrition%20"
-        + "activity%20sleep%20heartrate%20social"
+        + "activity%20sleep%20heartrate%20social%20"
+        + "respiratory_rate%20oxygen_saturation"
     )
     variables["prompt"] = "none"
     variables["redirect_uri"] = "https://127.0.0.1:8080/"
