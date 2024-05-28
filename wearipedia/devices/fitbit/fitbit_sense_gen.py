@@ -483,9 +483,7 @@ def get_intraday_spo2(date):
 
     spo2_data = {"dateTime": date, "minutes": []}
 
-    the_time = datetime.datetime.strptime(date, "%Y-%m-%d").replace(
-        hour=0, minute=0, second=0
-    )
+    the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
 
     for _ in range(1440):
         spo2_value = round(random.uniform(90, 100), 1)
