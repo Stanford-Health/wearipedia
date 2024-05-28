@@ -464,7 +464,7 @@ def get_intraday_hrv(date):
             hrv["hrv"][0]["minutes"].append(minute_info)
 
         newtime = (
-            datetime.datetime.combine(datetime.date.today(), the_time)
+            datetime.combine(datetime.date.today(), the_time)
             + datetime.timedelta(minutes=1)
         ).time()
         the_time = newtime
