@@ -55,7 +55,7 @@ def fetch_real_data(data_type, access_token, start_date, end_date=None):
             "url": f"https://api.fitbit.com/1/user/-/activities/distance/date/{single_date}/1d.json"
         },
         "intraday_breath_rate": {
-            "url": f"https://api.fitbit.com/1/user/-/br/date/{start_date}/{end_date}/all.json"
+            "url": f"https://api.fitbit.com/1/user/-/br/date/{start_date}/all.json"
         },
         "intraday_active_zone_minute": {
             "url": f"https://api.fitbit.com/1/user/-/activities/active-zone-minutes/date/{single_date}/1d/1min.json"

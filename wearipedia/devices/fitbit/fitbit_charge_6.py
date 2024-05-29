@@ -1,5 +1,7 @@
 from datetime import datetime, time, timedelta
 
+import numpy as np
+
 from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
 from .fitbit_authenticate import *
@@ -26,8 +28,8 @@ class Fitbit_charge_6(BaseDevice):
     def __init__(
         self,
         seed=0,
-        synthetic_start_date="2024-04-01",
-        synthetic_end_date="2024-05-13",
+        synthetic_start_date="2024-01-01",
+        synthetic_end_date="2024-06-23",
     ):
 
         params = {
@@ -48,18 +50,16 @@ class Fitbit_charge_6(BaseDevice):
             params,
             {
                 "seed": 0,
-                "synthetic_start_date": "2024-04-01",
-                "synthetic_end_date": "2024-05-13",
+                "synthetic_start_date": "2024-01-01",
+                "synthetic_end_date": "2024-06-23",
             },
         )
 
     def _default_params(self):
-        params = {
-            "start_date": "2024-04-01",
-            "end_date": "2024-05-13",
+        return {
+            "start_date": self.init_params["synthetic_start_date"],
+            "end_date": self.init_params["synthetic_end_date"],
         }
-
-        return params
 
     def _filter_synthetic(self, data, data_type, params):
 
