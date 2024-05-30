@@ -498,7 +498,7 @@ def get_intraday_spo2(date, random_hour, random_min, random_sec, random_duration
     )
 
     for _ in range(random_duration):
-        mean = 97.5
+        mean = 98.5
         std_dev = 1.5
         spo2_value = np.random.normal(mean, std_dev)
 
