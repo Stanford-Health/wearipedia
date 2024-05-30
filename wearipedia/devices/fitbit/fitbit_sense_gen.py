@@ -450,13 +450,16 @@ def get_intraday_hrv(date):
 
     for _ in range(480):
 
+        hf = round(random.uniform(100, 1000), 3)
+        lf = round(random.uniform(100, hf), 3)
+
         minute_info = {
             "minute": f"{date}T{the_time.strftime('%H:%M:%S')}.000",
             "value": {
                 "rmssd": round(random.uniform(20, 80), 3),
                 "coverage": round(random.uniform(0.9, 0.99), 3),
-                "hf": round(random.uniform(100, 1500), 3),
-                "lf": round(random.uniform(200, 2000), 3),
+                "hf": hf,
+                "lf": lf,
             },
         }
 
