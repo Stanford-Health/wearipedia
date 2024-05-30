@@ -498,7 +498,12 @@ def get_intraday_spo2(date, random_hour, random_min, random_sec, random_duration
     )
 
     for _ in range(random_duration):
-        spo2_value = round(random.uniform(95, 100), 1)
+        mean = 97.5
+        std_dev = 1.5
+        spo2_value = np.random.normal(mean, std_dev)
+
+        spo2_value = max(95, min(100, spo2_value))
+        spo2_value = round(spo2_value, 1)
 
         spo2_data["minutes"].append(
             {"value": spo2_value, "minute": the_time.strftime("%Y-%m-%dT%H:%M:%S")}
