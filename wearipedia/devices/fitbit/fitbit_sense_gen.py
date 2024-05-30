@@ -432,7 +432,17 @@ def get_hrv(date):
     return hrv
 
 
-def get_intraday_hrv(date):
+def get_random_sleep_start_time():
+    """Generate a random start time for sleep in terms of hour, minute and second."""
+    random_hour = random.choice([21, 22, 23, 0, 1, 2])
+    random_min = random.randint(0, 59)
+    random_sec = random.randint(0, 59)
+    random_duration = random.randint(360, 540)
+
+    return random_hour, random_min, random_sec, random_duration
+
+
+def get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration):
     """Generate intraday hrv for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
@@ -441,14 +451,12 @@ def get_intraday_hrv(date):
     :rtype: dictionary
     """
     hrv = {"hrv": [{"minutes": [], "dateTime": date}]}
-    random_hour = random.choice([21, 22, 23, 0, 1, 2])
-    random_min = random.randint(0, 59)
-    random_sec = random.randint(0, 59)
+
     the_time = datetime.strptime(date, "%Y-%m-%d").replace(
         hour=random_hour, minute=random_min, second=random_sec
     )
 
-    for _ in range(480):
+    for _ in range(random_duration):
 
         hf = round(random.uniform(100, 1000), 3)
         # Ensure LF is at least 20% of HF but not lower than 100
@@ -474,7 +482,7 @@ def get_intraday_hrv(date):
     return hrv
 
 
-def get_intraday_spo2(date):
+def get_intraday_spo2(date, random_hour, random_min, random_sec, random_duration):
     """Generate intraday SpO2 data for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
@@ -485,9 +493,11 @@ def get_intraday_spo2(date):
 
     spo2_data = {"dateTime": date, "minutes": []}
 
-    the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
+    the_time = datetime.strptime(date, "%Y-%m-%d").replace(
+        hour=random_hour, minute=random_min, second=random_sec
+    )
 
-    for _ in range(1440):
+    for _ in range(random_duration):
         spo2_value = round(random.uniform(95, 100), 1)
 
         spo2_data["minutes"].append(
@@ -569,6 +579,12 @@ def create_syn_data(start_date, end_date, intraday=False):
     full_dict = collections.defaultdict(list)
 
     for date in synth_dates:
+        (
+            random_hour,
+            random_min,
+            random_sec,
+            random_duration,
+        ) = get_random_sleep_start_time()
 
         activity = get_activity(date)
 
@@ -584,8 +600,14 @@ def create_syn_data(start_date, end_date, intraday=False):
         full_dict["hrv"].append(get_hrv(date))
         full_dict["distance_day"].append(get_distance_day(date))
 
-        full_dict["intraday_spo2"].append(get_intraday_spo2(date))
-        full_dict["intraday_hrv"].append(get_intraday_hrv(date))
+        full_dict["intraday_spo2"].append(
+            get_intraday_spo2(
+                date, random_hour, random_min, random_sec, random_duration
+            )
+        )
+        full_dict["intraday_hrv"].append(
+            get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration)
+        )
         full_dict["intraday_activity"].append(get_intraday_activity(date))
         full_dict["intraday_active_zone_minute"].append(
             get_intraday_azm(date, full_dict["heart_rate"][0])
