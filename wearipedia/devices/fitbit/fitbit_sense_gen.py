@@ -451,7 +451,12 @@ def get_intraday_hrv(date):
     for _ in range(480):
 
         hf = round(random.uniform(100, 1000), 3)
-        lf = round(random.uniform(100, hf), 3)
+        # Ensure LF is at least 20% of HF but not lower than 100
+        min_lf = max(100, hf * 0.20)
+        # Ensure LF is at most 40% of HF
+        max_lf = min(hf, hf * 0.40)
+
+        lf = round(random.uniform(min_lf, max_lf), 3)
 
         minute_info = {
             "minute": f"{date}T{the_time.strftime('%H:%M:%S')}.000",
