@@ -267,7 +267,7 @@ def get_heart_rate(date, intraday=False):
 
         # Simulate gradual heart rate changes within a realistic range
         bpm += random.randint(-1, 1)
-        bpm = max(50, min(220, bpm))
+        bpm = max(50, min(195, bpm))
 
         # Create a new data point and add it to the dataset
         heart_rate_data["heart_rate_day"][0]["activities-heart-intraday"][
