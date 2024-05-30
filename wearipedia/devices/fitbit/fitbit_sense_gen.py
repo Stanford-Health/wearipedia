@@ -243,7 +243,7 @@ def get_heart_rate(date, intraday=False):
         iterations_in_a_day = 1440 * 60
 
     mu = 75
-    sigma = 10
+    sigma = 15
 
     # Generate a BPM value from a Gaussian distribution
     bpm = round(np.random.normal(mu, sigma), 0)
