@@ -20,6 +20,12 @@ class Fitbit_charge_4(BaseDevice):
     * `minutesFairlyActive`: number of minutes with fair activity
     * `distance`: in miles
     * `minutesSedentary`: number of minutes with no activity
+    * `intraday_breath_rate`: collected per stage of sleep
+    * `intraday_active_zone_minute`: collected per minute
+    * `intraday_activity`: in number of steps
+    * `intraday_heart_rate`: collected per second
+    * `intraday_hrv`: rmssd, lf and hf and collected during sleep
+    * `intraday_spo2`: in percentage collected during sleep
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -51,6 +57,12 @@ class Fitbit_charge_4(BaseDevice):
                 "minutesFairlyActive",
                 "distance",
                 "minutesSedentary",
+                "intraday_breath_rate",
+                "intraday_active_zone_minute",
+                "intraday_activity",
+                "intraday_heart_rate",
+                "intraday_hrv",
+                "intraday_spo2",
             ],
             params,
             {
@@ -108,6 +120,12 @@ class Fitbit_charge_4(BaseDevice):
         self.minutesLightlyActive = syn_data["minutesLightlyActive"]
         self.distance = syn_data["distance"]
         self.minutesSedentary = syn_data["minutesSedentary"]
+        self.intraday_breath_rate = syn_data["intraday_breath_rate"]
+        self.intraday_active_zone_minute = syn_data["intraday_active_zone_minute"]
+        self.intraday_activity = syn_data["intraday_activity"]
+        self.intraday_heart_rate = syn_data["intraday_heart_rate"]
+        self.intraday_hrv = syn_data["intraday_hrv"]
+        self.intraday_spo2 = syn_data["intraday_spo2"]
 
     def _authenticate(self, client_id):
         # authenticate this device against API

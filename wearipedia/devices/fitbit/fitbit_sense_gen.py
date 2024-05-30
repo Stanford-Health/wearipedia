@@ -604,7 +604,8 @@ def create_syn_data(start_date, end_date, intraday=False):
         full_dict["minutesLightlyActive"].append(activity[3])
         full_dict["distance"].append(activity[4])
         full_dict["minutesSedentary"].append(activity[5])
-        full_dict["heart_rate"].append(get_heart_rate(date, intraday=True))
+        full_dict["heart_rate"].append(get_heart_rate(date, intraday=False))
+        full_dict["intraday_heart_rate"].append(get_heart_rate(date, intraday=True))
 
         full_dict["hrv"].append(get_hrv(date))
         full_dict["distance_day"].append(get_distance_day(date))

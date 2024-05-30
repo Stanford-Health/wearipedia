@@ -15,7 +15,19 @@ class Fitbit_charge_6(BaseDevice):
     """This device allows you to work with data from the `Fitbit charge  <(https://www.fitbit.com/global/au/products/trackers/charge6)>`_ device.
     Available datatypes for this device are:
 
-    * `breath rate`: breath rate data
+    * `intraday_breath_rate`: collected per stage of sleep
+    * `intraday_active_zone_minute`: collected per minute
+    * `intraday_activity`: in number of steps
+    * `intraday_heart_rate`: collected per second
+    * `intraday_hrv`: rmssd, lf and hf and collected during sleep
+    * `intraday_spo2`: in percentage collected during sleep
+    * `sleep`: sleep data
+    * `steps`: steps data
+    * `minutesVeryActive`: number of minutes with high activity
+    * `minutesLightlyActive`: number of minutes with light activity
+    * `minutesFairlyActive`: number of minutes with fair activity
+    * `distance`: in miles
+    * `minutesSedentary`: number of minutes with no activity
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -46,6 +58,13 @@ class Fitbit_charge_6(BaseDevice):
                 "intraday_heart_rate",
                 "intraday_hrv",
                 "intraday_spo2",
+                "sleep",
+                "steps",
+                "minutesVeryActive",
+                "minutesLightlyActive",
+                "minutesFairlyActive",
+                "distance",
+                "minutesSedentary",
             ],
             params,
             {
@@ -98,14 +117,18 @@ class Fitbit_charge_6(BaseDevice):
         self.intraday_breath_rate = syn_data["intraday_breath_rate"]
         self.intraday_active_zone_minute = syn_data["intraday_active_zone_minute"]
         self.intraday_activity = syn_data["intraday_activity"]
-        self.intraday_heart_rate = syn_data["heart_rate"]
+        self.intraday_heart_rate = syn_data["intraday_heart_rate"]
         self.intraday_hrv = syn_data["intraday_hrv"]
         self.intraday_spo2 = syn_data["intraday_spo2"]
+        self.sleep = syn_data["sleep"]
+        self.steps = syn_data["steps"]
+        self.minutesVeryActive = syn_data["minutesVeryActive"]
+        self.minutesFairlyActive = syn_data["minutesFairlyActive"]
+        self.minutesLightlyActive = syn_data["minutesLightlyActive"]
+        self.distance = syn_data["distance"]
+        self.minutesSedentary = syn_data["minutesSedentary"]
 
     def _authenticate(self, auth_creds):
-        # authenticate this device against API
-        # fitbit_application()
-        # client_secret = input("enter client secret: ")
         client_id = auth_creds["client_id"]
         client_secret = auth_creds["client_secret"]
         self.user = fitbit_token(client_id, client_secret)
