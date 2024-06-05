@@ -310,17 +310,26 @@ def get_intraday_azm(date, hr):
     the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
 
     minutes_in_a_day = 1440
+    dataset_length = len(
+        hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"]
+    )
 
     for i in range(minutes_in_a_day):
-        mean_hr_in_minute = (
-            sum(
-                hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"][j][
-                    "value"
-                ]
-                for j in range(i * 60, (i + 1) * 60)
+        if i * 60 + 59 < dataset_length:
+            mean_hr_in_minute = (
+                sum(
+                    hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"][j][
+                        "value"
+                    ]
+                    for j in range(i * 60, (i + 1) * 60)
+                )
+                / 60
             )
-            / 60
-        )
+        else:
+            mean_hr_in_minute = hr["heart_rate_day"][0]["activities-heart-intraday"][
+                "dataset"
+            ][-1]["value"]
+
         if mean_hr_in_minute > 111:
             minute_info = {
                 "minute": the_time.strftime("%H:%M:%S"),
@@ -343,10 +352,6 @@ def get_intraday_azm(date, hr):
             }
 
         azm["activities-active-zone-minutes-intraday"][0]["minutes"].append(minute_info)
-        # newtime = (
-        #     datetime.combine(datetime.today(), the_time) + timedelta(seconds=60)
-        # ).time()
-        # the_time = newtime
         the_time += timedelta(minutes=1)
 
     return azm
