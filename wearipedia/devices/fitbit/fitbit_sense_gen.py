@@ -389,18 +389,21 @@ def get_intraday_breath_rate(date):
     :return: dictionary of breath rate during sleep details
     :rtype: dictionary
     """
+    deep_breathing_rate = random.uniform(12, 18)
+    rem_breathing_rate = random.uniform(10, 16)
+    light_breathing_rate = random.uniform(12, 20)
+    full_breathing_rate = (
+        deep_breathing_rate + rem_breathing_rate + light_breathing_rate
+    ) / 3
+
     br = {
         "br": [
             {
                 "value": {
-                    "deepSleepSummary": {"breathingRate": random.uniform(14, 18)},
-                    "remSleepSummary": {
-                        "breathingRate": random.uniform(12, 16)
-                        if random.random() < 0.8
-                        else -1.0
-                    },
-                    "fullSleepSummary": {"breathingRate": random.uniform(14, 18)},
-                    "lightSleepSummary": {"breathingRate": random.uniform(14, 18)},
+                    "deepSleepSummary": {"breathingRate": deep_breathing_rate},
+                    "remSleepSummary": {"breathingRate": rem_breathing_rate},
+                    "fullSleepSummary": {"breathingRate": full_breathing_rate},
+                    "lightSleepSummary": {"breathingRate": light_breathing_rate},
                 },
                 "dateTime": date,
             }
