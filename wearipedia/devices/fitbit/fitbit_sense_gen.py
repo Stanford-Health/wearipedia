@@ -314,10 +314,10 @@ def get_intraday_azm(date, hr):
     for i in range(minutes_in_a_day):
         mean_hr_in_minute = (
             sum(
-                hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"][i][
+                hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"][j][
                     "value"
                 ]
-                for i in range(i * 60, (i + 1) * 60)
+                for j in range(i * 60, (i + 1) * 60)
             )
             / 60
         )
