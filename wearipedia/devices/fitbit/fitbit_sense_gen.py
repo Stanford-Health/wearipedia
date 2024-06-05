@@ -620,7 +620,7 @@ def create_syn_data(start_date, end_date, intraday=False):
         )
         full_dict["intraday_activity"].append(get_intraday_activity(date))
         full_dict["intraday_active_zone_minute"].append(
-            get_intraday_azm(date, full_dict["heart_rate"][0])
+            get_intraday_azm(date, full_dict["intraday_heart_rate"][0])
         )
         full_dict["intraday_breath_rate"].append(get_intraday_breath_rate(date))
 
