@@ -10,7 +10,7 @@ colorama==0.4.6 ; python_version >= "3.8" and python_version < "4.0"
 commonmark==0.9.1 ; python_version >= "3.8" and python_version < "4.0"
 fbm==0.3.0 ; python_version >= "3.8" and python_version < "4.0"
 garminconnect==0.1.55 ; python_version >= "3.8" and python_version < "4.0"
-garth
+garth==0.4.44 ; python_version >= "3.8" and python_version < "4.0"
 idna==3.7 ; python_version >= "3.8" and python_version < "4.0"
 jeepney==0.8.0 ; python_version >= "3.8" and (sys_platform == "bsd" or sys_platform == "linux") and python_version < "4.0"
 jinxed==1.2.1 ; python_version >= "3.8" and python_version < "4.0" and platform_system == "Windows"
