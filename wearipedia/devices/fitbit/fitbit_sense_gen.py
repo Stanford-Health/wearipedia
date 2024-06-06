@@ -394,9 +394,15 @@ def get_intraday_breath_rate(date):
     :return: dictionary of breath rate during sleep details
     :rtype: dictionary
     """
-    deep_breathing_rate = random.uniform(12, 18)
-    rem_breathing_rate = random.uniform(10, 16)
-    light_breathing_rate = random.uniform(12, 20)
+    # Define mean and standard deviation for each sleep stage
+    deep_mean, deep_std = 12, 1.5
+    rem_mean, rem_std = 16, 1.5
+    light_mean, light_std = 18, 2
+
+    # Generate breathing rates using Gaussian distribution
+    deep_breathing_rate = np.random.normal(deep_mean, deep_std)
+    rem_breathing_rate = np.random.normal(rem_mean, rem_std)
+    light_breathing_rate = np.random.normal(light_mean, light_std)
     full_breathing_rate = (
         deep_breathing_rate + rem_breathing_rate + light_breathing_rate
     ) / 3
@@ -510,8 +516,8 @@ def get_intraday_spo2(date, random_hour, random_min, random_sec, random_duration
     )
 
     for _ in range(random_duration):
-        mean = 98.5
-        std_dev = 1.5
+        mean = 97.5
+        std_dev = 3
         spo2_value = np.random.normal(mean, std_dev)
 
         spo2_value = max(95, min(100, spo2_value))
