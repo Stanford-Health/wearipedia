@@ -349,7 +349,7 @@ def get_intraday_azm(date, hr):
     return azm
 
 
-def get_intraday_activity(date):
+def get_intraday_activity(date, hr):
     """Generate intraday activity for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
@@ -595,7 +595,7 @@ def get_distance_day(date):
     return distance_day
 
 
-def create_syn_data(start_date, end_date, intraday=False):
+def create_syn_data(start_date, end_date):
     """Returns a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary", "heart_rate_day", "hrv", "distance_day"
 
     :param start_date: the start date (inclusive) as a string in the format "YYYY-MM-DD"

@@ -109,7 +109,6 @@ def fetch_collection(
     next_page = True
     next_token = None
 
-    # print(collection_type + " Collection")
     dfs = []
     while next_page:
         # Make the request

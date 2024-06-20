@@ -115,7 +115,6 @@ class Fitbit_charge_6(BaseDevice):
         syn_data = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
-            intraday=True,
         )
 
         self.intraday_breath_rate = syn_data["intraday_breath_rate"]
