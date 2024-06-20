@@ -60,21 +60,21 @@ class Whoop4(BaseDevice):
                 collection_type="Cycle",
                 access_token=self.access_token,
                 start_date=params["start"],
-                end_date=params["end"]
+                end_date=params["end"],
             )
         elif data_type == "sleeps":
             return fetch_collection(
                 collection_type="Sleep",
                 access_token=self.access_token,
                 start_date=params["start"],
-                end_date=params["end"]
+                end_date=params["end"],
             )
         elif data_type == "workouts":
             return fetch_collection(
                 collection_type="Workout",
                 access_token=self.access_token,
                 start_date=params["start"],
-                end_date=params["end"]
+                end_date=params["end"],
             )
 
     def _filter_synthetic(self, data, data_type, params):
