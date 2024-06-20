@@ -648,7 +648,7 @@ def create_syn_data(start_date, end_date):
         full_dict["intraday_hrv"].append(
             get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration)
         )
-        full_dict["intraday_activity"].append(get_intraday_activity(date))
+        full_dict["intraday_activity"].append(get_intraday_activity(date), intraday_hr)
         full_dict["intraday_active_zone_minute"].append(
             get_intraday_azm(date, intraday_hr)
         )
