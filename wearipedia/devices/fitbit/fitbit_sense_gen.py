@@ -283,11 +283,6 @@ def get_heart_rate(date, intraday=False):
             time_interval = 60
         else:
             time_interval = 1
-        # newtime = (
-        #     datetime.combine(datetime.today(), the_time)
-        #     + timedelta(seconds=time_interval)
-        # ).time()
-        # the_time = newtime
         the_time += timedelta(seconds=time_interval)
 
     return heart_rate_data
@@ -515,13 +510,16 @@ def get_intraday_spo2(date, random_hour, random_min, random_sec, random_duration
         hour=random_hour, minute=random_min, second=random_sec
     )
 
-    for _ in range(random_duration):
-        mean = 97.5
-        std_dev = 3
-        spo2_value = np.random.normal(mean, std_dev)
+    # Initial SpO2 value from a Gaussian distribution
+    mean = 97.5
+    std_dev = 3
+    spo2_value = round(np.random.normal(mean, std_dev), 1)
+    spo2_value = max(95, min(100, spo2_value))
 
+    for _ in range(random_duration):
+        # Simulate gradual SpO2 changes within a realistic range
+        spo2_value += round(random.uniform(-0.5, 0.5), 1)
         spo2_value = max(95, min(100, spo2_value))
-        spo2_value = round(spo2_value, 1)
 
         spo2_data["minutes"].append(
             {"value": spo2_value, "minute": the_time.strftime("%Y-%m-%dT%H:%M:%S")}
