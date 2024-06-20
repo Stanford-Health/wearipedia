@@ -557,9 +557,6 @@ def spp(x):
     return min(100, y)
 
 
-
-
-
 def get_strain(prob_distribution, ranges):
     """
     Generates a strain value based on the provided probability distribution and ranges.
