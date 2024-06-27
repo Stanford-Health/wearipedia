@@ -1,6 +1,6 @@
 import collections
 import random
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 from random import choice, choices, randrange
 
 import numpy as np
@@ -251,12 +251,18 @@ def get_heart_rate(date, intraday=False):
         for i in range(iterations_in_a_day)
     ]
 
+    # Precompute random walk changes
+    random_walk = np.random.randint(-1, 2, size=iterations_in_a_day)
+
+    # Precompute heart rate zones changes
     heart_rate_zones = heart_rate_data["heart_rate_day"][0]["activities-heart"][0][
         "value"
     ]["heartRateZones"]
+    heart_rate_zones_changes = np.zeros((4, 2))  # minutes and caloriesOut changes
 
-    for i in range(iterations_in_a_day):
-        hour = time_intervals[i].hour
+    minutes = []
+    for i, time_interval in enumerate(time_intervals):
+        hour = time_interval.hour
 
         # Determine which heart rate zone based on the hour
         if hour < 6 or hour >= 22:
@@ -269,24 +275,29 @@ def get_heart_rate(date, intraday=False):
             inx = 3
 
         # Update heart rate zone data
-        heart_rate_zones[inx]["minutes"] += 1
-        heart_rate_zones[inx]["caloriesOut"] += 2 * (inx + 0.5)
-
-        random_walk = np.random.randint(-1, 2, size=iterations_in_a_day)
+        heart_rate_zones_changes[inx][0] += 1
+        heart_rate_zones_changes[inx][1] += 2 * (inx + 0.5)
 
         # Update bpm value using precomputed random walk changes
         bpm = np.clip(bpm + random_walk[i], 50, 195)
 
         # Add new data point to dataset
-        heart_rate_data["heart_rate_day"][0]["activities-heart-intraday"][
-            "dataset"
-        ].append({"time": time_intervals[i].strftime("%H:%M:%S"), "value": bpm})
+        minutes.append({"time": time_interval.strftime("%H:%M:%S"), "value": bpm})
+
+    # Apply precomputed heart rate zone changes
+    for idx, zone in enumerate(heart_rate_zones):
+        zone["minutes"] += int(heart_rate_zones_changes[idx][0])
+        zone["caloriesOut"] += heart_rate_zones_changes[idx][1]
+
+    heart_rate_data["heart_rate_day"][0]["activities-heart-intraday"][
+        "dataset"
+    ] = minutes
 
     return heart_rate_data
 
 
 def get_intraday_azm(date, hr):
-    """Generate hrv for a given date.
+    """Generate active zone minutes for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
     :type date: str
@@ -302,50 +313,39 @@ def get_intraday_azm(date, hr):
     the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
 
     minutes_in_a_day = 1440
-    dataset_length = len(
-        hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"]
-    )
+    hr_dataset = hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"]
+    dataset_length = len(hr_dataset)
 
+    # Precompute mean heart rates for each minute
+    mean_hr_per_minute = []
     for i in range(minutes_in_a_day):
         if i * 60 + 59 < dataset_length:
-            mean_hr_in_minute = (
-                sum(
-                    hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"][j][
-                        "value"
-                    ]
-                    for j in range(i * 60, (i + 1) * 60)
-                )
-                / 60
+            mean_hr = np.mean(
+                [hr_dataset[j]["value"] for j in range(i * 60, (i + 1) * 60)]
             )
         else:
-            mean_hr_in_minute = hr["heart_rate_day"][0]["activities-heart-intraday"][
-                "dataset"
-            ][-1]["value"]
+            mean_hr = hr_dataset[-1]["value"]
+        mean_hr_per_minute.append(mean_hr)
+
+    minutes = []
+    for i in range(minutes_in_a_day):
+        mean_hr_in_minute = mean_hr_per_minute[i]
 
         if mean_hr_in_minute > 111:
-            minute_info = {
-                "minute": the_time.strftime("%H:%M:%S"),
-                "value": {"peakActiveZoneMinutes": 1, "activeZoneMinutes": 1},
-            }
+            value = {"peakActiveZoneMinutes": 1, "activeZoneMinutes": 1}
         elif mean_hr_in_minute > 98:
-            minute_info = {
-                "minute": the_time.strftime("%H:%M:%S"),
-                "value": {"cardioActiveZoneMinutes": 1, "activeZoneMinutes": 1},
-            }
+            value = {"cardioActiveZoneMinutes": 1, "activeZoneMinutes": 1}
         elif mean_hr_in_minute > 87:
-            minute_info = {
-                "minute": the_time.strftime("%H:%M:%S"),
-                "value": {"fatBurnActiveZoneMinutes": 1, "activeZoneMinutes": 1},
-            }
+            value = {"fatBurnActiveZoneMinutes": 1, "activeZoneMinutes": 1}
         else:
-            minute_info = {
-                "minute": the_time.strftime("%H:%M:%S"),
-                "value": {"activeZoneMinutes": 0},
-            }
+            value = {"activeZoneMinutes": 0}
 
-        azm["activities-active-zone-minutes-intraday"][0]["minutes"].append(minute_info)
+        minute_info = {"minute": the_time.strftime("%H:%M:%S"), "value": value}
+        minutes.append(minute_info)
+
         the_time += timedelta(minutes=1)
 
+    azm["activities-active-zone-minutes-intraday"][0]["minutes"] = minutes
     return azm
 
 
@@ -354,6 +354,8 @@ def get_intraday_activity(date, hr):
 
     :param date: the date as a string in the format "YYYY-MM-DD"
     :type date: str
+    :param hr: dictionary containing heart rate data
+    :type hr: dictionary
     :return: dictionary of intraday activity details
     :rtype: dictionary
     """
@@ -368,16 +370,16 @@ def get_intraday_activity(date, hr):
     dataset_length = len(hr_dataset)
 
     # Precompute mean heart rates for each minute
-    mean_hr_per_minute = []
+    mean_hr_per_minute = np.zeros(1440)
     for i in range(1440):  # 1440 minutes in a day
         if i * 60 + 59 < dataset_length:
-            mean_hr = np.mean(
+            mean_hr_per_minute[i] = np.mean(
                 [hr_dataset[j]["value"] for j in range(i * 60, (i + 1) * 60)]
             )
         else:
-            mean_hr = hr_dataset[-1]["value"]
-        mean_hr_per_minute.append(mean_hr)
+            mean_hr_per_minute[i] = hr_dataset[-1]["value"]
 
+    minutes = []
     for i in range(1440):
         mean_hr_in_minute = mean_hr_per_minute[i]
 
@@ -391,10 +393,11 @@ def get_intraday_activity(date, hr):
             value = {"activeZoneMinutes": 0}
 
         minute_info = {"minute": the_time.strftime("%H:%M:%S"), "value": value}
+        minutes.append(minute_info)
 
-        azm["activities-active-zone-minutes-intraday"][0]["minutes"].append(minute_info)
         the_time += timedelta(minutes=1)
 
+    azm["activities-active-zone-minutes-intraday"][0]["minutes"] = minutes
     return azm
 
 
@@ -477,38 +480,58 @@ def get_random_sleep_start_time():
 
 
 def get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration):
-    """Generate intraday hrv for a given date.
+    """Generate intraday HRV data for a given date.
 
     :param date: the date as a string in the format "YYYY-MM-DD"
     :type date: str
-    :return: dictionary of intraday hrv details
+    :param random_hour: the starting hour
+    :type random_hour: int
+    :param random_min: the starting minute
+    :type random_min: int
+    :param random_sec: the starting second
+    :type random_sec: int
+    :param random_duration: the number of minutes for which to generate data
+    :type random_duration: int
+    :return: dictionary of intraday HRV data details
     :rtype: dictionary
     """
+
     hrv = {"hrv": [{"minutes": [], "dateTime": date}]}
 
     the_time = datetime.strptime(date, "%Y-%m-%d").replace(
         hour=random_hour, minute=random_min, second=random_sec
     )
 
-    minutes = []
-    for _ in range(random_duration):
-        hf = round(random.uniform(100, 1000), 3)
-        min_lf = max(100, hf * 0.20)
-        max_lf = min(hf, hf * 0.40)
-        lf = round(random.uniform(min_lf, max_lf), 3)
+    # Pre-generate random values
+    hf_values = np.round(np.random.uniform(100, 1000, random_duration), 3)
+    rmssd_values = np.round(np.random.uniform(20, 80, random_duration), 3)
+    coverage_values = np.round(np.random.uniform(0.9, 0.99, random_duration), 3)
+    min_lf_values = np.maximum(100, hf_values * 0.20)
+    max_lf_values = np.minimum(hf_values, hf_values * 0.40)
+    lf_values = np.round(
+        [
+            random.uniform(min_lf, max_lf)
+            for min_lf, max_lf in zip(min_lf_values, max_lf_values)
+        ],
+        3,
+    )
+    times = [the_time + timedelta(minutes=i) for i in range(random_duration)]
 
+    minutes = []
+    for hf, rmssd, coverage, lf, time in zip(
+        hf_values, rmssd_values, coverage_values, lf_values, times
+    ):
         minute_info = {
-            "minute": f"{date}T{the_time.strftime('%H:%M:%S')}.000",
+            "minute": f"{date}T{time.strftime('%H:%M:%S')}.000",
             "value": {
-                "rmssd": round(random.uniform(20, 80), 3),
-                "coverage": round(random.uniform(0.9, 0.99), 3),
+                "rmssd": rmssd,
+                "coverage": coverage,
                 "hf": hf,
                 "lf": lf,
             },
         }
 
         minutes.append(minute_info)
-        the_time += timedelta(minutes=1)
 
     hrv["hrv"][0]["minutes"] = minutes
     return hrv
@@ -519,6 +542,14 @@ def get_intraday_spo2(date, random_hour, random_min, random_sec, random_duration
 
     :param date: the date as a string in the format "YYYY-MM-DD"
     :type date: str
+    :param random_hour: the starting hour
+    :type random_hour: int
+    :param random_min: the starting minute
+    :type random_min: int
+    :param random_sec: the starting second
+    :type random_sec: int
+    :param random_duration: the number of minutes for which to generate data
+    :type random_duration: int
     :return: dictionary of intraday SpO2 data details
     :rtype: dictionary
     """
@@ -535,19 +566,21 @@ def get_intraday_spo2(date, random_hour, random_min, random_sec, random_duration
     spo2_value = round(np.random.normal(mean, std_dev), 1)
     spo2_value = max(95, min(100, spo2_value))
 
+    # Pre-generate the random changes
+    random_changes = np.round(np.random.uniform(-0.5, 0.5, random_duration), 1)
+    times = [the_time + timedelta(minutes=i) for i in range(random_duration)]
+
     minutes = []
-    for _ in range(random_duration):
+    for change, time in zip(random_changes, times):
         # Simulate gradual SpO2 changes within a realistic range
-        spo2_value += round(random.uniform(-0.5, 0.5), 1)
+        spo2_value += change
         spo2_value = max(95, min(100, spo2_value))
 
         minute_info = {
             "value": spo2_value,
-            "minute": the_time.strftime("%Y-%m-%dT%H:%M:%S"),
+            "minute": time.strftime("%Y-%m-%dT%H:%M:%S"),
         }
         minutes.append(minute_info)
-
-        the_time += timedelta(minutes=1)
 
     spo2_data["minutes"] = minutes
     return spo2_data
@@ -626,9 +659,11 @@ def create_syn_data(start_date, end_date):
         ) = get_random_sleep_start_time()
 
         activity = get_activity(date)
+
         intraday_hr = get_heart_rate(date, intraday=True)
 
         # Collect all data points
+
         full_dict["sleep"].append(get_sleep(date))
         full_dict["steps"].append(activity[0])
         full_dict["minutesVeryActive"].append(activity[1])
@@ -636,22 +671,30 @@ def create_syn_data(start_date, end_date):
         full_dict["minutesLightlyActive"].append(activity[3])
         full_dict["distance"].append(activity[4])
         full_dict["minutesSedentary"].append(activity[5])
+
         full_dict["heart_rate"].append(get_heart_rate(date, intraday=False))
         full_dict["intraday_heart_rate"].append(intraday_hr)
+
         full_dict["hrv"].append(get_hrv(date))
+
         full_dict["distance_day"].append(get_distance_day(date))
+
         full_dict["intraday_spo2"].append(
             get_intraday_spo2(
                 date, random_hour, random_min, random_sec, random_duration
             )
         )
+
         full_dict["intraday_hrv"].append(
             get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration)
         )
+
         full_dict["intraday_activity"].append(get_intraday_activity(date, intraday_hr))
+
         full_dict["intraday_active_zone_minute"].append(
             get_intraday_azm(date, intraday_hr)
         )
+
         full_dict["intraday_breath_rate"].append(get_intraday_breath_rate(date))
 
     return full_dict

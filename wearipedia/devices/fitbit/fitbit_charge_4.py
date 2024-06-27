@@ -38,8 +38,8 @@ class Fitbit_charge_4(BaseDevice):
     def __init__(
         self,
         seed=0,
-        synthetic_start_date="2022-03-01",
-        synthetic_end_date="2022-06-17",
+        synthetic_start_date="2022-05-01",
+        synthetic_end_date="2022-05-03",
     ):
 
         params = {
@@ -67,8 +67,8 @@ class Fitbit_charge_4(BaseDevice):
             params,
             {
                 "seed": 0,
-                "synthetic_start_date": "2022-03-01",
-                "synthetic_end_date": "2022-06-17",
+                "synthetic_start_date": "2022-05-01",
+                "synthetic_end_date": "2022-05-03",
             },
         )
 
