@@ -41,7 +41,7 @@ class Fitbit_charge_6(BaseDevice):
         self,
         seed=0,
         synthetic_start_date="2024-01-01",
-        synthetic_end_date="2024-01-03",
+        synthetic_end_date="2024-01-05",
     ):
 
         params = {
@@ -70,7 +70,7 @@ class Fitbit_charge_6(BaseDevice):
             {
                 "seed": 0,
                 "synthetic_start_date": "2024-01-01",
-                "synthetic_end_date": "2024-01-03",
+                "synthetic_end_date": "2024-01-05",
             },
         )
 
