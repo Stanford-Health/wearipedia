@@ -95,7 +95,7 @@ class Fitbit_charge_6(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        return data[num_days_start : -num_days_end + 1]
+        return data[num_days_start:-num_days_end]
 
     def _get_real(self, data_type, params):
         data = fetch_real_data(
