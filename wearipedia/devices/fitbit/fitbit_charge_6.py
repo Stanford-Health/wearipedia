@@ -82,21 +82,20 @@ class Fitbit_charge_6(BaseDevice):
 
     def _filter_synthetic(self, data, data_type, params):
 
-        # date_format = "%Y-%m-%d"
-        # date1 = datetime.strptime(self.init_params["synthetic_start_date"], date_format)
-        # date2 = datetime.strptime(params["start_date"], date_format)
+        date_format = "%Y-%m-%d"
+        date1 = datetime.strptime(self.init_params["synthetic_start_date"], date_format)
+        date2 = datetime.strptime(params["start_date"], date_format)
 
-        # date3 = datetime.strptime(self.init_params["synthetic_end_date"], date_format)
-        # date4 = datetime.strptime(params["end_date"], date_format)
+        date3 = datetime.strptime(self.init_params["synthetic_end_date"], date_format)
+        date4 = datetime.strptime(params["end_date"], date_format)
 
-        # delta1 = date2 - date1
-        # delta2 = date3 - date4
+        delta1 = date2 - date1
+        delta2 = date3 - date4
 
-        # num_days_start = delta1.days
-        # num_days_end = delta2.days
+        num_days_start = delta1.days
+        num_days_end = delta2.days
 
-        # return data[num_days_start : -num_days_end + 1]
-        return data
+        return data[num_days_start : -num_days_end + 1]
 
     def _get_real(self, data_type, params):
         data = fetch_real_data(
@@ -108,10 +107,6 @@ class Fitbit_charge_6(BaseDevice):
         return data
 
     def _gen_synthetic(self):
-        print(
-            self.init_params["synthetic_start_date"],
-            self.init_params["synthetic_end_date"],
-        )
 
         syn_data = create_syn_data(
             self.init_params["synthetic_start_date"],
