@@ -185,6 +185,7 @@ def get_heart_rate(date, intraday=False):
     :rtype: dictionary
     """
 
+    # Initialize heart rate data structure
     heart_rate_data = {
         "heart_rate_day": [
             {
@@ -230,65 +231,62 @@ def get_heart_rate(date, intraday=False):
                 "activities-heart-intraday": {
                     "dataset": [],
                     "datasetInterval": 1,
-                    "datasetType": "minute",
+                    "datasetType": "minute" if not intraday else "second",
                 },
             }
         ]
     }
 
-    # Initialize the time
+    # Initialize start time and number of iterations
     the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
-
-    # Determine the number of iterations based on intraday flag
     iterations_in_a_day = 1440 if not intraday else 1440 * 60
 
-    # Initialize the bpm value
+    # Generate random walk and time intervals
     bpm = np.clip(np.random.normal(75, 15, 1)[0], 50, 195)
-
-    # Precompute time intervals
     time_intervals = [
         the_time + timedelta(seconds=(i if intraday else i * 60))
         for i in range(iterations_in_a_day)
     ]
-
-    # Precompute random walk changes
     random_walk = np.random.randint(-1, 2, size=iterations_in_a_day)
 
-    # Precompute heart rate zones changes
+    # Precompute heart rate zone indices based on hour
+    def get_zone_index(hour):
+        if hour < 6 or hour >= 22:
+            return 0
+        elif 6 <= hour < 10:
+            return 1
+        elif 10 <= hour < 18:
+            return 2
+        else:
+            return 3
+
+    # Initialize list for heart rate zone changes
     heart_rate_zones = heart_rate_data["heart_rate_day"][0]["activities-heart"][0][
         "value"
     ]["heartRateZones"]
     heart_rate_zones_changes = np.zeros((4, 2))  # minutes and caloriesOut changes
 
-    minutes = []
-    for i, time_interval in enumerate(time_intervals):
-        hour = time_interval.hour
+    # Generate dataset for heart rate minute by minute using list comprehensions
+    minutes = [
+        {"time": time_interval.strftime("%H:%M:%S"), "value": bpm}
+        for time_interval, bpm in zip(
+            time_intervals, np.clip(np.cumsum(random_walk) + bpm, 50, 195)
+        )
+    ]
 
-        # Determine which heart rate zone based on the hour
-        if hour < 6 or hour >= 22:
-            inx = 0
-        elif 6 <= hour < 10:
-            inx = 1
-        elif 10 <= hour < 18:
-            inx = 2
-        else:
-            inx = 3
-
-        # Update heart rate zone data
+    # Update heart rate zone data and apply precomputed changes
+    for minute in minutes:
+        hour = int(minute["time"][:2])
+        inx = get_zone_index(hour)
         heart_rate_zones_changes[inx][0] += 1
         heart_rate_zones_changes[inx][1] += 2 * (inx + 0.5)
 
-        # Update bpm value using precomputed random walk changes
-        bpm = np.clip(bpm + random_walk[i], 50, 195)
-
-        # Add new data point to dataset
-        minutes.append({"time": time_interval.strftime("%H:%M:%S"), "value": bpm})
-
-    # Apply precomputed heart rate zone changes
+    # Apply precomputed heart rate zone changes to the data structure
     for idx, zone in enumerate(heart_rate_zones):
         zone["minutes"] += int(heart_rate_zones_changes[idx][0])
         zone["caloriesOut"] += heart_rate_zones_changes[idx][1]
 
+    # Assign the generated dataset to the heart rate data structure
     heart_rate_data["heart_rate_day"][0]["activities-heart-intraday"][
         "dataset"
     ] = minutes
@@ -316,36 +314,36 @@ def get_intraday_azm(date, hr):
     hr_dataset = hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"]
     dataset_length = len(hr_dataset)
 
-    # Precompute mean heart rates for each minute
-    mean_hr_per_minute = []
-    for i in range(minutes_in_a_day):
-        if i * 60 + 59 < dataset_length:
-            mean_hr = np.mean(
-                [hr_dataset[j]["value"] for j in range(i * 60, (i + 1) * 60)]
-            )
+    mean_hr_per_minute = [
+        np.mean(
+            [
+                hr_dataset[j]["value"]
+                for j in range(i * 60, min((i + 1) * 60, dataset_length))
+            ]
+        )
+        if i * 60 < dataset_length
+        else hr_dataset[-1]["value"]
+        for i in range(minutes_in_a_day)
+    ]
+
+    def get_activity_value(hr):
+        if hr > 111:
+            return {"peakActiveZoneMinutes": 1, "activeZoneMinutes": 1}
+        elif hr > 98:
+            return {"cardioActiveZoneMinutes": 1, "activeZoneMinutes": 1}
+        elif hr > 87:
+            return {"fatBurnActiveZoneMinutes": 1, "activeZoneMinutes": 1}
         else:
-            mean_hr = hr_dataset[-1]["value"]
-        mean_hr_per_minute.append(mean_hr)
+            return {"activeZoneMinutes": 0}
 
-    minutes = []
-    for i in range(minutes_in_a_day):
-        mean_hr_in_minute = mean_hr_per_minute[i]
+    azm["activities-active-zone-minutes-intraday"][0]["minutes"] = [
+        {
+            "minute": (the_time + timedelta(minutes=i)).strftime("%H:%M:%S"),
+            "value": get_activity_value(mean_hr_per_minute[i]),
+        }
+        for i in range(minutes_in_a_day)
+    ]
 
-        if mean_hr_in_minute > 111:
-            value = {"peakActiveZoneMinutes": 1, "activeZoneMinutes": 1}
-        elif mean_hr_in_minute > 98:
-            value = {"cardioActiveZoneMinutes": 1, "activeZoneMinutes": 1}
-        elif mean_hr_in_minute > 87:
-            value = {"fatBurnActiveZoneMinutes": 1, "activeZoneMinutes": 1}
-        else:
-            value = {"activeZoneMinutes": 0}
-
-        minute_info = {"minute": the_time.strftime("%H:%M:%S"), "value": value}
-        minutes.append(minute_info)
-
-        the_time += timedelta(minutes=1)
-
-    azm["activities-active-zone-minutes-intraday"][0]["minutes"] = minutes
     return azm
 
 
@@ -364,40 +362,39 @@ def get_intraday_activity(date, hr):
     }
 
     the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
-
-    # Extract the heart rate dataset once to avoid repeated lookups
     hr_dataset = hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"]
     dataset_length = len(hr_dataset)
 
-    # Precompute mean heart rates for each minute
-    mean_hr_per_minute = np.zeros(1440)
-    for i in range(1440):  # 1440 minutes in a day
-        if i * 60 + 59 < dataset_length:
-            mean_hr_per_minute[i] = np.mean(
-                [hr_dataset[j]["value"] for j in range(i * 60, (i + 1) * 60)]
-            )
+    mean_hr_per_minute = [
+        np.mean(
+            [
+                hr_dataset[j]["value"]
+                for j in range(i * 60, min((i + 1) * 60, dataset_length))
+            ]
+        )
+        if i * 60 < dataset_length
+        else hr_dataset[-1]["value"]
+        for i in range(1440)
+    ]
+
+    def get_activity_value(hr):
+        if hr > 111:
+            return {"peakActiveZoneMinutes": 1, "activeZoneMinutes": 1}
+        elif hr > 98:
+            return {"cardioActiveZoneMinutes": 1, "activeZoneMinutes": 1}
+        elif hr > 87:
+            return {"fatBurnActiveZoneMinutes": 1, "activeZoneMinutes": 1}
         else:
-            mean_hr_per_minute[i] = hr_dataset[-1]["value"]
+            return {"activeZoneMinutes": 0}
 
-    minutes = []
-    for i in range(1440):
-        mean_hr_in_minute = mean_hr_per_minute[i]
+    azm["activities-active-zone-minutes-intraday"][0]["minutes"] = [
+        {
+            "minute": (the_time + timedelta(minutes=i)).strftime("%H:%M:%S"),
+            "value": get_activity_value(mean_hr_per_minute[i]),
+        }
+        for i in range(1440)
+    ]
 
-        if mean_hr_in_minute > 111:
-            value = {"peakActiveZoneMinutes": 1, "activeZoneMinutes": 1}
-        elif mean_hr_in_minute > 98:
-            value = {"cardioActiveZoneMinutes": 1, "activeZoneMinutes": 1}
-        elif mean_hr_in_minute > 87:
-            value = {"fatBurnActiveZoneMinutes": 1, "activeZoneMinutes": 1}
-        else:
-            value = {"activeZoneMinutes": 0}
-
-        minute_info = {"minute": the_time.strftime("%H:%M:%S"), "value": value}
-        minutes.append(minute_info)
-
-        the_time += timedelta(minutes=1)
-
-    azm["activities-active-zone-minutes-intraday"][0]["minutes"] = minutes
     return azm
 
 
@@ -508,20 +505,11 @@ def get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration)
     coverage_values = np.round(np.random.uniform(0.9, 0.99, random_duration), 3)
     min_lf_values = np.maximum(100, hf_values * 0.20)
     max_lf_values = np.minimum(hf_values, hf_values * 0.40)
-    lf_values = np.round(
-        [
-            random.uniform(min_lf, max_lf)
-            for min_lf, max_lf in zip(min_lf_values, max_lf_values)
-        ],
-        3,
-    )
+    lf_values = np.round(np.random.uniform(min_lf_values, max_lf_values), 3)
     times = [the_time + timedelta(minutes=i) for i in range(random_duration)]
 
-    minutes = []
-    for hf, rmssd, coverage, lf, time in zip(
-        hf_values, rmssd_values, coverage_values, lf_values, times
-    ):
-        minute_info = {
+    hrv["hrv"][0]["minutes"] = [
+        {
             "minute": f"{date}T{time.strftime('%H:%M:%S')}.000",
             "value": {
                 "rmssd": rmssd,
@@ -530,10 +518,11 @@ def get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration)
                 "lf": lf,
             },
         }
+        for hf, rmssd, coverage, lf, time in zip(
+            hf_values, rmssd_values, coverage_values, lf_values, times
+        )
+    ]
 
-        minutes.append(minute_info)
-
-    hrv["hrv"][0]["minutes"] = minutes
     return hrv
 
 
@@ -560,29 +549,22 @@ def get_intraday_spo2(date, random_hour, random_min, random_sec, random_duration
         hour=random_hour, minute=random_min, second=random_sec
     )
 
-    # Initial SpO2 value from a Gaussian distribution
     mean = 97.5
     std_dev = 3
     spo2_value = round(np.random.normal(mean, std_dev), 1)
     spo2_value = max(95, min(100, spo2_value))
 
-    # Pre-generate the random changes
     random_changes = np.round(np.random.uniform(-0.5, 0.5, random_duration), 1)
     times = [the_time + timedelta(minutes=i) for i in range(random_duration)]
 
-    minutes = []
-    for change, time in zip(random_changes, times):
-        # Simulate gradual SpO2 changes within a realistic range
-        spo2_value += change
-        spo2_value = max(95, min(100, spo2_value))
-
-        minute_info = {
-            "value": spo2_value,
+    spo2_data["minutes"] = [
+        {
+            "value": (spo2_value := max(95, min(100, spo2_value + change))),
             "minute": time.strftime("%Y-%m-%dT%H:%M:%S"),
         }
-        minutes.append(minute_info)
+        for change, time in zip(random_changes, times)
+    ]
 
-    spo2_data["minutes"] = minutes
     return spo2_data
 
 
@@ -607,23 +589,21 @@ def get_distance_day(date):
     }
 
     the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
-
     minutes_in_a_day = 1440
+    distance = [0, 0.1]
+    weights = [0.6, 0.3]
 
-    for i in range(minutes_in_a_day):
+    dataset = [
+        {
+            "time": (the_time + timedelta(minutes=i)).strftime("%H:%M:%S"),
+            "value": random.uniform(0, 0.1)
+            if random.choices(distance, weights)[0]
+            else 0,
+        }
+        for i in range(minutes_in_a_day)
+    ]
 
-        distance = [0, 0.1]
-        weights = [0.6, 0.3]
-        max_distance = choices(distance, weights)
-        if max_distance[0] == 0:
-            val = 0
-        else:
-            val = np.random.randint(1, 1000) / 10000
-
-        distance_day["distance_day"][0]["activities-distance-intraday"][
-            "dataset"
-        ].append({"time": the_time.strftime("%H:%M:%S"), "value": val})
-        the_time += timedelta(minutes=1)
+    distance_day["distance_day"][0]["activities-distance-intraday"]["dataset"] = dataset
 
     return distance_day
 
