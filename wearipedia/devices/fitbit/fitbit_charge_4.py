@@ -22,7 +22,6 @@ class Fitbit_charge_4(BaseDevice):
     * `minutesSedentary`: number of minutes with no activity
     * `intraday_breath_rate`: collected per stage of sleep
     * `intraday_active_zone_minute`: collected per minute
-    * `intraday_activity`: in number of steps
     * `intraday_heart_rate`: collected per second
     * `intraday_hrv`: rmssd, lf and hf and collected during sleep
     * `intraday_spo2`: in percentage collected during sleep
@@ -38,8 +37,8 @@ class Fitbit_charge_4(BaseDevice):
     def __init__(
         self,
         seed=0,
-        synthetic_start_date="2022-05-01",
-        synthetic_end_date="2022-05-03",
+        synthetic_start_date="2022-12-01",
+        synthetic_end_date="2023-01-01",
     ):
 
         params = {
@@ -59,7 +58,6 @@ class Fitbit_charge_4(BaseDevice):
                 "minutesSedentary",
                 "intraday_breath_rate",
                 "intraday_active_zone_minute",
-                "intraday_activity",
                 "intraday_heart_rate",
                 "intraday_hrv",
                 "intraday_spo2",
@@ -67,8 +65,8 @@ class Fitbit_charge_4(BaseDevice):
             params,
             {
                 "seed": 0,
-                "synthetic_start_date": "2022-05-01",
-                "synthetic_end_date": "2022-05-03",
+                "synthetic_start_date": "2022-12-01",
+                "synthetic_end_date": "2023-01-01",
             },
         )
 
@@ -122,7 +120,6 @@ class Fitbit_charge_4(BaseDevice):
         self.minutesSedentary = syn_data["minutesSedentary"]
         self.intraday_breath_rate = syn_data["intraday_breath_rate"]
         self.intraday_active_zone_minute = syn_data["intraday_active_zone_minute"]
-        self.intraday_activity = syn_data["intraday_activity"]
         self.intraday_heart_rate = syn_data["intraday_heart_rate"]
         self.intraday_hrv = syn_data["intraday_hrv"]
         self.intraday_spo2 = syn_data["intraday_spo2"]

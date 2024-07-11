@@ -1,11 +1,17 @@
 import collections
 import random
 from datetime import datetime, timedelta
-from random import choice, choices, randrange
+from random import choice, randrange
 
 import numpy as np
 
 __all__ = ["create_syn_data"]
+
+sleep_stages = {
+    "deepSleepSummary": {"mean": 12, "std": 1.5},
+    "remSleepSummary": {"mean": 16, "std": 1.5},
+    "lightSleepSummary": {"mean": 18, "std": 2},
+}
 
 
 def get_sleep(date):
@@ -185,7 +191,57 @@ def get_heart_rate(date, intraday=False):
     :rtype: dictionary
     """
 
-    # Initialize heart rate data structure
+    HR_MEAN = 75
+    HR_STD = 15
+    HR_MIN = 50
+    HR_MAX = 195
+    ZONE_CALORIES = [0, 1, 2, 3]
+
+    heart_rate_zones = [
+        {
+            "caloriesOut": 2877.06579,
+            "max": 110,
+            "min": 30,
+            "minutes": 0,
+            "name": "Out of Range",
+        },
+        {"caloriesOut": 1000, "max": 136, "min": 110, "minutes": 0, "name": "Fat Burn"},
+        {"caloriesOut": 1000, "max": 169, "min": 136, "minutes": 0, "name": "Cardio"},
+        {"caloriesOut": 1000, "max": 220, "min": 169, "minutes": 0, "name": "Peak"},
+    ]
+
+    the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
+    iterations_in_a_day = 1440 if not intraday else 1440 * 60
+
+    bpm_start = np.clip(np.random.normal(HR_MEAN, HR_STD), HR_MIN, HR_MAX)
+    time_intervals = np.arange(iterations_in_a_day)
+
+    random_walk = np.random.randint(-1, 2, size=iterations_in_a_day)
+    heart_rate_values = np.clip(np.cumsum(random_walk) + bpm_start, HR_MIN, HR_MAX)
+
+    hours = (time_intervals // 60) % 24
+
+    zone_indices = np.where(
+        hours < 6, 0, np.where(hours < 10, 1, np.where(hours < 18, 2, 3))
+    )
+
+    zone_minutes = np.bincount(zone_indices, minlength=4)
+    zone_calories = np.array([ZONE_CALORIES[i] * zone_minutes[i] for i in range(4)])
+
+    for i, zone in enumerate(heart_rate_zones):
+        zone["minutes"] += zone_minutes[i]
+        zone["caloriesOut"] += zone_calories[i]
+
+    dataset = [
+        {
+            "time": (
+                the_time + timedelta(seconds=(i if intraday else i * 60))
+            ).strftime("%H:%M:%S"),
+            "value": bpm,
+        }
+        for i, bpm in enumerate(heart_rate_values)
+    ]
+
     heart_rate_data = {
         "heart_rate_day": [
             {
@@ -194,102 +250,19 @@ def get_heart_rate(date, intraday=False):
                         "dateTime": date,
                         "value": {
                             "customHeartRateZones": [],
-                            "heartRateZones": [
-                                {
-                                    "caloriesOut": 2877.06579,
-                                    "max": 110,
-                                    "min": 30,
-                                    "minutes": 0,
-                                    "name": "Out of Range",
-                                },
-                                {
-                                    "caloriesOut": 0,
-                                    "max": 136,
-                                    "min": 110,
-                                    "minutes": 0,
-                                    "name": "Fat Burn",
-                                },
-                                {
-                                    "caloriesOut": 0,
-                                    "max": 169,
-                                    "min": 136,
-                                    "minutes": 0,
-                                    "name": "Cardio",
-                                },
-                                {
-                                    "caloriesOut": 0,
-                                    "max": 220,
-                                    "min": 169,
-                                    "minutes": 0,
-                                    "name": "Peak",
-                                },
-                            ],
+                            "heartRateZones": heart_rate_zones,
                             "restingHeartRate": 58,
                         },
                     }
                 ],
                 "activities-heart-intraday": {
-                    "dataset": [],
+                    "dataset": dataset,
                     "datasetInterval": 1,
                     "datasetType": "minute" if not intraday else "second",
                 },
             }
         ]
     }
-
-    # Initialize start time and number of iterations
-    the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
-    iterations_in_a_day = 1440 if not intraday else 1440 * 60
-
-    # Generate random walk and time intervals
-    bpm = np.clip(np.random.normal(75, 15, 1)[0], 50, 195)
-    time_intervals = [
-        the_time + timedelta(seconds=(i if intraday else i * 60))
-        for i in range(iterations_in_a_day)
-    ]
-    random_walk = np.random.randint(-1, 2, size=iterations_in_a_day)
-
-    # Precompute heart rate zone indices based on hour
-    def get_zone_index(hour):
-        if hour < 6 or hour >= 22:
-            return 0
-        elif 6 <= hour < 10:
-            return 1
-        elif 10 <= hour < 18:
-            return 2
-        else:
-            return 3
-
-    # Initialize list for heart rate zone changes
-    heart_rate_zones = heart_rate_data["heart_rate_day"][0]["activities-heart"][0][
-        "value"
-    ]["heartRateZones"]
-    heart_rate_zones_changes = np.zeros((4, 2))  # minutes and caloriesOut changes
-
-    # Generate dataset for heart rate minute by minute using list comprehensions
-    minutes = [
-        {"time": time_interval.strftime("%H:%M:%S"), "value": bpm}
-        for time_interval, bpm in zip(
-            time_intervals, np.clip(np.cumsum(random_walk) + bpm, 50, 195)
-        )
-    ]
-
-    # Update heart rate zone data and apply precomputed changes
-    for minute in minutes:
-        hour = int(minute["time"][:2])
-        inx = get_zone_index(hour)
-        heart_rate_zones_changes[inx][0] += 1
-        heart_rate_zones_changes[inx][1] += 2 * (inx + 0.5)
-
-    # Apply precomputed heart rate zone changes to the data structure
-    for idx, zone in enumerate(heart_rate_zones):
-        zone["minutes"] += int(heart_rate_zones_changes[idx][0])
-        zone["caloriesOut"] += heart_rate_zones_changes[idx][1]
-
-    # Assign the generated dataset to the heart rate data structure
-    heart_rate_data["heart_rate_day"][0]["activities-heart-intraday"][
-        "dataset"
-    ] = minutes
 
     return heart_rate_data
 
@@ -347,57 +320,6 @@ def get_intraday_azm(date, hr):
     return azm
 
 
-def get_intraday_activity(date, hr):
-    """Generate intraday activity for a given date.
-
-    :param date: the date as a string in the format "YYYY-MM-DD"
-    :type date: str
-    :param hr: dictionary containing heart rate data
-    :type hr: dictionary
-    :return: dictionary of intraday activity details
-    :rtype: dictionary
-    """
-    azm = {
-        "activities-active-zone-minutes-intraday": [{"dateTime": date, "minutes": []}]
-    }
-
-    the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
-    hr_dataset = hr["heart_rate_day"][0]["activities-heart-intraday"]["dataset"]
-    dataset_length = len(hr_dataset)
-
-    mean_hr_per_minute = [
-        np.mean(
-            [
-                hr_dataset[j]["value"]
-                for j in range(i * 60, min((i + 1) * 60, dataset_length))
-            ]
-        )
-        if i * 60 < dataset_length
-        else hr_dataset[-1]["value"]
-        for i in range(1440)
-    ]
-
-    def get_activity_value(hr):
-        if hr > 111:
-            return {"peakActiveZoneMinutes": 1, "activeZoneMinutes": 1}
-        elif hr > 98:
-            return {"cardioActiveZoneMinutes": 1, "activeZoneMinutes": 1}
-        elif hr > 87:
-            return {"fatBurnActiveZoneMinutes": 1, "activeZoneMinutes": 1}
-        else:
-            return {"activeZoneMinutes": 0}
-
-    azm["activities-active-zone-minutes-intraday"][0]["minutes"] = [
-        {
-            "minute": (the_time + timedelta(minutes=i)).strftime("%H:%M:%S"),
-            "value": get_activity_value(mean_hr_per_minute[i]),
-        }
-        for i in range(1440)
-    ]
-
-    return azm
-
-
 def get_intraday_breath_rate(date):
     """Generate breath rate during sleep for a given date.
 
@@ -406,21 +328,12 @@ def get_intraday_breath_rate(date):
     :return: dictionary of breath rate during sleep details
     :rtype: dictionary
     """
-    # Define mean and standard deviation for each sleep stage
-    sleep_stages = {
-        "deepSleepSummary": {"mean": 12, "std": 1.5},
-        "remSleepSummary": {"mean": 16, "std": 1.5},
-        "lightSleepSummary": {"mean": 18, "std": 2},
-    }
-
-    # Generate breathing rates using Gaussian distribution and calculate full breathing rate
     breathing_rates = {
         stage: np.random.normal(info["mean"], info["std"])
         for stage, info in sleep_stages.items()
     }
     full_breathing_rate = np.mean(list(breathing_rates.values()))
 
-    # Construct the result dictionary
     br = {
         "br": [
             {
@@ -467,7 +380,7 @@ def get_hrv(date):
 
 
 def get_random_sleep_start_time():
-    """Generate a random start time for sleep in terms of hour, minute and second."""
+    """Generate a random start time for sleep in terms of hour, minute and second, and a random duration of sleep in minutes."""
     random_hour = random.choice([21, 22, 23, 0, 1, 2])
     random_min = random.randint(0, 59)
     random_sec = random.randint(0, 59)
@@ -499,13 +412,12 @@ def get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration)
         hour=random_hour, minute=random_min, second=random_sec
     )
 
-    # Pre-generate random values
-    hf_values = np.round(np.random.uniform(100, 1000, random_duration), 3)
-    rmssd_values = np.round(np.random.uniform(20, 80, random_duration), 3)
-    coverage_values = np.round(np.random.uniform(0.9, 0.99, random_duration), 3)
-    min_lf_values = np.maximum(100, hf_values * 0.20)
-    max_lf_values = np.minimum(hf_values, hf_values * 0.40)
-    lf_values = np.round(np.random.uniform(min_lf_values, max_lf_values), 3)
+    random_values = np.random.uniform(0, 1, (random_duration, 4))
+    hf_values = np.round(100 + 900 * random_values[:, 0], 3)
+    rmssd_values = np.round(20 + 60 * random_values[:, 1], 3)
+    coverage_values = np.round(0.9 + 0.09 * random_values[:, 2], 3)
+    lf_values = np.round(hf_values * (0.2 + 0.2 * random_values[:, 3]), 3)
+
     times = [the_time + timedelta(minutes=i) for i in range(random_duration)]
 
     hrv["hrv"][0]["minutes"] = [
@@ -668,8 +580,6 @@ def create_syn_data(start_date, end_date):
         full_dict["intraday_hrv"].append(
             get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration)
         )
-
-        full_dict["intraday_activity"].append(get_intraday_activity(date, intraday_hr))
 
         full_dict["intraday_active_zone_minute"].append(
             get_intraday_azm(date, intraday_hr)
