@@ -8,11 +8,11 @@ from .fitbit_authenticate import *
 from .fitbit_sense_fetch import *
 from .fitbit_sense_gen import *
 
-class_name = "Fitbit_charge_6"
+class_name = "Google_Pixel_Watch"
 
 
-class Fitbit_charge_6(BaseDevice):
-    """This device allows you to work with data from the `Fitbit charge  <(https://www.fitbit.com/global/au/products/trackers/charge6)>`_ device.
+class Google_Pixel_Watch(BaseDevice):
+    """This device allows you to work with data from the `Google Pixel Watch`_ device.
     Available datatypes for this device are:
 
     * `intraday_breath_rate`: collected per stage of sleep

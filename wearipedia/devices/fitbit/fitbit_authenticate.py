@@ -35,7 +35,7 @@ def fitbit_application():
         "Terms of Service URL": "Any Url should suffice",
         "Privacy Policy URL": "Any Url should suffice",
         "OAuth 2.0 Application Type": "choose the appropriate type",
-        "Redirect URL": "https://127.0.0.1/8080",
+        "Redirect URL": "https://www.wearipedia.com/",
     }
 
     print(
@@ -84,7 +84,7 @@ def fitbit_token(client_id, client_secret):
         + "respiratory_rate%20oxygen_saturation"
     )
     variables["prompt"] = "none"
-    variables["redirect_uri"] = "https://127.0.0.1:8080/"
+    variables["redirect_uri"] = "https://www.wearipedia.com/"
     variables["grant_type"] = "authorization_code"
     variables["authorization"] = base64.urlsafe_b64encode(
         bytes(variables["client_id"] + ":" + variables["client_secret"], "utf-8")

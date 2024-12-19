@@ -81,6 +81,7 @@ def get_all_device_names():
         "fitbit/fitbit_charge_4",
         "fitbit/fitbit_charge_6",
         "fitbit/fitbit_sense",
+        "fitbit/google_pixel_watch",
         "oura/oura_ring3",
         "coros/coros_pace_2",
         "polar/vantage",
@@ -152,6 +153,10 @@ _DEVICE_TO_AUTH_DICT = {
         "client_secret": get_os("FITBIT_CLIENT_SECRET"),
     },
     "fitbit/fitbit_sense": {
+        "client_id": get_os("FITBIT_CLIENT_ID"),
+        "client_secret": get_os("FITBIT_CLIENT_SECRET"),
+    },
+    "fitbit/google_pixel_watch": {
         "client_id": get_os("FITBIT_CLIENT_ID"),
         "client_secret": get_os("FITBIT_CLIENT_SECRET"),
     },
