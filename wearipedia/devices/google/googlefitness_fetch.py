@@ -16,6 +16,19 @@ def milliconvert(d):
         * 1000
     )
 
+def transform_response_bucket(data):
+    """
+    Convert response structure for real data: List[Dict] to List[List[Dict]]
+    Transformation should match expected response for Google Fit notebook
+    """
+    output = []
+    for row in data:
+        if type(row) is dict:
+            output.append([row])
+        elif type(row) is list:
+            output.append(row)
+    return output
+
 
 def fetch_real_data(
     self, start_date, end_date, data_type, time_bucket=default_time_bucket
@@ -94,4 +107,4 @@ def fetch_real_data(
         raise Exception(f"Error in response: {response.json()['error']}")
 
     # Return the bucket of data
-    return response.json()["bucket"]
+    return transform_response_bucket(response.json()["bucket"])
