@@ -17,10 +17,10 @@ def milliconvert(d):
     )
 
 def transform_response_bucket(data):
-    '''
+    """
     Convert response structure for real data: List[Dict] to List[List[Dict]]
     Transformation should match expected response for Google Fit notebook
-    '''
+    """
     output = []
     for row in data:
         if type(row) is dict:
