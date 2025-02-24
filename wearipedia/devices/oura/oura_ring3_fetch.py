@@ -4,7 +4,7 @@ __all__ = ["fetch_real_data"]
 
 
 def fetch_real_data(data_type, access_token, start_date, end_date):
-    """Main function for fetching real data from the Fitbit API.
+    """Main function for fetching real data from the Oura Ring API.
 
     :param start_date: the start date represented as a string in the format "YYYY-MM-DD"
     :param end_date: the end date represented as a string in the format "YYYY-MM-DD"
@@ -28,7 +28,21 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         """
         headers = {"Authorization": "Bearer " + access_token}
         params = {start_date_col: start_date, end_date_col: end_date}
-        return requests.request(call, url=url, headers=headers, params=params).json()
+
+        response = requests.request(call, url=url, headers=headers, params=params)
+
+        # Handle specific HTTP status codes
+        if response.status_code != 200:
+            error_msg = f"{response.status_code}"
+            try:
+                error_detail = response.json()
+                if isinstance(error_detail, dict):
+                    error_msg = f"{error_msg} - {error_detail.get('detail', '')}"
+            except:
+                pass
+
+            raise Exception("Request failed with error: " + error_msg)
+        return response.json()
 
     # heart_rate
     heart_rate = call_api_version_2(
