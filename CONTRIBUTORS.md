@@ -10,3 +10,4 @@
 - Saarth Shah (saarth@berkeley.edu)
 - Suvan Kumar (kumarsuvan0@gmail.com)
 - Hee Jung Choi (cheejung@stanford.edu)
+- Stef Ren (stefren97@gmail.com)
