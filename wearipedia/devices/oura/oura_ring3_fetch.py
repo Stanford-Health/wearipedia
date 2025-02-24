@@ -14,25 +14,6 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     :rtype: List
     """
 
-    def call_api_version_1(
-        url: str,
-        start_date=start_date,
-        end_date=end_date,
-        access_token=access_token,
-        start_date_col: str = "start",
-        end_date_col: str = "end",
-        call: str = "GET",
-    ):
-        """
-        First version of the api, will expire in near future
-        """
-        params = {
-            "access_token": access_token,
-            start_date_col: start_date,
-            end_date_col: end_date,
-        }
-        return requests.request(call, url=url, params=params).json()
-
     def call_api_version_2(
         url: str,
         start_date=start_date,
@@ -43,7 +24,7 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         call: str = "GET",
     ):
         """
-        Second version of the api, will be the only api version available in the near future
+        Second version of the api, the only supported API version as of 1/24/25
         """
         headers = {"Authorization": "Bearer " + access_token}
         params = {start_date_col: start_date, end_date_col: end_date}
@@ -81,17 +62,23 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         url="https://api.ouraring.com/v2/usercollection/daily_activity"
     )
 
-    # sleep
-    sleep = call_api_version_1(url="https://api.ouraring.com/v1/sleep")
+    # daily_sleep
+    daily_sleep = call_api_version_2(
+        url="https://api.ouraring.com/v2/usercollection/daily_sleep"
+    )
 
-    # activity
-    activity = call_api_version_1(url="https://api.ouraring.com/v1/activity")
+    # sleep
+    sleep = call_api_version_2(url="https://api.ouraring.com/v2/usercollection/sleep")
 
     # readiness
-    readiness = call_api_version_1(url="https://api.ouraring.com/v1/readiness")
+    readiness = call_api_version_2(
+        url="https://api.ouraring.com/v2/usercollection/daily_readiness"
+    )
 
     # ideal_bedtime
-    ideal_bedtime = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
+    ideal_bedtime = call_api_version_2(
+        url="https://api.ouraring.com/v2/usercollection/sleep_time"
+    )
 
     # aggregate data for version 2 endpoints
     api_data = dict()
@@ -106,10 +93,9 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
         daily_activity["data"] if daily_activity["data"] else [{}]
     )
 
-    # aggregate data for version 1 (in addition to VERSION 2)
-    api_data["sleep"] = sleep["sleep"]
-    api_data["activity"] = activity["activity"]
-    api_data["readiness"] = readiness["readiness"]
-    api_data["ideal_bedtime"] = ideal_bedtime["ideal_bedtimes"]
+    api_data["sleep"] = sleep["data"]
+    api_data["daily_sleep"] = daily_sleep["data"]
+    api_data["readiness"] = readiness["data"]
+    api_data["ideal_bedtime"] = ideal_bedtime["data"]
 
     return api_data[data_type]
