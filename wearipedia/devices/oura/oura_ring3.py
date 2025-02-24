@@ -13,12 +13,16 @@ class Oura_Ring_3(BaseDevice):
     """This device allows you to work with data from the `Oura Ring 3  <(https://ouraring.com/)>`_ device.
     Available datatypes for this device are:
 
-    * `sleep`: sleep data
-    * `daily_activity`: daily activity data
-    * `activity`: activity data
-    * `ideal_bedtime`: ideal bedtime data
-    * `readiness`: readiness data
     * `heart_rate`: heart_rate
+    * `personal_info`: personal information
+    * `session`: data on user engagement with sessions in the Oura app
+    * `enhanced_tag`: user tags on data
+    * `workout`: workout sessions
+    * `daily_activity`: daily activity data
+    * `daily_sleep`: daily sleep data including scores per day
+    * `sleep`: all logged sleep activities
+    * `readiness`: readiness data
+    * `ideal_sleep_time`: ideal bedtime data
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -43,12 +47,16 @@ class Oura_Ring_3(BaseDevice):
 
         self._initialize_device_params(
             [
-                "sleep",
-                "daily_activity",
-                "activity",
-                "ideal_bedtime",
-                "readiness",
                 "heart_rate",
+                "personal_info",
+                "session",
+                "enhanced_tag",
+                "workout",
+                "daily_activity",
+                "daily_sleep",
+                "sleep",
+                "readiness",
+                "ideal_sleep_time",
             ],
             params,
             {
