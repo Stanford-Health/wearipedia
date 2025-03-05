@@ -36,7 +36,7 @@ python = ">=3.9, <4.0"
 
 typer = {extras = ["all"], version = "^0.6.1"}
 rich = "^12.6.0"
-pandas = "1.5.3"
+pandas = "^2.2.3"
 tqdm = "^4.64.1"
 garminconnect = "^0.1.48"
 scipy = "^1.6"
@@ -47,7 +47,7 @@ myfitnesspal = "^2.0.1"
 polyline = "^2.0.0"
 jupyter = "^1.0.0"
 fastapi = "0.101"
-typing-extensions = "4.5.0"
+typing-extensions = "^4.12.2"
 kaleido = "0.2.1"
 lida = "^0.0.11"
 
