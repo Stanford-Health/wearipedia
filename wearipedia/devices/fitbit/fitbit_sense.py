@@ -20,7 +20,11 @@ class Fitbit_sense(BaseDevice):
     * `minutesFairlyActive`: number of minutes with fair activity
     * `distance`: in miles
     * `minutesSedentary`: number of minutes with no activity
-    * `heart_rate_day`: heart rate data
+    * `heart_rate_day`: heart rate summary over one day
+    * `heart_rate_day_detail_1sec`: heart rate data with granularity of 1 second
+    * `heart_rate_day_detail_1min`: heart rate data with granularity of 1 minute
+    * `heart_rate_day_detail_5min`: heart rate data with granularity of 5 minutes
+    * `heart_rate_day_detail_15min`: heart rate data with granularity of 15 minutes
     * `hrv`: heart rate variability data
     * `distance_day`: distance moved per day detailed by each minute
 
@@ -55,6 +59,10 @@ class Fitbit_sense(BaseDevice):
                 "distance",
                 "minutesSedentary",
                 "heart_rate_day",
+                "heart_rate_day_detail_1sec",
+                "heart_rate_day_detail_1min",
+                "heart_rate_day_detail_5min",
+                "heart_rate_day_detail_15min",
                 "hrv",
                 "distance_day",
             ],

@@ -49,6 +49,18 @@ def fetch_real_data(data_type, access_token, start_date, end_date, single_date):
         "heart_rate_day": {
             "url": f"https://api.fitbit.com/1/user/-/activities/heart/date/{single_date}/1d.json"
         },
+        "heart_rate_day_detail_1sec": {
+            "url": f"https://api.fitbit.com/1/user/-/activities/heart/date/{single_date}/1d/1sec.json"
+        },
+        "heart_rate_day_detail_1min": {
+            "url": f"https://api.fitbit.com/1/user/-/activities/heart/date/{single_date}/1d/1min.json"
+        },
+        "heart_rate_day_detail_5min": {
+            "url": f"https://api.fitbit.com/1/user/-/activities/heart/date/{single_date}/1d/5min.json"
+        },
+        "heart_rate_day_detail_15min": {
+            "url": f"https://api.fitbit.com/1/user/-/activities/heart/date/{single_date}/1d/15min.json"
+        },
         "hrv": {"url": f"https://api.fitbit.com/1/user/-/hrv/date/{single_date}.json"},
         "distance_day": {
             "url": f"https://api.fitbit.com/1/user/-/activities/distance/date/{single_date}/1d.json"
