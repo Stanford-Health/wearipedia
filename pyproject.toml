@@ -48,8 +48,6 @@ polyline = "^2.0.0"
 jupyter = "^1.0.0"
 fastapi = "0.101"
 typing-extensions = "^4.12.2"
-kaleido = "0.2.1"
-lida = "^0.0.11"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "^1.7.1"
