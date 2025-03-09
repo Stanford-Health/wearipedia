@@ -1,18 +1,25 @@
 from datetime import datetime, time, timedelta
 
+import numpy as np
+
 from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
 from .fitbit_authenticate import *
-from .fitbit_charge4_fetch import *
-from .fitbit_charge_4_gen import *
+from .fitbit_sense_fetch import *
+from .fitbit_sense_gen import *
 
-class_name = "Fitbit_charge_4"
+class_name = "Google_Pixel_Watch"
 
 
-class Fitbit_charge_4(BaseDevice):
-    """This device allows you to work with data from the `Fitbit charge  <(https://www.fitbit.com/global/au/products/trackers/charge4)>`_ device.
+class Google_Pixel_Watch(BaseDevice):
+    """This device allows you to work with data from the `Google Pixel Watch`_ device.
     Available datatypes for this device are:
 
+    * `intraday_breath_rate`: collected per stage of sleep
+    * `intraday_active_zone_minute`: collected per minute
+    * `intraday_heart_rate`: collected per second
+    * `intraday_hrv`: rmssd, lf and hf and collected during sleep
+    * `intraday_spo2`: in percentage collected during sleep
     * `sleep`: sleep data
     * `steps`: steps data
     * `minutesVeryActive`: number of minutes with high activity
@@ -20,25 +27,20 @@ class Fitbit_charge_4(BaseDevice):
     * `minutesFairlyActive`: number of minutes with fair activity
     * `distance`: in miles
     * `minutesSedentary`: number of minutes with no activity
-    * `intraday_breath_rate`: collected per stage of sleep
-    * `intraday_active_zone_minute`: collected per minute
-    * `intraday_heart_rate`: collected per second
-    * `intraday_hrv`: rmssd, lf and hf and collected during sleep
-    * `intraday_spo2`: in percentage collected during sleep
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
-    :param synthetic_start_date: start date for synthetic data generation, defaults to "2022-03-01"
+    :param synthetic_start_date: start date for synthetic data generation, defaults to "2024-04-01"
     :type synthetic_start_date: str, optional
-    :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
+    :param synthetic_end_date: end date for synthetic data generation, defaults to "2024-05-13"
     :type synthetic_end_date: str, optional
     """
 
     def __init__(
         self,
         seed=0,
-        synthetic_start_date="2022-12-01",
-        synthetic_end_date="2023-01-01",
+        synthetic_start_date="2024-01-01",
+        synthetic_end_date="2024-01-31",
     ):
 
         params = {
@@ -49,6 +51,11 @@ class Fitbit_charge_4(BaseDevice):
 
         self._initialize_device_params(
             [
+                "intraday_breath_rate",
+                "intraday_active_zone_minute",
+                "intraday_heart_rate",
+                "intraday_hrv",
+                "intraday_spo2",
                 "sleep",
                 "steps",
                 "minutesVeryActive",
@@ -56,28 +63,20 @@ class Fitbit_charge_4(BaseDevice):
                 "minutesFairlyActive",
                 "distance",
                 "minutesSedentary",
-                "intraday_breath_rate",
-                "intraday_active_zone_minute",
-                "intraday_heart_rate",
-                "intraday_hrv",
-                "intraday_spo2",
             ],
             params,
             {
                 "seed": 0,
-                "synthetic_start_date": "2022-12-01",
-                "synthetic_end_date": "2023-01-01",
+                "synthetic_start_date": "2024-01-01",
+                "synthetic_end_date": "2024-01-31",
             },
         )
 
     def _default_params(self):
-        params = {
-            "seed": 0,
+        return {
             "start_date": "2022-04-24",
             "end_date": "2022-04-28",
         }
-
-        return params
 
     def _filter_synthetic(self, data, data_type, params):
 
@@ -94,38 +93,29 @@ class Fitbit_charge_4(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        key_map = {
-            "sleep": "sleep",
-            "steps": "activities-steps",
-            "minutesVeryActive": "activities-minutesVeryActive",
-            "minutesLightlyActive": "activities-minutesLightlyActive",
-            "minutesFairlyActive": "activities-minutesFairlyActive",
-            "distance": "activities-distance",
-            "minutesSedentary": "activities-minutesSedentary",
-        }
-
-        if data_type in key_map:
-            key = key_map[data_type]
-            intermediary = data[0][key][num_days_start : -num_days_end + 1]
-            return [{key: intermediary}]
+        return data[num_days_start : -num_days_end - 1]
 
     def _get_real(self, data_type, params):
-
         data = fetch_real_data(
             data_type,
             self.user,
-            start_date=params["start_date"],
-            end_date=params["end_date"],
+            start_date=self.init_params["start_date"],
+            end_date=self.init_params["end_date"],
         )
         return data
 
     def _gen_synthetic(self):
 
         syn_data = create_syn_data(
-            self.init_params["seed"],
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
+
+        self.intraday_breath_rate = syn_data["intraday_breath_rate"]
+        self.intraday_active_zone_minute = syn_data["intraday_active_zone_minute"]
+        self.intraday_heart_rate = syn_data["intraday_heart_rate"]
+        self.intraday_hrv = syn_data["intraday_hrv"]
+        self.intraday_spo2 = syn_data["intraday_spo2"]
         self.sleep = syn_data["sleep"]
         self.steps = syn_data["steps"]
         self.minutesVeryActive = syn_data["minutesVeryActive"]
@@ -133,15 +123,8 @@ class Fitbit_charge_4(BaseDevice):
         self.minutesLightlyActive = syn_data["minutesLightlyActive"]
         self.distance = syn_data["distance"]
         self.minutesSedentary = syn_data["minutesSedentary"]
-        self.intraday_breath_rate = syn_data["intraday_breath_rate"]
-        self.intraday_active_zone_minute = syn_data["intraday_active_zone_minute"]
-        self.intraday_heart_rate = syn_data["intraday_heart_rate"]
-        self.intraday_hrv = syn_data["intraday_hrv"]
-        self.intraday_spo2 = syn_data["intraday_spo2"]
 
-    def _authenticate(self, token=""):
-        # authenticate this device against API
-        if token == "":
-            self.user = fitbit_token()
-        else:
-            self.user = token
+    def _authenticate(self, auth_creds):
+        client_id = auth_creds["client_id"]
+        client_secret = auth_creds["client_secret"]
+        self.user = fitbit_token(client_id, client_secret)
