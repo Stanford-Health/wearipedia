@@ -1,5 +1,6 @@
-from QualtricsAPI.Survey import Responses
 from QualtricsAPI.Setup import Credentials
+from QualtricsAPI.Survey import Responses
+
 
 def fetch_real_data(survey):
     """

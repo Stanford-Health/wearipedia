@@ -1,11 +1,12 @@
+from QualtricsAPI.Setup import Credentials
+
 from ...utils import seed_everything
 from ..device import BaseDevice
 from .qualtrics_fetch import *
 from .qualtrics_gen import *
 
-from QualtricsAPI.Setup import Credentials
-
 class_name = "Qualtrics"
+
 
 class Qualtrics(BaseDevice):
     """
@@ -19,6 +20,7 @@ class Qualtrics(BaseDevice):
     :param survey: ID of the survey, required
     :type survey: str
     """
+
     def __init__(self, seed=0, survey="your_survey_id_here"):
         params = {
             "seed": seed,
@@ -42,9 +44,7 @@ class Qualtrics(BaseDevice):
         }
 
     def _get_real(self, data_type, params):
-        return fetch_real_data(
-            params["survey"]
-        )
+        return fetch_real_data(params["survey"])
 
     def _filter_synthetic(self, data, data_type, params):
         return data
