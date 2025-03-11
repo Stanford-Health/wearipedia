@@ -90,6 +90,7 @@ class Oura_Ring_3(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
+        print(data)
         return data[num_days_start : -num_days_end + 1]
 
     def _get_real(self, data_type, params):
@@ -109,12 +110,16 @@ class Oura_Ring_3(BaseDevice):
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
-        self.sleep = syn_data["sleep"]
-        self.daily_activity = syn_data["daily_activity"]
-        self.activity = syn_data["activity"]
-        self.ideal_bedtime = syn_data["ideal_bedtime"]
-        self.readiness = syn_data["readiness"]
+        self.personal_info = []
         self.heart_rate = syn_data["heart_rate"]
+        self.session = syn_data["session"]
+        self.enhanced_tag = syn_data["enhanced_tag"]
+        self.workout = syn_data["workout"]
+        self.daily_activity = syn_data["daily_activity"]
+        self.daily_sleep = syn_data["daily_sleep"]
+        self.sleep = syn_data["sleep"]
+        self.readiness = syn_data["readiness"]
+        self.ideal_sleep_time = syn_data["ideal_sleep_time"]
 
     def _authenticate(self, token=""):
         if token == "":

@@ -6,6 +6,12 @@ import numpy as np
 __all__ = ["create_syn_data"]
 
 
+def convert_string_to_datetime(date_str):
+    date_object = datetime.strptime(date_str, "%Y-%m-%d")
+    formatted_date_str = f"{date_object.strftime('%Y-%m-%dT%H:%M:%S.%f')} -00:00"
+    return formatted_date_str
+
+
 def get_daily_activity(date):
     """Generate daily activity data for a given date.
 
@@ -14,11 +20,6 @@ def get_daily_activity(date):
     :return: daily activity data dictionary
     :rtype: dictionary
     """
-
-    def convert_string_to_datetime(date_str):
-        date_object = datetime.strptime(date_str, "%Y-%m-%d")
-        formatted_date_str = f"{date_object.strftime('%Y-%m-%dT%H:%M:%S.%f')} -00:00"
-        return formatted_date_str
 
     random_number = np.random.randint(100, 999)
 
@@ -62,6 +63,25 @@ def get_daily_activity(date):
         "timestamp": convert_string_to_datetime(date),
     }
     return daily_activity
+
+
+def get_daily_sleep(date):
+    daily_sleep_data = {
+        "id": 1,
+        "contributors": {
+            "deep_sleep": np.random.randint(0, 100),
+            "efficiency": np.random.randint(0, 100),
+            "latency": np.random.randint(0, 100),
+            "rem_sleep": np.random.randint(0, 100),
+            "restfulness": np.random.randint(0, 100),
+            "timing": np.random.randint(0, 100),
+            "total_sleep": np.random.randint(0, 100),
+        },
+        "day": date,
+        "score": np.random.randint(0, 100),
+        "timestamp": convert_string_to_datetime(date),
+    }
+    return daily_sleep_data
 
 
 def get_sleep(date):
@@ -343,6 +363,18 @@ def get_heart_rate(date):
     return heart_rate_data
 
 
+def get_session(date):
+    return []
+
+
+def get_enhanced_tag(date):
+    return []
+
+
+def get_workout(date):
+    return []
+
+
 def create_syn_data(seed, start_date, end_date):
     """Returns a dict of daily activity data, sleep data, ideal bedtime, readiness, and activity
 
@@ -372,12 +404,14 @@ def create_syn_data(seed, start_date, end_date):
     full_dict = collections.defaultdict(list)
 
     for date in synth_dates:
-
-        full_dict["sleep"].append(get_sleep(date))
-        full_dict["daily_activity"].append(get_daily_activity(date))
-        full_dict["activity"].append(get_activity(date))
-        full_dict["ideal_bedtime"].append(get_ideal_bedtime(date))
-        full_dict["readiness"].append(get_readiness(date))
         full_dict["heart_rate"].extend(get_heart_rate(date))
+        full_dict["session"].extend(get_session(date))
+        full_dict["enhanced_tag"].extend(get_enhanced_tag(date))
+        full_dict["workout"].extend(get_workout(date))
+        full_dict["daily_activity"].append(get_daily_activity(date))
+        full_dict["daily_sleep"].append(get_daily_sleep(date))
+        full_dict["sleep"].append(get_sleep(date))
+        full_dict["readiness"].append(get_readiness(date))
+        full_dict["ideal_sleep_time"].append(get_ideal_bedtime(date))
 
     return full_dict
