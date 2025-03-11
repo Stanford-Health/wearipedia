@@ -90,7 +90,6 @@ class Oura_Ring_3(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        print(data)
         return data[num_days_start : -num_days_end + 1]
 
     def _get_real(self, data_type, params):
