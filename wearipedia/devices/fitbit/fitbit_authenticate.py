@@ -68,7 +68,6 @@ def fitbit_token(client_id, client_secret):
         + "respiratory_rate%20oxygen_saturation"
     )
     variables["prompt"] = "none"
-    variables["redirect_uri"] = "https://www.wearipedia.com/"
     variables["grant_type"] = "authorization_code"
     variables["authorization"] = base64.urlsafe_b64encode(
         bytes(variables["client_id"] + ":" + variables["client_secret"], "utf-8")
@@ -78,7 +77,6 @@ def fitbit_token(client_id, client_secret):
     url = "https://www.fitbit.com/oauth2/authorize"  # authorization endpoint
     for key in [
         "client_id",
-        "redirect_uri",
         "code_challenge",
         "code_challenge_method",
         "scope",
