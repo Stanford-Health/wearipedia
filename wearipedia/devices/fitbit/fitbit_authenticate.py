@@ -7,16 +7,6 @@ import requests
 __all__ = ["fitbit_token"]
 
 
-def fitbit_token():
-    """gives us access token given the login info
-
-    :return: access token
-    :rtype: str
-    """
-
-    access_token = input("Enter your access token: ")
-
-
 def fitbit_application():
     """gives us access token given the auth_creds + going through the process, it's interactive
     Returns the client id and client secret"""
