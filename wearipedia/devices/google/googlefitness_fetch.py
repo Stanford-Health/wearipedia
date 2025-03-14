@@ -16,6 +16,7 @@ def milliconvert(d):
         * 1000
     )
 
+
 def transform_response_bucket(data):
     """
     Convert response structure for real data: List[Dict] to List[List[Dict]]
@@ -42,7 +43,7 @@ def fetch_real_data(
 
     # Header that sends the Access Token in the GET request
     headers = {
-        "Authorization": "Bearer {}".format(g_access_token),
+        "Authorization": f"Bearer {g_access_token}",
         "Content-Type": "application/json;encoding=utf-8",
     }
 
