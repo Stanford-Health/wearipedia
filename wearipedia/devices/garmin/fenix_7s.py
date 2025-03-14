@@ -1,4 +1,5 @@
 import os
+import tempfile
 import pickle
 from datetime import datetime
 
@@ -11,8 +12,19 @@ from .fenix_gen import *
 
 class_name = "Fenix7S"
 
-# todo: change this to better path
-CRED_CACHE_PATH = "/tmp/wearipedia_fenix_data.pkl"
+
+def user_identifier():
+    if "getuid" in dir(os):
+        return os.getuid()
+
+    if "getlogin" in dir(os):
+        return os.getlogin()
+
+    return "unknown"
+
+
+CRED_CACHE_PATH = os.path.join(
+    tempfile.gettempdir(), "wearipedia_fenix_data_{0}.pkl".format(user_identifier()))
 
 
 class Fenix7S(BaseDevice):
@@ -84,12 +96,14 @@ class Fenix7S(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        date_str_to_obj = lambda x: datetime.strptime(x, "%Y-%m-%d")
+        def date_str_to_obj(x): return datetime.strptime(x, "%Y-%m-%d")
 
         # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(self.init_params["synthetic_start_date"])
+        synthetic_start = date_str_to_obj(
+            self.init_params["synthetic_start_date"])
 
-        start_idx = (date_str_to_obj(params["start_date"]) - synthetic_start).days
+        start_idx = (date_str_to_obj(
+            params["start_date"]) - synthetic_start).days
         end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
 
         return data[start_idx:end_idx]
@@ -107,9 +121,21 @@ class Fenix7S(BaseDevice):
     def _authenticate(self, auth_creds):
         # check if we have cached credentials
         if self.init_params["use_cache"] and os.path.exists(CRED_CACHE_PATH):
-            self.api = pickle.load(open(CRED_CACHE_PATH, "rb"))
-        else:
-            self.api = Garmin(auth_creds["email"], auth_creds["password"])
-            self.api.login()
+            try:
+                self.api = pickle.load(open(CRED_CACHE_PATH, "rb"))
+                return
+            except:
+                print(
+                    "Could not load cached credentials. Re-authenticating...")
+                pass
 
-            pickle.dump(self.api, open(CRED_CACHE_PATH, "wb"))
+        self.api = Garmin(auth_creds["email"], auth_creds["password"])
+        self.api.login()
+
+        if self.init_params["use_cache"]:
+            with open(
+                os.open(CRED_CACHE_PATH,
+                        flags=os.O_CREAT | os.O_TRUNC | os.O_WRONLY,
+                        mode=0o600),
+                    mode="wb") as cred_cache_file:
+                pickle.dump(self.api, cred_cache_file)
