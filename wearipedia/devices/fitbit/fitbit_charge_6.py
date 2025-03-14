@@ -126,6 +126,8 @@ class Fitbit_charge_6(BaseDevice):
         self.minutesSedentary = syn_data["minutesSedentary"]
 
     def _authenticate(self, auth_creds):
-        client_id = auth_creds["client_id"]
-        client_secret = auth_creds["client_secret"]
-        self.user = fitbit_token(client_id, client_secret)
+        if token == "":
+            self.user = fitbit_token()
+        else:
+            self.user = token
+        self.user = fitbit_application()

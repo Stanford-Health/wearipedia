@@ -142,6 +142,6 @@ class Fitbit_charge_4(BaseDevice):
     def _authenticate(self, token=""):
         # authenticate this device against API
         if token == "":
-            self.user = fitbit_token()
+            self.user = fitbit_application()
         else:
             self.user = token

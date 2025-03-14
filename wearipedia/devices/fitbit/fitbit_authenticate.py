@@ -11,23 +11,11 @@ def fitbit_application():
     """gives us access token given the auth_creds + going through the process, it's interactive
     Returns the client id and client secret"""
 
-    params = {
-        "Description": "Any thing here should suffice",
-        "Application Website URL": "Place any url here, even google.com",
-        "Organization": "type the name of the organization",
-        "Organization Website URL": " type organization webiste",
-        "Terms of Service URL": "Any Url should suffice",
-        "Privacy Policy URL": "Any Url should suffice",
-        "OAuth 2.0 Application Type": "choose the appropriate type",
-    }
-
     print(
-        "fill the following parameters in this url then input the resulting client id and secret: ",
-        "https://dev.fitbit.com/apps/new",
+        "Input your client id and secret.",
+        "If you need a new application, you can register one at https://dev.fitbit.com/apps/new",
         "\n",
     )
-    for key, value in params.items():
-        print(key, ":", value)
 
     client_id = input("Enter the client id: ")
     client_secret = input("Enter the client secret: ")
@@ -35,7 +23,7 @@ def fitbit_application():
     return client_id, client_secret
 
 
-def fitbit_token(client_id, client_secret):
+def fitbit_token():
     """generates an access token"""
 
     code_verifier = (

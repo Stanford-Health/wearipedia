@@ -159,8 +159,7 @@ class Fitbit_sense(BaseDevice):
         self.intraday_spo2 = syn_data["intraday_spo2"]
 
     def _authenticate(self, token=""):
-        # authenticate this device against API
         if token == "":
-            self.user = fitbit_token()
+            self.user = fitbit_application()
         else:
             self.user = token
