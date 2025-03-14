@@ -6,6 +6,12 @@ import numpy as np
 __all__ = ["create_syn_data"]
 
 
+def convert_string_to_datetime(date_str):
+    date_object = datetime.strptime(date_str, "%Y-%m-%d")
+    formatted_date_str = f"{date_object.strftime('%Y-%m-%dT%H:%M:%S.%f')} -00:00"
+    return formatted_date_str
+
+
 def get_daily_activity(date):
     """Generate daily activity data for a given date.
 
@@ -14,11 +20,6 @@ def get_daily_activity(date):
     :return: daily activity data dictionary
     :rtype: dictionary
     """
-
-    def convert_string_to_datetime(date_str):
-        date_object = datetime.strptime(date_str, "%Y-%m-%d")
-        formatted_date_str = f"{date_object.strftime('%Y-%m-%dT%H:%M:%S.%f')} -00:00"
-        return formatted_date_str
 
     random_number = np.random.randint(100, 999)
 
@@ -64,6 +65,25 @@ def get_daily_activity(date):
     return daily_activity
 
 
+def get_daily_sleep(date):
+    daily_sleep_data = {
+        "id": 1,
+        "contributors": {
+            "deep_sleep": np.random.randint(1, 100),
+            "efficiency": np.random.randint(1, 100),
+            "latency": np.random.randint(1, 100),
+            "rem_sleep": np.random.randint(1, 100),
+            "restfulness": np.random.randint(1, 100),
+            "timing": np.random.randint(1, 100),
+            "total_sleep": np.random.randint(1, 100),
+        },
+        "day": date,
+        "score": np.random.randint(1, 100),
+        "timestamp": convert_string_to_datetime(date),
+    }
+    return daily_sleep_data
+
+
 def get_sleep(date):
     """Generate sleep data for a given date.
 
@@ -91,7 +111,7 @@ def get_sleep(date):
     awake = np.random.randint(0, int(duration * 0.1))
     rem = np.random.randint(int(duration * 0.2), int(duration * 0.3))
     deep = np.random.randint(int(duration * 0.4), int(duration * 0.6))
-    light = total - rem - deep - awake
+    light = total - rem - deep
     midpoint_time = np.random.randint(int(duration * 0.4), int(duration * 0.6))
     efficiency = np.random.randint(80, 100)
     restless = np.random.randint(5 * 60, 30 * 60)
@@ -126,48 +146,56 @@ def get_sleep(date):
     temperature_delta = round(np.random.uniform(-1, 1), 2)
 
     sleep_data = {
-        "summary_date": summary_date.strftime("%Y-%m-%d"),
-        "period_id": period_id,
-        "is_longest": is_longest,
-        "timezone": timezone,
+        "id": period_id,
+        "average_breath": breath_average,
+        "average_heart_rate": hr_average,
+        "average_hrv": np.random.randint(45, 65),
+        "awake_time": awake,
         "bedtime_end": bedtime_end,
         "bedtime_start": bedtime_start,
-        "type": sleep_type,
-        "breath_average": breath_average,
-        "average_breath_variation": average_breath_variation,
-        "duration": duration,
-        "total": total,
-        "awake": awake,
-        "rem": rem,
-        "deep": deep,
-        "light": light,
-        "midpoint_time": midpoint_time,
+        "day": summary_date.strftime("%Y-%m-%d"),
+        "deep_sleep_duration": deep,
         "efficiency": efficiency,
-        "restless": restless,
-        "onset_latency": onset_latency,
-        "got_up_count": got_up_count,
-        "wake_up_count": wake_up_count,
-        "hr_5min": hr_5min,
-        "hr_average": hr_average,
-        "hr_lowest": hr_lowest,
-        "lowest_heart_rate_time_offset": lowest_heart_rate_time_offset,
-        "hypnogram_5min": hypnogram_5min,
-        "rmssd": rmssd,
-        "rmssd_5min": rmssd_5min,
-        "score": score,
-        "score_alignment": score_alignment,
-        "score_deep": score_deep,
-        "score_disturbances": score_disturbances,
-        "score_efficiency": score_efficiency,
-        "score_latency": score_latency,
-        "score_rem": score_rem,
-        "score_total": score_total,
-        "temperature_deviation": temperature_deviation,
-        "temperature_trend_deviation": temperature_trend_deviation,
-        "bedtime_start_delta": bedtime_start_delta,
-        "bedtime_end_delta": bedtime_end_delta,
-        "midpoint_at_delta": midpoint_at_delta,
-        "temperature_delta": temperature_delta,
+        "heart_rate": {
+            "interval": 0,
+            "items": [0],
+            "timestamp": convert_string_to_datetime(date),
+        },
+        "hrv": {
+            "interval": 0,
+            "items": [0],
+            "timestamp": convert_string_to_datetime(date),
+        },
+        "latency": np.random.randint(600, 1800),
+        "light_sleep_duration": light,
+        "low_battery_alert": False,
+        "lowest_heart_rate": hr_lowest,
+        "movement_30_sec": "1",
+        "period": period_id,
+        "readiness": {
+            "contributors": {
+                "activity_balance": np.random.randint(1, 100),
+                "body_temperature": np.random.randint(1, 100),
+                "hrv_balance": np.random.randint(1, 100),
+                "previous_day_activity": np.random.randint(1, 100),
+                "previous_night": np.random.randint(1, 100),
+                "recovery_index": np.random.randint(1, 100),
+                "resting_heart_rate": np.random.randint(1, 100),
+                "sleep_balance": np.random.randint(1, 100),
+            },
+            "score": np.random.randint(1, 100),
+            "temperature_deviation": round(np.random.uniform(-1, 1), 2),
+            "temperature_trend_deviation": round(np.random.uniform(-1, 1), 2),
+        },
+        "readiness_score_delta": np.random.randint(-100, 100),
+        "rem_sleep_duration": rem,
+        "restless_periods": restless,
+        "sleep_phase_5_min": "1",
+        "sleep_score_delta": np.random.randint(-100, 100),
+        "sleep_algorithm_version": "1.0.0",
+        "time_in_bed": total + awake,
+        "total_sleep_duration": total,
+        "type": sleep_type,
     }
     return sleep_data
 
@@ -343,6 +371,18 @@ def get_heart_rate(date):
     return heart_rate_data
 
 
+def get_session(date):
+    return []
+
+
+def get_enhanced_tag(date):
+    return []
+
+
+def get_workout(date):
+    return []
+
+
 def create_syn_data(seed, start_date, end_date):
     """Returns a dict of daily activity data, sleep data, ideal bedtime, readiness, and activity
 
@@ -372,12 +412,14 @@ def create_syn_data(seed, start_date, end_date):
     full_dict = collections.defaultdict(list)
 
     for date in synth_dates:
-
-        full_dict["sleep"].append(get_sleep(date))
-        full_dict["daily_activity"].append(get_daily_activity(date))
-        full_dict["activity"].append(get_activity(date))
-        full_dict["ideal_bedtime"].append(get_ideal_bedtime(date))
-        full_dict["readiness"].append(get_readiness(date))
         full_dict["heart_rate"].extend(get_heart_rate(date))
+        full_dict["session"].extend(get_session(date))
+        full_dict["enhanced_tag"].extend(get_enhanced_tag(date))
+        full_dict["workout"].extend(get_workout(date))
+        full_dict["daily_activity"].append(get_daily_activity(date))
+        full_dict["daily_sleep"].append(get_daily_sleep(date))
+        full_dict["sleep"].append(get_sleep(date))
+        full_dict["readiness"].append(get_readiness(date))
+        full_dict["ideal_sleep_time"].append(get_ideal_bedtime(date))
 
     return full_dict
