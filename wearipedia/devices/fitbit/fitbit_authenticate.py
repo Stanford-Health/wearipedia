@@ -4,7 +4,7 @@ import os
 
 import requests
 
-__all__ = ["fitbit_token"]
+__all__ = ["fitbit_token", "fitbit_application"]
 
 
 def fitbit_application():
