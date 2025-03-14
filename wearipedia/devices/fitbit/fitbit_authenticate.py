@@ -19,7 +19,6 @@ def fitbit_application():
         "Terms of Service URL": "Any Url should suffice",
         "Privacy Policy URL": "Any Url should suffice",
         "OAuth 2.0 Application Type": "choose the appropriate type",
-        "Redirect URL": "https://www.wearipedia.com/",
     }
 
     print(

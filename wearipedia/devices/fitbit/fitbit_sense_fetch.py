@@ -8,7 +8,9 @@ def call_API(access_token: str, url: str, call: str = "GET"):
     return requests.request(call, url=url, headers=headers).json()
 
 
-def fetch_real_data(data_type, access_token, start_date, end_date=None):
+def fetch_real_data(
+    data_type, access_token, start_date, end_date=None, single_date=None
+):
     """Main function for fetching real data from the Fitbit API.
 
     :param start_date: the start date represented as a string in the format "YYYY-MM-DD"
