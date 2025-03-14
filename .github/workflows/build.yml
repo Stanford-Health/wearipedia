@@ -1,11 +1,11 @@
 name: build
 
-on: 
+on:
   push:
   workflow_dispatch:
     inputs:
       git-ref:
-        description: Git Ref (Optional)    
+        description: Git Ref (Optional)
         required: false
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.8"]
+        python-version: ["3.9"]
     runs-on: ${{ matrix.os }}
 
     steps:
