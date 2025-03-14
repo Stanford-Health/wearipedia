@@ -17,6 +17,7 @@ class Fitbit_charge_6(BaseDevice):
 
     * `intraday_breath_rate`: collected per stage of sleep
     * `intraday_active_zone_minute`: collected per minute
+    * `intraday_activity`: collected per minute
     * `intraday_heart_rate`: collected per second
     * `intraday_hrv`: rmssd, lf and hf and collected during sleep
     * `intraday_spo2`: in percentage collected during sleep
@@ -101,7 +102,6 @@ class Fitbit_charge_6(BaseDevice):
             self.user,
             start_date=params["start_date"],
             end_date=params["end_date"],
-            single_date=params.get("single_date"),
         )
         return data
 
