@@ -54,6 +54,7 @@ class Fitbit_charge_6(BaseDevice):
             [
                 "intraday_breath_rate",
                 "intraday_active_zone_minute",
+                "intraday_activity",
                 "intraday_heart_rate",
                 "intraday_hrv",
                 "intraday_spo2",
@@ -127,7 +128,6 @@ class Fitbit_charge_6(BaseDevice):
 
     def _authenticate(self, auth_creds):
         if token == "":
-            self.user = fitbit_token()
+            self.user = fitbit_application()
         else:
             self.user = token
-        self.user = fitbit_application()
