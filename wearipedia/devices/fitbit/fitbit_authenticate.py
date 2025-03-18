@@ -20,10 +20,10 @@ def fitbit_application():
     client_id = input("Enter the client id: ")
     client_secret = input("Enter the client secret: ")
 
-    return client_id, client_secret
+    return fitbit_token(client_id, client_secret)
 
 
-def fitbit_token():
+def fitbit_token(client_id, client_secret):
     """generates an access token"""
 
     code_verifier = (
@@ -95,4 +95,5 @@ def fitbit_token():
 
     access_token = "".join(lst_of_token)
 
+    print("Access token:", access_token)
     return access_token
