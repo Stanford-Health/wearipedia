@@ -41,6 +41,7 @@ dependencies = [
     "jupyter>=1.0.0",
     "fastapi==0.101",
     "typing-extensions>=4.12.2",
+    "garth>=0.5.3; python_version >= '3.10'"
 ]
 
 [build-system]
