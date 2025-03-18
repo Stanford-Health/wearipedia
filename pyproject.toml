@@ -1,14 +1,12 @@
 # Poetry pyproject.toml: https://python-poetry.org/docs/pyproject/
-[build-system]
-requires = ["poetry_core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry]
+[project]
 name = "wearipedia"
 version = "0.1.3"
 description = "Wearable data for all"
+authors = [
+  {name = "The Stanford Wearipedia Project", email = "<arjo@stanford.edu>"},
+]
 readme = "README.md"
-authors = ["The Stanford Wearipedia Project <arjo@stanford.edu>"]
 license = "MIT"
 repository = "https://github.com/Stanford-Health/wearipedia"
 homepage = "http://wearipedia.com"
@@ -27,27 +25,31 @@ classifiers = [  #! Update me
   "Programming Language :: Python :: 3.9",
 ]
 
+requires-python = ">=3.9, <3.13"
+dependencies = [
+    "typer[all]>=0.6.1",
+    "rich>=12.6.0",
+    "pandas==2.2.3",
+    "tqdm>=4.64.1",
+    "garminconnect>=0.1.48",
+    "scipy>=1.6",
+    "wget>=3.2",
+    "fbm>=0.3.0",
+    "beautifulsoup4>=4.12.2",
+    "myfitnesspal>=2.0.1",
+    "polyline>=2.0.0",
+    "jupyter>=1.0.0",
+    "fastapi==0.101",
+    "typing-extensions>=4.12.2",
+]
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry.scripts]
 # Entry points for the package https://python-poetry.org/docs/pyproject/#scripts
 "wearipedia" = "wearipedia.cl_parser:parse_CLI"
-
-[tool.poetry.dependencies]
-python = ">=3.9, <3.13"
-
-typer = {extras = ["all"], version = "^0.6.1"}
-rich = "^12.6.0"
-pandas = "^2.2.3"
-tqdm = "^4.64.1"
-garminconnect = "^0.1.48"
-scipy = "^1.6"
-wget = "^3.2"
-fbm = "^0.3.0"
-beautifulsoup4 = "^4.12.2"
-myfitnesspal = "^2.0.1"
-polyline = "^2.0.0"
-jupyter = "^1.0.0"
-fastapi = "0.101"
-typing-extensions = "^4.12.2"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "^1.7.1"
