@@ -956,30 +956,32 @@ files = [
 
 [[package]]
 name = "garminconnect"
-version = "0.1.55"
+version = "0.2.25"
 description = "Python 3 API wrapper for Garmin Connect"
 optional = false
-python-versions = "*"
+python-versions = ">=3.10"
 groups = ["main"]
+markers = "python_version >= \"3.10\""
 files = [
-    {file = "garminconnect-0.1.55.tar.gz", hash = "sha256:701183a235244ca3b6a7a06ee5ecda0a13834795e9caed7330d4d105d86647fa"},
+    {file = "garminconnect-0.2.25-py3-none-any.whl", hash = "sha256:8285311851fbcfc0eced6d14cdcbcf8c00197843ac4e9ac51921c9bf28899a1c"},
+    {file = "garminconnect-0.2.25.tar.gz", hash = "sha256:0b20ce70e78f1bec5d45c0b9fd141553f117b752c2daba0cd34187a8ab09caff"},
 ]
 
 [package.dependencies]
-cloudscraper = "*"
-requests = "*"
+garth = "0.5.2"
+withings-sync = "4.2.5"
 
 [[package]]
 name = "garth"
-version = "0.5.3"
+version = "0.5.2"
 description = "Garmin SSO auth + Connect client"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "python_version >= \"3.10\""
 files = [
-    {file = "garth-0.5.3-py3-none-any.whl", hash = "sha256:c5539bd1b2078ffc0188e7de93c823f06b7fe74399032bd35a2d259133bdf464"},
-    {file = "garth-0.5.3.tar.gz", hash = "sha256:732a970a47e4a5def556a82e645380e1b3bf74e90a059904cc9e8154b0815850"},
+    {file = "garth-0.5.2-py3-none-any.whl", hash = "sha256:bd0297ef82afdf06e10ed0c271c9270bbf6bec832d62d108a325a8ac4723d74a"},
+    {file = "garth-0.5.2.tar.gz", hash = "sha256:594acafe27989daa3ffbc8460caf063802359c6b1f40c98ffd3b21f69adc6e09"},
 ]
 
 [package.dependencies]
@@ -3090,6 +3092,22 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "python-dotenv"
+version = "1.0.1"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+markers = "python_version >= \"3.10\""
+files = [
+    {file = "python-dotenv-1.0.1.tar.gz", hash = "sha256:e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca"},
+    {file = "python_dotenv-1.0.1-py3-none-any.whl", hash = "sha256:f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "python-json-logger"
 version = "2.0.7"
 description = "A python library adding a json log formatter"
@@ -4503,6 +4521,24 @@ files = [
 ]
 
 [[package]]
+name = "withings-sync"
+version = "4.2.5"
+description = "A tool for synchronisation of Withings (ex. Nokia Health Body) to Garmin Connect and Trainer Road."
+optional = false
+python-versions = "*"
+groups = ["main"]
+markers = "python_version >= \"3.10\""
+files = [
+    {file = "withings_sync-4.2.5.tar.gz", hash = "sha256:ed98da96e3779d166a9bdb7c0d67bd9a250d57146a684ffd21c62fc190f2b849"},
+]
+
+[package.dependencies]
+garth = ">=0.4.32"
+lxml = "*"
+python-dotenv = "*"
+requests = "*"
+
+[[package]]
 name = "wrapt"
 version = "1.16.0"
 description = "Module for decorators, wrappers and monkey patching."
@@ -4602,4 +4638,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9, <3.13"
-content-hash = "87ff37aa01744a7bef23a9f02e14fcee8e925905aefdada7e1a9a8cabe524e1f"
+content-hash = "1c4d23cc9360cc6aa5243df01cc37b0c1304b64487b79ad952986bb0c18d9e93"

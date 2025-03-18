@@ -1,9 +1,8 @@
 import os
-import tempfile
 import pickle
+import tempfile
 from datetime import datetime
 
-import garth
 from garminconnect import Garmin
 
 from ...devices.device import BaseDevice
@@ -25,7 +24,8 @@ def user_identifier():
 
 
 CRED_CACHE_PATH = os.path.join(
-    tempfile.gettempdir(), "wearipedia_fenix_data_{0}.pkl".format(user_identifier()))
+    tempfile.gettempdir(), f"wearipedia_fenix_data_{user_identifier()}.pkl"
+)
 
 
 class Fenix7S(BaseDevice):
@@ -147,13 +147,11 @@ class Fenix7S(BaseDevice):
     def _authenticate(self, auth_creds):
         # check if we have cached credentials
         if self.init_params["use_cache"] and os.path.exists(CRED_CACHE_PATH):
-<<<<<<< HEAD
             try:
                 self.api = pickle.load(open(CRED_CACHE_PATH, "rb"))
                 return
             except:
-                print(
-                    "Could not load cached credentials. Re-authenticating...")
+                print("Could not load cached credentials. Re-authenticating...")
                 pass
 
         self.api = Garmin(auth_creds["email"], auth_creds["password"])
@@ -161,15 +159,11 @@ class Fenix7S(BaseDevice):
 
         if self.init_params["use_cache"]:
             with open(
-                os.open(CRED_CACHE_PATH,
-                        flags=os.O_CREAT | os.O_TRUNC | os.O_WRONLY,
-                        mode=0o600),
-                    mode="wb") as cred_cache_file:
+                os.open(
+                    CRED_CACHE_PATH,
+                    flags=os.O_CREAT | os.O_TRUNC | os.O_WRONLY,
+                    mode=0o600,
+                ),
+                mode="wb",
+            ) as cred_cache_file:
                 pickle.dump(self.api, cred_cache_file)
-=======
-            self.api = pickle.load(open(CRED_CACHE_PATH, "rb"))
-        else:
-            self.api = garth.Client(domain="garmin.com")
-            self.api.login(auth_creds["email"], auth_creds["password"])
-            pickle.dump(self.api, open(CRED_CACHE_PATH, "wb"))
->>>>>>> f99b5f9 (garmin-updates)

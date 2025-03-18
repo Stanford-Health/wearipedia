@@ -42,7 +42,7 @@ def fetch_garmin_url(data_type):
 
 # Steps, HR
 def fetch_steps_and_hr(api, data_type, start_date, num_days, params=None):
-    display_name = api.profile["displayName"]
+    display_name = api.display_name
     url = f"{fetch_garmin_url(data_type)}/{display_name}"
     response = []
     for i in tqdm(range(num_days)):
@@ -73,7 +73,7 @@ def fetch_blood_pressure_and_weigh_ins(
 
 # RHR
 def fetch_resting_heart_rate(api, data_type, start_date, end_date, params=None):
-    display_name = api.profile["displayName"]
+    display_name = api.display_name
     url = f"{fetch_garmin_url(data_type)}/{display_name}"
     params = {"fromDate": str(start_date), "untilDate": str(end_date), "metricId": 60}
     return api.connectapi(url, params=params)
@@ -81,7 +81,7 @@ def fetch_resting_heart_rate(api, data_type, start_date, end_date, params=None):
 
 # Sleep
 def fetch_sleep(api, data_type, start_date, num_days, params=None):
-    display_name = api.profile["displayName"]
+    display_name = api.display_name
     response = []
     url = f"{fetch_garmin_url(data_type)}/{display_name}"
     for i in tqdm(range(num_days)):
@@ -123,7 +123,7 @@ def fetch_real_data(start_date, end_date, data_type, api):
         datetime.strptime(end_date, "%Y-%m-%d")
         - datetime.strptime(start_date, "%Y-%m-%d")
     ).days
-    display_name = api.profile["displayName"]
+    display_name = api.display_name
 
     if data_type in ["steps", "hr"]:
         return fetch_steps_and_hr(api, data_type, start_date, num_days)

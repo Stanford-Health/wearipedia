@@ -31,7 +31,6 @@ dependencies = [
     "rich>=12.6.0",
     "pandas==2.2.3",
     "tqdm>=4.64.1",
-    "garminconnect>=0.1.48",
     "scipy>=1.6",
     "wget>=3.2",
     "fbm>=0.3.0",
@@ -41,7 +40,8 @@ dependencies = [
     "jupyter>=1.0.0",
     "fastapi==0.101",
     "typing-extensions>=4.12.2",
-    "garth>=0.5.3; python_version >= '3.10'"
+    "garminconnect>=0.2.25; python_version >= '3.10'",
+    "garth>=0.5.2; python_version >= '3.10'"
 ]
 
 [build-system]
