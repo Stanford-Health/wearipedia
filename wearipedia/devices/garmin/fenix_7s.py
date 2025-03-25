@@ -1,6 +1,6 @@
 import os
-import tempfile
 import pickle
+import tempfile
 from datetime import datetime
 
 from garminconnect import Garmin
@@ -24,7 +24,8 @@ def user_identifier():
 
 
 CRED_CACHE_PATH = os.path.join(
-    tempfile.gettempdir(), "wearipedia_fenix_data_{0}.pkl".format(user_identifier()))
+    tempfile.gettempdir(), f"wearipedia_fenix_data_{user_identifier()}.pkl"
+)
 
 
 class Fenix7S(BaseDevice):
@@ -32,12 +33,19 @@ class Fenix7S(BaseDevice):
     Available datatypes for this device are:
 
     * `dates`: a list of consecutive dates
-
     * `steps`: a sibling list to `dates` that contains step data for each day
+    * `body_battery`: a sibling list to `dates` that contains body battery data for each day
+    * `hr`: a sibling list to `dates` that contains heart rate data for each day
+    * `blood_pressure`: a sibling list to `dates` that contains blood pressure data for each day
+    * `floors`: a sibling list to `dates` that contains floors data for each day
+    * `rhr`: a sibling list to `dates` that contains resting heart rate data for each day
+    * `hydration`: a sibling list to `dates` that contains hydration data for each day
+    * `sleep`: a sibling list to `dates` that contains sleep data for each day
+    * `stress`: a sibling list to `dates` that contains stress data for each day
+    * `respiration`: a sibling list to `dates` that contains respiration data for each day
+    * `spo2`: a sibling list to `dates` that contains blood oxygen saturation data for each day
+    * `hrv`: a sibling list to `dates` that contains heart rate variability data for each day
 
-    * `hrs`: a sibling list to `dates` that contains heart rate data for each day
-
-    * `brpms`: a sibling list to `dates` that contains breath rate data for each day
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -56,7 +64,6 @@ class Fenix7S(BaseDevice):
         synthetic_end_date="2022-06-17",
         use_cache=True,
     ):
-
         # use_cache just means that we'll use the cached credentials
         # as opposed to re-authenticating every time (the API tends to
         # rate-limit a lot, see this GitHub issue:
@@ -70,7 +77,21 @@ class Fenix7S(BaseDevice):
         }
 
         self._initialize_device_params(
-            ["dates", "steps", "hrs", "brpms"],
+            [
+                "steps",
+                "body_battery",
+                "hr",
+                "blood_pressure",
+                "floors",
+                "rhr",
+                "hydration",
+                "sleep",
+                "stress",
+                "respiration",
+                "spo2",
+                "dates",
+                "hrv",
+            ],
             params,
             {
                 "seed": 0,
@@ -96,27 +117,32 @@ class Fenix7S(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        def date_str_to_obj(x): return datetime.strptime(x, "%Y-%m-%d")
-
-        # get the indices by subtracting against the start of the synthetic data
-        synthetic_start = date_str_to_obj(
-            self.init_params["synthetic_start_date"])
-
-        start_idx = (date_str_to_obj(
-            params["start_date"]) - synthetic_start).days
-        end_idx = (date_str_to_obj(params["end_date"]) - synthetic_start).days
-
-        return data[start_idx:end_idx]
+        # Data also contains Dicts along with lists, so we can't slice directly
+        # As data is already filtered, we just return the data
+        return data
 
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
-
         # and based on start and end dates
-        self.dates, self.steps, self.hrs, self.brpms = create_syn_data(
+
+        synth_data = create_syn_data(
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
+        self.dates = synth_data["dates"]
+        self.hrv = synth_data["hrv"]
+        self.steps = synth_data["steps"]
+        self.hr = synth_data["hr"]
+        self.body_battery = synth_data["body_battery"]
+        self.blood_pressure = synth_data["blood_pressure"]
+        self.floors = synth_data["floors"]
+        self.rhr = synth_data["rhr"]
+        self.hydration = synth_data["hydration"]
+        self.sleep = synth_data["sleep"]
+        self.stress = synth_data["stress"]
+        self.respiration = synth_data["respiration"]
+        self.spo2 = synth_data["spo2"]
 
     def _authenticate(self, auth_creds):
         # check if we have cached credentials
@@ -125,8 +151,7 @@ class Fenix7S(BaseDevice):
                 self.api = pickle.load(open(CRED_CACHE_PATH, "rb"))
                 return
             except:
-                print(
-                    "Could not load cached credentials. Re-authenticating...")
+                print("Could not load cached credentials. Re-authenticating...")
                 pass
 
         self.api = Garmin(auth_creds["email"], auth_creds["password"])
@@ -134,8 +159,11 @@ class Fenix7S(BaseDevice):
 
         if self.init_params["use_cache"]:
             with open(
-                os.open(CRED_CACHE_PATH,
-                        flags=os.O_CREAT | os.O_TRUNC | os.O_WRONLY,
-                        mode=0o600),
-                    mode="wb") as cred_cache_file:
+                os.open(
+                    CRED_CACHE_PATH,
+                    flags=os.O_CREAT | os.O_TRUNC | os.O_WRONLY,
+                    mode=0o600,
+                ),
+                mode="wb",
+            ) as cred_cache_file:
                 pickle.dump(self.api, cred_cache_file)
