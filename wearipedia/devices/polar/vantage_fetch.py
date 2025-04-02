@@ -8,106 +8,143 @@ import requests
 
 
 def fetch_real_data(
-    session, uid, email, password, start_date, end_date, data_type, training_id=None
+    access_token, user_id, start_date, end_date, data_type, training_id=None
 ):
+    headers = {"Accept": "application/json", "Authorization": f"Bearer {access_token}"}
 
-    # the json data that will be sent to the API as the request body
-    json_data = {
-        "userId": uid,
-        "fromDate": start_date,
-        "toDate": end_date,
-    }
-
-    # the headers that will be sent to the API as the request headers
-    headers = {
-        "x-requested-with": "XMLHttpRequest",
-    }
-
-    # if the session is not set, we need to throw an error
-    if session == None:
-        raise Exception("Not Authenticated, please login")
-
-    # get the actual training session data
-    if data_type == "training_history":
-
-        # send the request to the API
-        activities = session.post(
-            "https://flow.polar.com/api/training/history",
-            cookies=session.cookies.get_dict(),
+    if data_type == "training_data":
+        training_history = []
+        r = requests.post(
+            f"https://www.polaraccesslink.com/v3/users/{user_id}/exercise-transactions",
             headers=headers,
-            json=json_data,
         )
 
-        # if the request was not successful, return an empty list
-        if activities.status_code != 200:
-            raise Exception("Activity data not found")
+        if r.status_code == 201:
+            transaction_id = r.json()["transaction-id"]
+        elif r.status_code == 204:
+            print("No data available")
+            return []
+        else:
+            raise Exception("Opening transaction for training history failed:", r)
 
-        # if the request was successful, return the json data
-        activities = activities.json()
+        r = requests.get(
+            f"https://www.polaraccesslink.com/v3/users/{user_id}/exercise-transactions/{transaction_id}",
+            headers=headers,
+        )
 
-        # return the activities
-        return activities
+        if r.status_code >= 200 and r.status_code < 400:
+            training_history = r.json()["exercises"]
+        else:
+            raise Exception("Failed to fetch exercises:", r)
+
+        r = requests.put(
+            "https://www.polaraccesslink.com/v3/users/{user_id}/exercise-transactions/{transaction_id}",
+            headers=headers,
+        )
+        return training_history
 
     # get the sleep data
-    if data_type == "sleep":
+    elif data_type == "sleep":
 
-        # find the dates between the start and end date
-        dates = pd.date_range(start_date, end_date)
-
-        # the endpoint link for the sleep data
-        sleep_req_link = f"https://sleep-api.flow.polar.com/api/sleep/report?from={start_date}&to={end_date}"
-
-        # send the request to the API
-        sleep = session.get(
-            sleep_req_link,
-            cookies=session.cookies.get_dict(),
-            headers=headers,
-            json=json_data,
+        r = requests.get(
+            "https://www.polaraccesslink.com/v3/users/sleep", headers=headers
         )
 
-        # if the request was not successful, return an empty list
-        if sleep.status_code != 200:
-            print("Sleep data not found")
-            if len(dates) < 31:
-                raise Exception("Please provide a date range of atleast 1 month")
-            return []
-
-        # if the request was successful, return the json data
-        return sleep.json()
+        if r.status_code >= 200 and r.status_code < 400:
+            return r.json()["nights"]
+        else:
+            raise Exception("Failed to fetch sleep data:", r)
 
     # get the training data by id
-    if data_type == "training_by_id":
-
-        # if the training id is not provided, return an empty list
-        if training_id == None:
-            raise Exception("Please provide training_id")
-
-        # send the request to the API
-        r = session.get("https://flow.polar.com/api/export/training/csv/" + training_id)
-
-        # if the request was not successful, return an empty list
-        if r.status_code != 200:
-            raise Exception("Training data not found")
-
-        # this extracts the first row of the csv file, which contains the actvity info
-        res_df_info = pd.read_csv(
-            io.StringIO(r.text), sep=",", engine="python", nrows=1
+    elif data_type == "training_by_id":
+        if not training_id:
+            raise Exception("No training_id specified")
+        training_data = {}
+        r = requests.post(
+            f"https://www.polaraccesslink.com/v3/users/{user_id}/exercise-transactions",
+            headers=headers,
         )
 
-        # this extracts the rest of the csv file, which contains the activity data
-        res_df_data = pd.read_csv(
-            io.StringIO(r.text), sep=",", engine="python", skiprows=2
+        if r.status_code == 201:
+            transaction_id = r.json()["transaction-id"]
+        elif r.status_code == 204:
+            print("No data available")
+            return {}
+        else:
+            raise Exception("Opening transaction for training history failed:", r)
+
+        r = requests.get(
+            "https://www.polaraccesslink.com/v3/users/{user_id}/exercise-transactions/{transaction_id}/exercises/{training_id}",
+            headers=headers,
         )
 
-        # convert the data to a dictionary
-        filtered = res_df_data.to_dict("index")
+        if r.status_code >= 200 and r.status_code < 400:
+            training_data = r.json()
+        else:
+            raise Exception("Failed to fetch exercises:", r)
 
-        # create an array to store the data
-        arr = [res_df_info.to_dict("index")[0]]
+        r = requests.put(
+            "https://www.polaraccesslink.com/v3/users/{user_id}/exercise-transactions/{transaction_id}",
+            headers=headers,
+        )
+        return training_data
+    elif data_type == "daily_activity":
+        daily_activity = []
+        r = requests.post(
+            f"https://www.polaraccesslink.com/v3/users/{user_id}/activity-transactions",
+            headers=headers,
+        )
 
-        # append the data to the array
-        for i in filtered:
-            arr.append(filtered[i])
+        if r.status_code == 201:
+            transaction_id = r.json()["transaction-id"]
+        elif r.status_code == 204:
+            print("No data available")
+            return []
+        else:
+            raise Exception("Opening transaction for activity history failed:", r)
 
-        # return the array
-        return arr
+        r = requests.get(
+            f"https://www.polaraccesslink.com/v3/users/{user_id}/activity-transactions/{transaction_id}",
+            headers=headers,
+        )
+
+        if r.status_code >= 200 and r.status_code < 400:
+            training_history = r.json()["activity-log"]
+        else:
+            raise Exception("Failed to fetch activities:", r)
+
+        r = requests.put(
+            "https://www.polaraccesslink.com/v3/users/{user_id}/activity-transactions/{transaction_id}",
+            headers=headers,
+        )
+        return training_history
+    elif data_type == "activity_by_id":
+        if not training_id:
+            raise Exception("No training_id specified")
+        training_data = {}
+        r = requests.post(
+            f"https://www.polaraccesslink.com/v3/users/{user_id}/activity-transactions",
+            headers=headers,
+        )
+
+        if r.status_code >= 200 and r.status_code < 400:
+            transaction_id = r.json()["transaction-id"]
+        else:
+            raise Exception("Opening transaction for training history failed:", r)
+        r = requests.get(
+            "https://www.polaraccesslink.com/v3/users/{user_id}/activity-transactions/{transaction_id}/activities/{training_id}",
+            headers=headers,
+        )
+
+        if r.status_code >= 200 and r.status_code < 400:
+            training_data = r.json()
+        else:
+            raise Exception("Failed to fetch activity:", r)
+
+        r = requests.put(
+            "https://www.polaraccesslink.com/v3/users/{user_id}/activity-transactions/{transaction_id}",
+            headers=headers,
+        )
+        return training_data
+    else:
+        raise Exception("Unhandled data type requested")
