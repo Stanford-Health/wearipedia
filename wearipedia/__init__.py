@@ -81,6 +81,7 @@ def get_all_device_names():
         "polar/vantage",
         "strava/strava",
         "myfitnesspal/myfitnesspal",
+        "qualtrics/qualtrics",
     ]
 
 
