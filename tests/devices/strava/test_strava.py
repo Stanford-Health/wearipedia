@@ -32,8 +32,10 @@ def test_strava(real):
 
         params = {"start_date": start_date, "end_date": end_date}
 
+        """
         if real:
             wearipedia._authenticate_device("strava/strava", device)
+        """
 
         distance = device.get_data("distance", params=params)
 

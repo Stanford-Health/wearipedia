@@ -1,11 +1,11 @@
 name: build
 
-on: 
+on:
   push:
   workflow_dispatch:
     inputs:
       git-ref:
-        description: Git Ref (Optional)    
+        description: Git Ref (Optional)
         required: false
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.8"]
+        python-version: ["3.10"]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -51,7 +51,7 @@ jobs:
       run: poetry --version
 
     - name: Set up cache
-      uses: actions/cache@v3.0.11
+      uses: actions/cache@v3
       with:
         path: .venv
         key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}

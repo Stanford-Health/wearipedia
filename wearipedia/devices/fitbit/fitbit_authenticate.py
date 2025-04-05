@@ -4,52 +4,23 @@ import os
 
 import requests
 
-__all__ = ["login", "fitbit_application", "fitbit_token"]
-
-
-def login(email, password):
-    if len(email) == 0:  # fake the login
-        token = ""
-        user_id = ""
-    else:
-        login = requests.post(
-            "https://accounts.fitbit.com/login",
-            json={
-                "grant_type": "password",
-                "issueRefresh": False,
-                "password": password,
-                "username": email,
-            },
-        )
+__all__ = ["fitbit_token", "fitbit_application"]
 
 
 def fitbit_application():
     """gives us access token given the auth_creds + going through the process, it's interactive
     Returns the client id and client secret"""
 
-    params = {
-        "Description": "Any thing here should suffice",
-        "Application Website URL": "Place any url here, even google.com",
-        "Organization": "type the name of the organization",
-        "Organization Website URL": " type organization webiste",
-        "Terms of Service URL": "Any Url should suffice",
-        "Privacy Policy URL": "Any Url should suffice",
-        "OAuth 2.0 Application Type": "choose the appropriate type",
-        "Redirect URL": "https://127.0.0.1/8080",
-    }
-
     print(
-        "fill the following parameters in this url then input the resulting client id and secret: ",
-        "https://dev.fitbit.com/apps/new",
+        "Input your client id and secret.",
+        "If you need a new application, you can register one at https://dev.fitbit.com/apps/new",
         "\n",
     )
-    for key, value in params.items():
-        print(key, ":", value)
 
     client_id = input("Enter the client id: ")
     client_secret = input("Enter the client secret: ")
 
-    return client_id, client_secret
+    return fitbit_token(client_id, client_secret)
 
 
 def fitbit_token(client_id, client_secret):
@@ -80,10 +51,10 @@ def fitbit_token(client_id, client_secret):
     variables["response_type"] = "token"  # code
     variables["scope"] = (
         "weight%20location%20settings%20profile%20nutrition%20"
-        + "activity%20sleep%20heartrate%20social"
+        + "activity%20sleep%20heartrate%20social%20"
+        + "respiratory_rate%20oxygen_saturation"
     )
     variables["prompt"] = "none"
-    variables["redirect_uri"] = "https://127.0.0.1/8080"
     variables["grant_type"] = "authorization_code"
     variables["authorization"] = base64.urlsafe_b64encode(
         bytes(variables["client_id"] + ":" + variables["client_secret"], "utf-8")
@@ -93,7 +64,6 @@ def fitbit_token(client_id, client_secret):
     url = "https://www.fitbit.com/oauth2/authorize"  # authorization endpoint
     for key in [
         "client_id",
-        "redirect_uri",
         "code_challenge",
         "code_challenge_method",
         "scope",
@@ -125,4 +95,5 @@ def fitbit_token(client_id, client_secret):
 
     access_token = "".join(lst_of_token)
 
+    print("Access token:", access_token)
     return access_token

@@ -3,8 +3,39 @@ import requests
 __all__ = ["fetch_real_data"]
 
 
+def call_api_version_2(
+    url: str,
+    access_token,
+    start_date,
+    end_date,
+    start_date_col,
+    end_date_col,
+    call: str = "GET",
+):
+    """
+    Second version of the api, the only supported API version as of 1/24/25
+    """
+    headers = {"Authorization": "Bearer " + access_token}
+    params = {start_date_col: start_date, end_date_col: end_date}
+
+    response = requests.request(call, url=url, headers=headers, params=params)
+
+    # Handle specific HTTP status codes
+    if response.status_code != 200:
+        error_msg = f"{response.status_code}"
+        try:
+            error_detail = response.json()
+            if isinstance(error_detail, dict):
+                error_msg = f"{error_msg} - {error_detail.get('detail', '')}"
+        except:
+            pass
+
+        raise Exception("Request failed with error: " + error_msg)
+    return response.json()
+
+
 def fetch_real_data(data_type, access_token, start_date, end_date):
-    """Main function for fetching real data from the Fitbit API.
+    """Main function for fetching real data from the Oura Ring API.
 
     :param start_date: the start date represented as a string in the format "YYYY-MM-DD"
     :param end_date: the end date represented as a string in the format "YYYY-MM-DD"
@@ -14,102 +45,39 @@ def fetch_real_data(data_type, access_token, start_date, end_date):
     :rtype: List
     """
 
-    def call_api_version_1(
-        url: str,
-        start_date=start_date,
-        end_date=end_date,
-        access_token=access_token,
-        start_date_col: str = "start",
-        end_date_col: str = "end",
-        call: str = "GET",
-    ):
-        """
-        First version of the api, will expire in near future
-        """
-        params = {
-            "access_token": access_token,
-            start_date_col: start_date,
-            end_date_col: end_date,
-        }
-        return requests.request(call, url=url, params=params).json()
+    start_date_col = "start_date"
+    end_date_col = "end_date"
+    if data_type == "heart_rate":
+        endpoint = "https://api.ouraring.com/v2/usercollection/heartrate"
+        start_date_col = "start_datetime"
+        end_date_col = "end_datetime"
+        start_date = start_date + "T00:00:00-23:59"
+        end_date = end_date + "T00:00:00-23:59"
+    elif data_type == "personal_info":
+        endpoint = "https://api.ouraring.com/v2/usercollection/personal_info"
+    elif data_type == "session":
+        endpoint = "https://api.ouraring.com/v2/usercollection/session"
+    elif data_type == "enhanced_tag":
+        # Tag is deprecated, and the Oura website recommends transitioning to enhanced_tag
+        # (https://cloud.ouraring.com/v2/docs#tag/Tag-Routes)
+        endpoint = "https://api.ouraring.com/v2/usercollection/enhanced_tag"
+    elif data_type == "workout":
+        endpoint = "https://api.ouraring.com/v2/usercollection/workout"
+    elif data_type == "daily_activity":
+        endpoint = "https://api.ouraring.com/v2/usercollection/daily_activity"
+    elif data_type == "daily_sleep":
+        endpoint = "https://api.ouraring.com/v2/usercollection/daily_sleep"
+    elif data_type == "sleep":
+        endpoint = "https://api.ouraring.com/v2/usercollection/sleep"
+    elif data_type == "readiness":
+        endpoint = "https://api.ouraring.com/v2/usercollection/daily_readiness"
+    elif data_type == "ideal_sleep_time":
+        endpoint = "https://api.ouraring.com/v2/usercollection/sleep_time"
 
-    def call_api_version_2(
-        url: str,
-        start_date=start_date,
-        end_date=end_date,
-        access_token=access_token,
-        start_date_col: str = "start_date",
-        end_date_col: str = "end_date",
-        call: str = "GET",
-    ):
-        """
-        Second version of the api, will be the only api version available in the near future
-        """
-        headers = {"Authorization": "Bearer " + access_token}
-        params = {start_date_col: start_date, end_date_col: end_date}
-        return requests.request(call, url=url, headers=headers, params=params).json()
-
-    # heart_rate
-    heart_rate = call_api_version_2(
-        url="https://api.ouraring.com/v2/usercollection/heartrate",
-        start_date_col="start_datetime",
-        end_date_col="end_datetime",
-        start_date=start_date + "T00:00:00-23:59",
-        end_date=end_date + "T00:00:00-23:59",
+    response = call_api_version_2(
+        endpoint, access_token, start_date, end_date, start_date_col, end_date_col
     )
 
-    # personal_info
-    personal_info = call_api_version_2(
-        url="https://api.ouraring.com/v2/usercollection/personal_info"
-    )
-
-    # sessions
-    sessions = call_api_version_2(
-        url="https://api.ouraring.com/v2/usercollection/sessions"
-    )
-
-    # tag
-    tag = call_api_version_2(url="https://api.ouraring.com/v2/usercollection/tag")
-
-    # workout
-    workout = call_api_version_2(
-        url="https://api.ouraring.com/v2/usercollection/workout"
-    )
-
-    # daily_activity
-    daily_activity = call_api_version_2(
-        url="https://api.ouraring.com/v2/usercollection/daily_activity"
-    )
-
-    # sleep
-    sleep = call_api_version_1(url="https://api.ouraring.com/v1/sleep")
-
-    # activity
-    activity = call_api_version_1(url="https://api.ouraring.com/v1/activity")
-
-    # readiness
-    readiness = call_api_version_1(url="https://api.ouraring.com/v1/readiness")
-
-    # ideal_bedtime
-    ideal_bedtime = call_api_version_1(url="https://api.ouraring.com/v1/bedtime")
-
-    # aggregate data for version 2 endpoints
-    api_data = dict()
-    api_data["heart_rate"] = heart_rate["data"]
-    api_data["personal_info"] = [personal_info]
-    api_data["sessions"] = (
-        sessions["detail"] if sessions["detail"] != "Not Found" else [{}]
-    )
-    api_data["tag"] = tag["data"] if tag["data"] else [{}]
-    api_data["workout"] = workout["data"] if workout["data"] else [{}]
-    api_data["daily_activity"] = (
-        daily_activity["data"] if daily_activity["data"] else [{}]
-    )
-
-    # aggregate data for version 1 (in addition to VERSION 2)
-    api_data["sleep"] = sleep["sleep"]
-    api_data["activity"] = activity["activity"]
-    api_data["readiness"] = readiness["readiness"]
-    api_data["ideal_bedtime"] = ideal_bedtime["ideal_bedtimes"]
-
-    return api_data[data_type]
+    if data_type == "personal_info":
+        return [response]
+    return response["data"]

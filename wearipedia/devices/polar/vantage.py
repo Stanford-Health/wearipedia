@@ -1,11 +1,13 @@
+import base64
 import re
+import uuid
 from datetime import datetime
 
 import requests
 
 from ...utils import seed_everything
 from ..device import BaseDevice
-from .vantage_fetch import *
+from .vantage_fetch import fetch_real_data
 from .vantage_synthetic import *
 
 class_name = "PolarVantage"
@@ -18,9 +20,13 @@ class PolarVantage(BaseDevice):
 
     * `sleep`: a list that contains sleep data for each day
 
-    * `training_history`: a list that contains training history data for each day
+    * `daily_activity`: a list that contains daily activity data for each day
+
+    * `training_data`: a list that contains daily activity data for each day
 
     * `training_by_id`: a list that contains training data for a given training session
+
+    * `activity_by_id`: a list that contains activity data for a given activity session
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -40,10 +46,13 @@ class PolarVantage(BaseDevice):
         }
 
         self._initialize_device_params(
-            ["sleep", "training_history", "training_by_id"],
+            ["sleep", "daily_activity", "training_data", "training_by_id"],
             params,
             {"seed": 0, "start_date": "2022-03-01", "end_date": "2022-06-17"},
         )
+
+        self.token = None
+        self.user_id = None
 
     def _default_params(self):
         return {
@@ -55,10 +64,8 @@ class PolarVantage(BaseDevice):
     def _get_real(self, data_type, params):
         if "training_id" in params:
             return fetch_real_data(
-                self.session,
-                self.USERID,
-                self.email,
-                self.password,
+                self.token,
+                self.user_id,
                 params["start_date"],
                 params["end_date"],
                 data_type,
@@ -66,10 +73,8 @@ class PolarVantage(BaseDevice):
             )
         else:
             return fetch_real_data(
-                self.session,
-                self.USERID,
-                self.email,
-                self.password,
+                self.token,
+                self.user_id,
                 params["start_date"],
                 params["end_date"],
                 data_type,
@@ -98,48 +103,99 @@ class PolarVantage(BaseDevice):
         seed_everything(self.init_params["seed"])
 
         # and based on start and end dates
-        self.training_history, self.sleep, self.training_by_id = create_syn_data(
+        self.training_data, self.sleep, self.training_by_id = create_syn_data(
             self.init_params["start_date"],
             self.init_params["end_date"],
         )
+        self.daily_activity = []
+        self.activity_by_id = []
 
-    def _authenticate(self, auth_creds):
-
-        # check if all the credentials are provided
-        if "email" not in auth_creds:
-            print("No email provided")
+    def _authenticate(self, auth_creds=None):
+        if (
+            auth_creds
+            and isinstance(auth_creds, dict)
+            and auth_creds.get("access_token")
+            and auth_creds.get("user_id")
+        ):
+            self.token = auth_creds["access_token"]
+            self.user_id = auth_creds["user_id"]
             return
-        if "password" not in auth_creds:
-            print("No password provided")
-            return
 
-        # set the credentials
-        self.email = auth_creds["email"]
-        self.password = auth_creds["password"]
+        print(
+            "Input your client id.",
+            "If you need a new application, you can register one at https://admin.polaraccesslink.com",
+            "\n",
+        )
 
-        # setting the initial user id to 0
-        self.USERID = 0
+        client_id = input("Enter the client id: ")
+        client_secret = input("Enter the client secret: ")
 
-        # login details are sent as payload
-        payload = {
-            "email": auth_creds["email"],
-            "password": auth_creds["password"],
+        # combine all parameters into the url string
+        url = f"https://flow.polar.com/oauth2/authorization?response_type=code&client_id={client_id}&scope=accesslink.read_all"
+
+        print(
+            "Click the URL above to access the Authorization page. Check Allow All and click the Allow button then input the resulting url",
+            url,
+        )
+
+        authurl = input("Enter the resulting url: ")
+
+        lst_of_token = []
+        append = False
+        for i in authurl:
+            if i == "=":
+                append = True
+                continue
+            elif i == "&":
+                break
+            if append == True:
+                lst_of_token.append(i)
+
+        authorization_code = "".join(lst_of_token)
+        credentials = f"{client_id}:{client_secret}"
+
+        # Encode to base64
+        encoded_credentials = base64.b64encode(credentials.encode("utf-8")).decode(
+            "utf-8"
+        )
+
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": f"Basic {encoded_credentials}",
+            "Accept": "application/json",
+        }
+        body = {
+            "grant_type": "authorization_code",
+            "code": authorization_code,
         }
 
-        # login to polar flow
-        with requests.Session() as session:
-            post = session.post("https://flow.polar.com/login", data=payload)
+        r = requests.post(
+            "https://polarremote.com/v2/oauth2/token", data=body, headers=headers
+        )
+        if r.status_code != 200:
+            print("Failed authorization request:", r.json())
 
-            # using regular expressions, we can search for the userId in the session response
-            result = re.search("AppGlobal.init((.*))", post.text)
+        if "access_token" not in r.json():
+            print("No access token found:", r.json())
 
-            # if the userId is not found, the login failed
-            if result == None:
-                print("Login failed, please check your credentials")
-                return
+        self.token = r.json()["access_token"]
+        self.user_id = r.json()["x_user_id"]
+        print("Access token:", self.token)
+        print("User ID:", self.user_id)
 
-            res = str(result.group(1)).split('"')
-            self.USERID = int(res[1])
+        input_body = {"member-id": self.user_id}
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": f"Bearer {self.token}",
+        }
 
-            print("Login successful, user id is: " + str(self.USERID))
-            self.session = session
+        r = requests.post(
+            "https://www.polaraccesslink.com/v3/users", headers=headers, json=input_body
+        )
+
+        if r.status_code >= 200 and r.status_code < 400:
+            print("Registered user:")
+            print(r.json())
+        elif r.status_code != 409:
+            print(r)

@@ -26,8 +26,11 @@ def test_nutrisense(real):
             synthetic_end_date=np.datetime_as_string(end_date, unit="D"),
         )
 
+        # currently deprecated
+        """
         if real:
             wearipedia._authenticate_device("nutrisense/cgm", device)
+        """
 
         summary = device.get_data("summary")
         scores = device.get_data("scores")

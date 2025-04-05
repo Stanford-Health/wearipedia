@@ -10,4 +10,6 @@ Info Sheet
    :header-rows: 1
 
 
-\*WHOOP 4.0 simulator is currently out-of-date with respect to the official updated API.
+.. [#] WHOOP 4.0 simulator is currently out-of-date with respect to the official updated API.
+
+.. [#] Nutrisense CGM is currently out-of-date due to an update to the nutrisense API

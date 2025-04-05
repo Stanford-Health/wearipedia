@@ -13,12 +13,16 @@ class Oura_Ring_3(BaseDevice):
     """This device allows you to work with data from the `Oura Ring 3  <(https://ouraring.com/)>`_ device.
     Available datatypes for this device are:
 
-    * `sleep`: sleep data
-    * `daily_activity`: daily activity data
-    * `activity`: activity data
-    * `ideal_bedtime`: ideal bedtime data
-    * `readiness`: readiness data
     * `heart_rate`: heart_rate
+    * `personal_info`: personal information
+    * `session`: data on user engagement with sessions in the Oura app
+    * `enhanced_tag`: user tags on data
+    * `workout`: workout sessions
+    * `daily_activity`: daily activity data
+    * `daily_sleep`: daily sleep data including scores per day
+    * `sleep`: all logged sleep activities
+    * `readiness`: readiness data
+    * `ideal_sleep_time`: ideal bedtime data
 
     :param seed: random seed for synthetic data generation, defaults to 0
     :type seed: int, optional
@@ -43,12 +47,16 @@ class Oura_Ring_3(BaseDevice):
 
         self._initialize_device_params(
             [
-                "sleep",
-                "daily_activity",
-                "activity",
-                "ideal_bedtime",
-                "readiness",
                 "heart_rate",
+                "personal_info",
+                "session",
+                "enhanced_tag",
+                "workout",
+                "daily_activity",
+                "daily_sleep",
+                "sleep",
+                "readiness",
+                "ideal_sleep_time",
             ],
             params,
             {
@@ -60,6 +68,7 @@ class Oura_Ring_3(BaseDevice):
 
     def _default_params(self):
         params = {
+            "seed": 0,
             "start_date": "2022-04-24",
             "end_date": "2022-04-28",
         }
@@ -96,15 +105,20 @@ class Oura_Ring_3(BaseDevice):
     def _gen_synthetic(self):
 
         syn_data = create_syn_data(
+            self.init_params["seed"],
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
-        self.sleep = syn_data["sleep"]
-        self.daily_activity = syn_data["daily_activity"]
-        self.activity = syn_data["activity"]
-        self.ideal_bedtime = syn_data["ideal_bedtime"]
-        self.readiness = syn_data["readiness"]
+        self.personal_info = []
         self.heart_rate = syn_data["heart_rate"]
+        self.session = syn_data["session"]
+        self.enhanced_tag = syn_data["enhanced_tag"]
+        self.workout = syn_data["workout"]
+        self.daily_activity = syn_data["daily_activity"]
+        self.daily_sleep = syn_data["daily_sleep"]
+        self.sleep = syn_data["sleep"]
+        self.readiness = syn_data["readiness"]
+        self.ideal_sleep_time = syn_data["ideal_sleep_time"]
 
     def _authenticate(self, token=""):
         if token == "":

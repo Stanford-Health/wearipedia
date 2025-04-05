@@ -7,21 +7,20 @@ import wearipedia
 
 
 @pytest.mark.parametrize("real", [True, False])
-def test_fitbit_charge_4_synthetic(real):
+def test_fitbit_charge_6_synthetic(real):
     start_dates = [datetime(2009, 11, 30), datetime(2021, 4, 4), datetime(2022, 6, 10)]
     end_dates = [datetime(2009, 12, 1), datetime(2021, 4, 5), datetime(2022, 6, 11)]
 
     for start_date, end_date in zip(start_dates, end_dates):
         device = wearipedia.get_device(
-            "fitbit/fitbit_charge_4",
+            "fitbit/fitbit_charge_6",
             synthetic_start_date=datetime.strftime(start_date, "%Y-%m-%d"),
             synthetic_end_date=datetime.strftime(end_date, "%Y-%m-%d"),
         )
 
-        """
         if real:
-            wearipedia._authenticate_device("fitbit/fitbit_charge_4", device)
-        """
+            wearipedia._authenticate_device("fitbit/fitbit_charge_6", device)
+
         helper_test(device, start_date, end_date, real)
 
 
@@ -77,7 +76,7 @@ def helper_test(device, start_synthetic, end_synthetic, real):
         },
     )
     minutesAsleep = []
-    for datapoint in sleep[0]["sleep"]:
+    for datapoint in sleep:
         minutesAsleep.append(datapoint["minutesAsleep"])
     assert len(minutesAsleep) >= 1, "Number of sleep data points should be at least 1"
     assert (
@@ -85,7 +84,7 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     ), f"Average minutes asleep should be less than 800 but was {sum(minutesAsleep) / len(minutesAsleep)}"
 
     steps_arr = []
-    for datapoint in steps[0]["activities-steps"]:
+    for datapoint in steps:
         steps_arr.append(datapoint["value"])
     assert len(steps_arr) >= 1, "Number of steps data points should be at least 1"
     assert (
@@ -93,7 +92,7 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     ), f"Average steps should be less than 20000 but was {sum(steps_arr) / len(steps_arr)}"
 
     light = []
-    for datapoint in minutesLightlyActive[0]["activities-minutesLightlyActive"]:
+    for datapoint in minutesLightlyActive:
         light.append(datapoint["value"])
         assert (
             datapoint["value"] < 1440
@@ -101,7 +100,7 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     assert len(light) >= 1, "Number of light activity data points should be at least 1"
 
     fair = []
-    for datapoint in minutesFairlyActive[0]["activities-minutesFairlyActive"]:
+    for datapoint in minutesFairlyActive:
         fair.append(datapoint["value"])
         assert (
             datapoint["value"] < 1440
@@ -111,7 +110,7 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     ), "Number of fairly active minutes data points should be at least 1"
 
     very = []
-    for datapoint in minutesVeryActive[0]["activities-minutesVeryActive"]:
+    for datapoint in minutesVeryActive:
         very.append(datapoint["value"])
         assert (
             datapoint["value"] < 1440
@@ -121,7 +120,7 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     ), "Number of very active minutes data points should be at least 1"
 
     sedentary = []
-    for datapoint in minutesSedentary[0]["activities-minutesSedentary"]:
+    for datapoint in minutesSedentary:
         sedentary.append(datapoint["value"])
         assert (
             datapoint["value"] < 1440
@@ -131,7 +130,7 @@ def helper_test(device, start_synthetic, end_synthetic, real):
     ), "Number of sedentary minutes data points should be at least 1"
 
     distance_arr = []
-    for datapoint in distance[0]["activities-distance"]:
+    for datapoint in distance:
         distance_arr.append(datapoint["value"])
     assert (
         sum(distance_arr) / len(distance_arr) < 30

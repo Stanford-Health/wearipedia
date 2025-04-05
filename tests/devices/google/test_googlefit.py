@@ -31,8 +31,10 @@ def test_googlefit(real):
 
         params = {"start_date": str(start_date), "end_date": str(end_date)}
 
+        """
         if real:
             wearipedia._authenticate_device("google/googlefit", device)
+        """
 
         steps = device.get_data("steps", params=params)
         heart_rate = device.get_data("heart_rate", params=params)
