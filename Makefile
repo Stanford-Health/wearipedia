@@ -19,9 +19,8 @@ poetry-remove:
 #* Installation
 .PHONY: install
 install:
-	poetry lock -n && poetry export --without-hashes > requirements.txt
-	poetry install -n
-	# disable the type-checking for now -poetry run mypy --install-types --non-interactive ./
+	# with poetry 2.0.0+, poetry does dependency management so we do not require exporting to requirements.txt
+	poetry lock && poetry install 
 
 .PHONY: pre-commit-install
 pre-commit-install:
