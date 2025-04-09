@@ -9,6 +9,7 @@ start_date = "2020-05-20"  # @param {type:"date"}
 end_date = "2022-07-20"  # @param {type:"date"}
 
 import json
+import time
 import urllib
 from datetime import datetime, timedelta
 
@@ -126,30 +127,30 @@ def fetch_all_wrapper(endpoint_url, data, headers, arr_key, parse_data=lambda x:
 def fetch_all_heart_rate(access_token, start="2020-03-10", end="2022-05-28"):
     # get all dates heart rate was collected for
     out = fetch_all_wrapper(
-        "https://wbsapi.withings.net/v2/measure",
+        "https://wbsapi.withings.net/v2/heart",
         {
-            "action": "getactivity",
+            "action": "list",
             "startdateymd": start,
             "enddateymd": end,
-            "data_fields": "hr_average",
         },
         {"Authorization": f"Bearer {access_token}"},
-        arr_key="activities",
+        arr_key="series",
     )
 
-    dates = [act["date"] for act in out["body"]["activities"]]
+    signals = [
+        act["ecg"]["signalid"]
+        for act in out["body"]["series"]
+        if act["ecg"] and act["signalid"]
+    ]
 
     # now for each date get the heart rate data and store as list of dicts
     dict_list = []
-    for date in tqdm(dates):
+    for signal in tqdm(signals):
         out = fetch_all_wrapper(
-            "https://wbsapi.withings.net/v2/measure",
+            "https://wbsapi.withings.net/v2/heart",
             {
-                "action": "getintradayactivity",
-                "startdate": int(datetime.strptime(date, "%Y-%m-%d").timestamp()),
-                "enddate": int(datetime.strptime(date, "%Y-%m-%d").timestamp())
-                + 24 * 3600,
-                "data_fields": "heart_rate",
+                "action": "get",
+                "signalid": signal,
             },
             {"Authorization": f"Bearer {access_token}"},
             arr_key="series",
@@ -170,13 +171,34 @@ def fetch_all_heart_rate(access_token, start="2020-03-10", end="2022-05-28"):
 
 
 def fetch_all_sleeps(access_token, start="2020-03-10", end="2022-05-28"):
+    start_dt = datetime.strptime(start, "%Y-%m-%d")
+    end_dt = datetime.strptime(end, "%Y-%m-%d")
+
+    out = fetch_all_wrapper(
+        "https://wbsapi.withings.net/v2/sleep",
+        {
+            "action": "get",
+            "startdate": int(time.mktime(start_dt.timetuple())),
+            "enddate": int(time.mktime(end_dt.timetuple())),
+            "data_fields": "hr,rr,snoring,sdnn_1,rmssd,mvt_score,chest_movement_rate,withings_index,breathing_sounds",
+        },
+        {"Authorization": f"Bearer {access_token}"},
+        arr_key="series",
+    )
+
+    df = pd.DataFrame.from_dict(out["body"]["series"])
+
+    return df
+
+
+def fetch_all_sleep_summaries(access_token, start="2020-03-10", end="2022-05-28"):
     out = fetch_all_wrapper(
         "https://wbsapi.withings.net/v2/sleep",
         {
             "action": "getsummary",
             "startdateymd": start,
             "enddateymd": end,
-            "data_fields": "nb_rem_episodes,sleep_efficiency,sleep_latency,total_sleep_time,total_timeinbed,wakeup_latency,waso,asleepduration,deepsleepduration,durationtosleep,durationtowakeup,hr_average,hr_max,hr_min,lightsleepduration,night_events,out_of_bed_count,remsleepduration,rr_average,rr_max,rr_min,sleep_score,snoring,snoringepisodecount,wakeupcount,wakeupduration",
+            "data_fields": "total_timeinbed,total_sleep_time,asleepduration,lightsleepduration,remsleepduration,deepsleepduration,sleep_efficiency,sleep_latency,wakeup_latency,wakeupduration,wakeupcount,waso,nb_rem_episodes,apnea_hypopnea_index,withings_index,durationtosleep,durationtowakeup,out_of_bed_count,hr_average,hr_min,hr_max,rr_average,rr_min,rr_max,snoring,snoringepisodecount,sleep_score,night_events,mvt_score_avg,mvt_active_duration,chest_movement_rate_average,chest_movement_rate_min,chest_movement_rate_max,breathing_sounds,breathing_sounds_episode_count",
         },
         {"Authorization": f"Bearer {access_token}"},
         arr_key="series",
