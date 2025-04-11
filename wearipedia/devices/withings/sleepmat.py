@@ -22,7 +22,7 @@ class SleepMat(BaseDevice):
         }
 
         self._initialize_device_params(
-            ["measurements"],
+            ["sleep", "sleep_summary"],
             params,
             {"seed": 0},
         )
@@ -31,7 +31,13 @@ class SleepMat(BaseDevice):
         return dict()
 
     def _get_real(self, data_type, params):
-        return fetch_measurements(self.access_token)
+        if data_type == "sleep":
+            return fetch_all_sleeps(self.access_token, params["start"], params["end"])
+        elif data_type == "sleep_summary":
+            return fetch_all_sleep_summaries(
+                self.access_token, params["start"], params["end"]
+            )
+        return fetch_measurements(self.access_token, params["start"], params["end"])
 
     def _filter_synthetic(self, data, data_type, params):
         return self.measurements

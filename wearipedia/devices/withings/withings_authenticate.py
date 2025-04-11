@@ -56,7 +56,7 @@ def withings_authenticate(client_id, client_secret):
     url = url[:-1]
 
     print(url)
-    print("redirect url below:")
+    print("Enter the redirect url below:")
     time.sleep(0.1)
     redirect_url = input(">")
 
@@ -90,5 +90,8 @@ def withings_authenticate(client_id, client_secret):
         )
     except KeyError as e:
         raise Exception("Took too long to paste in redirect URL. Please repeat step 7.")
+
+    print("Refresh token:", refresh_token)
+    print("Access token:", access_token)
 
     return refresh_token, access_token
