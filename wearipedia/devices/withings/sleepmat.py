@@ -40,13 +40,14 @@ class SleepMat(BaseDevice):
         return fetch_measurements(self.access_token, params["start"], params["end"])
 
     def _filter_synthetic(self, data, data_type, params):
-        return self.measurements
+        return []
 
     def _gen_synthetic(self):
         # generate random data according to seed
         seed_everything(self.init_params["seed"])
 
-        self.measurements = [0, 1, 2, 3, 4, 5]
+        self.sleep = []
+        self.sleep_summary = []
 
         # load in the CSV that we've pre-generated
         # wget.download(CSV_URL, out=CSV_LOCAL_PATH)

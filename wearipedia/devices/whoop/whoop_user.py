@@ -16,7 +16,7 @@ class WhoopUser:
         :return: None will set class variables
         """
 
-        if len(email) == 0:  # fake the login
+        if not email:  # fake the login
             self.token = ""
             self.user_id = ""
         else:
