@@ -41,7 +41,7 @@ def test_vantage(real):
         """
 
         sleep = device.get_data("sleep", params=params)
-        training_history = device.get_data("training_history", params=params)
+        training_history = device.get_data("training_data", params=params)
         training_by_id = []
         try:
             # Just in case the training id is not valid, we don't want to fail the test

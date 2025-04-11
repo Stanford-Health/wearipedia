@@ -48,6 +48,8 @@ def fetch_real_data(
 
         # using regular expressions, we can search for the userId in the session response
         target = re.search("AppGlobal.init((.*))", post.text)
+        if target is None:
+            return {}
         target = str(target.group(1)).split('"')
         userid = int(target[1])
 

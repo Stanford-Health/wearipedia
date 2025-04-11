@@ -500,15 +500,16 @@ def get_distance_day(date):
         ]
     }
 
-    the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
     minutes_in_a_day = 1440
     distance = [0, 0.1]
     weights = [0.6, 0.3]
 
+    the_time = datetime.strptime(date, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
+
     for i in range(minutes_in_a_day):
         distance = [0, 0.1]
         weights = [0.6, 0.3]
-        max_distance = choices(distance, weights)
+        max_distance = random.choices(distance, weights)
         if max_distance[0] == 0:
             val = 0
         else:
@@ -520,10 +521,7 @@ def get_distance_day(date):
         distance_day["distance_day"][0]["activities-distance-intraday"][
             "dataset"
         ].append({"time": the_time.strftime("%H:%M:%S"), "value": val})
-        newtime = (
-            datetime.combine(datetime.today(), the_time) + timedelta(seconds=60)
-        ).time()
-        the_time = newtime
+        the_time = the_time + timedelta(seconds=60)
 
     return distance_day
 
@@ -548,7 +546,10 @@ def create_syn_data(seed, start_date, end_date):
 
     # Generate dates as strings
     synth_dates = [
-        (start_dt + timedelta(days=i)).strftime("%Y-%m-%d") for i in range(num_days)
+        (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)).strftime(
+            "%Y-%m-%d"
+        )
+        for i in range(num_days)
     ]
 
     full_dict = collections.defaultdict(list)

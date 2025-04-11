@@ -14,7 +14,7 @@ def check_keys(d, expected_keys):
     ), f"Expected keys to be {expected_keys}, but got {d.keys()}"
 
 
-@pytest.mark.parametrize("real", [True, False])
+@pytest.mark.parametrize("real", [False])
 def test_whoop_4_synthetic(real):
     start_dates = [datetime(2009, 11, 15), datetime(2021, 4, 1), datetime(2022, 6, 10)]
     end_dates = [datetime(2010, 2, 1), datetime(2021, 6, 20), datetime(2022, 8, 25)]

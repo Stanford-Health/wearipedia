@@ -95,7 +95,25 @@ class Fitbit_charge_6(BaseDevice):
         num_days_start = delta1.days
         num_days_end = delta2.days
 
-        return data[num_days_start : -num_days_end - 1]
+        key_map = {
+            "sleep": "sleep",
+            "steps": "activities-steps",
+            "minutesVeryActive": "activities-minutesVeryActive",
+            "minutesLightlyActive": "activities-minutesLightlyActive",
+            "minutesFairlyActive": "activities-minutesFairlyActive",
+            "distance": "activities-distance",
+            "minutesSedentary": "activities-minutesSedentary",
+            "hrv": "hrv",
+            "distance_day": None,
+            "heart_rate_day": None,
+        }
+
+        if data_type in key_map:
+            key = key_map[data_type]
+            if key is None:
+                return data
+            intermediary = data[0][key][num_days_start : -num_days_end + 1]
+            return [{key: intermediary}]
 
     def _get_real(self, data_type, params):
         data = fetch_real_data(
@@ -109,11 +127,13 @@ class Fitbit_charge_6(BaseDevice):
     def _gen_synthetic(self):
 
         syn_data = create_syn_data(
+            0,
             self.init_params["synthetic_start_date"],
             self.init_params["synthetic_end_date"],
         )
 
         self.intraday_breath_rate = syn_data["intraday_breath_rate"]
+        self.intraday_activity = syn_data["intraday_activity"]
         self.intraday_active_zone_minute = syn_data["intraday_active_zone_minute"]
         self.intraday_heart_rate = syn_data["intraday_heart_rate"]
         self.intraday_hrv = syn_data["intraday_hrv"]
