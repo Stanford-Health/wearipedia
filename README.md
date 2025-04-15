@@ -70,8 +70,6 @@ We currently support Python 3.7, 3.8, and 3.9.
 
 ## Supported Devices
 
-Wearipedia supports devices such as:
-
 The full list of devices and associated notebooks can be found in [this page](https://wearipedia.readthedocs.io/en/latest/notebooks/index.html) of the documentation.
 
 ## Documentation
