@@ -10,8 +10,6 @@ from ...utils import seed_everything
 from .fenix_fetch import *
 from .fenix_gen import *
 
-class_name = "Fenix7S"
-
 
 def user_identifier():
     if "getuid" in dir(os):
@@ -56,6 +54,8 @@ class Fenix7S(BaseDevice):
     :param use_cache: decide whether to cache the credentials, defaults to True
     :type use_cache: bool, optional
     """
+
+    name = "garmin/fenix_7s"
 
     def __init__(
         self,

@@ -9,8 +9,6 @@ from .withings_authenticate import *
 from .withings_extract import *
 from .withings_gen import *
 
-class_name = "BodyPlus"
-
 
 class BodyPlus(BaseDevice):
     """This device allows you to work with data from the `Withings Body+ <https://www.withings.com/us/en/body-plus>`_ device.
@@ -23,6 +21,8 @@ class BodyPlus(BaseDevice):
     :param synthetic_start_date: start date for synthetic data generation, defaults to "2021-06-01"
     :type start_date: str, optional
     """
+
+    name = "withings/bodyplus"
 
     def __init__(self, seed=0, synthetic_start_date="2021-06-01"):
 

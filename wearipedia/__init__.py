@@ -1,17 +1,13 @@
 # type: ignore[attr-defined]
 """wearables in development"""
-
-import importlib
-import importlib.util
-from importlib import import_module
+import os
 
 try:
     from importlib import metadata as importlib_metadata
 except ImportError:  # for Python<3.8
     import importlib_metadata as importlib_metadata
 
-from .constants import *
-from .devices import *
+from .devices import registry
 
 
 def get_device(device_name, **kwargs):
@@ -34,56 +30,22 @@ def get_device(device_name, **kwargs):
         device = wearipedia.get_device("whoop/whoop_4")
         ...
     """
-    company, model = device_name.split("/")
+    try:
+        device_class = registry.get_device_class(device_name)
+    except KeyError:
+        raise ValueError(f"Device '{device_name}' is not registered")
 
-    module_path = f"{PACKAGE_PATH}/devices/{device_name}.py"
-
-    spec = importlib.util.spec_from_file_location(
-        name=f"wearipedia.devices.{company}.{model}",
-        location=module_path,
-    )
-
-    module = importlib.util.module_from_spec(spec)
-
-    spec.loader.exec_module(module)
-
-    class_name = getattr(module, "class_name")
-
-    return getattr(module, class_name)(**kwargs)
+    return device_class(**kwargs)
 
 
-def get_all_device_names():
+def get_all_device_names() -> list[str]:
     """Get a list of all device names.
 
     :return: a list of device names
     :rtype: List
     """
 
-    return [
-        "apple/healthkit",
-        "biostrap/evo",
-        "cronometer/cronometer",
-        "whoop/whoop_4",
-        "withings/scanwatch",
-        "withings/bodyplus",
-        "withings/sleepmat",
-        "dreem/headband_2",
-        "dexcom/pro_cgm",
-        "garmin/fenix_7s",
-        "google/googlefit",
-        "polar/h10",
-        "polar/verity_sense",
-        "nutrisense/cgm",
-        "fitbit/fitbit_charge_4",
-        "fitbit/fitbit_charge_6",
-        "fitbit/fitbit_sense",
-        "oura/oura_ring3",
-        "coros/coros_pace_2",
-        "polar/vantage",
-        "strava/strava",
-        "myfitnesspal/myfitnesspal",
-        "qualtrics/qualtrics",
-    ]
+    return registry.REGISTRY.keys()
 
 
 def get_version() -> str:

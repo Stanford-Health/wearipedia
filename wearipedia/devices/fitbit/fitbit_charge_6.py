@@ -8,10 +8,8 @@ from .fitbit_authenticate import *
 from .fitbit_sense_fetch import *
 from .fitbit_sense_gen import *
 
-class_name = "Fitbit_charge_6"
 
-
-class Fitbit_charge_6(BaseDevice):
+class FitbitCharge6(BaseDevice):
     """This device allows you to work with data from the `Fitbit charge  <(https://www.fitbit.com/global/au/products/trackers/charge6)>`_ device.
     Available datatypes for this device are:
 
@@ -36,6 +34,8 @@ class Fitbit_charge_6(BaseDevice):
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2024-05-13"
     :type synthetic_end_date: str, optional
     """
+
+    name = "fitbit/fitbit_charge_6"
 
     def __init__(
         self,

@@ -7,8 +7,6 @@ from ...devices.device import BaseDevice
 from ...utils import bin_search, seed_everything
 from .apple_gen import *
 
-class_name = "HealthKit"
-
 
 class HealthKit(BaseDevice):
     """This device allows you to work with data from `Apple HealthKit <https://www.apple.com/ios/health/>`_ .
@@ -29,6 +27,8 @@ class HealthKit(BaseDevice):
     :param use_cache: decide whether to cache the credentials, defaults to True
     :type use_cache: bool, optional
     """
+
+    name = "apple/healthkit"
 
     def __init__(
         self,

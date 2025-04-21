@@ -8,8 +8,6 @@ from ...utils import bin_search, seed_everything
 from .whoop_gen import *
 from .whoop_user import *
 
-class_name = "Whoop4"
-
 
 class Whoop4(BaseDevice):
     """This device allows you to work with data from the `WHOOP 4.0 <https://shop.whoop.com/en-us/collections/whoop4-0/?order_by=featured>`_ device.
@@ -28,6 +26,8 @@ class Whoop4(BaseDevice):
     :param use_cache: decide whether to cache the credentials, defaults to True
     :type use_cache: bool, optional
     """
+
+    name = "whoop/whoop_4"
 
     def __init__(
         self, seed=0, synthetic_start_date="2022-03-01", synthetic_end_date="2022-06-17"

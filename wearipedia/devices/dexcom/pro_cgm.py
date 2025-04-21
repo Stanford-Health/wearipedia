@@ -9,8 +9,6 @@ from ...utils import bin_search, seed_everything
 from .pro_cgm_fetch import *
 from .pro_cgm_gen import *
 
-class_name = "DexcomProCGM"
-
 
 class DexcomProCGM(BaseDevice):
     """This device allows you to work with data from the `Dexcom Pro CGM <https://provider.dexcom.com/products/dexcom-g6-pro>`_ device.
@@ -25,6 +23,8 @@ class DexcomProCGM(BaseDevice):
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type synthetic_end_date: str, optional
     """
+
+    name = "dexcom/pro_cgm"
 
     def __init__(
         self, seed=0, synthetic_start_date="2022-02-16", synthetic_end_date="2022-05-15"

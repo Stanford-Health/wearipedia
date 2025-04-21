@@ -9,8 +9,6 @@ from ...utils import seed_everything
 from .cronometer_fetch import *
 from .cronometer_synthetic import *
 
-class_name = "Cronometer"
-
 # todo: change this to better path
 CRED_CACHE_PATH = "/tmp/wearipedia_cronometer_data.pkl"
 
@@ -37,6 +35,8 @@ class Cronometer(BaseDevice):
     :param use_cache: decide whether to cache the credentials, defaults to True
     :type use_cache: bool, optional
     """
+
+    name = "cronometer/cronometer"
 
     def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
         params = {

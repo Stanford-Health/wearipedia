@@ -8,10 +8,8 @@ from .fitbit_authenticate import *
 from .fitbit_sense_fetch import *
 from .fitbit_sense_gen import *
 
-class_name = "Google_Pixel_Watch"
 
-
-class Google_Pixel_Watch(BaseDevice):
+class GooglePixelWatch(BaseDevice):
     """This device allows you to work with data from the `Google Pixel Watch`_ device.
     Available datatypes for this device are:
 
@@ -35,6 +33,8 @@ class Google_Pixel_Watch(BaseDevice):
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2024-05-13"
     :type synthetic_end_date: str, optional
     """
+
+    name = "fitbit/google_pixel_watch"
 
     def __init__(
         self,

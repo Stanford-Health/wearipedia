@@ -6,8 +6,6 @@ from .withings_authenticate import *
 from .withings_extract import *
 from .withings_gen import *
 
-class_name = "ScanWatch"
-
 
 class ScanWatch(BaseDevice):
     """This device allows you to work with data from the `Withings ScanWatch <https://www.withings.com/us/en/scanwatch>`_ device.
@@ -24,6 +22,8 @@ class ScanWatch(BaseDevice):
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type end_date: str, optional
     """
+
+    name = "withings/scanwatch"
 
     def __init__(
         self, seed=0, synthetic_start_date="2022-03-01", synthetic_end_date="2022-06-17"

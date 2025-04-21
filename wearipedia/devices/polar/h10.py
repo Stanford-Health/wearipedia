@@ -5,8 +5,6 @@ from ...devices.device import BaseDevice
 from .h10_gen import *
 from .polar_get import *
 
-class_name = "H10"
-
 
 class H10(BaseDevice):
     """This device allows you to work with data from the `Polar H10 <https://www.polar.com/us-en/sensors/h10-heart-rate-sensor>`_ device.
@@ -23,6 +21,8 @@ class H10(BaseDevice):
     :param end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type end_date: str, optional
     """
+
+    name = "polar/h10"
 
     def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
 

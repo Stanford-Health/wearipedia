@@ -7,10 +7,8 @@ from ..device import BaseDevice
 from .googlefitness_fetch import *
 from .googlefitness_synthetic import *
 
-class_name = "GoogleFitness"
 
-
-class GoogleFitness(BaseDevice):
+class GoogleFit(BaseDevice):
 
     """This device allows you to work with data from the `Google Fit <https://www.google.com/fit/>`_ app.
     Available datatypes for this device are:
@@ -54,6 +52,8 @@ class GoogleFitness(BaseDevice):
     :param use_cache: decide whether to cache the credentials, defaults to True
     :type use_cache: bool, optional
     """
+
+    name = "google/googlefit"
 
     def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
         params = {
@@ -202,7 +202,7 @@ class GoogleFitness(BaseDevice):
 
         # headers sends the user's credentials to the API during POST request
         headers = {
-            "Authorization": "Bearer {}".format(g_access_token),
+            "Authorization": f"Bearer {g_access_token}",
             "Content-Type": "application/json;encoding=utf-8",
         }
 

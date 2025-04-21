@@ -8,10 +8,8 @@ from ...utils import seed_everything
 from .cgm_fetch import *
 from .cgm_gen import *
 
-class_name = "cgm"
 
-
-class cgm(BaseDevice):
+class NutrisenseCGM(BaseDevice):
     """This device allows you to work with data from the `Nutrisense CGM <https://www.nutrisense.io/>`_ device.
     Available datatypes for this device are:
 
@@ -30,6 +28,8 @@ class cgm(BaseDevice):
     :param end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type end_date: str, optional
     """
+
+    name = "nutrisense/cgm"
 
     def __init__(
         self,

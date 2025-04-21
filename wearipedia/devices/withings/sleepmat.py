@@ -11,10 +11,11 @@ from ...utils import seed_everything
 from .withings_authenticate import *
 from .withings_extract import *
 
-class_name = "SleepMat"
-
 
 class SleepMat(BaseDevice):
+
+    name = "withings/sleepmat"
+
     def __init__(self, seed=0):
 
         params = {
