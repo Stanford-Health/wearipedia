@@ -5,8 +5,6 @@ from ..device import BaseDevice
 from .qualtrics_fetch import *
 from .qualtrics_gen import *
 
-class_name = "Qualtrics"
-
 
 class Qualtrics(BaseDevice):
     """
@@ -20,6 +18,8 @@ class Qualtrics(BaseDevice):
     :param survey: ID of the survey, required
     :type survey: str
     """
+
+    name = "qualtrics/qualtrics"
 
     def __init__(self, seed=0, survey="your_survey_id_here"):
         params = {

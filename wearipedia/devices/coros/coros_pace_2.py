@@ -6,8 +6,6 @@ from ..device import BaseDevice
 from .coros_pace_2_fetch import *
 from .coros_pace_2_gen import *
 
-class_name = "Coros_pace_2"
-
 
 class Coros_pace_2(BaseDevice):
     """This device allows you to work with data from the `Fitbit charge  <(https://www.fitbit.com/global/au/products/trackers/charge4)>`_ device.
@@ -27,6 +25,8 @@ class Coros_pace_2(BaseDevice):
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type synthetic_end_date: str, optional
     """
+
+    name = "coros/coros_pace_2"
 
     def __init__(
         self,

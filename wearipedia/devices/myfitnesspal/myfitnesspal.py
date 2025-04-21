@@ -9,8 +9,6 @@ from ...utils import seed_everything
 from .myfitnesspal_fetch import *
 from .myfitnesspal_synthetic import *
 
-class_name = "MyFitnessPal"
-
 
 class MyFitnessPal(BaseDevice):
 
@@ -42,6 +40,8 @@ class MyFitnessPal(BaseDevice):
     :param use_cache: decide whether to cache the credentials, defaults to True
     :type use_cache: bool, optional
     """
+
+    name = "myfitnesspal/myfitnesspal"
 
     def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
         params = {

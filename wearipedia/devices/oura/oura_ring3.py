@@ -6,8 +6,6 @@ from .oura_ring3_authenticate import *
 from .oura_ring3_fetch import *
 from .oura_ring3_gen import *
 
-class_name = "Oura_Ring_3"
-
 
 class Oura_Ring_3(BaseDevice):
     """This device allows you to work with data from the `Oura Ring 3  <(https://ouraring.com/)>`_ device.
@@ -31,6 +29,8 @@ class Oura_Ring_3(BaseDevice):
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type synthetic_end_date: str, optional
     """
+
+    name = "oura/oura_ring3"
 
     def __init__(
         self,

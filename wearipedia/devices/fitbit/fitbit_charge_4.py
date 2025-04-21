@@ -6,8 +6,6 @@ from .fitbit_authenticate import *
 from .fitbit_charge4_fetch import *
 from .fitbit_charge_4_gen import *
 
-class_name = "Fitbit_charge_4"
-
 
 class Fitbit_charge_4(BaseDevice):
     """This device allows you to work with data from the `Fitbit charge  <(https://www.fitbit.com/global/au/products/trackers/charge4)>`_ device.
@@ -33,6 +31,8 @@ class Fitbit_charge_4(BaseDevice):
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type synthetic_end_date: str, optional
     """
+
+    name = "fitbit/fitbit_charge_4"
 
     def __init__(
         self,

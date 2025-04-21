@@ -10,10 +10,11 @@ from ...utils import seed_everything
 from .dreem_fetch import *
 from .dreem_gen import *
 
-class_name = "DreemHeadband2"
-
 
 class DreemHeadband2(BaseDevice):
+
+    name = "dreem/headband_2"
+
     def __init__(
         self, seed=0, synthetic_start_date="2022-03-01", synthetic_end_date="2022-06-17"
     ):

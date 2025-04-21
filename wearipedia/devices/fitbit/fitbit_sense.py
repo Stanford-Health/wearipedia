@@ -6,8 +6,6 @@ from .fitbit_authenticate import *
 from .fitbit_sense_fetch import *
 from .fitbit_sense_gen import *
 
-class_name = "Fitbit_sense"
-
 
 class Fitbit_sense(BaseDevice):
     """This device allows you to work with data from the `Fitbit Sense <(https://www.fitbit.com/global/us/products/smartwatches/sense)>`_ device.
@@ -37,6 +35,8 @@ class Fitbit_sense(BaseDevice):
     :param synthetic_end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type synthetic_end_date: str, optional
     """
+
+    name = "fitbit/fitbit_sense"
 
     def __init__(
         self,

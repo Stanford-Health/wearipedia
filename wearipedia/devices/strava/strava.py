@@ -9,8 +9,6 @@ from .strava_fetch import *
 from .strava_syn_gen import *
 from .strava_syn_gen_streams import *
 
-class_name = "Strava"
-
 
 class Strava(BaseDevice):
 
@@ -59,6 +57,8 @@ class Strava(BaseDevice):
     :param id : id of the activity, defaults to '', required for stream data
     :type id: str, optional
     """
+
+    name = "strava/strava"
 
     def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
 
@@ -114,7 +114,7 @@ class Strava(BaseDevice):
         # but index into it based on the params. Specifically, we
         # want to return the data between the start and end dates.
 
-        stream_data = set(["heartrate"])
+        stream_data = {"heartrate"}
 
         if data_type in stream_data:
             return data
@@ -233,4 +233,4 @@ class Strava(BaseDevice):
         if "message" in res.json():
             return res.json()["message"]
         self.access_token = res.json()["access_token"]
-        print("Access Token = {}\n".format(self.access_token))
+        print(f"Access Token = {self.access_token}\n")

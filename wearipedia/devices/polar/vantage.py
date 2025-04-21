@@ -10,8 +10,6 @@ from ..device import BaseDevice
 from .vantage_fetch import fetch_real_data
 from .vantage_synthetic import *
 
-class_name = "PolarVantage"
-
 
 class PolarVantage(BaseDevice):
 
@@ -37,6 +35,8 @@ class PolarVantage(BaseDevice):
     :param use_cache: decide whether to cache the credentials, defaults to True
     :type use_cache: bool, optional
     """
+
+    name = "polar/vantage"
 
     def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
         params = {

@@ -5,8 +5,6 @@ from ...devices.device import BaseDevice
 from .polar_get import *
 from .verity_gen import *
 
-class_name = "VeritySense"
-
 
 class VeritySense(BaseDevice):
     """This device allows you to work with data from the `Polar Verity Sense <https://www.polar.com/us-en/products/accessories/polar-verity-sense>`_ device.
@@ -21,6 +19,8 @@ class VeritySense(BaseDevice):
     :param end_date: end date for synthetic data generation, defaults to "2022-06-17"
     :type end_date: str, optional
     """
+
+    name = "polar/verity_sense"
 
     def __init__(self, seed=0, start_date="2022-03-01", end_date="2022-06-17"):
 

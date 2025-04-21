@@ -11,10 +11,11 @@ from ..device import BaseDevice
 from .evo_fetch import *
 from .evo_gen import *
 
-class_name = "EVO"
-
 
 class EVO(BaseDevice):
+
+    name = "biostrap/evo"
+
     def __init__(self, seed=0, start_date="2023-06-05", end_date="2023-06-20"):
         params = {
             "seed": seed,
