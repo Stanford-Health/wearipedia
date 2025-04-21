@@ -7,7 +7,7 @@ from .fitbit_sense_fetch import *
 from .fitbit_sense_gen import *
 
 
-class Fitbit_sense(BaseDevice):
+class FitbitSense(BaseDevice):
     """This device allows you to work with data from the `Fitbit Sense <(https://www.fitbit.com/global/us/products/smartwatches/sense)>`_ device.
     Available datatypes for this device are:
 

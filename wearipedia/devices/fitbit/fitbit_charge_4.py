@@ -7,7 +7,7 @@ from .fitbit_charge4_fetch import *
 from .fitbit_charge_4_gen import *
 
 
-class Fitbit_charge_4(BaseDevice):
+class FitbitCharge4(BaseDevice):
     """This device allows you to work with data from the `Fitbit charge  <(https://www.fitbit.com/global/au/products/trackers/charge4)>`_ device.
     Available datatypes for this device are:
 

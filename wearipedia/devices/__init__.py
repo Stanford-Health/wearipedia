@@ -1,27 +1,26 @@
 """Device registration module."""
 
-from wearipedia import register_device
-
 # Import all device classes
 from .apple.healthkit import HealthKit
-from .biostrap.evo import Evo
-from .coros.pace_2 import Pace2
+from .biostrap.evo import EVO
+from .coros.coros_pace_2 import CorosPace2
 from .cronometer.cronometer import Cronometer
-from .dexcom.pro_cgm import ProCGM
-from .dreem.headband_2 import Headband2
-from .fitbit.charge_4 import Charge4
-from .fitbit.charge_6 import Charge6
+from .dexcom.pro_cgm import DexcomProCGM
+from .dreem.headband_2 import DreemHeadband2
+from .fitbit.fitbit_charge_4 import FitbitCharge4
+from .fitbit.fitbit_charge_6 import FitbitCharge6
+from .fitbit.fitbit_sense import FitbitSense
 from .fitbit.google_pixel_watch import GooglePixelWatch
-from .fitbit.sense import Sense
 from .garmin.fenix_7s import Fenix7S
 from .google.googlefit import GoogleFit
 from .myfitnesspal.myfitnesspal import MyFitnessPal
 from .nutrisense.cgm import NutrisenseCGM
-from .oura.ring3 import Ring3
+from .oura.oura_ring3 import OuraRing3
 from .polar.h10 import H10
-from .polar.vantage import Vantage
+from .polar.vantage import PolarVantage
 from .polar.verity_sense import VeritySense
 from .qualtrics.qualtrics import Qualtrics
+from .registry import register_device
 from .strava.strava import Strava
 from .whoop.whoop_4 import Whoop4
 from .withings.bodyplus import BodyPlus
@@ -30,29 +29,31 @@ from .withings.sleepmat import SleepMat
 
 ALL_DEVICES = [
     HealthKit,
-    Evo,
-    Pace2,
+    EVO,
+    CorosPace2,
     Cronometer,
-    ProCGM,
-    Headband2,
-    Charge4,
-    Charge6,
-    Sense,
+    DexcomProCGM,
+    DreemHeadband2,
+    FitbitCharge4,
+    FitbitCharge6,
+    FitbitSense,
     GooglePixelWatch,
     Fenix7S,
     GoogleFit,
     MyFitnessPal,
     NutrisenseCGM,
-    Ring3,
+    OuraRing3,
     H10,
-    Vantage,
+    PolarVantage,
     VeritySense,
     Qualtrics,
     Whoop4,
     ScanWatch,
     BodyPlus,
     SleepMat,
+    Strava,
 ]
+
 # Register all devices
 for device in ALL_DEVICES:
-    register_device(device.name, device)
+    register_device(device)

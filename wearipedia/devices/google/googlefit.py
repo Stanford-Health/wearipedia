@@ -8,7 +8,7 @@ from .googlefitness_fetch import *
 from .googlefitness_synthetic import *
 
 
-class GoogleFitness(BaseDevice):
+class GoogleFit(BaseDevice):
 
     """This device allows you to work with data from the `Google Fit <https://www.google.com/fit/>`_ app.
     Available datatypes for this device are:

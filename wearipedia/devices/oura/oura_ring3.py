@@ -7,7 +7,7 @@ from .oura_ring3_fetch import *
 from .oura_ring3_gen import *
 
 
-class Oura_Ring_3(BaseDevice):
+class OuraRing3(BaseDevice):
     """This device allows you to work with data from the `Oura Ring 3  <(https://ouraring.com/)>`_ device.
     Available datatypes for this device are:
 

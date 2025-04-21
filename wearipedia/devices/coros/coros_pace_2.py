@@ -7,7 +7,7 @@ from .coros_pace_2_fetch import *
 from .coros_pace_2_gen import *
 
 
-class Coros_pace_2(BaseDevice):
+class CorosPace2(BaseDevice):
     """This device allows you to work with data from the `Fitbit charge  <(https://www.fitbit.com/global/au/products/trackers/charge4)>`_ device.
     Available datatypes for this device are:
 

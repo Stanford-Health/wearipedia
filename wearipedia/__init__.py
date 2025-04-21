@@ -1,18 +1,13 @@
 # type: ignore[attr-defined]
 """wearables in development"""
-
-import importlib
-import importlib.util
-from importlib import import_module
+import os
 
 try:
     from importlib import metadata as importlib_metadata
 except ImportError:  # for Python<3.8
     import importlib_metadata as importlib_metadata
 
-from .constants import *
-from .devices import *
-from .registry import registry  # Import the registry
+from .devices import registry
 
 
 def get_device(device_name, **kwargs):
@@ -43,7 +38,7 @@ def get_device(device_name, **kwargs):
     return device_class(**kwargs)
 
 
-def get_all_device_names() -> List[str]:
+def get_all_device_names() -> list[str]:
     """Get a list of all device names.
 
     :return: a list of device names

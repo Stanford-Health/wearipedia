@@ -1,7 +1,7 @@
 REGISTRY = {}
 
 
-def register_device(device_name):
+def register_device(cls):
     """
     Decorator to register a device class in the registry.
 
@@ -9,11 +9,7 @@ def register_device(device_name):
         device_name (str): The device name in format "company/model"
     """
 
-    def decorator(cls):
-        REGISTRY[device_name] = cls
-        return cls
-
-    return decorator
+    REGISTRY[cls.name] = cls
 
 
 def get_device_class(device_name):

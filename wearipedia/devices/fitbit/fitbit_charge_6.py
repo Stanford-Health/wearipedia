@@ -9,7 +9,7 @@ from .fitbit_sense_fetch import *
 from .fitbit_sense_gen import *
 
 
-class Fitbit_charge_6(BaseDevice):
+class FitbitCharge6(BaseDevice):
     """This device allows you to work with data from the `Fitbit charge  <(https://www.fitbit.com/global/au/products/trackers/charge6)>`_ device.
     Available datatypes for this device are:
 
