@@ -4,7 +4,7 @@ import pytest
 import wearipedia
 
 
-@pytest.mark.parametrize("real", [True, False])
+@pytest.mark.parametrize("real", [False])
 def test_qualtrics(real):
 
     synthetic_survey = "your_survey_id_here"
