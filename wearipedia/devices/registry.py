@@ -6,7 +6,7 @@ def register_device(cls):
     Decorator to register a device class in the registry.
 
     Args:
-        device_name (str): The device name in format "company/model"
+        cls (str): The Python class defining the device
     """
 
     REGISTRY[cls.name] = cls
@@ -21,8 +21,5 @@ def get_device_class(device_name):
 
     Returns:
         type: The device class
-
-    Raises:
-        KeyError: If the device is not registered
     """
     return REGISTRY[device_name]
