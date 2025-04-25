@@ -4,8 +4,8 @@ import requests
 
 from ...utils import seed_everything
 from ..device import BaseDevice
-from .googlefitness_fetch import *
-from .googlefitness_synthetic import *
+from .googlefitness_fetch import fetch_real_data
+from .googlefitness_synthetic import create_syn_data
 
 
 class GoogleFit(BaseDevice):

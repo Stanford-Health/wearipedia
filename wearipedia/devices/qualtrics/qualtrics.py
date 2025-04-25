@@ -2,8 +2,8 @@ from QualtricsAPI.Setup import Credentials
 
 from ...utils import seed_everything
 from ..device import BaseDevice
-from .qualtrics_fetch import *
-from .qualtrics_gen import *
+from .qualtrics_fetch import fetch_real_data
+from .qualtrics_gen import create_syn_data
 
 
 class Qualtrics(BaseDevice):

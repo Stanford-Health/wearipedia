@@ -5,8 +5,8 @@ import urllib3
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
-from .cgm_fetch import *
-from .cgm_gen import *
+from .cgm_fetch import fetch_real_data
+from .cgm_gen import gen_data
 
 
 class NutrisenseCGM(BaseDevice):

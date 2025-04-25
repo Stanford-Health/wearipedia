@@ -1,8 +1,23 @@
 from datetime import datetime, timedelta
 
-from .fenix_gen_1 import *
-from .fenix_gen_2 import *
-from .fenix_gen_3 import *
+from .fenix_gen_1 import (
+    get_body_battery_data,
+    get_heart_rate_data,
+    get_hrv_data,
+    get_steps_data,
+)
+from .fenix_gen_2 import (
+    get_blood_pressure_data,
+    get_floors_data,
+    get_hydration_data,
+    get_resting_hr_data,
+)
+from .fenix_gen_3 import (
+    get_respiration_data,
+    get_sleep_data,
+    get_spo2_data,
+    get_stress_data,
+)
 
 __all__ = ["create_syn_data"]
 

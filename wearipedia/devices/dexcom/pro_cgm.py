@@ -6,8 +6,8 @@ import pandas as pd
 
 from ...devices.device import BaseDevice
 from ...utils import bin_search, seed_everything
-from .pro_cgm_fetch import *
-from .pro_cgm_gen import *
+from .pro_cgm_fetch import dexcom_authenticate, fetch_data, refresh_access_token
+from .pro_cgm_gen import create_synth
 
 
 class DexcomProCGM(BaseDevice):

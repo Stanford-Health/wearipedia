@@ -5,8 +5,8 @@ import pandas as pd
 
 from ...devices.device import BaseDevice
 from ...utils import bin_search, seed_everything
-from .whoop_gen import *
-from .whoop_user import *
+from .whoop_gen import create_fake_cycles, create_fake_hr
+from .whoop_user import WhoopUser
 
 
 class Whoop4(BaseDevice):

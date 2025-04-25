@@ -6,8 +6,8 @@ import myfitnesspal
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
-from .myfitnesspal_fetch import *
-from .myfitnesspal_synthetic import *
+from .myfitnesspal_fetch import fetch_real_data
+from .myfitnesspal_synthetic import create_syn_data
 
 
 class MyFitnessPal(BaseDevice):

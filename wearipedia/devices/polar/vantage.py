@@ -8,7 +8,7 @@ import requests
 from ...utils import seed_everything
 from ..device import BaseDevice
 from .vantage_fetch import fetch_real_data
-from .vantage_synthetic import *
+from .vantage_synthetic import create_syn_data
 
 
 class PolarVantage(BaseDevice):

@@ -2,9 +2,9 @@ from datetime import datetime, time, timedelta
 
 from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
-from .oura_ring3_authenticate import *
-from .oura_ring3_fetch import *
-from .oura_ring3_gen import *
+from .oura_ring3_authenticate import oura_token
+from .oura_ring3_fetch import fetch_real_data
+from .oura_ring3_gen import create_syn_data
 
 
 class OuraRing3(BaseDevice):
