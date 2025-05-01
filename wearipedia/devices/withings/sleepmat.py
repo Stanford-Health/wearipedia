@@ -8,8 +8,12 @@ import wget
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
-from .withings_authenticate import *
-from .withings_extract import *
+from .withings_authenticate import refresh_access_token, withings_authenticate
+from .withings_extract import (
+    fetch_all_sleep_summaries,
+    fetch_all_sleeps,
+    fetch_measurements,
+)
 
 
 class SleepMat(BaseDevice):

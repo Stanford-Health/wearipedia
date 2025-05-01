@@ -5,7 +5,7 @@ import pandas as pd
 
 from ...devices.device import BaseDevice
 from ...utils import bin_search, seed_everything
-from .apple_gen import *
+from .apple_gen import create_syn_data
 
 
 class HealthKit(BaseDevice):

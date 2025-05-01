@@ -3,8 +3,8 @@ from datetime import datetime, time, timedelta
 
 from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
-from .coros_pace_2_fetch import *
-from .coros_pace_2_gen import *
+from .coros_pace_2_fetch import fetch_real_data
+from .coros_pace_2_gen import create_syn_data
 
 
 class CorosPace2(BaseDevice):

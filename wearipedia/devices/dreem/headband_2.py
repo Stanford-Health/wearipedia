@@ -7,8 +7,7 @@ import requests
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
-from .dreem_fetch import *
-from .dreem_gen import *
+from .dreem_fetch import fetch_eeg_file, fetch_hypnogram, fetch_records, fetch_users
 
 
 class DreemHeadband2(BaseDevice):

@@ -7,8 +7,8 @@ from garminconnect import Garmin
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
-from .fenix_fetch import *
-from .fenix_gen import *
+from .fenix_fetch import fetch_real_data
+from .fenix_gen import create_syn_data
 
 
 def user_identifier():

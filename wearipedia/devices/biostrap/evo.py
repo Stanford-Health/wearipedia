@@ -8,8 +8,8 @@ import requests
 
 from ...utils import seed_everything
 from ..device import BaseDevice
-from .evo_fetch import *
-from .evo_gen import *
+from .evo_fetch import fetch_real_data
+from .evo_gen import create_syn_data
 
 
 class EVO(BaseDevice):

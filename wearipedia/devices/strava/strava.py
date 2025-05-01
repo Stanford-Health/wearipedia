@@ -5,9 +5,9 @@ import urllib3
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
-from .strava_fetch import *
-from .strava_syn_gen import *
-from .strava_syn_gen_streams import *
+from .strava_fetch import fetch_real_data
+from .strava_syn_gen import create_syn_data
+from .strava_syn_gen_streams import return_streams_syn
 
 
 class Strava(BaseDevice):

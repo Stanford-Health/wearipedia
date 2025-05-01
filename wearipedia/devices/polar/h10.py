@@ -2,8 +2,8 @@ import numpy as np
 import requests
 
 from ...devices.device import BaseDevice
-from .h10_gen import *
-from .polar_get import *
+from .h10_gen import gen_data
+from .polar_get import fetch_real_data
 
 
 class H10(BaseDevice):

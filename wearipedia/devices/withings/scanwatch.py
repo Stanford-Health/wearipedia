@@ -1,10 +1,13 @@
 import time
 
+import numpy as np
+import pandas as pd
+
 from ...devices.device import BaseDevice
 from ...utils import bin_search, seed_everything
-from .withings_authenticate import *
-from .withings_extract import *
-from .withings_gen import *
+from .withings_authenticate import refresh_access_token, withings_authenticate
+from .withings_extract import fetch_all_heart_rate, fetch_all_sleeps
+from .withings_gen import create_syn_hr, create_synthetic_sleeps_df
 
 
 class ScanWatch(BaseDevice):

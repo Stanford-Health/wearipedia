@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 
 from ...devices.device import BaseDevice
 from ...utils import seed_everything
-from .cronometer_fetch import *
-from .cronometer_synthetic import *
+from .cronometer_fetch import fetch_real_data
+from .cronometer_synthetic import create_syn_data
 
 # todo: change this to better path
 CRED_CACHE_PATH = "/tmp/wearipedia_cronometer_data.pkl"

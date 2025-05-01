@@ -2,9 +2,9 @@ from datetime import datetime, time, timedelta
 
 from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
-from .fitbit_authenticate import *
-from .fitbit_charge4_fetch import *
-from .fitbit_charge_4_gen import *
+from .fitbit_authenticate import fitbit_application
+from .fitbit_charge4_fetch import fetch_real_data
+from .fitbit_charge_4_gen import create_syn_data
 
 
 class FitbitCharge4(BaseDevice):

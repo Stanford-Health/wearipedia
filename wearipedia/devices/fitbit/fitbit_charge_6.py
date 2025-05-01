@@ -4,9 +4,9 @@ import numpy as np
 
 from ...utils import bin_search, seed_everything
 from ..device import BaseDevice
-from .fitbit_authenticate import *
-from .fitbit_sense_fetch import *
-from .fitbit_sense_gen import *
+from .fitbit_authenticate import fitbit_application
+from .fitbit_sense_fetch import fetch_real_data
+from .fitbit_sense_gen import create_syn_data
 
 
 class FitbitCharge6(BaseDevice):

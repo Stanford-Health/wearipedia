@@ -1,8 +1,4 @@
 import io
-import re
-
-import pandas as pd
-import requests
 
 
 def fetch_real_data(self, start_date, end_date, data_type):
