@@ -66,7 +66,7 @@ The easiest way to install wearipedia is to use pip:
 
 `pip install wearipedia`
 
-We currently support Python 3.7, 3.8, and 3.9.
+We currently support Python 3.10, 3.11, and 3.12.
 
 ## Supported Devices
 

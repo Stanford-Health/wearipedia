@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "wearipedia"
-version = "0.1.5"
+version = "0.1.6"
 description = "Wearable data for all"
 authors = [
   {name = "The Stanford Wearipedia Project", email = "<arjo@stanford.edu>"},
@@ -16,10 +16,10 @@ repository = "https://github.com/Stanford-Health/wearipedia"
 homepage = "http://wearipedia.com"
 
 # Keywords description https://python-poetry.org/docs/pyproject/#keywords
-keywords = []  #! Update me
+keywords = []
 
 # Pypi classifiers: https://pypi.org/classifiers/
-classifiers = [  #! Update me
+classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
   "Operating System :: OS Independent",
@@ -32,9 +32,9 @@ requires-python = ">=3.10, <3.13"
 dependencies = [
     "typer[all]>=0.6.1",
     "rich>=12.6.0",
-    "pandas==2.2.3",
+    "pandas>=2.2.2",
     "tqdm>=4.64.1",
-    "scipy>=1.6",
+    "scipy>=1.13.0",
     "wget>=3.2",
     "fbm>=0.3.0",
     "beautifulsoup4>=4.12.2",
@@ -45,7 +45,7 @@ dependencies = [
     "typing-extensions>=4.12.2",
     "garminconnect>=0.2.25",
     "garth>=0.5.2",
-    "numpy==1.26.4",
+    "numpy>=2.0.0",
     "qualtricsapi>=0.6.1",
 ]
 
