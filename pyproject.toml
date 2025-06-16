@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "wearipedia"
-version = "0.1.6"
+version = "0.1.7"
 description = "Wearable data for all"
 authors = [
   {name = "The Stanford Wearipedia Project", email = "<arjo@stanford.edu>"},
