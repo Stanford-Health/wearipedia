@@ -147,7 +147,7 @@ class FitbitSense(BaseDevice):
         self.minutesLightlyActive = syn_data["minutesLightlyActive"]
         self.minutesSedentary = syn_data["minutesSedentary"]
         self.distance = syn_data["distance"]
-        self.heart_rate_day = syn_data["heart_rate"]
+        self.heart_rate_day = syn_data["heart_rate_day"]
         self.hrv = syn_data["hrv"]
         self.distance_day = syn_data["distance_day"]
         self.intraday_breath_rate = syn_data["intraday_breath_rate"]

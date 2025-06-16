@@ -560,7 +560,7 @@ def create_syn_data(seed, start_date, end_date):
     full_dict["minutesLightlyActive"] = []
     full_dict["minutesSedentary"] = []
     full_dict["distance"] = []
-    full_dict["heart_rate"] = []
+    full_dict["heart_rate_day"] = []
     full_dict["hrv"] = []
     full_dict["distance_day"] = []
     full_dict["intraday_breath_rate"] = []
