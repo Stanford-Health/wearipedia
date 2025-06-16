@@ -14,7 +14,7 @@ def call_API(url: str, access_token: str, call: str = "GET"):
         try:
             error_detail = response.json()
             if isinstance(error_detail, dict):
-                error_msg = f"{error_msg} - {error_detail.get('detail', '')}"
+                error_msg = f"{error_msg} - {error_detail}"
         except:
             pass
 
