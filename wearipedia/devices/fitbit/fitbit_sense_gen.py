@@ -527,14 +527,14 @@ def get_distance_day(date):
 
 
 def create_syn_data(seed, start_date, end_date):
-    """Returns a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary", "heart_rate_day", "hrv", "distance_day"
+    """Returns a dict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary", "heart_rate_day", "hrv", "distance_day"
 
     :param start_date: the start date (inclusive) as a string in the format "YYYY-MM-DD"
     :type start_date: str
     :param end_date: the end date (inclusive) as a string in the format "YYYY-MM-DD"
     :type end_date: str
-    :return: a defaultdict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary", "heart_rate_day", "hrv", "distance_day"
-    :rtype: defaultdict
+    :return: a dict of heart_rate data, activity data, "sleep", "steps","minutesVeryActive", "minutesLightlyActive", "minutesFairlyActive", "distance", "minutesSedentary", "heart_rate_day", "hrv", "distance_day"
+    :rtype: dict
     """
 
     random.seed(seed)
@@ -552,7 +552,23 @@ def create_syn_data(seed, start_date, end_date):
         for i in range(num_days)
     ]
 
-    full_dict = collections.defaultdict(list)
+    full_dict = {}
+    full_dict["sleep"] = []
+    full_dict["steps"] = []
+    full_dict["minutesVeryActive"] = []
+    full_dict["minutesFairlyActive"] = []
+    full_dict["minutesLightlyActive"] = []
+    full_dict["minutesSedentary"] = []
+    full_dict["distance"] = []
+    full_dict["heart_rate"] = []
+    full_dict["hrv"] = []
+    full_dict["distance_day"] = []
+    full_dict["intraday_breath_rate"] = []
+    full_dict["intraday_active_zone_minute"] = []
+    full_dict["intraday_activity"] = []
+    full_dict["intraday_heart_rate"] = []
+    full_dict["intraday_hrv"] = []
+    full_dict["intraday_spo2"] = []
 
     for date in synth_dates:
         (
@@ -564,6 +580,7 @@ def create_syn_data(seed, start_date, end_date):
 
         activity = get_activity(date)
 
+        hr = get_heart_rate(date, intraday=False)
         intraday_hr = get_heart_rate(date, intraday=True)
 
         # Collect all data points
@@ -579,6 +596,19 @@ def create_syn_data(seed, start_date, end_date):
         full_dict["hrv"].append(get_hrv(date))
 
         full_dict["distance_day"].append(get_distance_day(date))
+        full_dict["intraday_breath_rate"].append(get_intraday_breath_rate(date))
+        full_dict["intraday_active_zone_minute"].append(
+            get_intraday_azm(date, intraday_hr)
+        )
+        full_dict["intraday_heart_rate"].append(intraday_hr)
+        full_dict["intraday_hrv"].append(
+            get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration)
+        )
+        full_dict["intraday_spo2"].append(
+            get_intraday_spo2(
+                date, random_hour, random_min, random_sec, random_duration
+            )
+        )
 
     # encapsulate to match original data shape
     data = []
