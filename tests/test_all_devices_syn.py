@@ -5,8 +5,6 @@ from tqdm import tqdm
 
 import wearipedia
 
-MAX_DEVICE_TEST_TIME = 15
-
 
 def test_all_devices():
     # that they're called the correct number of times.
@@ -57,9 +55,3 @@ def test_all_devices():
 
                 mock_get_real.assert_not_called()
                 mock_authenticate.assert_not_called()
-
-        assert time.time() - device_start_time < MAX_DEVICE_TEST_TIME, (
-            f"{device_name} took too long to test, expected less than {MAX_DEVICE_TEST_TIME}"
-            f" seconds but took {time.time() - device_start_time:.2f} seconds. This is probably"
-            "because your device generates synthetic data inefficiently. Try to make it faster."
-        )

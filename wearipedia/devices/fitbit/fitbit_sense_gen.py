@@ -565,6 +565,7 @@ def create_syn_data(seed, start_date, end_date):
     full_dict["distance_day"] = []
     full_dict["intraday_breath_rate"] = []
     full_dict["intraday_active_zone_minute"] = []
+    full_dict["intraday_heart_rate"] = []
     full_dict["intraday_activity"] = []
     full_dict["intraday_heart_rate"] = []
     full_dict["intraday_hrv"] = []
@@ -600,6 +601,7 @@ def create_syn_data(seed, start_date, end_date):
         full_dict["intraday_active_zone_minute"].append(
             get_intraday_azm(date, intraday_hr)
         )
+        full_dict["intraday_activity"].append(activity[0])
         full_dict["intraday_heart_rate"].append(intraday_hr)
         full_dict["intraday_hrv"].append(
             get_intraday_hrv(date, random_hour, random_min, random_sec, random_duration)
