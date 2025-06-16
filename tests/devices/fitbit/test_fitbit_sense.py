@@ -75,6 +75,24 @@ def helper_test(device, start_synthetic, end_synthetic, real):
             "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
         },
     )
+    intraday_breath_rate = device.get_data(
+        "intraday_breath_rate",
+        params={
+            "start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+            "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
+        },
+    )
+    intraday_active_zone_minute = device.get_data(
+        "intraday_active_zone_minute",
+        params={
+            "start_date": datetime.strftime(start_synthetic, "%Y-%m-%d"),
+            "end_date": datetime.strftime(end_synthetic, "%Y-%m-%d"),
+        },
+    )
+
+    assert intraday_breath_rate is not None
+    assert intraday_active_zone_minute is not None
+
     minutesAsleep = []
     for datapoint in sleep[0]["sleep"]:
         minutesAsleep.append(datapoint["minutesAsleep"])

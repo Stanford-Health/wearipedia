@@ -104,8 +104,6 @@ class FitbitCharge6(BaseDevice):
             "distance": "activities-distance",
             "minutesSedentary": "activities-minutesSedentary",
             "hrv": "hrv",
-            "distance_day": None,
-            "heart_rate_day": None,
         }
 
         if data_type in key_map:
@@ -114,6 +112,7 @@ class FitbitCharge6(BaseDevice):
                 return data
             intermediary = data[0][key][num_days_start : -num_days_end + 1]
             return [{key: intermediary}]
+        return data
 
     def _get_real(self, data_type, params):
         data = fetch_real_data(

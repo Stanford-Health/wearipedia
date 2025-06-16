@@ -111,8 +111,6 @@ class FitbitSense(BaseDevice):
             "distance": "activities-distance",
             "minutesSedentary": "activities-minutesSedentary",
             "hrv": "hrv",
-            "distance_day": None,
-            "heart_rate_day": None,
         }
 
         if data_type in key_map:
@@ -121,6 +119,7 @@ class FitbitSense(BaseDevice):
                 return data
             intermediary = data[0][key][num_days_start : -num_days_end + 1]
             return [{key: intermediary}]
+        return data
 
     def _get_real(self, data_type, params):
 
